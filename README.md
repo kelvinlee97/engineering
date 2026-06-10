@@ -5,7 +5,7 @@
 ## 目录结构
 
 ```
-.codebuddy/
+codebuddy/
   statusline/
     statusline-command.sh  # CodeBuddy Code statusline 脚本
 ```
@@ -33,7 +33,7 @@ CodeBuddy Code 的 statusline 脚本，显示以下信息：
 **安装**：
 ```bash
 # 复制到 CodeBuddy Code 配置目录
-cp .codebuddy/statusline/statusline-command.sh ~/.codebuddy/statusline-command.sh
+cp codebuddy/statusline/statusline-command.sh ~/.codebuddy/statusline-command.sh
 
 # 确保 settings.json 里配置了 statusLine command
 # "statusLine": {
