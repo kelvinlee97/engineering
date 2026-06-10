@@ -21,6 +21,15 @@ CodeBuddy Code 的 statusline 脚本，显示以下信息：
 
 **特点**：简约无彩色显示，使用 Unicode 分隔符。
 
+**效果示例**：
+```
+~/Documents/projects/automation-ocr | main | hy3-preview-ioa | xhigh | [==>-------] 19.4%
+```
+
+- `|` 表示分隔符（实际显示：``）
+- `[==>-------]` 表示上下文进度条（实际显示：`█░░░░░░░░░`）
+- `19.4%` 是当前上下文使用百分比
+
 **安装**：
 ```bash
 # 复制到 CodeBuddy Code 配置目录
