@@ -1,0 +1,10 @@
+{
+  "name": "wedata3",
+  "version": "1.0.0",
+  "description": "Wedata3.0 官方插件 —— Data+AI一体化平台，内置Wedata各种能力调用的Skills，通过DataAgents相关Skills可以快速开发调用Wedata引擎、数据、AI资源的数据智能体，并可自动部署到云端直接使用。",
+  "author": {
+    "name": "Wedata"
+  },
+  "license": "MIT",
+  "keywords": ["wedata", "mcp", "server", "tools", "discovery", "deployment", "agent", "configuration"]
+}

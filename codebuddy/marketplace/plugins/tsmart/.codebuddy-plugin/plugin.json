@@ -1,0 +1,24 @@
+{
+  "name": "tsmart",
+  "version": "1.0.0",
+  "description": "AI 驱动测试用例生成与管理工作流，集成 TestBuddy 脑图可视化和 TCase 自动化测试代码生成能力",
+  "author": {
+    "name": "seagullliu",
+    "email": "seagullliu@tencent.com"
+  },
+  "keywords": [
+    "测试用例生成",
+    "自动化测试",
+    "TCase",
+    "TestBuddy",
+    "YottaDB",
+    "ALB",
+    "CloudGame"
+  ],
+  "category": "测试工具",
+  "commands": "./commands/",
+  "agents": "./agents/",
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json",
+  "mcpServers": "./.mcp.json"
+}

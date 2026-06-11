@@ -1,0 +1,17 @@
+# Settings files (user-specific configuration)
+.codebuddy/*.local.md
+.claude/*.local.md
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Temp files
+*.tmp
+*.temp

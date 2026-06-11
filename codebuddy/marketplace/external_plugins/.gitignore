@@ -1,0 +1,31 @@
+# Backup directories
+claude-mem.backup-*/
+*.backup-*/
+
+# Node modules
+node_modules/
+
+# Lock files
+package-lock.json
+bun.lockb
+
+# Build artifacts
+*.log
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Install markers
+.cli-installed
+.install-version
+
+# Local symbolic links (do not commit)
+.claude/

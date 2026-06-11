@@ -1,0 +1,36 @@
+{
+  "PreToolUse": [
+    {
+      "matcher": "Write|Edit|Bash",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "python3 ${CODEBUDDY_PLUGIN_ROOT}/skills/tcase-codegen/scripts/pre_tool_debug.py || python ${CODEBUDDY_PLUGIN_ROOT}/skills/tcase-codegen/scripts/pre_tool_debug.py",
+          "timeout": 60
+        }
+      ]
+    }
+  ],
+  "PostToolUse": [
+    {
+      "matcher": "Write|Edit",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "python3 ${CODEBUDDY_PLUGIN_ROOT}/skills/tcase-codegen/scripts/tcase_upload_hook.py || python ${CODEBUDDY_PLUGIN_ROOT}/skills/tcase-codegen/scripts/tcase_upload_hook.py",
+          "timeout": 60
+        }
+      ]
+    },
+    {
+      "matcher": "task|Task",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "python3 ${CODEBUDDY_PLUGIN_ROOT}/skills/tcase-codegen/scripts/task_upload_hook.py || python ${CODEBUDDY_PLUGIN_ROOT}/skills/tcase-codegen/scripts/task_upload_hook.py",
+          "timeout": 120
+        }
+      ]
+    }
+  ]
+}

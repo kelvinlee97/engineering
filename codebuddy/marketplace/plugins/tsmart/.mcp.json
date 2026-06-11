@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "TCase": {
+      "url": "http://tcase.mcp.woa.com/api/v1/mcp",
+      "headers": {
+        "accept": "application/json, text/event-stream",
+        "Content-Type": "application/json"
+      },
+      "timeout": 300000,
+      "transportType": "streamableHttp",
+      "disabled": false
+    },
+    "testbuddy_tools": {
+      "url": "http://testbuddy.woa.com/api/tb/v1/cb-plugin/sse",
+      "headers": {
+        "x-testbuddy-origin": "cb-plugin"
+      },
+      "timeout": 100000,
+      "transportType": "streamable-http"
+    }
+  }
+}

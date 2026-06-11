@@ -1,0 +1,16 @@
+node_modules/
+.DS_Store
+__MACOSX/
+*.log
+.env
+.initialized
+
+# Ignore all files in .codebuddy-plugin except marketplace.json
+.codebuddy-plugin/*
+!.codebuddy-plugin/marketplace.json
+!.codebuddy-plugin/plugin.json
+
+plugin-marketplaces.md
+plugins-reference.md
+skills-standard.md
+.codebuddy

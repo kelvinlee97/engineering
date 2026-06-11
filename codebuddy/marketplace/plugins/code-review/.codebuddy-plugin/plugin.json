@@ -1,0 +1,9 @@
+{
+  "name": "code-review",
+  "description": "使用多个专业代理和基于置信度评分的自动化拉取请求代码审查，有效过滤误报问题",
+  "homepage": {
+    "url": null,
+    "type": "none"
+  },
+  "license": "UNKNOWN"
+}
