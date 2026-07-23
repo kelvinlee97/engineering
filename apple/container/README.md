@@ -1,136 +1,141 @@
-# Apple Container 项目解读
+# Understanding Apple Container
 
-## 项目定位
+Chinese version: [README_ZH.md](README_ZH.md)
 
-**apple/container** 是苹果官方开发的 **macOS 原生容器工具**，用 Swift 编写，专为 Apple Silicon (M1/M2/M3/M4) 优化。
+## Project Overview
 
-**核心思路**：不像 Docker Desktop 那样运行一个庞大的 Linux VM 来托管所有容器，而是 **每个容器运行在独立的轻量级虚拟机中**。
+**apple/container** is Apple's official **native container tool for macOS**. It is written in Swift and optimized for Apple silicon.
+
+**Core idea:** Instead of running one shared Linux VM to host all containers, as Docker Desktop does, **each container runs inside its own lightweight virtual machine**.
 
 ---
 
-## 架构设计
+## Architecture
 
 ```
 ┌─────────────────────────────────────────────┐
 │          container CLI (Swift)              │
 │                   │                         │
 │         container-apiserver (launchd)       │
-│              ┌────┴────┐                   │
+│              ┌────┴────┐                    │
 │   container-core-images  container-network  │
-│   (镜像管理 XPC helper)  (网络 XPC helper) │
+│   (image XPC helper)     (network XPC helper)│
 └─────────────────────────────────────────────┘
          │                    │
-    ┌────▼────┐        ┌───▼────┐
-    │ Container│        │ Container│
+    ┌────▼────┐        ┌────▼────┐
+    │Container│        │Container│
     │ VM 1    │        │ VM 2    │
-    │(轻量VM) │        │(轻量VM) │
+    │(light VM)│       │(light VM)│
     └─────────┘        └─────────┘
 ```
 
-### 核心组件
+### Core Components
 
-| 组件 | 职责 |
-|------|------|
-| `container` CLI | 用户命令行接口，管理容器、镜像、网络 |
-| `container-apiserver` | launchd 管理的服务进程，提供客户端 API |
-| `container-core-images` | XPC helper，管理镜像和本地内容存储 |
-| `container-network-vmnet` | XPC helper，管理虚拟网络 |
-| `container-runtime-linux` | 每个容器一个，管理该容器的运行时 API |
+| Component | Responsibility |
+|-----------|----------------|
+| `container` CLI | Command-line interface for managing containers, images, and networks |
+| `container-apiserver` | A launchd-managed service process that provides the client API |
+| `container-core-images` | XPC helper that manages images and local content storage |
+| `container-network-vmnet` | XPC helper that manages virtual networking |
+| `container-runtime-linux` | One instance per container, responsible for that container's runtime API |
 
-### 关键技术栈
+### Key Technologies
 
-- **Virtualization.framework** — 管理 Linux VM 和 attached devices
-- **vmnet.framework** — 管理虚拟网络
-- **XPC** — 进程间通信
-- **Launchd** — 服务管理
-- **Keychain** — 存储 registry 凭证
-- **统一日志系统** — 应用日志
-
----
-
-## 核心特点
-
-| 特点 | 说明 |
-|------|------|
-| **强隔离** | 每个容器 = 独立 VM，隔离性和完整 VM 一样 |
-| **隐私** | 只挂载必要数据到每个 VM，而非全部共享 |
-| **快速启动** | 定制优化 Linux 内核 + 最小根文件系统，子秒级启动 |
-| **OCI 兼容** | 完全兼容 OCI 镜像标准，可和 Docker 互操作 |
-| **Rosetta 2** | 支持在 Apple Silicon 上运行 `linux/amd64` 容器 |
+- **Virtualization.framework** — Manages Linux VMs and attached devices
+- **vmnet.framework** — Manages virtual networking
+- **XPC** — Provides interprocess communication
+- **launchd** — Manages services
+- **Keychain** — Stores registry credentials
+- **Unified Logging** — Provides application logging
 
 ---
 
-## 项目结构
+## Key Features
+
+| Feature | Description |
+|---------|-------------|
+| **Strong isolation** | Each container runs in a separate VM, providing isolation equivalent to a full virtual machine |
+| **Privacy** | Only the required data is mounted into each VM instead of sharing everything |
+| **Fast startup** | A customized, optimized Linux kernel and minimal root filesystem enable subsecond startup |
+| **OCI compatibility** | Consumes and produces standard OCI images that interoperate with OCI registries and compatible tools |
+| **Rosetta 2** | Supports running `linux/amd64` containers on Apple silicon |
+
+---
+
+## Project Structure
 
 ### apple/container
 
-CLI 工具，用户直接使用的命令。
+The command-line tool used directly by users.
 
-**安装：**
+**Installation:**
+
 ```bash
-# 从 Release 页面下载 .pkg 后安装
+# Download the .pkg from the Releases page, then install it
 sudo installer -pkg container-*.pkg -target /
 
-# 启动服务
+# Start the service
 container system start
 ```
 
-**主要命令：**
+**Main commands:**
+
 ```bash
-container run              # 运行容器
-container build            # 构建镜像
-container push/pull        # 推送/拉取镜像
-container machine          # 管理持久化 Linux VM（新特性）
-container network          # 管理虚拟网络
-container system           # 启动/停止系统服务
+container run              # Run a container
+container build            # Build an image
+container image pull       # Pull an image
+container image push       # Push an image
+container machine          # Manage persistent Linux VMs
+container network          # Manage virtual networks
+container system           # Start or stop system services
 ```
 
 ### apple/containerization
 
-底层 Swift 包，提供核心 API 能力：
+The underlying Swift package that provides the core APIs:
 
-1. **OCI 镜像管理** — 创建、读取、修改 OCI 标准镜像
-2. **远程仓库交互** — 支持 Docker Hub、私有 registry
-3. **文件系统创建** — 创建和填充 ext4 文件系统
-4. **轻量虚拟机管理** — 创建轻量 VM，管理容器运行时环境
-5. **容器进程交互** — 启动容器化进程并与之交互
-6. **vminitd** — 内置轻量 init 系统，作为 VM 的初始进程，通过 vsock 提供 gRPC API
-
----
-
-## 和 Docker Desktop 的核心区别
-
-| 对比维度 | Docker Desktop | apple/container |
-|---------|---------------|-----------------|
-| VM 模型 | 一个大型 Linux VM 托管所有容器 | 每个容器一个轻量 VM |
-| 隔离性 | 进程级隔离（Linux namespace） | VM 级隔离（硬件虚拟化） |
-| 资源开销 | 固定分配大量内存给 VM | 每个容器按需分配，更灵活 |
-| 文件共享 | 需要预先挂载整个目录到 VM | 按需挂载 |
-| 生态 | 成熟，支持 Compose/K8s | 早期阶段，功能还在完善 |
+1. **OCI image management** — Creates, reads, and modifies OCI-compliant images
+2. **Remote registry interaction** — Supports Docker Hub and private registries
+3. **Filesystem creation** — Creates and populates ext4 filesystems
+4. **Lightweight VM management** — Creates lightweight VMs and manages container runtime environments
+5. **Container process interaction** — Starts and interacts with containerized processes
+6. **vminitd** — A built-in lightweight init system that runs as the VM's initial process and exposes a gRPC API over vsock
 
 ---
 
-## 使用要求
+## Key Differences from Docker Desktop
 
-- **硬件**：Apple Silicon Mac（M1/M2/M3/M4）
-- **系统**：macOS 26 及以上（不支持更低版本）
-- **构建**：Xcode 26+、Swift 工具链
+| Dimension | Docker Desktop | apple/container |
+|-----------|----------------|-----------------|
+| VM model | One large Linux VM hosts all containers | Each container has its own lightweight VM |
+| Isolation | Process-level isolation through Linux namespaces | VM-level isolation through hardware virtualization |
+| Resource model | A configurable memory limit applies to the shared Linux VM | Each lightweight VM uses memory according to its container workload |
+| File sharing | Selected host directories are shared with the Linux VM | Only the host data required by each container is mounted into its VM |
+| Ecosystem | Mature, with Compose and Kubernetes support | Early-stage, with features still being developed |
 
 ---
 
-## 安装与卸载
+## Requirements
 
-### 首次安装
+- **Hardware:** An Apple silicon Mac
+- **Official support:** macOS 26; macOS 15 can run the tool with documented limitations, but issues specific to older macOS versions are not maintained
+- **Building from source:** macOS 15 minimum, macOS 26 recommended, and Xcode 26 as the active developer directory
+
+---
+
+## Installation and Removal
+
+### First Installation
 
 ```bash
-# 从 Release 页面下载安装包后
+# Download the installer package from the Releases page
 sudo installer -pkg container-*.pkg -target /
 
-# 启动系统服务
+# Start the system service
 container system start
 ```
 
-### 升级
+### Upgrade
 
 ```bash
 container system stop
@@ -138,78 +143,78 @@ container system stop
 container system start
 ```
 
-### 降级
+### Downgrade
 
 ```bash
 container system stop
-/usr/local/bin/uninstall-container.sh -k   # -k 保留用户数据
+/usr/local/bin/uninstall-container.sh -k   # -k preserves user data
 /usr/local/bin/update-container.sh -v 0.3.0
 container system start
 ```
 
-### 卸载
+### Uninstall
 
 ```bash
-# 完全卸载（删除工具 + 用户数据）
+# Completely uninstall the tools and user data
 /usr/local/bin/uninstall-container.sh -d
 
-# 保留用户数据卸载
+# Uninstall while preserving user data
 /usr/local/bin/uninstall-container.sh -k
 ```
 
 ---
 
-## 快速上手
+## Quick Start
 
 ```bash
-# 启动服务
+# Start the service
 container system start
 
-# 运行容器（端口映射）
+# Run a container with port forwarding
 container run -p 8080:80 nginx
 
-# 构建镜像
+# Build an image
 container build -t my-image .
 
-# 推送镜像
-container push my-image
+# Push an image
+container image push my-image
 
-# 管理持久化 VM（新特性）
-container machine create my-vm --image ubuntu:22.04
-container machine run my-vm
+# Manage a persistent VM
+container machine create ubuntu:22.04 --name my-vm
+container machine run --name my-vm
 ```
 
 ---
 
-## 当前限制
+## Current Limitations
 
-1. **仅支持 macOS 26+**（Apple Silicon），不维护旧版本
-2. **内存 ballooning 不全**：容器内释放的内存不会归还给 macOS 宿主，需要偶尔重启容器
-3. **macOS 15 上的限制**（如果运行在 15 上）：
-   - 容器间网络隔离，无法互相通信
-   - 不支持多网络
-   - IP 地址可能冲突导致网络失败
-
----
-
-## 项目状态
-
-- **当前版本**：0.x（活跃开发阶段）
-- **稳定性**：仅保证 patch 版本内兼容，小版本可能有 Breaking Change
-- **1.0.0** 发布后才会保证版本兼容性
-- **许可证**：Apache 2.0
-- **贡献指南**：https://github.com/apple/containerization/blob/main/CONTRIBUTING.md
+1. **macOS 26 is the supported release.** The tool can run on macOS 15 with limitations, but issues that cannot be reproduced on macOS 26 are generally not addressed
+2. **Incomplete memory ballooning:** Memory released inside a container is not returned to the macOS host, so containers may need to be restarted occasionally
+3. **Limitations on macOS 15** if the tool is run there:
+   - Containers are isolated from one another and cannot communicate
+   - Multiple networks are not supported
+   - IP address conflicts may cause network failures
 
 ---
 
-## 参考资源
+## Project Status
 
-| 资源 | 链接 |
-|------|------|
-| 入门教程 | https://github.com/apple/container/blob/main/docs/tutorials/start-here.md |
-| 功能使用指南 | https://github.com/apple/container/blob/main/docs/how-to.md |
-| 技术架构概览 | https://github.com/apple/container/blob/main/docs/technical-overview.md |
-| 完整命令参考 | https://github.com/apple/container/blob/main/docs/command-reference.md |
-| API 文档 | https://apple.github.io/container/documentation/ |
-| containerization 仓库 | https://github.com/apple/containerization |
-| GitHub Release | https://github.com/apple/container/releases |
+- **Current version:** 0.x, under active development
+- **Stability:** Compatibility is guaranteed only within patch releases; minor releases may contain breaking changes
+- Version compatibility will be guaranteed after the 1.0.0 release
+- **License:** Apache 2.0
+- **Contribution guide:** https://github.com/apple/containerization/blob/main/CONTRIBUTING.md
+
+---
+
+## References
+
+| Resource | Link |
+|----------|------|
+| Getting started tutorial | https://github.com/apple/container/blob/main/docs/tutorials/start-here.md |
+| How-to guides | https://github.com/apple/container/blob/main/docs/how-to.md |
+| Technical overview | https://github.com/apple/container/blob/main/docs/technical-overview.md |
+| Complete command reference | https://github.com/apple/container/blob/main/docs/command-reference.md |
+| API documentation | https://apple.github.io/container/documentation/ |
+| containerization repository | https://github.com/apple/containerization |
+| GitHub Releases | https://github.com/apple/container/releases |
