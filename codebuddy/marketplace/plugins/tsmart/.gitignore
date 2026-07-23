@@ -1,9 +1,0 @@
-# Python cache
-__pycache__/
-*.py[cod]
-*$py.class
-logs/
-.dockerignore
-.env
-middlewares/utils/settings.py
-CODEBUDDY.md
