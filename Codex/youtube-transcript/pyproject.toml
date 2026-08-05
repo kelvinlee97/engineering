@@ -1,0 +1,39 @@
+[project]
+name = "verified-youtube-transcript"
+version = "0.1.0"
+description = "Capture and verify existing YouTube subtitle tracks before grounded bilingual summarization."
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+yt-transcript = "yt_transcript.cli:main"
+
+[dependency-groups]
+dev = [
+  "mypy>=1.15",
+  "pytest>=8.3",
+  "ruff>=0.11",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/yt_transcript"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+packages = ["yt_transcript"]

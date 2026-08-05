@@ -15,6 +15,7 @@ The material reflects personal study and experience. It is not official document
 | [`apple/container/`](apple/container/) | Notes on Apple Container architecture, usage, limitations, and official references | [English](apple/container/README.md) · [中文](apple/container/README_ZH.md) |
 | [`Claude/subagents/`](Claude/subagents/) | Complete study guide to Anthropic Academy's Introduction to subagents course | [English](Claude/subagents/README.md) · [中文](Claude/subagents/README_ZH.md) |
 | [`Codex/personal/`](Codex/personal/) | Portable personal Codex rules, engineering principles, and an installation script | [English](Codex/personal/README.md) |
+| [`Codex/youtube-transcript/`](Codex/youtube-transcript/) | Browser-only YouTube Transcript capture and grounded bilingual summary skill | [English](Codex/youtube-transcript/README.md) · [中文](Codex/youtube-transcript/README_ZH.md) |
 | [`Ghostty/workstation/`](Ghostty/workstation/) | Fresh-Mac Ghostty workstation installer and user guide | [English](Ghostty/workstation/README.md) · [中文](Ghostty/workstation/README_ZH.md) |
 
 ## Organization Principles

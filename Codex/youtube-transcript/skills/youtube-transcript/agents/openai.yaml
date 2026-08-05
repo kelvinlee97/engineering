@@ -1,0 +1,4 @@
+interface:
+  display_name: "Verified YouTube Transcript"
+  short_description: "Capture verified subtitles and make bilingual articles."
+  default_prompt: "Use $youtube-transcript to capture this YouTube link, verify the subtitle evidence, and create English and Chinese one-page articles."
