@@ -13,6 +13,7 @@ English version: [README.md](README.md)
 | 目录 | 说明 | 文档 |
 |------|------|------|
 | [`apple/container/`](apple/container/) | Apple Container 架构、使用方式、限制和官方参考资料的学习笔记 | [English](apple/container/README.md) · [中文](apple/container/README_ZH.md) |
+| [`Claude/subagents/`](Claude/subagents/) | Anthropic Academy Introduction to subagents 完整课程学习指南 | [English](Claude/subagents/README.md) · [中文](Claude/subagents/README_ZH.md) |
 | [`Codex/personal/`](Codex/personal/) | 可迁移的个人 Codex 规则、工程原则和安装脚本 | [English](Codex/personal/README.md) |
 
 ## 内容组织原则
