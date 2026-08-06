@@ -63,7 +63,11 @@ Work from the `Codex/youtube-transcript` module. Confirm `uv` and `yt-dlp` are a
      --tag "<supporting-tag>"
    ```
 
-11. Verify the final `capture_dir` returned by `archive`, then deliver. State the topic, final path, subtitle source type, language, and extraction warnings.
+11. Verify the final private `capture_dir` returned by `archive`.
+
+12. When the user wants the summary in a GitHub knowledge repository, publish only two reader-facing files under `YouTube/<topic>/<title-slug>--<video-id>/`: `README.md` and `README_ZH.md`. Match the repository's `Claude/auto-mode` style: a short source section, natural headings, concise prose, practical guidance, limitations, and clickable YouTube timestamp references. Never expose cue IDs, hashes, JSON reports, raw subtitles, CLI instructions, test output, or implementation details in this reader directory.
+
+13. Deliver the two direct reading links. Mention technical verification only briefly unless the user asks for it.
 
 ## Stop Rules
 

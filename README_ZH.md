@@ -16,6 +16,7 @@ English version: [README.md](README.md)
 | [`Claude/subagents/`](Claude/subagents/) | Anthropic Academy Introduction to subagents 完整课程学习指南 | [English](Claude/subagents/README.md) · [中文](Claude/subagents/README_ZH.md) |
 | [`Codex/personal/`](Codex/personal/) | 可迁移的个人 Codex 规则、工程原则和安装脚本 | [English](Codex/personal/README.md) |
 | [`Codex/youtube-transcript/`](Codex/youtube-transcript/) | 仅浏览器的 YouTube Transcript 捕获与有来源约束的双语总结 Skill | [English](Codex/youtube-transcript/README.md) · [中文](Codex/youtube-transcript/README_ZH.md) |
+| [`YouTube/`](YouTube/) | 按学习主题整理、面向读者的双语视频摘要 | [English 目录](YouTube/README.md) · [中文目录](YouTube/README_ZH.md) |
 | [`Ghostty/workstation/`](Ghostty/workstation/) | 面向全新 Mac 的 Ghostty 工作台安装器和用户说明 | [English](Ghostty/workstation/README.md) · [中文](Ghostty/workstation/README_ZH.md) |
 
 ## 内容组织原则
