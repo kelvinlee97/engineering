@@ -6,9 +6,9 @@ A lightweight, local-first workflow that captures subtitle tracks already expose
 
 It uses `yt-dlp` for metadata and subtitle retrieval. It does **not** download video or audio, run FFmpeg, use Whisper, or include an AI model.
 
-## What It Produces
+## Temporary Evidence
 
-Captures are staged under `<output>/.staging/<video-id>/`, then archived after summarization under `<output>/<topic>/<title-slug>--<video-id>/`:
+The CLI writes verification evidence under a caller-provided temporary directory:
 
 ```text
 metadata.json              video and selected-track provenance
@@ -16,11 +16,11 @@ extraction-report.json     complete, partial, or blocked validation result
 raw/*.vtt                  original subtitle file returned by yt-dlp
 transcript.md              readable timestamped transcript with cue IDs
 evidence.json              structured cues used for grounded writing
-summary.en.md              optional English article created by Codex
-summary.zh.md              optional Chinese article created by Codex
+summary.en.md              temporary English validation draft
+summary.zh.md              temporary Chinese validation draft
 ```
 
-Generated captures are ignored by Git by default. Subtitles may be copyrighted; review rights and privacy before sharing them.
+These files are working evidence, not final knowledge assets. After the reader-facing Markdown is published and checked, delete the temporary directory. Never commit raw subtitles or internal evidence. Subtitles may be copyrighted; review rights and privacy before sharing them.
 
 ## Installation
 
@@ -42,29 +42,20 @@ Inspect available tracks and the deterministic selection:
 uv run yt-transcript probe "https://www.youtube.com/watch?v=VIDEO_ID"
 ```
 
-Capture and verify without media download:
+Capture and verify without media download, using a unique directory created by `mktemp -d`:
 
 ```bash
-uv run yt-transcript capture "https://www.youtube.com/watch?v=VIDEO_ID" --output captures
-uv run yt-transcript verify "captures/.staging/VIDEO_ID"
+uv run yt-transcript capture "https://www.youtube.com/watch?v=VIDEO_ID" --output TEMP_DIR
+uv run yt-transcript verify "TEMP_DIR/VIDEO_ID"
 ```
 
 Validate a Codex-produced bilingual pair:
 
 ```bash
 uv run yt-transcript validate-summaries \
-  captures/.staging/VIDEO_ID/evidence.json \
-  captures/.staging/VIDEO_ID/summary.en.md \
-  captures/.staging/VIDEO_ID/summary.zh.md
-```
-
-Archive after Codex reviews the complete summary and selects its primary topic:
-
-```bash
-uv run yt-transcript archive captures/.staging/VIDEO_ID \
-  --topic startup \
-  --reason "The video primarily teaches startup validation and operation." \
-  --tag product-market-fit
+  TEMP_DIR/VIDEO_ID/evidence.json \
+  TEMP_DIR/VIDEO_ID/summary.en.md \
+  TEMP_DIR/VIDEO_ID/summary.zh.md
 ```
 
 Exit code `0` means complete. Exit code `2` means partial, blocked, or invalid. Every command also prints structured JSON.
@@ -86,15 +77,11 @@ The article validator additionally requires:
 
 This prevents a visually polished but ungrounded or one-sided summary from passing.
 
-## Flat Learning Topics
-
-The registry is `python`, `kubernetes`, `terraform`, `claude`, `linux`, `startup`, `finance`, `career`, `productivity`, and `general`. Codex chooses one from the complete summary. Claude, LLMs, agents, RAG, evals, and AI engineering share `claude`. Related concepts remain metadata tags rather than nested folders or duplicate captures. Common aliases such as `k8s`, `opentofu`, `business`, and `investing` are normalized automatically.
-
 ## Codex Skill
 
 The reusable skill lives at [`skills/youtube-transcript/`](skills/youtube-transcript/). Install or symlink it into your Codex skills directory, then requests such as “turn this YouTube link into bilingual one-page notes” can trigger the workflow.
 
-See [Architecture](docs/architecture.md), [Privacy and provenance](docs/privacy-and-provenance.md), and [Troubleshooting](docs/troubleshooting.md).
+The skill keeps the verification process temporary and publishes only reader-friendly `README.md` and `README_ZH.md` files under `YouTube/<topic>/<title>--<video-id>/`.
 
 ## Development
 

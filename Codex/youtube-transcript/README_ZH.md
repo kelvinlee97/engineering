@@ -6,9 +6,9 @@ English version: [README.md](README.md)
 
 它使用 `yt-dlp` 获取元数据和字幕；**不会**下载视频或音频，不使用 FFmpeg、Whisper，也不内置 AI 模型。
 
-## 输出内容
+## 临时验收材料
 
-捕获先写入 `<输出目录>/.staging/<视频 ID>/`，完成总结后归档到 `<输出目录>/<topic>/<标题 slug>--<视频 ID>/`：
+CLI 将验收材料写入调用方指定的临时目录：
 
 ```text
 metadata.json              视频与所选字幕轨道的来源信息
@@ -16,11 +16,11 @@ extraction-report.json     complete、partial 或 blocked 验证结果
 raw/*.vtt                  yt-dlp 返回的原始字幕
 transcript.md              带时间与 cue ID 的可读全文
 evidence.json              用于写作的结构化证据
-summary.en.md              Codex 可选生成的英文文章
-summary.zh.md              Codex 可选生成的中文文章
+summary.en.md              临时英文验收稿
+summary.zh.md              临时中文验收稿
 ```
 
-Git 默认忽略捕获产物。字幕可能受版权保护，分享前应检查使用权和隐私边界。
+这些文件只是工作材料，不是最终知识资产。面向读者的 Markdown 发布并检查通过后，应删除临时目录。不得提交原始字幕或内部证据。字幕可能受版权保护，分享前应检查使用权和隐私边界。
 
 ## 安装
 
@@ -42,29 +42,20 @@ Python 运行时除标准库外没有其他依赖。
 uv run yt-transcript probe "https://www.youtube.com/watch?v=VIDEO_ID"
 ```
 
-不下载媒体，只捕获并验证字幕：
+使用 `mktemp -d` 创建唯一临时目录后，在不下载媒体的情况下捕获并验证字幕：
 
 ```bash
-uv run yt-transcript capture "https://www.youtube.com/watch?v=VIDEO_ID" --output captures
-uv run yt-transcript verify "captures/.staging/VIDEO_ID"
+uv run yt-transcript capture "https://www.youtube.com/watch?v=VIDEO_ID" --output TEMP_DIR
+uv run yt-transcript verify "TEMP_DIR/VIDEO_ID"
 ```
 
 验证 Codex 生成的中英文文章：
 
 ```bash
 uv run yt-transcript validate-summaries \
-  captures/.staging/VIDEO_ID/evidence.json \
-  captures/.staging/VIDEO_ID/summary.en.md \
-  captures/.staging/VIDEO_ID/summary.zh.md
-```
-
-Codex 阅读完整总结并选择主要主题后执行归档：
-
-```bash
-uv run yt-transcript archive captures/.staging/VIDEO_ID \
-  --topic startup \
-  --reason "The video primarily teaches startup validation and operation." \
-  --tag product-market-fit
+  TEMP_DIR/VIDEO_ID/evidence.json \
+  TEMP_DIR/VIDEO_ID/summary.en.md \
+  TEMP_DIR/VIDEO_ID/summary.zh.md
 ```
 
 退出码 `0` 表示完整；`2` 表示不完整、受阻或验证失败。所有命令同时输出结构化 JSON。
@@ -86,15 +77,11 @@ uv run yt-transcript archive captures/.staging/VIDEO_ID \
 
 因此，只有表面流畅但证据不足或只覆盖部分内容的总结无法通过。
 
-## 扁平学习主题
-
-主题注册表为 `python`、`kubernetes`、`terraform`、`claude`、`linux`、`startup`、`finance`、`career`、`productivity` 和 `general`。Codex 根据完整总结选择一个主题。Claude、LLM、agents、RAG、evals 和 AI engineering 统一归入 `claude`。相关概念只保存为 metadata tags，不建立多层目录，也不复制 capture。`k8s`、`opentofu`、`business` 和 `investing` 等别名会自动归一化。
-
 ## Codex Skill
 
 可复用 Skill 位于 [`skills/youtube-transcript/`](skills/youtube-transcript/)。安装或软链接到 Codex skills 目录后，类似“把这个 YouTube 链接整理成中英文一页笔记”的请求即可触发工作流。
 
-更多信息请看[架构](docs/architecture.md)、[隐私与来源](docs/privacy-and-provenance.md)和[故障排查](docs/troubleshooting.md)。
+Skill 会让验收过程保持临时，只在 `YouTube/<topic>/<标题>--<视频 ID>/` 下发布面向读者的 `README.md` 和 `README_ZH.md`。
 
 ## 开发
 

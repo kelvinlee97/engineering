@@ -83,7 +83,7 @@ def capture_video(
     url: str, output_root: Path, *, runner: Runner = subprocess.run
 ) -> ExtractionReport:
     probe = probe_video(url, runner=runner)
-    capture_dir = output_root / ".staging" / probe.video_id
+    capture_dir = output_root / probe.video_id
     raw_dir = capture_dir / "raw"
     raw_dir.mkdir(parents=True, exist_ok=True)
     if probe.selected_track is None:

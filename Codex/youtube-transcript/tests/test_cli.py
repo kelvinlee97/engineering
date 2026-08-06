@@ -55,30 +55,3 @@ def test_validate_summaries_rejects_invalid_pair(
 
     assert exit_code == 2
     assert json.loads(capsys.readouterr().out)["errors"] == ["citations do not match"]
-
-
-def test_archive_prints_the_final_capture_directory(
-    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, capsys: pytest.CaptureFixture[str]
-) -> None:
-    source = tmp_path / ".staging" / "JJyLynh5d6M"
-    target = tmp_path / "startup" / "how-to-start--JJyLynh5d6M"
-    monkeypatch.setattr(cli, "archive_capture", lambda *_args, **_kwargs: target)
-
-    exit_code = cli.main(
-        [
-            "archive",
-            str(source),
-            "--topic",
-            "startup",
-            "--reason",
-            "The video teaches startup validation.",
-            "--tag",
-            "product-market-fit",
-        ]
-    )
-
-    assert exit_code == 0
-    assert json.loads(capsys.readouterr().out) == {
-        "status": "complete",
-        "capture_dir": str(target),
-    }
