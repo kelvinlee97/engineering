@@ -24,7 +24,7 @@ Use the repository CLI to verify the complete subtitle, but retain only the fina
    uv run yt-transcript verify "<capture-dir>"
    ```
 
-4. Continue only when capture and verification both return `complete`. Read the full `evidence.json`, compare the outline against the cue sequence from beginning to end, and cover every major argument, warning, and action.
+4. Continue only when capture and verification both return `complete`. Read the full `evidence.json` from first cue to last. The published notes must represent every substantive piece of information mentioned in the video: opening promises, all numbered points, definitions, examples, figures, calculations, qualifications, transitions that add meaning, and referenced resources. Compress repetition but do not omit content because it seems unimportant. Pure promotional calls to action—subscribe, like, comment, or watch another item—may be omitted.
 
 5. Draft temporary `summary.en.md` and `summary.zh.md` with the required headings and matching cue IDs, then run `validate-summaries`. These cue IDs are internal validation markers and must not appear in the published result.
 
@@ -35,10 +35,10 @@ Use the repository CLI to verify the complete subtitle, but retain only the fina
    - direct English/Chinese navigation;
    - short source and coverage section;
    - natural headings and concise prose;
-   - practical guidance and limitations;
+   - only information stated in the video, plus explicit source limitations;
    - clickable YouTube timestamp references.
 
-   Never publish cue IDs, hashes, JSON, raw subtitles, transcripts, CLI instructions, or test output.
+   Never add a plan, recommendation, number, opinion, correction, or factual claim that the video did not provide. Never publish cue IDs, hashes, JSON, raw subtitles, transcripts, CLI instructions, or test output.
 
 8. Update the English and Chinese `YouTube` catalogs. Confirm both Markdown files exist, links resolve, no internal markers remain, and any requested GitHub publication succeeds.
 
@@ -55,4 +55,4 @@ Use the repository CLI to verify the complete subtitle, but retain only the fina
 
 ## Quality Bar
 
-Completeness is coverage, not length. Remove repeated automatic-caption fragments, retain meaningful qualifications, represent late-video sections, and make recommendations specific enough to start immediately.
+Completeness is coverage, not length. Remove only repeated automatic-caption fragments. Preserve all unique information and keep speaker claims attributed when they have not been independently verified. The final notes summarize the video; they do not improve, extend, correct, or supplement it.

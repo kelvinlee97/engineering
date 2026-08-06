@@ -1,6 +1,6 @@
 # How to Actually Start Your Own Business
 
-[简体中文](README_ZH.md)
+English | [简体中文](README_ZH.md)
 
 ## Source
 
@@ -9,93 +9,121 @@
 - Duration: 11:01
 - Source coverage: Complete YouTube auto-generated English transcript
 
-This guide is an original summary of the video, not a transcript or a replacement for professional business, legal, tax, or financial advice.
+This guide contains only material presented in the video. It adds no external action plan, opinion, or factual claim. It is not a verbatim transcript; names and wording in the automatic captions may contain recognition errors.
 
-## The core idea
+## The problem addressed by the video
 
-Starting a business is not mainly about inventing something nobody has seen before. It is about choosing a proven model that matches your resources, finding a problem people will pay to solve, testing a small offer, and maintaining enough financial discipline to keep operating.
+The video opens by acknowledging that starting a business can feel complicated: a person may have many ideas without knowing where to begin or may fear making the wrong move. The speaker says that starting does not necessarily require millions in the bank; it requires a clear blueprint intended to reduce wasted time and money, improve the chances of success, and avoid common beginner mistakes. The rest of the video is divided into seven parts.
 
-## Choose a business you can actually start
+Video reference: [00:00–00:31](https://www.youtube.com/watch?v=JJyLynh5d6M&t=0s)
 
-Evaluate an idea using four variables:
+## Part 1: Which business to start
 
-1. Startup cost
-2. Skills required
-3. Scalability
-4. Time needed to reach the market
+The video says there is no need to invent a completely new model because many working business models can be adapted. The risk is becoming lost among too many options and never starting. It proposes four variables:
 
-Beginners with limited capital can often start faster with a service or online business. The important point is not to choose the most impressive idea, but one that can reach real customers quickly enough to produce useful feedback.
+1. **Initial cost:** identify the minimum investment for equipment, materials, licenses, and other needs. A clear figure prevents surprises. With a tight budget, an online business usually costs less to start than a physical location.
+2. **Required skills:** decide whether the skills already exist, can be learned quickly, or can be delegated or hired. The video uses website building as an example: someone with that skill can offer ready-to-use sites to customers. It also says simpler businesses are generally easier to start.
+3. **Scalability:** examine whether growth requires sharply higher costs or more time for every customer. Software can be sold to thousands after being created, while one-to-one consulting is limited by the number of clients and available working hours.
+4. **Time to start:** reaching the market quickly produces real data and tests demand. Projects requiring months of development delay decisions and increase costs before concrete results appear. The video recommends that beginners favor a model that can operate within about a month.
 
-Video reference: [00:36–02:21](https://www.youtube.com/watch?v=JJyLynh5d6M&t=36s)
+Video reference: [00:31–02:41](https://www.youtube.com/watch?v=JJyLynh5d6M&t=31s)
 
-## Know the break-even point
+## Part 2: Determine the break-even point
 
-Before launching, calculate how many sales are needed to cover costs:
+The video defines break-even as the point when incoming money covers all expenses and says later sales begin producing profit. It gives this calculation:
 
 ```text
-Break-even sales = fixed costs ÷ contribution per sale
+Fixed costs ÷ (average selling price − variable costs)
 ```
 
-Contribution per sale is the selling price minus the variable cost of delivering that sale. This calculation helps reveal whether the price and business model are sustainable.
+The video says the result indicates the sales level needed to cover costs and helps show whether the product or service price is sustainable or whether costs must be reduced.
 
-Video reference: [02:49–03:07](https://www.youtube.com/watch?v=JJyLynh5d6M&t=169s)
+Video reference: [02:41–03:22](https://www.youtube.com/watch?v=JJyLynh5d6M&t=161s)
 
-## Start with a customer problem
+## Part 3: Customer problem and value proposition
 
-A product is useful only when it addresses a problem strong enough that someone will pay for a solution. Look for repeated friction in daily life, customer complaints, online communities, and reviews of existing products.
+The video identifies two starting concepts: the customer's problem and the business's value proposition. A problem is a real need experienced by the customer; understanding it means discovering why someone would pay for a solution.
 
-Turn what you learn into a simple value proposition:
+Ways to find a problem include:
 
-> For this customer, we deliver this result, remove this pain, and offer a meaningful advantage over the current alternative.
+- observing daily behavior;
+- listening for recurring complaints;
+- analyzing online reviews of existing products and services;
+- noticing where multiple needs intersect.
 
-Video reference: [03:38–04:43](https://www.youtube.com/watch?v=JJyLynh5d6M&t=218s)
+The Airbnb example combines two problems during events in San Francisco: hotels became too expensive or fully booked, while some people had unused apartment space. Travelers lacked affordable accommodation and homeowners had space producing no value. Airbnb combined these needs by offering travelers more affordable places and enabling owners to earn money by renting rooms. The video describes this as turning a widespread inconvenience into a major business opportunity.
 
-## Use a short business plan as an operating map
+A value proposition is the business's concrete answer to the problem. It should state the main benefits and the difference from competitors. The video's second example concerns busy urban professionals who lack time to deliver laundry and worry about damage. A business could collect clothes, clean them, and return them to the customer's home. The proposed value statement promises door-to-door pickup and delivery, premium cleaning, and complete care.
 
-The plan does not need to be a long investor document. It should clarify:
+The video summarizes the path as identifying a problem, offering a solution, and developing a unique selling proposition.
 
-- Who the customer is
-- Which problem the business solves
-- What the offer is
-- Who the competitors are
-- How the work will be delivered
-- How attention will become paying customers
-- What resources are required
+Video reference: [03:22–05:15](https://www.youtube.com/watch?v=JJyLynh5d6M&t=202s)
 
-Video reference: [05:27–06:08](https://www.youtube.com/watch?v=JJyLynh5d6M&t=327s)
+## Part 4: Business plan
 
-## Test before building too much
+The video recommends creating a business plan before starting, even when it is not a professional document for investors. Its purpose is to organize ideas and make the operation understandable early. It should clarify where the business is going, how it will get there, and which resources it needs.
 
-Launch the smallest useful version, observe real behavior, listen to objections, and adjust the price, design, or positioning. The video also introduces the Sean Ellis survey: ask users how they would feel if the product disappeared. A strong “very disappointed” response can be a useful product-market-fit signal, but it is not a guarantee.
+The listed sections are:
 
-Video reference: [06:46–07:39](https://www.youtube.com/watch?v=JJyLynh5d6M&t=406s)
+- **Market research:** competitors, ideal customers, their problems, and customer acquisition cost;
+- **Product or service description:** what is offered, why it differs, and which problem it solves;
+- **Operational plan:** practical processes, suppliers, logistics, tools, and work organization;
+- **Marketing plan:** how the offer becomes known and how leads become paying customers.
 
-## Protect the cash
+The video says this turns the plan into a practical decision-making tool from the beginning.
 
-Separate personal and business money, set a starting budget, pay yourself deliberately, and review a simple monthly income statement. Most importantly, manage cash flow: a profitable sale does not help with today's bills if the customer pays in 90 days.
+Video reference: [05:15–06:19](https://www.youtube.com/watch?v=JJyLynh5d6M&t=315s)
 
-Where possible, maintain a cash buffer covering three to six months of operating expenses.
+## Part 5: Product-market fit
 
-Video reference: [08:04–10:20](https://www.youtube.com/watch?v=JJyLynh5d6M&t=484s)
+The video cites, without independent verification here, a statistic that 50% of businesses fail within five years and says the leading reason is lack of product-market fit. It describes product-market fit as the degree to which a product meets real needs and says it can determine whether a business succeeds or fails.
 
-## Distribution is part of the product
+It gives three steps:
 
-A strong product with weak marketing can lose to an average product that consistently earns attention. The video identifies marketing as essential, although it does not teach a complete acquisition system in this lesson.
+1. **Test small before going big:** launch a minimum viable product before the final product and observe how people respond.
+2. **Adapt quickly:** if an apparently perfect idea does not resonate or customers want a different version, adjust price, design, or delivery.
+3. **Talk directly with target customers:** request feedback and study what they do as well as what they say. If they do not buy, find the reason.
 
-Video reference: [10:25–10:53](https://www.youtube.com/watch?v=JJyLynh5d6M&t=625s)
+The video also presents the Sean Ellis method: ask customers how disappointed they would be if the product shut down tomorrow. It says that if at least 40% answer “extremely disappointed,” the product has found suitable product-market fit; a lower result means it does not yet fully meet the target market's needs. This threshold is a claim from the video and is not independently verified here.
 
-## A practical seven-day start
+Video reference: [06:19–07:50](https://www.youtube.com/watch?v=JJyLynh5d6M&t=379s)
 
-1. List three business models you could launch with your current skills.
-2. Score them on cost, skill readiness, scalability, and speed to first customer.
-3. Choose one customer group and interview five people about their recent behavior—not hypothetical interest.
-4. Write a one-sentence value proposition.
-5. Calculate price, variable cost, break-even sales, and cash runway.
-6. Create the smallest sellable version and contact ten qualified prospects through one channel.
-7. Review the evidence and decide whether to continue, revise the customer or offer, or stop.
+## Part 6: Managing business finances
 
-The first action is simple: choose one customer group and schedule the first two interviews. Start with evidence, not branding.
+The video says the second reason startups fail is poor money and cash-flow management and that even an excellent product or idea can fail when money is handled badly. It gives four steps.
 
-## Limitations
+### 1. Separate personal and business finances
 
-The source uses automatically generated captions, so names or wording may contain recognition errors. The video does not cover country-specific registration, licensing, tax, financing, or legal requirements. Its business-failure figures and product-market-fit threshold are claims made in the video and were not independently verified here.
+Open a dedicated business account immediately and never mix personal and business expenses, which can create confusion and tax problems. Pay business expenses from that account and transfer a fixed salary to the personal account. The video's “golden rule” is to reinvest profit into growth before upgrading one's lifestyle: first build an income-producing business, then buy luxuries.
+
+### 2. Plan the budget
+
+Define how much to invest, how, where, and when. Divide expenses into three categories: essentials such as products and a website, operational expenses, and extras.
+
+### 3. Monitor regularly
+
+Prepare a small monthly income statement covering revenue, costs, and profit, and track daily cash inflows and outflows. The video recommends simple tools such as Excel to speed up review and make timely adjustments.
+
+### 4. Manage cash flow
+
+The video calls cash flow the lifeblood of a business: the movement of money into and out of the company. It says many businesses fail not because they are unprofitable but because they run out of cash for salaries, suppliers, and taxes.
+
+In the first example, a company invoices $20,000, clients pay after 90 days, and $10,000 must be paid to suppliers immediately. The company faces a cash shortage even though it is technically $10,000 in profit.
+
+The video's cash calculation adds starting cash to expected revenue, then subtracts fixed costs, variable costs, and taxes due. Its second example is an e-commerce business beginning the month with $2,000, expecting $8,000 in online sales, and facing $1,500 in fixed costs, $3,000 in variable costs, and $1,000 for taxes and contributions. The video calculates $4,500 in available cash at month end.
+
+To avoid running out of cash, the video advises against tying up too much money in inventory or investments that are not immediately productive and recommends a buffer covering three to six months of operating expenses.
+
+Video reference: [07:50–10:23](https://www.youtube.com/watch?v=JJyLynh5d6M&t=470s)
+
+## Part 7: Marketing and sales
+
+The video calls marketing the heart of the business and says it accounts for a large share of company success. It considers marketing even more important for online businesses that lack a physical presence and must gain attention amid large amounts of online content. It says an excellent product with weak marketing will perform worse than a mediocre product promoted correctly.
+
+The speaker does not expand this part because another video covers improving marketing skills.
+
+Video reference: [10:23–11:01](https://www.youtube.com/watch?v=JJyLynh5d6M&t=623s)
+
+## Content boundaries
+
+This guide contains only information presented in the video. It adds no external action plan or factual claim. The video does not provide country-specific company registration, licensing, tax, financing, or legal procedures. Automatic captions may contain recognition errors; the failure-rate figures, ranking of failure reasons, and product-market-fit threshold cited by the video were not independently verified here.
