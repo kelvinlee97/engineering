@@ -72,6 +72,7 @@ def _blocked_package(capture_dir: Path, probe: VideoProbe) -> ExtractionReport:
     report = ExtractionReport(
         status=CaptureStatus.BLOCKED,
         errors=["no eligible subtitle track is available"],
+        capture_dir=str(capture_dir),
     )
     _write_json(capture_dir / "metadata.json", _metadata(probe, None))
     _write_json(capture_dir / "extraction-report.json", _report_dict(report))
@@ -82,7 +83,7 @@ def capture_video(
     url: str, output_root: Path, *, runner: Runner = subprocess.run
 ) -> ExtractionReport:
     probe = probe_video(url, runner=runner)
-    capture_dir = output_root / probe.video_id
+    capture_dir = output_root / ".staging" / probe.video_id
     raw_dir = capture_dir / "raw"
     raw_dir.mkdir(parents=True, exist_ok=True)
     if probe.selected_track is None:
@@ -110,6 +111,7 @@ def capture_video(
         report = ExtractionReport(
             status=CaptureStatus.PARTIAL,
             errors=[completed.stderr.strip() or "yt-dlp did not create a VTT subtitle file"],
+            capture_dir=str(capture_dir),
         )
         _write_json(capture_dir / "metadata.json", _metadata(probe, None))
         _write_json(capture_dir / "extraction-report.json", _report_dict(report))
@@ -132,6 +134,7 @@ def capture_video(
         raw_sha256=_sha256(raw_path),
         transcript_sha256=_sha256(transcript_path),
         raw_file=raw_relative,
+        capture_dir=str(capture_dir),
     )
     metadata = _metadata(probe, raw_relative)
     _write_json(capture_dir / "metadata.json", metadata)
@@ -155,7 +158,11 @@ def verify_capture(capture_dir: Path) -> ExtractionReport:
     stored = json.loads((capture_dir / "extraction-report.json").read_text(encoding="utf-8"))
     raw_file = metadata.get("raw_file")
     if not isinstance(raw_file, str):
-        return ExtractionReport(CaptureStatus.BLOCKED, errors=list(stored.get("errors", [])))
+        return ExtractionReport(
+            CaptureStatus.BLOCKED,
+            errors=list(stored.get("errors", [])),
+            capture_dir=str(capture_dir),
+        )
     raw_path = capture_dir / raw_file
     parsed = parse_vtt(raw_path)
     duration = metadata.get("duration_seconds")
@@ -178,4 +185,5 @@ def verify_capture(capture_dir: Path) -> ExtractionReport:
         raw_sha256=raw_hash,
         transcript_sha256=stored.get("transcript_sha256"),
         raw_file=raw_file,
+        capture_dir=str(capture_dir),
     )

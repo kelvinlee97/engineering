@@ -75,7 +75,7 @@ def test_capture_video_writes_auditable_package_without_media(tmp_path: Path) ->
         return subprocess.CompletedProcess(command, 0, "", "")
 
     result = capture_video(URL, tmp_path, runner=runner)
-    capture_dir = tmp_path / "JJyLynh5d6M"
+    capture_dir = tmp_path / ".staging" / "JJyLynh5d6M"
 
     assert result.status is CaptureStatus.COMPLETE
     assert (capture_dir / "metadata.json").exists()
@@ -107,7 +107,9 @@ def test_capture_without_subtitles_is_blocked_and_does_not_download(tmp_path: Pa
     assert result.status is CaptureStatus.BLOCKED
     assert len(commands) == 1
     report = json.loads(
-        (tmp_path / "JJyLynh5d6M" / "extraction-report.json").read_text(encoding="utf-8")
+        (tmp_path / ".staging" / "JJyLynh5d6M" / "extraction-report.json").read_text(
+            encoding="utf-8"
+        )
     )
     assert report["errors"] == ["no eligible subtitle track is available"]
 
@@ -122,7 +124,7 @@ def test_verify_capture_recomputes_hashes_and_status(tmp_path: Path) -> None:
 
     capture_video(URL, tmp_path, runner=runner)
 
-    verified = verify_capture(tmp_path / "JJyLynh5d6M")
+    verified = verify_capture(tmp_path / ".staging" / "JJyLynh5d6M")
 
     assert verified.status is CaptureStatus.COMPLETE
     assert verified.raw_sha256 is not None

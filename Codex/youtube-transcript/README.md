@@ -8,7 +8,7 @@ It uses `yt-dlp` for metadata and subtitle retrieval. It does **not** download v
 
 ## What It Produces
 
-Each capture is written under `<output>/<video-id>/`:
+Captures are staged under `<output>/.staging/<video-id>/`, then archived after summarization under `<output>/<topic>/<title-slug>--<video-id>/`:
 
 ```text
 metadata.json              video and selected-track provenance
@@ -46,16 +46,25 @@ Capture and verify without media download:
 
 ```bash
 uv run yt-transcript capture "https://www.youtube.com/watch?v=VIDEO_ID" --output captures
-uv run yt-transcript verify "captures/VIDEO_ID"
+uv run yt-transcript verify "captures/.staging/VIDEO_ID"
 ```
 
 Validate a Codex-produced bilingual pair:
 
 ```bash
 uv run yt-transcript validate-summaries \
-  captures/VIDEO_ID/evidence.json \
-  captures/VIDEO_ID/summary.en.md \
-  captures/VIDEO_ID/summary.zh.md
+  captures/.staging/VIDEO_ID/evidence.json \
+  captures/.staging/VIDEO_ID/summary.en.md \
+  captures/.staging/VIDEO_ID/summary.zh.md
+```
+
+Archive after Codex reviews the complete summary and selects its primary topic:
+
+```bash
+uv run yt-transcript archive captures/.staging/VIDEO_ID \
+  --topic startup \
+  --reason "The video primarily teaches startup validation and operation." \
+  --tag product-market-fit
 ```
 
 Exit code `0` means complete. Exit code `2` means partial, blocked, or invalid. Every command also prints structured JSON.
@@ -76,6 +85,10 @@ The article validator additionally requires:
 - required source, content, application, and limitation sections.
 
 This prevents a visually polished but ungrounded or one-sided summary from passing.
+
+## Flat Learning Topics
+
+The registry is `python`, `kubernetes`, `terraform`, `claude`, `linux`, `startup`, `finance`, `career`, `productivity`, and `general`. Codex chooses one from the complete summary. Claude, LLMs, agents, RAG, evals, and AI engineering share `claude`. Related concepts remain metadata tags rather than nested folders or duplicate captures. Common aliases such as `k8s`, `opentofu`, `business`, and `investing` are normalized automatically.
 
 ## Codex Skill
 

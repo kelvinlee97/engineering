@@ -19,3 +19,7 @@ Read `extraction-report.json`. Common causes include malformed cues, a truncated
 ## Automatic captions contain repeated text
 
 YouTube's rolling captions may repeat fragments. The parser normalizes each cue but preserves the provider's cue sequence for auditability. The writer may remove repetition in prose, while citations must still point to the supporting cues.
+
+## Archive is rejected
+
+Only a `complete` capture with valid `summary.en.md` and `summary.zh.md` can leave `.staging`. Use one registered flat topic; aliases such as `k8s`, `ai-engineering`, and `business` normalize automatically. If the destination exists, compare the packages manually—the command intentionally never overwrites it.

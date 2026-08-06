@@ -81,3 +81,4 @@ class ExtractionReport:
     raw_sha256: str | None = None
     transcript_sha256: str | None = None
     raw_file: str | None = None
+    capture_dir: str | None = None

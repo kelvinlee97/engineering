@@ -21,16 +21,16 @@ Work from the `Codex/youtube-transcript` module. Confirm `uv` and `yt-dlp` are a
 
 2. If the result is `blocked`, report that YouTube exposes no eligible subtitle track and stop. Do not infer the video from its title, description, thumbnail, or partial visible transcript.
 
-3. Capture subtitles into a private or temporary directory:
+3. Capture subtitles into the private capture root. The CLI stages the result under `.staging/<video-id>`:
 
    ```bash
    uv run yt-transcript capture "<youtube-url>" --output "<capture-root>"
    ```
 
-4. Verify the generated video directory:
+4. Verify the staged directory returned as `capture_dir` by the CLI:
 
    ```bash
-   uv run yt-transcript verify "<capture-root>/<video-id>"
+   uv run yt-transcript verify "<capture-root>/.staging/<video-id>"
    ```
 
 5. Continue only when both capture and verification return `complete`. Read `metadata.json`, `extraction-report.json`, and the complete `evidence.json`. Do not summarize from `transcript.md` alone.
@@ -52,13 +52,26 @@ Work from the `Codex/youtube-transcript` module. Confirm `uv` and `yt-dlp` are a
      "<capture-dir>/summary.zh.md"
    ```
 
-9. Deliver only after validation returns `complete`. State whether the selected source was creator-provided or YouTube automatic captions, its language, and any warnings from the extraction report.
+9. Select exactly one flat learning topic from `python`, `kubernetes`, `terraform`, `claude`, `linux`, `startup`, `finance`, `career`, `productivity`, or `general`. Classify from the complete summary, not the title. Use `claude` for Claude, LLMs, agents, RAG, evals, and AI engineering. Use `general` when no topic clearly dominates. Keep secondary concepts as tags; never duplicate a capture.
+
+10. Archive only after summary validation succeeds:
+
+   ```bash
+   uv run yt-transcript archive "<capture-root>/.staging/<video-id>" \
+     --topic "<topic>" \
+     --reason "<one-sentence classification reason>" \
+     --tag "<supporting-tag>"
+   ```
+
+11. Verify the final `capture_dir` returned by `archive`, then deliver. State the topic, final path, subtitle source type, language, and extraction warnings.
 
 ## Stop Rules
 
 - `blocked`: no trustworthy summary or “full video” claim.
 - `partial`: preserve diagnostic files, explain the gap, and do not deliver a full article.
 - Unknown or mismatched cue citations: revise the articles and validate again.
+- Missing or invalid summaries: do not move the staged capture into a learning topic.
+- Existing archive target: stop and preserve both directories; never overwrite.
 - Provider access failure: report the exact error; do not silently switch to audio or Whisper.
 
 ## Quality Bar

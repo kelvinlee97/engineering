@@ -7,6 +7,7 @@ from collections.abc import Sequence
 from dataclasses import asdict
 from pathlib import Path
 
+from yt_transcript.archive import archive_capture
 from yt_transcript.capture import capture_video, verify_capture
 from yt_transcript.models import CaptureStatus, SubtitleTrack, VideoProbe
 from yt_transcript.summary_contract import load_evidence, validate_summary_pair
@@ -56,6 +57,17 @@ def _parser() -> argparse.ArgumentParser:
     verify = commands.add_parser("verify", help="Revalidate an existing capture package")
     verify.add_argument("capture_dir", type=Path)
 
+    archive = commands.add_parser(
+        "archive", help="Move a complete summarized capture into its flat learning topic"
+    )
+    archive.add_argument("capture_dir", type=Path)
+    archive.add_argument("--topic", required=True)
+    archive.add_argument(
+        "--reason",
+        default="Classified by Codex after reviewing the complete summary.",
+    )
+    archive.add_argument("--tag", action="append", default=[])
+
     summaries = commands.add_parser(
         "validate-summaries", help="Validate a bilingual summary pair against evidence"
     )
@@ -80,6 +92,15 @@ def main(argv: Sequence[str] | None = None) -> int:
             report = verify_capture(args.capture_dir)
             _emit({**asdict(report), "status": report.status.value})
             return 0 if report.status is CaptureStatus.COMPLETE else 2
+        if args.command == "archive":
+            target = archive_capture(
+                args.capture_dir,
+                args.topic,
+                reason=args.reason,
+                tags=args.tag,
+            )
+            _emit({"status": "complete", "capture_dir": str(target)})
+            return 0
         if args.command == "validate-summaries":
             evidence = load_evidence(args.evidence)
             errors = validate_summary_pair(

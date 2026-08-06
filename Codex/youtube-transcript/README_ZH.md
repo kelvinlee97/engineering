@@ -8,7 +8,7 @@ English version: [README.md](README.md)
 
 ## 输出内容
 
-每次捕获写入 `<输出目录>/<视频 ID>/`：
+捕获先写入 `<输出目录>/.staging/<视频 ID>/`，完成总结后归档到 `<输出目录>/<topic>/<标题 slug>--<视频 ID>/`：
 
 ```text
 metadata.json              视频与所选字幕轨道的来源信息
@@ -46,16 +46,25 @@ uv run yt-transcript probe "https://www.youtube.com/watch?v=VIDEO_ID"
 
 ```bash
 uv run yt-transcript capture "https://www.youtube.com/watch?v=VIDEO_ID" --output captures
-uv run yt-transcript verify "captures/VIDEO_ID"
+uv run yt-transcript verify "captures/.staging/VIDEO_ID"
 ```
 
 验证 Codex 生成的中英文文章：
 
 ```bash
 uv run yt-transcript validate-summaries \
-  captures/VIDEO_ID/evidence.json \
-  captures/VIDEO_ID/summary.en.md \
-  captures/VIDEO_ID/summary.zh.md
+  captures/.staging/VIDEO_ID/evidence.json \
+  captures/.staging/VIDEO_ID/summary.en.md \
+  captures/.staging/VIDEO_ID/summary.zh.md
+```
+
+Codex 阅读完整总结并选择主要主题后执行归档：
+
+```bash
+uv run yt-transcript archive captures/.staging/VIDEO_ID \
+  --topic startup \
+  --reason "The video primarily teaches startup validation and operation." \
+  --tag product-market-fit
 ```
 
 退出码 `0` 表示完整；`2` 表示不完整、受阻或验证失败。所有命令同时输出结构化 JSON。
@@ -76,6 +85,10 @@ uv run yt-transcript validate-summaries \
 - 包含来源、视频内容、实际应用和限制等必需章节。
 
 因此，只有表面流畅但证据不足或只覆盖部分内容的总结无法通过。
+
+## 扁平学习主题
+
+主题注册表为 `python`、`kubernetes`、`terraform`、`claude`、`linux`、`startup`、`finance`、`career`、`productivity` 和 `general`。Codex 根据完整总结选择一个主题。Claude、LLM、agents、RAG、evals 和 AI engineering 统一归入 `claude`。相关概念只保存为 metadata tags，不建立多层目录，也不复制 capture。`k8s`、`opentofu`、`business` 和 `investing` 等别名会自动归一化。
 
 ## Codex Skill
 
