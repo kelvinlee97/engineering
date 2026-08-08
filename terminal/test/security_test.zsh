@@ -10,7 +10,7 @@ fail() {
     exit 1
 }
 
-dangerous_pattern='curl[^|]*\|[[:space:]]*(sh|bash|zsh)|wget[^|]*\|[[:space:]]*(sh|bash|zsh)|chmod[[:space:]]+777|eval[[:space:]]|git[[:space:]]+reset[[:space:]]+--hard|git[[:space:]]+clean[[:space:]]+-'
+dangerous_pattern='curl[^|]*\|[[:space:]]*(sh|bash|zsh)([[:space:]]|$)|wget[^|]*\|[[:space:]]*(sh|bash|zsh)([[:space:]]|$)|chmod[[:space:]]+777|eval[[:space:]]|git[[:space:]]+reset[[:space:]]+--hard|git[[:space:]]+clean[[:space:]]+-'
 secret_pattern='AKIA[0-9A-Z]{16}|ASIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9]{20,}|sk-[A-Za-z0-9]{20,}|xox[baprs]-[A-Za-z0-9-]{20,}|AIza[0-9A-Za-z_-]{30,}'
 private_pattern='/Users/[^ <]+|J07VTMVXWL|~/\.aws|~/\.kube'
 

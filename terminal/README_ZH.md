@@ -22,10 +22,10 @@ less install.zsh
 ### 快速安装
 
 ```zsh
-/bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/kelvinlee97/engineering/v1.0.0/terminal/bootstrap.zsh)"
+bootstrap_dir="$(mktemp -d)" && curl --fail --show-error --location https://raw.githubusercontent.com/kelvinlee97/engineering/c037a2a209f40a1c22711c8ba1f8931c5baeb2b0/terminal/bootstrap.zsh --output "$bootstrap_dir/bootstrap.zsh" && printf '%s  %s\n' e8f01661e79f11ca29667904193dd6e20e99fce7bea0e547e3499d7ea12105e0 "$bootstrap_dir/bootstrap.zsh" | shasum -a 256 --check && /bin/zsh "$bootstrap_dir/bootstrap.zsh"
 ```
 
-快速命令会执行下载的代码。它固定到 `v1.0.0`，但先克隆并审查仍然更安全。项目规则要求标签不可移动：修复必须发布 `v1.0.1`，不能重新指向 `v1.0.0`。
+快速命令会执行下载的代码。它把 bootstrap 固定到不可变 commit 并验证 SHA-256；bootstrap 随后还会在解压前验证 `v1.0.0` Release 安装包。先克隆并审查仍然更安全。项目规则要求标签不可移动：修复必须发布 `v1.0.1`，不能重新指向 `v1.0.0`。
 
 安装后打开新 Shell 并运行：
 
@@ -73,7 +73,7 @@ Ghostty 和 tmux 的职责不同。普通本地工作使用 Ghostty 标签页和
 
 1. 确认 macOS 和 Apple Command Line Tools。
 2. 在 Apple Silicon 或 Intel 路径发现 Homebrew；缺失时执行固定到 commit `24173182915f24bdd52a22fd073e421953b2a252` 的官方 Homebrew 安装器。
-3. 应用版本控制的 [`Brewfile`](Brewfile)。
+3. 应用版本控制的 [`Brewfile`](Brewfile)。其中固定的是软件包名称，Homebrew 会解析当前版本；实际测试版本记录在验收证据中，不把 Brewfile 描述为版本锁文件。
 4. 将配置复制到 `~/.config/engineering-terminal/`。
 5. 替换目标前先备份。
 6. 把 Ghostty、tmux、doctor 和 uninstall 入口链接到受管理副本。

@@ -22,10 +22,10 @@ less install.zsh
 ### Convenience installer
 
 ```zsh
-/bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/kelvinlee97/engineering/v1.0.0/terminal/bootstrap.zsh)"
+bootstrap_dir="$(mktemp -d)" && curl --fail --show-error --location https://raw.githubusercontent.com/kelvinlee97/engineering/c037a2a209f40a1c22711c8ba1f8931c5baeb2b0/terminal/bootstrap.zsh --output "$bootstrap_dir/bootstrap.zsh" && printf '%s  %s\n' e8f01661e79f11ca29667904193dd6e20e99fce7bea0e547e3499d7ea12105e0 "$bootstrap_dir/bootstrap.zsh" | shasum -a 256 --check && /bin/zsh "$bootstrap_dir/bootstrap.zsh"
 ```
 
-The convenience command executes downloaded code. It is pinned to `v1.0.0`, but reviewing a clone first is safer. Tags are immutable by project policy: a correction is released as `v1.0.1`, never by moving `v1.0.0`.
+The convenience command executes downloaded code. It pins the bootstrap file to an immutable commit and verifies its SHA-256; the bootstrap then verifies the `v1.0.0` release asset before extraction. Reviewing a clone first is still safer. Tags are immutable by project policy: a correction is released as `v1.0.1`, never by moving `v1.0.0`.
 
 After installation, open a new shell and run:
 
@@ -73,7 +73,7 @@ The installer:
 
 1. Confirms macOS and Apple Command Line Tools.
 2. Finds Homebrew on Apple Silicon or Intel, or runs the official Homebrew installer pinned to commit `24173182915f24bdd52a22fd073e421953b2a252`.
-3. Applies the version-controlled [`Brewfile`](Brewfile).
+3. Applies the version-controlled [`Brewfile`](Brewfile). Package names are fixed, but Homebrew resolves the current package versions; exact tested versions are recorded in validation evidence rather than locked by the Brewfile.
 4. Copies configuration to `~/.config/engineering-terminal/`.
 5. Backs up existing targets before replacing them.
 6. Links Ghostty, tmux, doctor, and uninstall entry points to managed copies.
