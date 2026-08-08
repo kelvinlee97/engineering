@@ -1,0 +1,34 @@
+# Font
+font-family = JetBrainsMono Nerd Font
+font-size = 12
+font-thicken = true
+font-thicken-strength = 100
+
+# Appearance
+theme = Catppuccin Mocha
+window-padding-x = 12
+window-padding-y = 12
+window-padding-balance = true
+macos-titlebar-style = tabs
+
+# Behavior
+confirm-close-surface = false
+quit-after-last-window-closed = true
+cursor-style = bar
+cursor-style-blink = true
+mouse-hide-while-typing = true
+scrollback-limit = 10000000
+
+# Splits
+keybind = ctrl+shift+h=goto_split:left
+keybind = ctrl+shift+l=goto_split:right
+keybind = ctrl+shift+j=goto_split:bottom
+keybind = ctrl+shift+k=goto_split:top
+keybind = ctrl+shift+d=new_split:right
+keybind = ctrl+shift+minus=new_split:down
+keybind = shift+enter=text:\x1b\r
+
+# Shell integration
+shell-integration = zsh
+shell-integration-features = cursor,sudo,title,path,ssh-env,ssh-terminfo
+macos-option-as-alt = left

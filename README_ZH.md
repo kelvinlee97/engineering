@@ -16,6 +16,7 @@ English version: [README.md](README.md)
 | [`Claude/subagents/`](Claude/subagents/) | Anthropic Academy Introduction to subagents 完整课程学习指南 | [English](Claude/subagents/README.md) · [中文](Claude/subagents/README_ZH.md) |
 | [`Codex/personal/`](Codex/personal/) | 可迁移的个人 Codex 规则、工程原则和安装脚本 | [English](Codex/personal/README.md) |
 | [`Ghostty/personal/`](Ghostty/personal/) | 可迁移的个人 Ghostty 配置和安全的 macOS 安装脚本 | [English](Ghostty/personal/README.md) · [中文](Ghostty/personal/README_ZH.md) |
+| [`terminal/`](terminal/) | 面向全新 Mac 的 Ghostty 工作台、可复现安装器、验收与安全说明 | [English](terminal/README.md) · [中文](terminal/README_ZH.md) |
 
 ## 内容组织原则
 
