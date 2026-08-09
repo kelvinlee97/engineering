@@ -1,7 +1,7 @@
 # Validation Record
 
-Date: 2026-08-08
-Status: existing-device verified; release blocked pending formal security scan, signing setup, human diff review, and fresh-device verification
+Date: 2026-08-09
+Status: existing-device verified; local release gates passed; external publication, signed tag, and fresh-device verification remain open
 
 ## Environment
 
@@ -32,14 +32,17 @@ Status: existing-device verified; release blocked pending formal security scan, 
 - Real fd, ripgrep, eza, bat, Glow, fzf, zoxide, and tmux scenarios
 - Working-tree and precise full-history credential-pattern scans
 - Real Ghostty screenshot with visible-content and metadata review
+- Final release diff review across 25 files with no precise credential-format match
+- Release payload generated from commit `ef2e246`; SHA-256 `54759443266da35a51fe4aecc273acd0cd21bf81517859fbab18058c0ef32edd`
+- Bootstrap pinned to commit `c037a2a209f40a1c22711c8ba1f8931c5baeb2b0`; bootstrap SHA-256 `e8f01661e79f11ca29667904193dd6e20e99fce7bea0e547e3499d7ea12105e0`
+- Homebrew installer pinned to commit `24173182915f24bdd52a22fd073e421953b2a252` with SHA-256 verification
 
 Historical broad scans matched only non-functional teaching placeholders such as `ghp_your_new_github_token`, `sk-your-openai-key-here`, and a private-key block whose body is `...`. No value matching the precise credential formats survived validation.
 
 ## Open release gates
 
-- The formal repository security scan is paused at preflight and is not complete.
 - `v1.0.0` does not exist locally or remotely.
-- No Git signing identity is configured; a signed tag cannot yet be produced.
-- ShellCheck 0.11.0 does not support zsh and returned SC1071, so zsh parsing, behavior tests, and manual review are the available evidence.
+- No Git signing identity is configured; a signed tag cannot yet be produced. GitHub API confirmation of an SSH signing key requires the `admin:ssh_signing_key` scope, which is not granted to the current CLI session.
+- ShellCheck 0.11.0 does not support zsh; `zsh -n`, behavior tests, and manual review are the available evidence.
 - A fresh personal MacBook Air has not run the released tag.
 - Push, tag creation, and GitHub Release require human approval.
