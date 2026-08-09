@@ -1,44 +1,46 @@
-# 个人 Ghostty 配置
+# macOS 一键 Ghostty 终端环境
 
-这个目录是个人 Ghostty macOS 配置的版本控制来源。
+这个目录提供真正的一键安装：自动安装 Ghostty、常用 CLI 工具，并永久启用 zoxide、fzf、Starship 和 zsh 插件。
 
-## 内容
+## 一键安装
 
-- `config.ghostty` 保存可迁移的终端配置。
-- `install.zsh` 将配置安装到 Ghostty 的 macOS Application Support 目录。
-- `test/install_test.zsh` 在隔离的临时主目录中验证安装和备份行为。
+在 macOS Terminal 中粘贴：
 
-## 环境要求
+```zsh
+/bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/kelvinlee97/engineering/main/Ghostty/personal/install.zsh)"
+```
 
-- Ghostty 1.3 或更高版本
-- JetBrainsMono Nerd Font
-- Ghostty 内置的 `Catppuccin Mocha` 主题
-- zsh
+脚本会安装：
 
-## 在新 Mac 上安装
+- Ghostty 与 JetBrainsMono Nerd Font
+- ripgrep、fd、zoxide、tmux、fzf
+- eza、bat、Starship、Glow
+- GitHub CLI、jq、tree
+- zsh autosuggestions 与 syntax highlighting
 
-进入这个目录后运行：
+完成后关闭 Terminal，打开一个新的 Ghostty 窗口。以下命令可以直接使用：
+
+```zsh
+rg --version
+fd --version
+z project-name
+tmux
+ll
+```
+
+永久配置保存在 `~/.config/engineering-ghostty-personal/init.zsh`。安装器只向 `.zshrc` 增加一个带起止标记的加载区块；已有 Ghostty 配置和 `.zshrc` 会先备份，重复运行不会重复追加。
+
+如果已经克隆仓库，也可以在本目录运行：
 
 ```zsh
 ./install.zsh
 ```
 
-如果目标位置已有配置，安装脚本会先在同一目录建立带时间戳的备份，再安装仓库版本。安装后请完整重启 Ghostty，让仅在新进程中生效的设置得到应用。
-
 ## 验证
-
-运行隔离的安装测试：
 
 ```zsh
 ./test/install_test.zsh
-```
-
-安装 Ghostty 后，可验证实际配置：
-
-```zsh
 /Applications/Ghostty.app/Contents/MacOS/ghostty +validate-config
 ```
 
-## 安全边界
-
-这里只保存个人拥有且可迁移的设置。不要加入凭据、Shell 历史记录、公司信息、机器专属路径或机密数据。从公司电脑迁移个人配置前，应遵守适用的公司政策。
+这个目录只保存可迁移的个人设置，不应加入凭据、Shell 历史、公司信息、机器专属路径或机密数据。
