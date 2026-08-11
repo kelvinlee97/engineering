@@ -9,22 +9,17 @@ theme = Catppuccin Mocha
 window-padding-x = 12
 window-padding-y = 12
 window-padding-balance = true
-
-# Window behavior
-window-decoration = true
 macos-titlebar-style = tabs
+
+# Behavior
 confirm-close-surface = false
 quit-after-last-window-closed = true
-
-# Cursor
 cursor-style = bar
 cursor-style-blink = true
 mouse-hide-while-typing = true
-
-# Scrollback: 10 MB per surface, allocated lazily.
 scrollback-limit = 10000000
 
-# Split navigation and creation
+# Splits
 keybind = ctrl+shift+h=goto_split:left
 keybind = ctrl+shift+l=goto_split:right
 keybind = ctrl+shift+j=goto_split:bottom
@@ -36,6 +31,4 @@ keybind = shift+enter=text:\x1b\r
 # Shell integration
 shell-integration = zsh
 shell-integration-features = cursor,sudo,title,path,ssh-env,ssh-terminfo
-
-# Use left Option as Alt while keeping right Option for macOS characters.
 macos-option-as-alt = left
