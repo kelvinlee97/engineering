@@ -1,44 +1,46 @@
-# Personal Ghostty Configuration
+# One-command Ghostty environment for macOS
 
-This directory is the canonical, version-controlled source for the owner's personal Ghostty configuration on macOS.
+This directory provides a real one-command setup: Ghostty, focused CLI tools, and persistent zsh integration.
 
-## Contents
+## One-command installation
 
-- `config.ghostty` contains the portable terminal configuration.
-- `install.zsh` installs it in Ghostty's macOS application-support directory.
-- `test/install_test.zsh` verifies installation and backup behavior in an isolated temporary home directory.
+Paste this into macOS Terminal:
 
-## Requirements
+```zsh
+/bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/kelvinlee97/engineering/main/Ghostty/personal/install.zsh)"
+```
 
-- Ghostty 1.3 or later
-- JetBrainsMono Nerd Font
-- The bundled `Catppuccin Mocha` Ghostty theme
-- zsh
+The installer includes:
 
-## Install on a new Mac
+- Ghostty and JetBrainsMono Nerd Font
+- ripgrep, fd, zoxide, tmux, and fzf
+- eza, bat, Starship, and Glow
+- GitHub CLI, jq, and tree
+- zsh autosuggestions and syntax highlighting
 
-From this directory, run:
+When it finishes, close Terminal and open a new Ghostty window. These commands are immediately available:
+
+```zsh
+rg --version
+fd --version
+z project-name
+tmux
+ll
+```
+
+Persistent configuration lives at `~/.config/engineering-ghostty-personal/init.zsh`. The installer adds only one bounded block to `.zshrc`, backs up existing Ghostty and zsh configuration, and does not duplicate the block on repeated runs.
+
+From an existing clone, you can also run:
 
 ```zsh
 ./install.zsh
 ```
 
-If a configuration already exists, the installer creates a timestamped backup beside it before installing the repository version. Fully restart Ghostty after installation so settings that only affect new processes are applied.
-
-## Verify
-
-Run the isolated installer test:
+## Verification
 
 ```zsh
 ./test/install_test.zsh
-```
-
-After Ghostty is installed, validate the installed configuration:
-
-```zsh
 /Applications/Ghostty.app/Contents/MacOS/ghostty +validate-config
 ```
 
-## Security boundary
-
-Only portable, personally owned settings belong here. Do not add credentials, shell history, company information, machine-specific paths, or confidential data. Follow applicable employer policies before moving personal configuration from a company-owned computer.
+Only portable, personally owned settings belong here. Do not add credentials, shell history, company information, machine-specific paths, or confidential data.
