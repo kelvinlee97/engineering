@@ -36,11 +36,4 @@ From an existing clone, you can also run:
 ./install.zsh
 ```
 
-## Verification
-
-```zsh
-./test/install_test.zsh
-/Applications/Ghostty.app/Contents/MacOS/ghostty +validate-config
-```
-
 Only portable, personally owned settings belong here. Do not add credentials, shell history, company information, machine-specific paths, or confidential data.
