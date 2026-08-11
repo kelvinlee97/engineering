@@ -1,6 +1,6 @@
 # 真正开始自己的生意
 
-[English](README.md) | 简体中文
+[English](summary.md) | 简体中文
 
 ## 来源
 

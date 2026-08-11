@@ -8,4 +8,10 @@
 
 | 视频 | English | 中文 |
 | --- | --- | --- |
-| How to Actually Start Your Own Business | [Read](startup/how-to-actually-start-your-own-business--JJyLynh5d6M/README.md) | [阅读](startup/how-to-actually-start-your-own-business--JJyLynh5d6M/README_ZH.md) |
+| How to Actually Start Your Own Business | [Read](startup/how-to-actually-start-your-own-business--JJyLynh5d6M/summary.md) | [阅读](startup/how-to-actually-start-your-own-business--JJyLynh5d6M/summary_zh.md) |
+
+## Claude
+
+| 视频 | English | 中文 |
+| --- | --- | --- |
+| What Happens When AI Agents Run the Business? | [Read](claude/what-happens-when-ai-agents-run-the-business--n34CIw3gk1k/summary.md) | [阅读](claude/what-happens-when-ai-agents-run-the-business--n34CIw3gk1k/summary_zh.md) |

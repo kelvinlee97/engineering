@@ -1,6 +1,6 @@
 # How to Actually Start Your Own Business
 
-English | [简体中文](README_ZH.md)
+[简体中文](summary_zh.md)
 
 ## Source
 

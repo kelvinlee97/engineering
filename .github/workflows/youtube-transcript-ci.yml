@@ -4,11 +4,13 @@ on:
   pull_request:
     paths:
       - "Codex/youtube-transcript/**"
+      - "YouTube/**"
       - ".github/workflows/youtube-transcript-ci.yml"
   push:
     branches: [main]
     paths:
       - "Codex/youtube-transcript/**"
+      - "YouTube/**"
       - ".github/workflows/youtube-transcript-ci.yml"
 
 permissions:

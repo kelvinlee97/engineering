@@ -2,188 +2,234 @@ from __future__ import annotations
 
 import hashlib
 import json
-import subprocess
+import re
 from dataclasses import asdict
-from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
-from yt_transcript.models import CaptureStatus, Cue, ExtractionReport, SubtitleTrack, VideoProbe
-from yt_transcript.validate import validate_cues
-from yt_transcript.vtt import parse_vtt
-from yt_transcript.youtube import Runner, probe_video
+from yt_transcript.models import CaptureStatus, Chunk, Segment, ValidationResult, VideoMetadata
 
-
-def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(65536), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+_WORD = re.compile(r"[\w’'-]+")
 
 
-def _write_json(path: Path, value: object) -> None:
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+def _seconds(value: object) -> float:
+    if not isinstance(value, (int, float)) or isinstance(value, bool):
+        raise ValueError("segment start_seconds must be a number")
+    result = float(value)
+    if result < 0:
+        raise ValueError("segment start_seconds cannot be negative")
+    return result
 
 
-def _track_dict(track: SubtitleTrack) -> dict[str, object]:
-    return {
-        "language": track.language,
-        "source": track.source,
-        "name": track.name,
-        "selection_reason": track.selection_reason,
-    }
-
-
-def _metadata(probe: VideoProbe, raw_file: str | None) -> dict[str, object]:
-    return {
-        "source_url": f"https://www.youtube.com/watch?v={probe.video_id}",
-        "video_id": probe.video_id,
-        "title": probe.title,
-        "channel": probe.channel,
-        "duration_seconds": probe.duration_seconds,
-        "captured_at": datetime.now(UTC).isoformat(),
-        "tracks": [_track_dict(track) for track in probe.tracks],
-        "selected_track": _track_dict(probe.selected_track) if probe.selected_track else None,
-        "raw_file": raw_file,
-    }
-
-
-def _report_dict(report: ExtractionReport) -> dict[str, object]:
-    value = asdict(report)
-    value["status"] = report.status.value
-    return value
-
-
-def _write_transcript(path: Path, probe: VideoProbe, cues: list[Cue]) -> None:
-    lines = [
-        f"# Transcript: {probe.title}",
-        "",
-        f"Source: https://www.youtube.com/watch?v={probe.video_id}",
-        "",
-    ]
-    for cue in cues:
-        lines.append(
-            f"- [{cue.start_seconds:.3f}–{cue.end_seconds:.3f}] {cue.text} [[{cue.cue_id}]]"
+def _segments(value: object) -> list[Segment]:
+    if not isinstance(value, list) or not value:
+        raise ValueError("each browser read must contain one or more segments")
+    segments: list[Segment] = []
+    for index, item in enumerate(value, start=1):
+        if not isinstance(item, dict):
+            raise ValueError("each segment must be an object")
+        text = item.get("text")
+        if not isinstance(text, str) or not text.strip():
+            raise ValueError(f"segment {index} has empty text")
+        segments.append(
+            Segment(
+                segment_id=f"segment-{index:04d}",
+                start_seconds=_seconds(item.get("start_seconds")),
+                text=" ".join(text.split()),
+            )
         )
-    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return segments
 
 
-def _blocked_package(capture_dir: Path, probe: VideoProbe) -> ExtractionReport:
-    report = ExtractionReport(
-        status=CaptureStatus.BLOCKED,
-        errors=["no eligible subtitle track is available"],
-        capture_dir=str(capture_dir),
+def _metadata(value: object) -> VideoMetadata:
+    if not isinstance(value, dict):
+        raise ValueError("browser export metadata must be an object")
+    required_text = ("source_url", "video_id", "title", "language", "subtitle_type")
+    for key in required_text:
+        if not isinstance(value.get(key), str) or not value[key].strip():
+            raise ValueError(f"browser export metadata is missing {key}")
+    duration = _seconds(value.get("duration_seconds"))
+    if duration <= 0:
+        raise ValueError("duration_seconds must be positive")
+    channel = value.get("channel")
+    if channel is not None and not isinstance(channel, str):
+        raise ValueError("channel must be a string or null")
+    return VideoMetadata(
+        source_url=value["source_url"].strip(),
+        video_id=value["video_id"].strip(),
+        title=value["title"].strip(),
+        channel=channel.strip() if isinstance(channel, str) else None,
+        duration_seconds=duration,
+        language=value["language"].strip(),
+        subtitle_type=value["subtitle_type"].strip(),
     )
-    _write_json(capture_dir / "metadata.json", _metadata(probe, None))
-    _write_json(capture_dir / "extraction-report.json", _report_dict(report))
-    return report
 
 
-def capture_video(
-    url: str, output_root: Path, *, runner: Runner = subprocess.run
-) -> ExtractionReport:
-    probe = probe_video(url, runner=runner)
-    capture_dir = output_root / probe.video_id
-    raw_dir = capture_dir / "raw"
-    raw_dir.mkdir(parents=True, exist_ok=True)
-    if probe.selected_track is None:
-        return _blocked_package(capture_dir, probe)
+def load_browser_export(path: Path) -> tuple[VideoMetadata, list[Segment], dict[str, object]]:
+    payload: Any = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise ValueError("browser export must be a JSON object")
+    metadata = _metadata(payload.get("metadata"))
+    segments = _segments(payload.get("segments"))
+    second_read = payload.get("second_read")
+    if not isinstance(second_read, dict):
+        raise ValueError("browser export must contain a second_read verification object")
+    return metadata, segments, second_read
 
-    track = probe.selected_track
-    output_template = raw_dir / "subtitles.%(ext)s"
-    write_flag = "--write-subs" if track.source == "creator" else "--write-auto-subs"
-    command = [
-        "yt-dlp",
-        "--skip-download",
-        "--no-warnings",
-        write_flag,
-        "--sub-langs",
-        track.language,
-        "--sub-format",
-        "vtt",
-        "--output",
-        str(output_template),
-        url,
-    ]
-    completed = runner(command, capture_output=True, text=True, check=False)
-    candidates = sorted(raw_dir.glob("subtitles*.vtt"))
-    if completed.returncode != 0 or not candidates:
-        report = ExtractionReport(
-            status=CaptureStatus.PARTIAL,
-            errors=[completed.stderr.strip() or "yt-dlp did not create a VTT subtitle file"],
-            capture_dir=str(capture_dir),
+
+def _canonical(segments: list[Segment]) -> str:
+    return "\n".join(f"{segment.start_seconds:.3f}\t{segment.text}" for segment in segments) + "\n"
+
+
+def _chunks(segments: list[Segment], *, target_words: int = 1000) -> list[Chunk]:
+    chunks: list[Chunk] = []
+    start_index = 0
+    words = 0
+    for index, segment in enumerate(segments, start=1):
+        words += len(_WORD.findall(segment.text))
+        if words >= target_words and index < len(segments):
+            first = segments[start_index]
+            last = segments[index - 1]
+            chunks.append(
+                Chunk(
+                    chunk_id=f"chunk-{len(chunks) + 1:03d}",
+                    first_segment_id=first.segment_id,
+                    last_segment_id=last.segment_id,
+                    start_seconds=first.start_seconds,
+                    end_seconds=last.start_seconds,
+                    word_count=words,
+                )
+            )
+            start_index = index
+            words = 0
+    first = segments[start_index]
+    last = segments[-1]
+    chunks.append(
+        Chunk(
+            chunk_id=f"chunk-{len(chunks) + 1:03d}",
+            first_segment_id=first.segment_id,
+            last_segment_id=last.segment_id,
+            start_seconds=first.start_seconds,
+            end_seconds=last.start_seconds,
+            word_count=words,
         )
-        _write_json(capture_dir / "metadata.json", _metadata(probe, None))
-        _write_json(capture_dir / "extraction-report.json", _report_dict(report))
-        return report
-
-    raw_path = candidates[0]
-    parsed = parse_vtt(raw_path)
-    validation = validate_cues(parsed, probe.duration_seconds)
-    transcript_path = capture_dir / "transcript.md"
-    _write_transcript(transcript_path, probe, parsed.cues)
-    raw_relative = str(raw_path.relative_to(capture_dir))
-    report = ExtractionReport(
-        status=validation.status,
-        errors=validation.errors,
-        warnings=validation.warnings,
-        coverage_ratio=validation.coverage_ratio,
-        source_cue_count=parsed.source_cue_count,
-        normalized_cue_count=len(parsed.cues),
-        discarded_cue_count=len(parsed.discarded),
-        raw_sha256=_sha256(raw_path),
-        transcript_sha256=_sha256(transcript_path),
-        raw_file=raw_relative,
-        capture_dir=str(capture_dir),
     )
-    metadata = _metadata(probe, raw_relative)
-    _write_json(capture_dir / "metadata.json", metadata)
-    _write_json(capture_dir / "extraction-report.json", _report_dict(report))
-    _write_json(
-        capture_dir / "evidence.json",
-        {
-            "status": report.status.value,
-            "source_url": metadata["source_url"],
-            "title": probe.title,
-            "language": track.language,
-            "source_type": track.source,
-            "cues": [asdict(cue) for cue in parsed.cues],
-        },
-    )
-    return report
+    return chunks
 
 
-def verify_capture(capture_dir: Path) -> ExtractionReport:
-    metadata = json.loads((capture_dir / "metadata.json").read_text(encoding="utf-8"))
-    stored = json.loads((capture_dir / "extraction-report.json").read_text(encoding="utf-8"))
-    raw_file = metadata.get("raw_file")
-    if not isinstance(raw_file, str):
-        return ExtractionReport(
-            CaptureStatus.BLOCKED,
-            errors=list(stored.get("errors", [])),
-            capture_dir=str(capture_dir),
-        )
-    raw_path = capture_dir / raw_file
-    parsed = parse_vtt(raw_path)
-    duration = metadata.get("duration_seconds")
-    validation = validate_cues(
-        parsed, float(duration) if isinstance(duration, (int, float)) else None
-    )
-    errors = list(validation.errors)
-    raw_hash = _sha256(raw_path)
-    if stored.get("raw_sha256") != raw_hash:
-        errors.append("raw subtitle hash does not match the stored report")
+def validate_reads(
+    metadata: VideoMetadata, segments: list[Segment], second_read: dict[str, object]
+) -> ValidationResult:
+    first = segments
+    errors: list[str] = []
+    warnings: list[str] = []
+    first_hash = hashlib.sha256(_canonical(first).encode()).hexdigest()
+    if second_read.get("transcript_sha256") != first_hash:
+        errors.append("the two browser reads do not match")
+    if second_read.get("segment_count") != len(first):
+        errors.append("the two browser reads have different segment counts")
+    if second_read.get("first_start_seconds") != first[0].start_seconds:
+        errors.append("the two browser reads have different first timestamps")
+    if second_read.get("last_start_seconds") != first[-1].start_seconds:
+        errors.append("the two browser reads have different last timestamps")
+
+    previous_start = -1.0
+    for segment in first:
+        if segment.start_seconds <= previous_start:
+            errors.append(f"timestamps are not strictly increasing at {segment.segment_id}")
+            break
+        previous_start = segment.start_seconds
+
+    start_tolerance = min(15.0, metadata.duration_seconds * 0.03)
+    if first[0].start_seconds > start_tolerance:
+        errors.append("first segment starts too late")
+    end_tolerance = max(15.0, metadata.duration_seconds * 0.03)
+    if metadata.duration_seconds - first[-1].start_seconds > end_tolerance:
+        errors.append("last segment ends too early")
+
+    for previous, current in zip(first, first[1:], strict=False):
+        gap = current.start_seconds - previous.start_seconds
+        if gap > 60:
+            warnings.append(
+                f"gap of {gap:.3f} seconds between {previous.segment_id} and {current.segment_id}"
+            )
+
     status = CaptureStatus.COMPLETE if not errors else CaptureStatus.PARTIAL
-    return ExtractionReport(
+    return ValidationResult(
         status=status,
+        transcript_sha256=first_hash,
+        segment_count=len(first),
+        first_start_seconds=first[0].start_seconds,
+        last_start_seconds=first[-1].start_seconds,
+        chunks=_chunks(first),
+        warnings=warnings,
         errors=errors,
-        warnings=validation.warnings,
-        coverage_ratio=validation.coverage_ratio,
-        source_cue_count=parsed.source_cue_count,
-        normalized_cue_count=len(parsed.cues),
-        discarded_cue_count=len(parsed.discarded),
-        raw_sha256=raw_hash,
-        transcript_sha256=stored.get("transcript_sha256"),
-        raw_file=raw_file,
-        capture_dir=str(capture_dir),
+    )
+
+
+def _timestamp(seconds: float) -> str:
+    whole = round(seconds)
+    hours, remainder = divmod(whole, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    if hours:
+        return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+    return f"{minutes:02d}:{seconds:02d}"
+
+
+def write_local_capture(
+    output_dir: Path,
+    metadata: VideoMetadata,
+    segments: list[Segment],
+    validation: ValidationResult,
+) -> None:
+    if validation.status is not CaptureStatus.COMPLETE:
+        raise ValueError("cannot write a complete local capture from invalid reads")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    transcript = [
+        f"# Transcript: {metadata.title}",
+        "",
+        f"- Source: {metadata.source_url}",
+        f"- Channel: {metadata.channel or 'Unknown'}",
+        f"- Language: {metadata.language}",
+        f"- Subtitle type: {metadata.subtitle_type}",
+        f"- Video duration: {_timestamp(metadata.duration_seconds)}",
+        (
+            "- Transcript coverage: "
+            f"{_timestamp(validation.first_start_seconds or 0)}–"
+            f"{_timestamp(validation.last_start_seconds or 0)}"
+        ),
+        f"- Segments: {validation.segment_count}",
+        "",
+        "## Transcript",
+        "",
+    ]
+    transcript.extend(
+        f"[{_timestamp(segment.start_seconds)}] {segment.text}" for segment in segments
+    )
+    (output_dir / "transcript.md").write_text("\n".join(transcript) + "\n", encoding="utf-8")
+
+    report = {
+        "status": validation.status.value,
+        "metadata": asdict(metadata),
+        "transcript_sha256": validation.transcript_sha256,
+        "segment_count": validation.segment_count,
+        "first_start_seconds": validation.first_start_seconds,
+        "last_start_seconds": validation.last_start_seconds,
+        "warnings": validation.warnings,
+        "errors": validation.errors,
+        "chunks": [
+            {**asdict(chunk), "status": "pending", "content_items": []}
+            for chunk in validation.chunks
+        ],
+        "audit": {
+            "missing_from_english": [],
+            "missing_from_chinese": [],
+            "unsupported_english_claims": [],
+            "unsupported_chinese_claims": [],
+            "timestamp_mismatches": [],
+            "status": "pending",
+        },
+    }
+    (output_dir / "validation.json").write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )

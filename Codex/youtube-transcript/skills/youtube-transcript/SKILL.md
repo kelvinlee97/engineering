@@ -1,58 +1,114 @@
 ---
 name: youtube-transcript
-description: Capture an existing YouTube subtitle track temporarily, verify completeness, and publish reader-friendly English and Chinese Markdown summaries. Use when a user supplies a YouTube link and asks for its transcript, notes, summary, article, bilingual version, or actionable steps. Do not use for downloading media or transcribing videos with no subtitle track.
+description: Read a YouTube page's visible Show transcript panel twice, prove the two reads match, retain the full transcript locally, and publish audited English and Chinese summaries. Use when a user provides a YouTube link and asks for a transcript, notes, summary, article, or bilingual version. Do not use for media downloads, speech recognition, or videos without a visible YouTube Transcript.
 ---
 
-# YouTube Transcript to Bilingual Notes
+# Browser-only YouTube Transcript
 
-Use the repository CLI to verify the complete subtitle, but retain only the final reader-facing Markdown. Never claim the whole video was read before verification succeeds.
+Use the in-app Browser. The transcript text must come only from the YouTube **Show transcript** panel. Do not call `yt-dlp`, `youtube-transcript-api`, Whisper, a third-party transcript service, or infer content from the title, description, chapters, thumbnail, or model memory.
 
-## Workflow
+## Non-negotiable stop rules
 
-1. Work from `Codex/youtube-transcript`. Confirm `uv` and `yt-dlp` are available.
+- No `Show transcript`, empty transcript, unstable DOM reads, or failed validation: report `blocked` or `partial`; do not publish a full-video summary.
+- Never use a whole-page DOM snapshot, screenshots/OCR, or one browser call per segment. Query only transcript segment elements.
+- Never claim the full video was read until the local validator reports `complete`.
+- Do not add recommendations, action plans, opinions, corrections, numbers, or factual context that the transcript did not state.
 
-2. Probe the URL. If the result is `blocked`, report that no eligible subtitle track exists and stop. Do not infer missing content from the title, description, thumbnail, or visible excerpt.
+## Capture workflow
 
-   ```bash
-   uv run yt-transcript probe "<youtube-url>"
+1. Normalize the supplied URL to `https://www.youtube.com/watch?v=<video-id>`. Claim the already-open in-app browser tab when it exactly matches; otherwise open the normalized URL.
+
+2. Open **Show transcript**. If the panel is already open, reuse it. Wait for transcript segment elements, not for video playback.
+
+3. Read only transcript rows. Use a locator that requires both an interactive transcript row and a descendant `transcript-segment-view-model`. Extract the timestamp element and attributed text element into `{start_seconds, text}` rows. Also read title, channel, video duration, language, and subtitle type from the current player response.
+
+4. Repeat the exact targeted transcript query after a short wait. If the count or last timestamp changes, scroll only the transcript panel, then repeat until two reads match. Use a bounded number of attempts. If it never stabilizes, stop as `partial`.
+
+5. Keep the first full, ordered browser result. For the second read, calculate the canonical SHA-256 using one line per segment, exactly `start_seconds.toFixed(3) + "\\t" + text + "\\n"`, then retain its count, first timestamp, last timestamp, and hash. This proves the two reads matched without storing the same full transcript twice.
+
+   ```json
+   {
+     "metadata": {
+       "source_url": "https://www.youtube.com/watch?v=VIDEO_ID",
+       "video_id": "VIDEO_ID",
+       "title": "Video title",
+       "channel": "Channel name",
+       "duration_seconds": 1234,
+       "language": "en",
+       "subtitle_type": "auto-generated"
+     },
+  "segments": [{"start_seconds": 0, "text": "First segment"}],
+  "second_read": {
+    "segment_count": 1,
+    "first_start_seconds": 0,
+    "last_start_seconds": 0,
+    "transcript_sha256": "<canonical SHA-256>"
+  }
+}
    ```
 
-3. Create a unique temporary directory with `mktemp -d`. Capture into that exact directory and use the returned `capture_dir` for every later command.
+6. Create a local capture directory under the repository root:
 
    ```bash
-   uv run yt-transcript capture "<youtube-url>" --output "<temporary-directory>"
-   uv run yt-transcript verify "<capture-dir>"
+   uv run yt-transcript capture browser-export.json \
+     --output ".local/youtube/<title-slug>--<video-id>"
    ```
 
-4. Continue only when capture and verification both return `complete`. Read the full `evidence.json` from first cue to last. The published notes must represent every substantive piece of information mentioned in the video: opening promises, all numbered points, definitions, examples, figures, calculations, qualifications, transitions that add meaning, and referenced resources. Compress repetition but do not omit content because it seems unimportant. Pure promotional calls to action—subscribe, like, comment, or watch another item—may be omitted.
+   Continue only if the command returns `complete`. It writes the local-only `transcript.md` and `validation.json`. Delete the temporary `browser-export.json` after the command succeeds.
 
-5. Draft temporary `summary.en.md` and `summary.zh.md` with the required headings and matching cue IDs, then run `validate-summaries`. These cue IDs are internal validation markers and must not appear in the published result.
+## Completeness and coverage workflow
 
-6. Choose one flat topic: `python`, `kubernetes`, `terraform`, `claude`, `linux`, `startup`, `finance`, `career`, `productivity`, or `general`. Classify from the complete summary, not only the title. Claude, LLMs, agents, RAG, evals, and AI engineering use `claude`.
+7. Read the complete local transcript from first segment to last segment, in the deterministic chunks listed in `validation.json`. Do not skip a chunk because the title or an earlier section seems sufficient.
 
-7. Publish only `README.md` and `README_ZH.md` under `YouTube/<topic>/<title-slug>--<video-id>/`. Follow the repository's `Claude/auto-mode` style:
+8. For every chunk, record each substantive claim, definition, number, example, comparison, step, qualification, limitation, conclusion, and meaningful resource in the local coverage ledger. Mark each item only as:
 
-   - direct English/Chinese navigation;
-   - short source and coverage section;
-   - natural headings and concise prose;
-   - only information stated in the video, plus explicit source limitations;
-   - clickable YouTube timestamp references.
+   ```text
+   included
+   compressed
+   cta
+   ```
 
-   Never add a plan, recommendation, number, opinion, correction, or factual claim that the video did not provide. Never publish cue IDs, hashes, JSON, raw subtitles, transcripts, CLI instructions, or test output.
+   `cta` is only for pure subscribe, like, comment, share, or watch-next promotion. A substantive item cannot be omitted.
 
-8. Update the English and Chinese `YouTube` catalogs. Confirm both Markdown files exist, links resolve, no internal markers remain, and any requested GitHub publication succeeds.
+9. Create an English `summary.md` and Chinese `summary_zh.md` under one topic directory:
 
-9. Only after the final reader artifacts pass, delete the exact temporary directory created in step 3. Do not delete partial evidence before reporting a failure; keep it only long enough to diagnose or obtain user direction.
+   ```text
+   YouTube/<topic>/<title-slug>--<video-id>/
+   ```
 
-10. Deliver the two direct reading links and a brief source-coverage note. Discuss implementation evidence only when the user asks.
+   Select exactly one topic from `python`, `kubernetes`, `terraform`, `claude`, `linux`, `startup`, `finance`, `career`, `productivity`, or `general`, based on the complete transcript rather than the title. Use `claude` for Claude, LLMs, AI agents, RAG, evals, AI engineering, Anthropic, and `claude-code`; use `kubernetes` for `k8s`; `terraform` for IaC or OpenTofu; `startup` for entrepreneurship or business; and `finance` for investing or personal finance. Keep one primary topic; record secondary themes only in prose or tags, never by creating an ad-hoc folder.
 
-## Stop Rules
+10. Both summaries must use the same source-time coverage and link to each other. Include a concise source and coverage note plus clickable YouTube timestamp links. Follow the video’s natural structure; never force an application section that the video did not provide.
 
-- `blocked` or `partial`: do not publish a full-video article.
-- Invalid or mismatched citations: revise and validate again.
-- Missing reader files or broken links: do not clean up yet.
-- Cleanup target differs from the exact temporary directory: stop rather than risk deleting unrelated data.
+11. Run a fresh audit pass that compares the full transcript and coverage ledger against both summaries. It must report all of these as zero before publication:
 
-## Quality Bar
+   ```text
+   unprocessed segments
+   missing substantive items
+   unsupported English claims
+   unsupported Chinese claims
+   English/Chinese coverage mismatch
+   timestamp mismatch
+   ```
 
-Completeness is coverage, not length. Remove only repeated automatic-caption fragments. Preserve all unique information and keep speaker claims attributed when they have not been independently verified. The final notes summarize the video; they do not improve, extend, correct, or supplement it.
+12. Run `yt-transcript validate-publication` against the local `validation.json`, `summary.md`, and `summary_zh.md`. It must report `complete` before publication.
+
+13. Update `YouTube/README.md` and `YouTube/README_ZH.md`. Confirm the two summary files exist, their reciprocal links work, the local evidence remains ignored by Git, and the published files contain no cue IDs, hashes, raw transcript, validation JSON, or tooling instructions.
+
+## Delivery report
+
+When finished, report the exact capture evidence:
+
+```text
+Transcript source
+Language and subtitle type
+Video duration
+Captured time range
+Captured / processed segment counts
+Chunk or chapter coverage
+Missing items
+Unsupported claims
+Final status
+```
+
+Do not say only “summary complete.”

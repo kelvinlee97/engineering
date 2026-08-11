@@ -1,7 +1,7 @@
 [project]
 name = "verified-youtube-transcript"
 version = "0.1.0"
-description = "Capture and verify existing YouTube subtitle tracks before grounded bilingual summarization."
+description = "Validate browser-read YouTube Transcript exports before grounded bilingual summarization."
 requires-python = ">=3.11"
 dependencies = []
 
