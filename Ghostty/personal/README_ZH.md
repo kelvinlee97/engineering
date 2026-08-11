@@ -36,11 +36,4 @@ ll
 ./install.zsh
 ```
 
-## 验证
-
-```zsh
-./test/install_test.zsh
-/Applications/Ghostty.app/Contents/MacOS/ghostty +validate-config
-```
-
 这个目录只保存可迁移的个人设置，不应加入凭据、Shell 历史、公司信息、机器专属路径或机密数据。
