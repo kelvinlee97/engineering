@@ -29,46 +29,34 @@ for argument in "$@"; do
     esac
 done
 
-if [[ -f "${zshrc_path}" ]]; then
+/bin/zsh -n "${script_dir}/config/zsh/init.zsh" "${script_dir}/config/zsh/aliases.zsh"
+
+validate_zshrc_block() {
+    [[ -f "${zshrc_path}" ]] || return 0
+
+    local begin_count end_count existing_block expected_block
     begin_count="$(/usr/bin/grep -Fxc "${block_begin}" "${zshrc_path}" || true)"
     end_count="$(/usr/bin/grep -Fxc "${block_end}" "${zshrc_path}" || true)"
     if [[ "${begin_count}" != "${end_count}" || "${begin_count}" -gt 1 ]]; then
-        print -u2 -- "Refusing to modify ${zshrc_path}: the engineering-terminal markers are unbalanced or duplicated."
+        print -u2 -- "Refusing to modify ${zshrc_path}: managed markers are unbalanced or duplicated."
         exit 65
     fi
     if [[ "${begin_count}" == 1 ]]; then
-        existing_block="$(/usr/bin/awk -v begin="${block_begin}" -v end="${block_end}" '
-            $0 == begin { inside = 1 }
-            inside { print }
-            $0 == end { exit }
-        ' "${zshrc_path}")"
+        existing_block="$(/usr/bin/sed -n '/^# BEGIN engineering-terminal$/,/^# END engineering-terminal$/p' "${zshrc_path}")"
         expected_block="${block_begin}"$'\n''source "$HOME/.config/engineering-terminal/zsh/init.zsh"'$'\n'"${block_end}"
         if [[ "${existing_block}" != "${expected_block}" ]]; then
-            print -u2 -- "Refusing to modify ${zshrc_path}: the existing engineering-terminal block is not recognized."
+            print -u2 -- "Refusing to modify ${zshrc_path}: the managed block is not recognized."
             exit 65
         fi
     fi
-fi
-
-/bin/zsh -n "${script_dir}/config/zsh/init.zsh" "${script_dir}/config/zsh/aliases.zsh"
-
-timestamp="$(date +%Y%m%d-%H%M%S).$$"
-
-backup_path() {
-    local target="$1"
-    [[ -e "${target}" || -L "${target}" ]] || return 0
-    /bin/cp -pP "${target}" "${target}.backup-${timestamp}"
-    print -- "Backed up ${target}"
 }
+
+validate_zshrc_block
 
 install_managed_file() {
     local source="$1"
     local destination="$2"
     /bin/mkdir -p "${destination:h}"
-    if [[ -f "${destination}" ]] && /usr/bin/cmp -s "${source}" "${destination}"; then
-        return 0
-    fi
-    backup_path "${destination}"
     /usr/bin/install -m 0644 "${source}" "${destination}"
 }
 
@@ -76,11 +64,6 @@ install_managed_executable() {
     local source="$1"
     local destination="$2"
     /bin/mkdir -p "${destination:h}"
-    if [[ -f "${destination}" ]] && /usr/bin/cmp -s "${source}" "${destination}"; then
-        /bin/chmod 0755 "${destination}"
-        return 0
-    fi
-    backup_path "${destination}"
     /usr/bin/install -m 0755 "${source}" "${destination}"
 }
 
@@ -91,10 +74,7 @@ install_managed_symlink() {
     if [[ -L "${destination}" && "$(readlink "${destination}")" == "${source}" ]]; then
         return 0
     fi
-    backup_path "${destination}"
-    if [[ -e "${destination}" || -L "${destination}" ]]; then
-        /bin/rm -- "${destination}"
-    fi
+    /bin/rm -f -- "${destination}"
     /bin/ln -s "${source}" "${destination}"
 }
 
@@ -211,7 +191,6 @@ install_managed_symlink "${managed_dir}/bin/uninstall.zsh" "${local_bin_dir}/ter
 
 touch "${zshrc_path}"
 if ! /usr/bin/grep -Fqx "${block_begin}" "${zshrc_path}"; then
-    backup_path "${zshrc_path}"
     {
         [[ ! -s "${zshrc_path}" ]] || print
         print -- "${block_begin}"
@@ -221,7 +200,6 @@ if ! /usr/bin/grep -Fqx "${block_begin}" "${zshrc_path}"; then
 fi
 
 {
-    print -- "installed_at=${timestamp}"
     print -- "source=${script_dir}"
     print -- "managed_dir=${managed_dir}"
     print -- "ghostty_config=${ghostty_path}"

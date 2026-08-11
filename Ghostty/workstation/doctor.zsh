@@ -49,7 +49,7 @@ if [[ -x /Applications/Ghostty.app/Contents/MacOS/ghostty ]]; then
 fi
 
 if (( failures > 0 )); then
-    print -u2 -- "${failures} check(s) failed. See terminal/README.md troubleshooting guidance."
+    print -u2 -- "${failures} check(s) failed. See Ghostty/workstation/README.md for setup guidance."
     exit 1
 fi
 
