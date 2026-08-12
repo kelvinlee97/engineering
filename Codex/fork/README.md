@@ -33,14 +33,14 @@ Use the current chat for routine work. Fork when Codex repeats the same failed r
    smallest check for each. Do not modify files until new evidence supports a path.
    ```
 
-6. Use `/status` to confirm the new chat's model, reasoning effort, context usage, and limits before relying on it.
+6. Use `/status` to confirm the new chat's context usage and limits. Use `/model` and `/reasoning` to select the model and reasoning effort before relying on it.
 7. Keep the branch whose evidence is stronger. Bring a short evidence-backed conclusion back to the original chat if you need to continue there.
 
 ## Plan mode and reasoning effort
 
 `/plan` switches the chat into Plan mode; it does not itself prove the effective reasoning setting. In this local setup, `config.toml` requests `low` for default mode and `high` for Plan mode, but the desktop app can retain a per-chat choice.
 
-After entering `/plan`, run `/status`. If the displayed effort is not `high`, run `/reasoning` and choose **high** manually. Use `xhigh` only for a genuinely high-risk or high-uncertainty decision, such as a production migration, data-loss risk, or a complex security review.
+After entering `/plan`, run `/reasoning` and choose **high** if needed; `/status` only reports the chat ID, context usage, and rate limits. Use `xhigh` only for a genuinely high-risk or high-uncertainty decision, such as a production migration, data-loss risk, or a complex security review.
 
 ## When to fork, resume, or start fresh
 

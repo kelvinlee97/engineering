@@ -32,14 +32,14 @@ Fork 不表示前一段对话中的结论已经正确。把它们视为上下文
    给出互斥的根因，并为每个根因设计最小验证步骤。在有新证据前不要修改文件。
    ```
 
-6. 用 `/status` 确认新对话实际使用的模型、reasoning、context 使用量和额度，再继续依赖它的输出。
+6. 用 `/status` 确认新对话的 context 使用量和额度；在继续依赖它的输出前，用 `/model` 和 `/reasoning` 选择模型与推理强度。
 7. 保留证据更强的分支。若需要回到原对话，请带回简短且基于证据的结论。
 
 ## Plan mode 与 reasoning
 
 `/plan` 用于切换到 Plan mode；它本身不等于 reasoning 已经切换成功。本机 `config.toml` 请求 Default mode 使用 `low`、Plan mode 使用 `high`，但 Desktop app 可以保留对话级选择。
 
-进入 `/plan` 后先运行 `/status`。若显示的 effort 不是 `high`，再运行 `/reasoning` 并手动选择 **high**。只有生产迁移、数据丢失风险或复杂安全审查等高风险、高不确定性决策，才使用 `xhigh`。
+进入 `/plan` 后，如有需要，运行 `/reasoning` 并手动选择 **high**；`/status` 只显示 chat ID、context 使用量和额度。只有生产迁移、数据丢失风险或复杂安全审查等高风险、高不确定性决策，才使用 `xhigh`。
 
 ## 何时 fork、继续或新开对话
 
