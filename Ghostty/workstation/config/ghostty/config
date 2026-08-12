@@ -22,6 +22,7 @@ confirm-close-surface = false
 quit-after-last-window-closed = true
 cursor-style = bar
 cursor-style-blink = true
+adjust-cursor-thickness = 5
 mouse-hide-while-typing = true
 scrollback-limit = 10000000
 
