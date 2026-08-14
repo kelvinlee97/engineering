@@ -24,9 +24,9 @@ YouTube/<topic>/<title-slug>--<video-id>/
 
 ## 捕获验收约定
 
-浏览器导出保留第一份完整、有序的 Transcript，以及第二次读取的条目数、首尾时间和规范化 SHA-256。本地验证器要求：segment 不为空，时间戳严格递增；开头接近视频开始；结尾接近视频时长；第二次读取验证完全一致；本地编号连续为 `segment-0001…segment-N`；较大的时间间隔必须记录为警告。
+浏览器导出保留两份完整、有序的 Transcript。本地验证器自行推导两次读取的条目数、首尾时间和规范化 SHA-256，并要求：segment 不为空，时间戳严格递增且为有限数值；URL 与 video ID 一致；开头接近视频开始；结尾接近视频时长。任何超过 60 秒的间隔都会记录为需人工审计的警告。
 
-验证器会将 Transcript 确定性切成约 1,000 词的 chunks，并在本地 `validation.json` 中建立覆盖账本。通过只代表 Codex 完整复制了 YouTube 展示的字幕，不代表 YouTube 自动字幕逐字正确。
+验证器会将 Transcript 确定性切成约 1,000 词的 chunks，并在本地 `validation.json` 中建立覆盖账本。通过只代表两份提供的读取在结构上相同；不代表浏览器导出真实、总结语义完整，也不代表 YouTube 自动字幕逐字正确。
 
 ## 总结验收约定
 
@@ -53,7 +53,7 @@ uv run yt-transcript capture browser-export.json \
   --output ../../.local/youtube/<title-slug>--<video-id>
 ```
 
-Skill 将所有 chunk 标记为已处理并完成独立审计后，还必须运行 `validate-publication` 来检查两个总结的时间戳、覆盖账本和审计结果。
+Skill 将所有 chunk 标记为已处理并完成手工审计后，还必须运行 `validate-publication` 来检查覆盖账本结构、必需时间戳、中英文时间戳一致性和互相链接；它不能自动判断总结是否语义完整或忠实于来源。
 
 ## 开发
 
