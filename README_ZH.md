@@ -21,7 +21,7 @@ English version: [README.md](README.md)
 | [`Git/`](Git/) | 面向运维场景的 Git 安全同步、发布可追溯、回滚与恢复命令指南 | [English](Git/README.md) · [中文](Git/README_ZH.md) |
 | [`YouTube/`](YouTube/) | 按学习主题整理、面向读者的双语视频摘要 | [English 目录](YouTube/README.md) · [中文目录](YouTube/README_ZH.md) |
 | [`Ghostty/workstation/`](Ghostty/workstation/) | 面向全新 Mac 的 Ghostty 工作台安装器和用户说明 | [English](Ghostty/workstation/README.md) · [中文](Ghostty/workstation/README_ZH.md) |
-| [`zookeeper/`](zookeeper/) | ZooKeeper 节点磁盘满且事务日志不完整时的通用恢复流程 | [English](zookeeper/README.md) · [中文](zookeeper/README_ZH.md) |
+| [`ZooKeeper/`](ZooKeeper/) | ZooKeeper 运维文档，包括事故处理 Runbook | [English](ZooKeeper/README.md) · [中文](ZooKeeper/README_ZH.md) |
 
 ## 内容组织原则
 
@@ -39,3 +39,4 @@ English version: [README.md](README.md)
 ## 仓库状态
 
 这个知识库会随着学习主题的增加，以及现有内容的核查和完善而持续演进。
+| [`Codex/cli/`](Codex/cli/) | Codex CLI slash command、会话控制与安全审查的工程工作流指南 | [English](Codex/cli/README.md) · [中文](Codex/cli/README_ZH.md) |
