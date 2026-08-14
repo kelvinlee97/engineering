@@ -8,6 +8,8 @@ from typing import Any
 from yt_transcript.models import CaptureStatus
 
 _TIMESTAMP = re.compile(r"youtube\.com/watch\?v=[^\s)]+&t=(\d+)s")
+_RECIPROCAL_ENGLISH = re.compile(r"\]\(summary_zh\.md\)")
+_RECIPROCAL_CHINESE = re.compile(r"\]\(summary\.md\)")
 _DISPOSITIONS = {"included", "compressed", "cta"}
 _AUDIT_KEYS = (
     "missing_from_english",
@@ -70,6 +72,12 @@ def validate_publication(
 
     english_timestamps = _timestamps(english_path.read_text(encoding="utf-8"))
     chinese_timestamps = _timestamps(chinese_path.read_text(encoding="utf-8"))
+    english = english_path.read_text(encoding="utf-8")
+    chinese = chinese_path.read_text(encoding="utf-8")
+    if not _RECIPROCAL_ENGLISH.search(english):
+        errors.append("English summary does not link to Chinese summary")
+    if not _RECIPROCAL_CHINESE.search(chinese):
+        errors.append("Chinese summary does not link to English summary")
     if english_timestamps != chinese_timestamps:
         errors.append("English and Chinese summaries use different timestamps")
     missing = required_timestamps - english_timestamps

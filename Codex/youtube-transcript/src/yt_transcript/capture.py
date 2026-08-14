@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import re
 from dataclasses import asdict
 from pathlib import Path
 from typing import Any
+from urllib.parse import parse_qs, urlparse
 
 from yt_transcript.models import CaptureStatus, Chunk, Segment, ValidationResult, VideoMetadata
 
@@ -16,6 +18,8 @@ def _seconds(value: object) -> float:
     if not isinstance(value, (int, float)) or isinstance(value, bool):
         raise ValueError("segment start_seconds must be a number")
     result = float(value)
+    if not math.isfinite(result):
+        raise ValueError("segment start_seconds must be finite")
     if result < 0:
         raise ValueError("segment start_seconds cannot be negative")
     return result
@@ -54,9 +58,21 @@ def _metadata(value: object) -> VideoMetadata:
     channel = value.get("channel")
     if channel is not None and not isinstance(channel, str):
         raise ValueError("channel must be a string or null")
+    source_url = value["source_url"].strip()
+    video_id = value["video_id"].strip()
+    parsed = urlparse(source_url)
+    source_id = parse_qs(parsed.query).get("v", [None])[0]
+    if (
+        parsed.scheme != "https"
+        or parsed.netloc not in {"www.youtube.com", "youtube.com"}
+        or parsed.path != "/watch"
+    ):
+        raise ValueError("source_url must be a normalized YouTube watch URL")
+    if source_id != video_id:
+        raise ValueError("source_url video ID does not match video_id")
     return VideoMetadata(
-        source_url=value["source_url"].strip(),
-        video_id=value["video_id"].strip(),
+        source_url=source_url,
+        video_id=video_id,
         title=value["title"].strip(),
         channel=channel.strip() if isinstance(channel, str) else None,
         duration_seconds=duration,
@@ -65,15 +81,13 @@ def _metadata(value: object) -> VideoMetadata:
     )
 
 
-def load_browser_export(path: Path) -> tuple[VideoMetadata, list[Segment], dict[str, object]]:
+def load_browser_export(path: Path) -> tuple[VideoMetadata, list[Segment], list[Segment]]:
     payload: Any = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(payload, dict):
         raise ValueError("browser export must be a JSON object")
     metadata = _metadata(payload.get("metadata"))
     segments = _segments(payload.get("segments"))
-    second_read = payload.get("second_read")
-    if not isinstance(second_read, dict):
-        raise ValueError("browser export must contain a second_read verification object")
+    second_read = _segments(payload.get("second_read"))
     return metadata, segments, second_read
 
 
@@ -118,19 +132,20 @@ def _chunks(segments: list[Segment], *, target_words: int = 1000) -> list[Chunk]
 
 
 def validate_reads(
-    metadata: VideoMetadata, segments: list[Segment], second_read: dict[str, object]
+    metadata: VideoMetadata, segments: list[Segment], second_read: list[Segment]
 ) -> ValidationResult:
     first = segments
     errors: list[str] = []
     warnings: list[str] = []
     first_hash = hashlib.sha256(_canonical(first).encode()).hexdigest()
-    if second_read.get("transcript_sha256") != first_hash:
+    second_hash = hashlib.sha256(_canonical(second_read).encode()).hexdigest()
+    if second_hash != first_hash:
         errors.append("the two browser reads do not match")
-    if second_read.get("segment_count") != len(first):
+    if len(second_read) != len(first):
         errors.append("the two browser reads have different segment counts")
-    if second_read.get("first_start_seconds") != first[0].start_seconds:
+    if second_read[0].start_seconds != first[0].start_seconds:
         errors.append("the two browser reads have different first timestamps")
-    if second_read.get("last_start_seconds") != first[-1].start_seconds:
+    if second_read[-1].start_seconds != first[-1].start_seconds:
         errors.append("the two browser reads have different last timestamps")
 
     previous_start = -1.0

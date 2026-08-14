@@ -24,9 +24,9 @@ YouTube/<topic>/<title-slug>--<video-id>/
 
 ## Capture contract
 
-A browser export retains the first ordered transcript plus the second read's count, endpoints, and canonical SHA-256. The local validator requires non-empty segments with strictly increasing timestamps, a start close to the beginning, an end close to the reported duration, matching second-read verification, continuous locally assigned `segment-0001…segment-N` IDs, and recorded warnings for large timestamp gaps.
+A browser export retains two complete ordered reads. The local validator derives their count, endpoints, and canonical SHA-256, then requires non-empty segments with strictly increasing finite timestamps, a normalized URL/video-ID match, a start close to the beginning, and an end close to the reported duration. It records gaps over 60 seconds as warnings for manual audit.
 
-It produces deterministic chunks of roughly 1,000 words and a local `validation.json` coverage ledger. A complete capture proves that Codex copied the transcript displayed by YouTube; it does not claim that YouTube's automatic captions are word-perfect.
+It produces deterministic chunks of roughly 1,000 words and a local `validation.json` coverage ledger. A complete capture proves structural consistency of the supplied reads; it does not prove browser-export authenticity, semantic completeness of a summary, or that YouTube's captions are word-perfect.
 
 ## Summary contract
 
@@ -58,12 +58,7 @@ The validator uses only the Python standard library. It accepts a temporary brow
     "subtitle_type": "auto-generated"
   },
   "segments": [{"start_seconds": 0, "text": "First segment"}],
-  "second_read": {
-    "segment_count": 1,
-    "first_start_seconds": 0,
-    "last_start_seconds": 0,
-    "transcript_sha256": "<canonical SHA-256>"
-  }
+  "second_read": [{"start_seconds": 0, "text": "First segment"}]
 }
 ```
 
@@ -76,7 +71,7 @@ uv run yt-transcript capture browser-export.json \
 
 This command is an internal Skill step, not a user workflow.
 
-After the Skill marks every chunk processed and completes its independent audit, it also runs:
+After the Skill marks every chunk processed and completes its manual audit, it also runs:
 
 ```bash
 uv run yt-transcript validate-publication \
@@ -84,6 +79,8 @@ uv run yt-transcript validate-publication \
   ../../YouTube/<topic>/<title-slug>--<video-id>/summary.md \
   ../../YouTube/<topic>/<title-slug>--<video-id>/summary_zh.md
 ```
+
+This gate checks ledger structure, required timestamps, timestamp parity, and reciprocal links; it does not determine whether a summary is semantically complete or source-faithful.
 
 ## Development
 

@@ -8,7 +8,7 @@ from yt_transcript.models import CaptureStatus
 from yt_transcript.publication import validate_publication
 
 
-def export(*, second_read: dict[str, object] | None = None) -> dict[str, object]:
+def export(*, second_read: list[dict[str, object]] | None = None) -> dict[str, object]:
     segments = [
         {"start_seconds": 0, "text": "Opening claim."},
         {"start_seconds": 4, "text": "Middle evidence."},
@@ -25,14 +25,7 @@ def export(*, second_read: dict[str, object] | None = None) -> dict[str, object]
             "subtitle_type": "auto-generated",
         },
         "segments": segments,
-        "second_read": second_read
-        if second_read is not None
-        else {
-            "segment_count": 3,
-            "first_start_seconds": 0,
-            "last_start_seconds": 9,
-            "transcript_sha256": "fb10a576884310c830f02097d135b29d455e389ee6960f4f402d99fea5bce3f5",
-        },
+        "second_read": second_read if second_read is not None else segments,
     }
 
 
@@ -60,12 +53,11 @@ def test_matching_reads_produce_a_complete_capture_and_local_files(tmp_path: Pat
 
 
 def test_changed_second_read_fails_closed(tmp_path: Path) -> None:
-    changed = {
-        "segment_count": 3,
-        "first_start_seconds": 0,
-        "last_start_seconds": 9,
-        "transcript_sha256": "incorrect",
-    }
+    changed = [
+        {"start_seconds": 0, "text": "Opening claim."},
+        {"start_seconds": 4, "text": "Changed evidence."},
+        {"start_seconds": 9, "text": "Conclusion."},
+    ]
     metadata, segments, second_read = load(tmp_path, export(second_read=changed))
 
     validation = validate_reads(metadata, segments, second_read)
@@ -82,12 +74,7 @@ def test_late_start_fails_even_when_final_segment_reaches_the_end(tmp_path: Path
     payload = export()
     payload["segments"] = late
     payload["metadata"] = {**payload["metadata"], "duration_seconds": 100}
-    payload["second_read"] = {
-        "segment_count": 2,
-        "first_start_seconds": 20,
-        "last_start_seconds": 99,
-        "transcript_sha256": "578a2a3a279be8d362821039126a8847b9d71043326cbbce5c67cda186ecd6db",
-    }
+    payload["second_read"] = late
     metadata, segments, second_read = load(tmp_path, payload)
 
     validation = validate_reads(metadata, segments, second_read)
@@ -105,12 +92,7 @@ def test_non_monotonic_timestamps_fail_closed(tmp_path: Path) -> None:
     ]
     payload = export()
     payload["segments"] = unordered
-    payload["second_read"] = {
-        "segment_count": 4,
-        "first_start_seconds": 0,
-        "last_start_seconds": 10,
-        "transcript_sha256": "b23060694b7f95a8b3a70dff5881c98557e874b5c8a94c23a72414930999652d",
-    }
+    payload["second_read"] = unordered
     metadata, segments, second_read = load(tmp_path, payload)
 
     validation = validate_reads(metadata, segments, second_read)
@@ -119,7 +101,7 @@ def test_non_monotonic_timestamps_fail_closed(tmp_path: Path) -> None:
     assert "timestamps are not strictly increasing at segment-0003" in validation.errors
 
 
-def test_large_gap_is_recorded_for_auditing(tmp_path: Path) -> None:
+def test_large_gap_is_recorded_for_manual_audit(tmp_path: Path) -> None:
     gapped = [
         {"start_seconds": 0, "text": "Opening."},
         {"start_seconds": 70, "text": "Later."},
@@ -128,18 +110,16 @@ def test_large_gap_is_recorded_for_auditing(tmp_path: Path) -> None:
     payload = export()
     payload["segments"] = gapped
     payload["metadata"] = {**payload["metadata"], "duration_seconds": 100}
-    payload["second_read"] = {
-        "segment_count": 3,
-        "first_start_seconds": 0,
-        "last_start_seconds": 100,
-        "transcript_sha256": "32d0d9f0f5fc20644e7b073e9cdbf0841caea0fafea829da9cb8755da6b94920",
-    }
+    payload["second_read"] = gapped
     metadata, segments, second_read = load(tmp_path, payload)
 
     validation = validate_reads(metadata, segments, second_read)
 
     assert validation.status is CaptureStatus.COMPLETE
-    assert validation.warnings == ["gap of 70.000 seconds between segment-0001 and segment-0002"]
+    assert validation.errors == []
+    assert validation.warnings == [
+        "gap of 70.000 seconds between segment-0001 and segment-0002"
+    ]
 
 
 def test_empty_segment_is_rejected_before_validation(tmp_path: Path) -> None:
@@ -154,6 +134,46 @@ def test_empty_segment_is_rejected_before_validation(tmp_path: Path) -> None:
         assert str(error) == "segment 1 has empty text"
     else:
         raise AssertionError("empty segment should be rejected")
+
+
+def test_non_finite_timestamp_is_rejected_before_validation(tmp_path: Path) -> None:
+    bad = export()
+    bad["segments"] = [{"start_seconds": float("inf"), "text": "Impossible."}]
+    bad["second_read"] = bad["segments"]
+
+    try:
+        load(tmp_path, bad)
+    except ValueError as error:
+        assert str(error) == "segment start_seconds must be finite"
+    else:
+        raise AssertionError("non-finite timestamp should be rejected")
+
+
+def test_source_url_must_match_video_id(tmp_path: Path) -> None:
+    bad = export()
+    bad["metadata"] = {**bad["metadata"], "video_id": "differentid0"}
+
+    try:
+        load(tmp_path, bad)
+    except ValueError as error:
+        assert str(error) == "source_url video ID does not match video_id"
+    else:
+        raise AssertionError("mismatched video ID should be rejected")
+
+
+def test_source_url_must_use_the_youtube_watch_path(tmp_path: Path) -> None:
+    bad = export()
+    bad["metadata"] = {
+        **bad["metadata"],
+        "source_url": "https://www.youtube.com/playlist?v=abcdefghijk",
+    }
+
+    try:
+        load(tmp_path, bad)
+    except ValueError as error:
+        assert str(error) == "source_url must be a normalized YouTube watch URL"
+    else:
+        raise AssertionError("non-watch YouTube URL should be rejected")
 
 
 def test_publication_requires_processed_chunks_a_clean_audit_and_matching_times(
@@ -183,8 +203,14 @@ def test_publication_requires_processed_chunks_a_clean_audit_and_matching_times(
     english = tmp_path / "summary.md"
     chinese = tmp_path / "summary_zh.md"
     validation.write_text(json.dumps(ledger), encoding="utf-8")
-    english.write_text("[source](https://www.youtube.com/watch?v=x&t=60s)", encoding="utf-8")
-    chinese.write_text("[来源](https://www.youtube.com/watch?v=x&t=60s)", encoding="utf-8")
+    english.write_text(
+        "[中文](summary_zh.md) [source](https://www.youtube.com/watch?v=x&t=60s)",
+        encoding="utf-8",
+    )
+    chinese.write_text(
+        "[English](summary.md) [来源](https://www.youtube.com/watch?v=x&t=60s)",
+        encoding="utf-8",
+    )
 
     assert validate_publication(validation, english, chinese) == []
 
