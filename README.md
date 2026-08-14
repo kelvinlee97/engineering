@@ -23,6 +23,9 @@ The material reflects personal study and experience. It is not official document
 | [`YouTube/`](YouTube/) | Reader-friendly bilingual video summaries organized by learning topic | [English catalog](YouTube/README.md) · [中文目录](YouTube/README_ZH.md) |
 | [`Ghostty/workstation/`](Ghostty/workstation/) | Fresh-Mac Ghostty workstation installer and user guide | [English](Ghostty/workstation/README.md) · [中文](Ghostty/workstation/README_ZH.md) |
 | [`ZooKeeper/`](ZooKeeper/) | ZooKeeper operational documentation, including incident runbooks | [English](ZooKeeper/README.md) · [中文](ZooKeeper/README_ZH.md) |
+| [`Kubernetes/`](Kubernetes/) | Kubernetes operational documentation, including incident runbooks | [English](Kubernetes/README.md) · [中文](Kubernetes/README_ZH.md) |
+| [`Nginx/`](Nginx/) | Beginner-friendly Nginx and OpenResty deployment and operations guides | [English](Nginx/README.md) · [中文](Nginx/README_ZH.md) |
+| [`Nodejs/`](Nodejs/) | Beginner-friendly Node.js / Express BFF deployment and incident runbooks | [English](Nodejs/README.md) · [中文](Nodejs/README_ZH.md) |
 
 ## Organization Principles
 
