@@ -23,3 +23,9 @@ def test_catalogues_link_to_each_published_capture() -> None:
         relative = capture.relative_to(YOUTUBE_ROOT).as_posix()
         assert f"{relative}/summary.md" in english_catalogue
         assert f"{relative}/summary_zh.md" in chinese_catalogue
+
+
+def test_published_capture_folders_contain_only_reader_facing_summaries() -> None:
+    for capture in YOUTUBE_ROOT.glob("*/*--*"):
+        published_files = {path.name for path in capture.iterdir() if path.is_file()}
+        assert published_files == {"summary.md", "summary_zh.md"}, capture

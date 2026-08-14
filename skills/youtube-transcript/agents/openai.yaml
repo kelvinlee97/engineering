@@ -1,0 +1,4 @@
+interface:
+  display_name: "Browser YouTube Transcript"
+  short_description: "Capture YouTube's visible Transcript and create grounded bilingual summaries."
+  default_prompt: "Use $youtube-transcript to read this YouTube page's Show transcript panel twice, validate it, and create grounded English and Chinese summaries."
