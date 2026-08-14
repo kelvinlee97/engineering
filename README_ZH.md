@@ -23,6 +23,9 @@ English version: [README.md](README.md)
 | [`YouTube/`](YouTube/) | 按学习主题整理、面向读者的双语视频摘要 | [English 目录](YouTube/README.md) · [中文目录](YouTube/README_ZH.md) |
 | [`Ghostty/workstation/`](Ghostty/workstation/) | 面向全新 Mac 的 Ghostty 工作台安装器和用户说明 | [English](Ghostty/workstation/README.md) · [中文](Ghostty/workstation/README_ZH.md) |
 | [`ZooKeeper/`](ZooKeeper/) | ZooKeeper 运维文档，包括事故处理 Runbook | [English](ZooKeeper/README.md) · [中文](ZooKeeper/README_ZH.md) |
+| [`Kubernetes/`](Kubernetes/) | Kubernetes 运维文档，包括事故处理 Runbook | [English](Kubernetes/README.md) · [中文](Kubernetes/README_ZH.md) |
+| [`Nginx/`](Nginx/) | 面向初级运维的 Nginx 与 OpenResty 部署、运维指南 | [English](Nginx/README.md) · [中文](Nginx/README_ZH.md) |
+| [`Nodejs/`](Nodejs/) | 面向初级运维的 Node.js / Express BFF 部署与事故 Runbook | [English](Nodejs/README.md) · [中文](Nodejs/README_ZH.md) |
 
 ## 内容组织原则
 
