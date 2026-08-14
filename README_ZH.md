@@ -39,3 +39,4 @@ English version: [README.md](README.md)
 ## 仓库状态
 
 这个知识库会随着学习主题的增加，以及现有内容的核查和完善而持续演进。
+| [`Codex/cli/`](Codex/cli/) | Codex CLI slash command、会话控制与安全审查的工程工作流指南 | [English](Codex/cli/README.md) · [中文](Codex/cli/README_ZH.md) |

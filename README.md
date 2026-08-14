@@ -39,3 +39,4 @@ The material reflects personal study and experience. It is not official document
 ## Repository Status
 
 This knowledge base evolves as topics are studied and existing notes are verified or refined.
+| [`Codex/cli/`](Codex/cli/) | Engineering workflow guide for Codex CLI slash commands, session control, and safe review | [English](Codex/cli/README.md) · [中文](Codex/cli/README_ZH.md) |
