@@ -2,7 +2,13 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
-This module contains reusable ZooKeeper operational documentation. Incident procedures are organized under `runbooks/`; general architecture and administration material can be added separately without changing the runbook paths.
+This module contains ZooKeeper tutorials and operational usage guides. Incident procedures under `runbooks/` remain separate from beginner material.
+
+## Guides
+
+| Guide | Description |
+| --- | --- |
+| [ZooKeeper beginner tutorial](guides/getting-started/README.md) | Learn what ZooKeeper is, when to use it, and basic local CLI operations. |
 
 ## Runbooks
 
