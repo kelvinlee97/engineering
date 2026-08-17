@@ -9,7 +9,7 @@ English version: [README.md](README.md)
 | 指南 | 说明 |
 | --- | --- |
 | [ZooKeeper 新手教程](guides/getting-started/README_ZH.md) | 了解 ZooKeeper 是什么、何时使用，以及基本的本地 CLI 操作。 |
-| [生产部署基线](guides/production-deployment/README_ZH.md) | 供事故 Runbook 使用的部署与 TLS-aware 状态检查基线。 |
+| [生产部署指南](guides/production-deployment/README_ZH.md) | 三成员 ensemble 的日常部署、TLS-aware 检查、监控与滚动运维。 |
 
 ## Runbooks
 

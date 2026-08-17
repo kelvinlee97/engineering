@@ -9,7 +9,7 @@ This module contains ZooKeeper tutorials and operational usage guides. Incident 
 | Guide | Description |
 | --- | --- |
 | [ZooKeeper beginner tutorial](guides/getting-started/README.md) | Learn what ZooKeeper is, when to use it, and basic local CLI operations. |
-| [Production deployment baseline](guides/production-deployment/README.md) | Deployment and TLS-aware status baseline for incident runbooks. |
+| [Production deployment guide](guides/production-deployment/README.md) | Daily deployment, TLS-aware checks, monitoring, and rolling operations for a three-member ensemble. |
 
 ## Runbooks
 
