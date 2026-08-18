@@ -105,7 +105,7 @@ Before continuing, record `hostname -f`, `timedatectl status`, `java -version`, 
 
 Issue one server certificate per host, one administrator client certificate, and one host-local health-check client certificate per member from your existing CA. Each server certificate must include the host's FQDN and IP address, as applicable, in its Subject Alternative Name. This guide uses mutual TLS (mTLS): the server verifies client certificates, and clients verify server certificates. Store the server materials and each host-local health-check PKCS12 keystore/truststore in `/etc/zookeeper/tls/`, owned by `zookeeper` and mode `0640`; keep the administrator client certificate only on its controlled administrator host. Store every keystore/truststore password in a separate mode-`0640` password file, not in `zoo.cfg`, a shell history, or this repository.
 
-Create `/etc/zookeeper/zoo.cfg` with the same ensemble lines on every host. The first block is common; replace only `server.id` in `myid` below. The passwords and certificate filenames are examples of paths, not credentials. Read the configuration in five groups: timing and disk paths; client entry point; client TLS; quorum TLS; then retention, diagnostics, and membership.
+Create `/etc/zookeeper/zoo.cfg` with the same ensemble lines on every host. This file is identical on all three hosts; only the `myid` value differs, and the initialization command below writes it with the matching `--myid`. The passwords and certificate filenames are examples of paths, not credentials. Read the configuration in five groups: timing and disk paths; client entry point; client TLS; quorum TLS; then retention, diagnostics, and membership.
 
 ```properties
 tickTime=2000
@@ -218,14 +218,14 @@ ${EDITOR:-vi} "$HOME/.config/zookeeper/client-tls.env"
 
 ```bash
 # Contents of $HOME/.config/zookeeper/client-tls.env
-export CLIENT_JVMFLAGS='-Dzookeeper.clientCnxnSocket=org.apache.zookeeper.ClientCnxnSocketNetty \
+export CLIENT_JVMFLAGS="-Dzookeeper.clientCnxnSocket=org.apache.zookeeper.ClientCnxnSocketNetty \
   -Dzookeeper.client.secure=true \
   -Dzookeeper.ssl.keyStore.location=/secure/path/admin-client.p12 \
   -Dzookeeper.ssl.keyStore.passwordPath=/secure/path/admin-client-keystore-password \
   -Dzookeeper.ssl.keyStore.type=PKCS12 \
   -Dzookeeper.ssl.trustStore.location=/secure/path/client-truststore.p12 \
   -Dzookeeper.ssl.trustStore.passwordPath=/secure/path/client-truststore-password \
-  -Dzookeeper.ssl.trustStore.type=PKCS12'
+  -Dzookeeper.ssl.trustStore.type=PKCS12"
 ```
 
 Load the file in the current shell, then start the CLI:
@@ -254,14 +254,14 @@ The snapshot and restore APIs require a dedicated recovery administrator to have
 On each server, use TLS-aware `status` with that host's health-check client certificate. `ruok=imok` proves a bound, non-error process; it does not prove quorum. `zkServer.sh status` reports only the local role, so run it on all three members. Accept the deployment only when exactly one reports `leader`, two report `follower`, and the authorized TLS client test above succeeds.
 
 ```bash
-sudo -u zookeeper env CLIENT_JVMFLAGS='-Dzookeeper.clientCnxnSocket=org.apache.zookeeper.ClientCnxnSocketNetty \
+sudo -u zookeeper env CLIENT_JVMFLAGS="-Dzookeeper.clientCnxnSocket=org.apache.zookeeper.ClientCnxnSocketNetty \
   -Dzookeeper.client.secure=true \
   -Dzookeeper.ssl.keyStore.location=/etc/zookeeper/tls/health-client.p12 \
   -Dzookeeper.ssl.keyStore.passwordPath=/etc/zookeeper/tls/health-client-keystore-password \
   -Dzookeeper.ssl.keyStore.type=PKCS12 \
   -Dzookeeper.ssl.trustStore.location=/etc/zookeeper/tls/truststore.p12 \
   -Dzookeeper.ssl.trustStore.passwordPath=/etc/zookeeper/tls/truststore-password \
-  -Dzookeeper.ssl.trustStore.type=PKCS12' \
+  -Dzookeeper.ssl.trustStore.type=PKCS12" \
   /opt/apache-zookeeper-3.9.5/bin/zkServer.sh status /etc/zookeeper/zoo.cfg
 ```
 
@@ -336,14 +336,14 @@ df -i /var/lib/zookeeper /srv/zookeeper-txn
 ```bash
 sudo systemctl restart zookeeper
 sudo journalctl -u zookeeper -n 100 --no-pager
-sudo -u zookeeper env CLIENT_JVMFLAGS='-Dzookeeper.clientCnxnSocket=org.apache.zookeeper.ClientCnxnSocketNetty \
+sudo -u zookeeper env CLIENT_JVMFLAGS="-Dzookeeper.clientCnxnSocket=org.apache.zookeeper.ClientCnxnSocketNetty \
   -Dzookeeper.client.secure=true \
   -Dzookeeper.ssl.keyStore.location=/etc/zookeeper/tls/health-client.p12 \
   -Dzookeeper.ssl.keyStore.passwordPath=/etc/zookeeper/tls/health-client-keystore-password \
   -Dzookeeper.ssl.keyStore.type=PKCS12 \
   -Dzookeeper.ssl.trustStore.location=/etc/zookeeper/tls/truststore.p12 \
   -Dzookeeper.ssl.trustStore.passwordPath=/etc/zookeeper/tls/truststore-password \
-  -Dzookeeper.ssl.trustStore.type=PKCS12' \
+  -Dzookeeper.ssl.trustStore.type=PKCS12" \
   /opt/apache-zookeeper-3.9.5/bin/zkServer.sh status /etc/zookeeper/zoo.cfg
 ```
 

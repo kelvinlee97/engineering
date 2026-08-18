@@ -105,7 +105,7 @@ sudo chmod -R go-w "/opt/apache-zookeeper-${ZK_VERSION}-bin"
 
 通过现有组织 CA 为每台主机签发一张 server certificate、为管理员签发一张 client certificate，并为每台成员签发一张仅本机使用的 health-check client certificate。每张 server certificate 必须在 Subject Alternative Name 中包含相应 FQDN 和适用的 IP。本指南使用 mutual TLS（mTLS）：server 验证 client certificate，client 验证 server certificate。将 server material 与每台本机 health-check PKCS12 keystore/truststore 放入 `/etc/zookeeper/tls/`，所有者设为 `zookeeper`、权限为 `0640`；管理员 client certificate 只保留在受控管理员主机。每个 keystore/truststore password 应放在单独的 `0640` password file 中，不能写入 `zoo.cfg`、shell history 或此仓库。
 
-在每台主机创建相同的 `/etc/zookeeper/zoo.cfg`。下面是通用配置；仅在下文 `myid` 中替换各自 ID。密码和证书文件名只是路径示例，并非凭据。可将配置分成五组阅读：时间和磁盘路径、client 入口、client TLS、quorum TLS、以及保留策略/诊断/成员列表。
+在每台主机创建相同的 `/etc/zookeeper/zoo.cfg`。该文件在三台主机上完全一致；只有 `myid` 值不同，由下方初始化命令中对应的 `--myid` 写入。密码和证书文件名只是路径示例，并非凭据。可将配置分成五组阅读：时间和磁盘路径、client 入口、client TLS、quorum TLS、以及保留策略/诊断/成员列表。
 
 ```properties
 tickTime=2000
@@ -218,14 +218,14 @@ ${EDITOR:-vi} "$HOME/.config/zookeeper/client-tls.env"
 
 ```bash
 # $HOME/.config/zookeeper/client-tls.env 的内容
-export CLIENT_JVMFLAGS='-Dzookeeper.clientCnxnSocket=org.apache.zookeeper.ClientCnxnSocketNetty \
+export CLIENT_JVMFLAGS="-Dzookeeper.clientCnxnSocket=org.apache.zookeeper.ClientCnxnSocketNetty \
   -Dzookeeper.client.secure=true \
   -Dzookeeper.ssl.keyStore.location=/secure/path/admin-client.p12 \
   -Dzookeeper.ssl.keyStore.passwordPath=/secure/path/admin-client-keystore-password \
   -Dzookeeper.ssl.keyStore.type=PKCS12 \
   -Dzookeeper.ssl.trustStore.location=/secure/path/client-truststore.p12 \
   -Dzookeeper.ssl.trustStore.passwordPath=/secure/path/client-truststore-password \
-  -Dzookeeper.ssl.trustStore.type=PKCS12'
+  -Dzookeeper.ssl.trustStore.type=PKCS12"
 ```
 
 在当前 shell 加载文件，再启动 CLI：
@@ -254,14 +254,14 @@ Snapshot 和 restore API 要求专用 recovery administrator 对 `/` 拥有 `ALL
 每台服务器上使用支持 TLS 的 `status`，并使用该主机的 health-check client certificate。`ruok=imok` 只能证明进程已绑定端口且没有错误，不能证明 quorum。`zkServer.sh status` 只输出本机角色，因此必须在三台成员上都运行。仅当恰好一台显示 `leader`、两台显示 `follower`，并且上文已授权 TLS client 测试成功时，才能接受本次部署。
 
 ```bash
-sudo -u zookeeper env CLIENT_JVMFLAGS='-Dzookeeper.clientCnxnSocket=org.apache.zookeeper.ClientCnxnSocketNetty \
+sudo -u zookeeper env CLIENT_JVMFLAGS="-Dzookeeper.clientCnxnSocket=org.apache.zookeeper.ClientCnxnSocketNetty \
   -Dzookeeper.client.secure=true \
   -Dzookeeper.ssl.keyStore.location=/etc/zookeeper/tls/health-client.p12 \
   -Dzookeeper.ssl.keyStore.passwordPath=/etc/zookeeper/tls/health-client-keystore-password \
   -Dzookeeper.ssl.keyStore.type=PKCS12 \
   -Dzookeeper.ssl.trustStore.location=/etc/zookeeper/tls/truststore.p12 \
   -Dzookeeper.ssl.trustStore.passwordPath=/etc/zookeeper/tls/truststore-password \
-  -Dzookeeper.ssl.trustStore.type=PKCS12' \
+  -Dzookeeper.ssl.trustStore.type=PKCS12" \
   /opt/apache-zookeeper-3.9.5/bin/zkServer.sh status /etc/zookeeper/zoo.cfg
 ```
 
@@ -336,14 +336,14 @@ df -i /var/lib/zookeeper /srv/zookeeper-txn
 ```bash
 sudo systemctl restart zookeeper
 sudo journalctl -u zookeeper -n 100 --no-pager
-sudo -u zookeeper env CLIENT_JVMFLAGS='-Dzookeeper.clientCnxnSocket=org.apache.zookeeper.ClientCnxnSocketNetty \
+sudo -u zookeeper env CLIENT_JVMFLAGS="-Dzookeeper.clientCnxnSocket=org.apache.zookeeper.ClientCnxnSocketNetty \
   -Dzookeeper.client.secure=true \
   -Dzookeeper.ssl.keyStore.location=/etc/zookeeper/tls/health-client.p12 \
   -Dzookeeper.ssl.keyStore.passwordPath=/etc/zookeeper/tls/health-client-keystore-password \
   -Dzookeeper.ssl.keyStore.type=PKCS12 \
   -Dzookeeper.ssl.trustStore.location=/etc/zookeeper/tls/truststore.p12 \
   -Dzookeeper.ssl.trustStore.passwordPath=/etc/zookeeper/tls/truststore-password \
-  -Dzookeeper.ssl.trustStore.type=PKCS12' \
+  -Dzookeeper.ssl.trustStore.type=PKCS12" \
   /opt/apache-zookeeper-3.9.5/bin/zkServer.sh status /etc/zookeeper/zoo.cfg
 ```
 
