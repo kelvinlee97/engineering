@@ -1,0 +1,6 @@
+interface:
+  display_name: "Git Delivery"
+  short_description: "GitHub PR delivery with gh CLI: branch, commit, push, merge"
+  default_prompt: "Use $git-delivery to commit, push, open a PR, merge, and delete the feature branch."
+policy:
+  allow_implicit_invocation: true
