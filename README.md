@@ -26,6 +26,7 @@ The material reflects personal study and experience. It is not official document
 | [`Kubernetes/`](Kubernetes/) | Kubernetes operational documentation, including incident runbooks | [English](Kubernetes/README.md) · [中文](Kubernetes/README_ZH.md) |
 | [`Nginx/`](Nginx/) | Beginner-friendly Nginx and OpenResty deployment and operations guides | [English](Nginx/README.md) · [中文](Nginx/README_ZH.md) |
 | [`Nodejs/`](Nodejs/) | Beginner-friendly Node.js / Express BFF deployment and incident runbooks | [English](Nodejs/README.md) · [中文](Nodejs/README_ZH.md) |
+| [`AWS/`](AWS/) | Bilingual AWS runbooks and references aligned with official AWS documentation | [English](AWS/README.md) · [中文](AWS/README_ZH.md) |
 
 ## Organization Principles
 
