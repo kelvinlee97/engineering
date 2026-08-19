@@ -58,6 +58,8 @@
 | Amazon Lightsail | [English](lightsail/README.md) · [中文](lightsail/README_ZH.md) | 2026-08-19 |
 | AWS Outposts | [English](outposts/README.md) · [中文](outposts/README_ZH.md) | 2026-08-19 |
 | AWS Cloud9 | [English](cloud9/README.md) · [中文](cloud9/README_ZH.md) | 2026-08-19 |
+| Solutions Architect (SAA-C03) | [English](certifications/solutions-architect/README.md) · [中文](certifications/solutions-architect/README_ZH.md) | 2026-08-19 |
+| Developer Associate (DVA-C02) | [English](certifications/developer-associate/README.md) · [中文](certifications/developer-associate/README_ZH.md) | 2026-08-19 |
 
 ## Official sources
 
