@@ -17,6 +17,7 @@ The material reflects personal study and experience. It is not official document
 | [`Codex/fork/`](Codex/fork/) | ChatGPT Desktop guide for branching Codex chats, isolating worktrees, and resetting stalled investigations | [English](Codex/fork/README.md) · [中文](Codex/fork/README_ZH.md) |
 | [`Codex/cli/`](Codex/cli/) | Engineering workflow guide for Codex CLI slash commands, session control, and safe review | [English](Codex/cli/README.md) · [中文](Codex/cli/README_ZH.md) |
 | [`Codex/ide/`](Codex/ide/) | VS Code guide for connecting and using Codex IDE context | [English](Codex/ide/README.md) · [中文](Codex/ide/README_ZH.md) |
+| [`Codex/goal/`](Codex/goal/) | Guide to the `/goal` slash command for long-running work with a verifiable stopping condition | [English](Codex/goal/README.md) · [中文](Codex/goal/README_ZH.md) |
 | [`AGENTS.md`](AGENTS.md) | Canonical repository instructions for engineering work and Codex interaction guidance | [Instructions](AGENTS.md) |
 | [`skills/youtube-transcript/`](skills/youtube-transcript/) | Project-level browser-only YouTube Transcript workflow | [Skill](skills/youtube-transcript/SKILL.md) · [tool module](Codex/youtube-transcript/) |
 | [`Git/`](Git/) | Operational Git commands for safe synchronisation, release traceability, rollback, and recovery | [English](Git/README.md) · [中文](Git/README_ZH.md) |
