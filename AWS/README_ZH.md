@@ -122,6 +122,9 @@
 | Amazon Rekognition | [English](rekognition/README.md) · [中文](rekognition/README_ZH.md) | 2026-08-19 |
 | Amazon Transcribe | [English](transcribe/README.md) · [中文](transcribe/README_ZH.md) | 2026-08-19 |
 | Amazon Translate | [English](translate/README.md) · [中文](translate/README_ZH.md) | 2026-08-19 |
+| AWS Solutions Library | [English](solutions-implementations/README.md) · [中文](solutions-implementations/README_ZH.md) | 2026-08-19 |
+| AWS Solutions Constructs | [English](solutions-constructs/README.md) · [中文](solutions-constructs/README_ZH.md) | 2026-08-19 |
+| AWS Consulting Offers | [English](solutions-consulting-offers/README.md) · [中文](solutions-consulting-offers/README_ZH.md) | 2026-08-19 |
 | Solutions Architect（SAA-C03） | [English](certifications/solutions-architect/README.md) · [中文](certifications/solutions-architect/README_ZH.md) | 2026-08-19 |
 | Developer Associate（DVA-C02） | [English](certifications/developer-associate/README.md) · [中文](certifications/developer-associate/README_ZH.md) | 2026-08-19 |
 | Cloud Practitioner（CLF-C02） | [English](certifications/cloud-practitioner/README.md) · [中文](certifications/cloud-practitioner/README_ZH.md) | 2026-08-19 |
