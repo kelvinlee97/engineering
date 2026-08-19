@@ -36,6 +36,7 @@ class Chunk:
     start_seconds: float
     end_seconds: float
     word_count: int
+    text: str
 
 
 @dataclass(frozen=True)
@@ -48,3 +49,7 @@ class ValidationResult:
     chunks: list[Chunk] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
     errors: list[str] = field(default_factory=list)
+
+
+def normalize_text(text: str) -> str:
+    return " ".join(text.split()).casefold()

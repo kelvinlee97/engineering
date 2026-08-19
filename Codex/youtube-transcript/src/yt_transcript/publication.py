@@ -5,7 +5,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-from yt_transcript.models import CaptureStatus
+from yt_transcript.models import CaptureStatus, normalize_text
 
 _TIMESTAMP = re.compile(r"youtube\.com/watch\?v=[^\s)]+&t=(\d+)s")
 _RECIPROCAL_ENGLISH = re.compile(r"\]\(summary_zh\.md\)")
@@ -63,6 +63,16 @@ def validate_publication(
                     errors.append(f"chunk {index} item {item_index} has no timestamp")
                 else:
                     required_timestamps.add(timestamp)
+                quote = item.get("quote")
+                chunk_text = chunk.get("text")
+                if not isinstance(quote, str) or not quote.strip():
+                    errors.append(f"chunk {index} item {item_index} has no quote")
+                elif not isinstance(chunk_text, str) or normalize_text(
+                    quote
+                ) not in normalize_text(chunk_text):
+                    errors.append(
+                        f"chunk {index} item {item_index} quote is not from this chunk"
+                    )
 
     audit = payload.get("audit")
     if not isinstance(audit, dict) or audit.get("status") != "complete":

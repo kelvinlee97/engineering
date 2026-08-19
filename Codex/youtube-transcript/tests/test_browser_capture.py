@@ -184,8 +184,13 @@ def test_publication_requires_processed_chunks_a_clean_audit_and_matching_times(
         "chunks": [
             {
                 "status": "processed",
+                "text": "First segment second segment",
                 "content_items": [
-                    {"disposition": "included", "timestamp_seconds": 60},
+                    {
+                        "disposition": "included",
+                        "timestamp_seconds": 60,
+                        "quote": "First segment",
+                    },
                     {"disposition": "cta"},
                 ],
             }
@@ -217,3 +222,56 @@ def test_publication_requires_processed_chunks_a_clean_audit_and_matching_times(
     ledger["chunks"][0]["status"] = "pending"
     validation.write_text(json.dumps(ledger), encoding="utf-8")
     assert validate_publication(validation, english, chinese) == ["chunk 1 is not processed"]
+
+
+def test_publication_requires_verbatim_quotes_from_the_chunk(tmp_path: Path) -> None:
+    ledger = {
+        "status": "complete",
+        "chunks": [
+            {
+                "status": "processed",
+                "text": "First segment second segment",
+                "content_items": [
+                    {
+                        "disposition": "included",
+                        "timestamp_seconds": 60,
+                        "quote": "First segment",
+                    },
+                ],
+            }
+        ],
+        "audit": {
+            "status": "complete",
+            "missing_from_english": [],
+            "missing_from_chinese": [],
+            "unsupported_english_claims": [],
+            "unsupported_chinese_claims": [],
+            "timestamp_mismatches": [],
+        },
+    }
+    validation = tmp_path / "validation.json"
+    english = tmp_path / "summary.md"
+    chinese = tmp_path / "summary_zh.md"
+    validation.write_text(json.dumps(ledger), encoding="utf-8")
+    english.write_text(
+        "[中文](summary_zh.md) [source](https://www.youtube.com/watch?v=x&t=60s)",
+        encoding="utf-8",
+    )
+    chinese.write_text(
+        "[English](summary.md) [来源](https://www.youtube.com/watch?v=x&t=60s)",
+        encoding="utf-8",
+    )
+
+    assert validate_publication(validation, english, chinese) == []
+
+    del ledger["chunks"][0]["content_items"][0]["quote"]
+    validation.write_text(json.dumps(ledger), encoding="utf-8")
+    assert validate_publication(validation, english, chinese) == [
+        "chunk 1 item 1 has no quote"
+    ]
+
+    ledger["chunks"][0]["content_items"][0]["quote"] = "not from this chunk"
+    validation.write_text(json.dumps(ledger), encoding="utf-8")
+    assert validate_publication(validation, english, chinese) == [
+        "chunk 1 item 1 quote is not from this chunk"
+    ]
