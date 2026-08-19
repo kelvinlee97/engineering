@@ -44,6 +44,20 @@
 | Amazon QLDB | [English](qldb/README.md) · [中文](qldb/README_ZH.md) | 2026-08-19 |
 | Amazon Neptune | [English](neptune/README.md) · [中文](neptune/README_ZH.md) | 2026-08-19 |
 | Amazon DocumentDB | [English](documentdb/README.md) · [中文](documentdb/README_ZH.md) | 2026-08-19 |
+| AWS CLI | [English](cli/README.md) · [中文](cli/README_ZH.md) | 2026-08-19 |
+| AWS SDKs and Tools | [English](sdk/README.md) · [中文](sdk/README_ZH.md) | 2026-08-19 |
+| boto3（AWS SDK for Python） | [English](boto3/README.md) · [中文](boto3/README_ZH.md) | 2026-08-19 |
+| AWS CDK | [English](cdk/README.md) · [中文](cdk/README_ZH.md) | 2026-08-19 |
+| AWS Amplify | [English](amplify/README.md) · [中文](amplify/README_ZH.md) | 2026-08-19 |
+| AWS AppSync | [English](appsync/README.md) · [中文](appsync/README_ZH.md) | 2026-08-19 |
+| AWS Step Functions | [English](step-functions/README.md) · [中文](step-functions/README_ZH.md) | 2026-08-19 |
+| Amazon EventBridge | [English](eventbridge/README.md) · [中文](eventbridge/README_ZH.md) | 2026-08-19 |
+| Amazon MQ | [English](mq/README.md) · [中文](mq/README_ZH.md) | 2026-08-19 |
+| Amazon MSK | [English](msk/README.md) · [中文](msk/README_ZH.md) | 2026-08-19 |
+| AWS Batch | [English](batch/README.md) · [中文](batch/README_ZH.md) | 2026-08-19 |
+| Amazon Lightsail | [English](lightsail/README.md) · [中文](lightsail/README_ZH.md) | 2026-08-19 |
+| AWS Outposts | [English](outposts/README.md) · [中文](outposts/README_ZH.md) | 2026-08-19 |
+| AWS Cloud9 | [English](cloud9/README.md) · [中文](cloud9/README_ZH.md) | 2026-08-19 |
 
 ## 官方来源
 
