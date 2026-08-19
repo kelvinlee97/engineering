@@ -112,6 +112,16 @@
 | 云计算基础 | [English](foundations-cloud-computing/README.md) · [中文](foundations-cloud-computing/README_ZH.md) | 2026-08-19 |
 | AWS SAM 与 Serverless Application Repository | [English](sam/README.md) · [中文](sam/README_ZH.md) | 2026-08-19 |
 | AWS 生态 | [English](aws-ecosystem/README.md) · [中文](aws-ecosystem/README_ZH.md) | 2026-08-19 |
+| Amazon SageMaker AI | [English](sagemaker/README.md) · [中文](sagemaker/README_ZH.md) | 2026-08-19 |
+| Amazon Comprehend | [English](comprehend/README.md) · [中文](comprehend/README_ZH.md) | 2026-08-19 |
+| Amazon Forecast | [English](forecast/README.md) · [中文](forecast/README_ZH.md) | 2026-08-19 |
+| Amazon Kendra | [English](kendra/README.md) · [中文](kendra/README_ZH.md) | 2026-08-19 |
+| Amazon Lex | [English](lex/README.md) · [中文](lex/README_ZH.md) | 2026-08-19 |
+| Amazon Personalize | [English](personalize/README.md) · [中文](personalize/README_ZH.md) | 2026-08-19 |
+| Amazon Polly | [English](polly/README.md) · [中文](polly/README_ZH.md) | 2026-08-19 |
+| Amazon Rekognition | [English](rekognition/README.md) · [中文](rekognition/README_ZH.md) | 2026-08-19 |
+| Amazon Transcribe | [English](transcribe/README.md) · [中文](transcribe/README_ZH.md) | 2026-08-19 |
+| Amazon Translate | [English](translate/README.md) · [中文](translate/README_ZH.md) | 2026-08-19 |
 | Solutions Architect（SAA-C03） | [English](certifications/solutions-architect/README.md) · [中文](certifications/solutions-architect/README_ZH.md) | 2026-08-19 |
 | Developer Associate（DVA-C02） | [English](certifications/developer-associate/README.md) · [中文](certifications/developer-associate/README_ZH.md) | 2026-08-19 |
 | Cloud Practitioner（CLF-C02） | [English](certifications/cloud-practitioner/README.md) · [中文](certifications/cloud-practitioner/README_ZH.md) | 2026-08-19 |
