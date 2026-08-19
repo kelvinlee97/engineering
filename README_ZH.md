@@ -26,6 +26,7 @@ English version: [README.md](README.md)
 | [`Kubernetes/`](Kubernetes/) | Kubernetes 运维文档，包括事故处理 Runbook | [English](Kubernetes/README.md) · [中文](Kubernetes/README_ZH.md) |
 | [`Nginx/`](Nginx/) | 面向初级运维的 Nginx 与 OpenResty 部署、运维指南 | [English](Nginx/README.md) · [中文](Nginx/README_ZH.md) |
 | [`Nodejs/`](Nodejs/) | 面向初级运维的 Node.js / Express BFF 部署与事故 Runbook | [English](Nodejs/README.md) · [中文](Nodejs/README_ZH.md) |
+| [`AWS/`](AWS/) | 与 AWS 官方文档对齐的双语 AWS Runbook 与参考 | [English](AWS/README.md) · [中文](AWS/README_ZH.md) |
 
 ## 内容组织原则
 
