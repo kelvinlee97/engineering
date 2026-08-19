@@ -72,6 +72,20 @@
 | AWS IAM Identity Center | [English](iam-identity-center/README.md) · [中文](iam-identity-center/README_ZH.md) | 2026-08-19 |
 | AWS Control Tower | [English](control-tower/README.md) · [中文](control-tower/README_ZH.md) | 2026-08-19 |
 | AWS Resource Access Manager | [English](ram/README.md) · [中文](ram/README_ZH.md) | 2026-08-19 |
+| Amazon EC2 Auto Scaling | [English](auto-scaling-groups/README.md) · [中文](auto-scaling-groups/README_ZH.md) | 2026-08-19 |
+| Application Auto Scaling | [English](application-auto-scaling/README.md) · [中文](application-auto-scaling/README_ZH.md) | 2026-08-19 |
+| AWS CloudHSM | [English](cloudhsm/README.md) · [中文](cloudhsm/README_ZH.md) | 2026-08-19 |
+| Amazon Inspector | [English](inspector/README.md) · [中文](inspector/README_ZH.md) | 2026-08-19 |
+| Amazon Detective | [English](detective/README.md) · [中文](detective/README_ZH.md) | 2026-08-19 |
+| Amazon Macie | [English](macie/README.md) · [中文](macie/README_ZH.md) | 2026-08-19 |
+| AWS Trusted Advisor | [English](trusted-advisor/README.md) · [中文](trusted-advisor/README_ZH.md) | 2026-08-19 |
+| Amazon SES | [English](ses/README.md) · [中文](ses/README_ZH.md) | 2026-08-19 |
+| Amazon CloudSearch | [English](cloudsearch/README.md) · [中文](cloudsearch/README_ZH.md) | 2026-08-19 |
+| Amazon QuickSight | [English](quicksight/README.md) · [中文](quicksight/README_ZH.md) | 2026-08-19 |
+| AWS Data Pipeline | [English](data-pipeline/README.md) · [中文](data-pipeline/README_ZH.md) | 2026-08-19 |
+| AWS Artifact | [English](artifact/README.md) · [中文](artifact/README_ZH.md) | 2026-08-19 |
+| AWS Directory Service | [English](directory-service/README.md) · [中文](directory-service/README_ZH.md) | 2026-08-19 |
+| AWS Service Catalog | [English](service-catalog/README.md) · [中文](service-catalog/README_ZH.md) | 2026-08-19 |
 | Solutions Architect (SAA-C03) | [English](certifications/solutions-architect/README.md) · [中文](certifications/solutions-architect/README_ZH.md) | 2026-08-19 |
 | Developer Associate (DVA-C02) | [English](certifications/developer-associate/README.md) · [中文](certifications/developer-associate/README_ZH.md) | 2026-08-19 |
 
