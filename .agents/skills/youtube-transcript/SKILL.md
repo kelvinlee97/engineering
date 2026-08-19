@@ -52,7 +52,7 @@ Use the in-app Browser. Take transcript text only from YouTube's visible **Show 
 
 ## Summarize and audit
 
-7. Read every deterministic chunk listed in local `validation.json`, from first through last. Record each substantive claim, definition, number, example, comparison, step, qualification, limitation, conclusion, and meaningful resource as `included`, `compressed`, or pure `cta`.
+7. Read every deterministic chunk listed in local `validation.json`, from first through last. Record each substantive claim, definition, number, example, comparison, step, qualification, limitation, conclusion, and meaningful resource as `included`, `compressed`, or pure `cta`. For every `included` or `compressed` item, set `quote` to a verbatim excerpt from that chunk's text; the publication gate rejects any quote that is not found verbatim in its chunk.
 8. Publish only `summary.md` and `summary_zh.md` in `YouTube/<topic>/<title-slug>--<video-id>/`. Select one existing primary topic based on the complete transcript. Add reciprocal links, a source/coverage note, and matching clickable YouTube timestamps.
 9. Perform a fresh manual audit against the transcript and ledger. Record unresolved missing or unsupported claims and timestamp mismatches in `validation.json`; do not mark the audit complete while any remain.
 10. Run the structural publication gate:
@@ -67,7 +67,7 @@ Use the in-app Browser. Take transcript text only from YouTube's visible **Show 
    )
    ```
 
-   It checks the ledger structure, required timestamps, timestamp parity, and reciprocal links; it does not perform semantic verification. Publish only on `complete`.
+   It checks the ledger structure, verbatim quote attribution, required timestamps, timestamp parity, and reciprocal links; it does not perform semantic verification. Publish only on `complete`.
 
 11. Update both `YouTube` catalogues. Keep raw transcripts, hashes, cue IDs, validation JSON, and tooling instructions out of published summary folders.
 

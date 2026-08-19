@@ -112,6 +112,7 @@ def _chunks(segments: list[Segment], *, target_words: int = 1000) -> list[Chunk]
                     start_seconds=first.start_seconds,
                     end_seconds=last.start_seconds,
                     word_count=words,
+                    text=" ".join(item.text for item in segments[start_index:index]),
                 )
             )
             start_index = index
@@ -126,6 +127,7 @@ def _chunks(segments: list[Segment], *, target_words: int = 1000) -> list[Chunk]
             start_seconds=first.start_seconds,
             end_seconds=last.start_seconds,
             word_count=words,
+            text=" ".join(item.text for item in segments[start_index:]),
         )
     )
     return chunks

@@ -19,7 +19,7 @@ English version: [README.md](README.md)
 | [`Codex/ide/`](Codex/ide/) | 在 VS Code 中连接和使用 Codex IDE context 的指南 | [English](Codex/ide/README.md) · [中文](Codex/ide/README_ZH.md) |
 | [`Codex/goal/`](Codex/goal/) | `/goal` slash command 指南：面向有可验证停止条件的长任务 | [English](Codex/goal/README.md) · [中文](Codex/goal/README_ZH.md) |
 | [`AGENTS.md`](AGENTS.md) | 工程工作与 Codex 交互的仓库权威规则 | [规则](AGENTS.md) |
-| [`skills/youtube-transcript/`](skills/youtube-transcript/) | 工程级、仅浏览器的 YouTube Transcript 工作流 | [Skill](skills/youtube-transcript/SKILL.md) · [工具模块](Codex/youtube-transcript/) |
+| [`.agents/skills/youtube-transcript/`](.agents/skills/youtube-transcript/) | 工程级、仅浏览器的 YouTube Transcript 工作流 | [Skill](.agents/skills/youtube-transcript/SKILL.md) · [工具模块](Codex/youtube-transcript/) |
 | [`Git/`](Git/) | 面向运维场景的 Git 安全同步、发布可追溯、回滚与恢复命令指南 | [English](Git/README.md) · [中文](Git/README_ZH.md) |
 | [`YouTube/`](YouTube/) | 按学习主题整理、面向读者的双语视频摘要 | [English 目录](YouTube/README.md) · [中文目录](YouTube/README_ZH.md) |
 | [`Ghostty/workstation/`](Ghostty/workstation/) | 面向全新 Mac 的 Ghostty 工作台安装器和用户说明 | [English](Ghostty/workstation/README.md) · [中文](Ghostty/workstation/README_ZH.md) |
