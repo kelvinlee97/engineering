@@ -30,7 +30,7 @@ Deliver completed local work to the default branch via a GitHub pull request, th
 5. **Merge gate**: wait for a terminal state with `gh pr checks $PR --watch`; if no checks are configured, note that in the report. `gh pr view $PR --json mergeable,mergeStateStatus -q '"\(.mergeable)/\(.mergeStateStatus)"'` must be `MERGEABLE/CLEAN`. Never merge a failing or conflicting PR.
 6. **Merge and clean up**: `gh pr merge $PR --squash --delete-branch`; fall back to `--merge` if squash is unavailable and say so.
 7. **Sync local**: `git switch <default>`; `git pull --ff-only`; `git fetch --prune origin`. If `pull --ff-only` fails, stop — no `--rebase` or force.
-8. **Verify**: `MERGED=$(gh pr view $PR --json mergedCommit -q .mergedCommit.oid)`; `git merge-base --is-ancestor $MERGED <default>` must exit 0; `git status --short` shows no new changes from this flow; `<branch>` is gone locally (`git branch -a`) and remotely (`git ls-remote --heads origin <branch>` empty).
+8. **Verify**: `MERGED=$(gh pr view $PR --json mergeCommit -q .mergeCommit.oid)`; `git merge-base --is-ancestor $MERGED <default>` must exit 0; `git status --short` shows no new changes from this flow; `<branch>` is gone locally (`git branch -a`) and remotely (`git ls-remote --heads origin <branch>` empty).
 9. **Rollback**: if the merged work is broken, `git switch -c fix/revert-<slug> origin/<default>`; `git revert <sha>`; push; PR; merge via the same flow.
 10. **Hard rules**: never push the default branch directly; never force-push shared branches; only delete non-default branches.
 
