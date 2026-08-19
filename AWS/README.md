@@ -30,6 +30,20 @@
 | AWS Security Hub CSPM | [English](security-hub/README.md) · [中文](security-hub/README_ZH.md) | 2026-08-19 |
 | AWS Organizations | [English](organizations/README.md) · [中文](organizations/README_ZH.md) | 2026-08-19 |
 | AWS Config | [English](config/README.md) · [中文](config/README_ZH.md) | 2026-08-19 |
+| Amazon FSx | [English](fsx/README.md) · [中文](fsx/README_ZH.md) | 2026-08-19 |
+| AWS Storage Gateway | [English](storage-gateway/README.md) · [中文](storage-gateway/README_ZH.md) | 2026-08-19 |
+| AWS Snow Family | [English](snow-family/README.md) · [中文](snow-family/README_ZH.md) | 2026-08-19 |
+| Amazon Athena | [English](athena/README.md) · [中文](athena/README_ZH.md) | 2026-08-19 |
+| Amazon Redshift | [English](redshift/README.md) · [中文](redshift/README_ZH.md) | 2026-08-19 |
+| Amazon EMR | [English](emr/README.md) · [中文](emr/README_ZH.md) | 2026-08-19 |
+| Amazon Kinesis | [English](kinesis/README.md) · [中文](kinesis/README_ZH.md) | 2026-08-19 |
+| AWS Glue | [English](glue/README.md) · [中文](glue/README_ZH.md) | 2026-08-19 |
+| AWS Database Migration Service | [English](dms/README.md) · [中文](dms/README_ZH.md) | 2026-08-19 |
+| Amazon ElastiCache | [English](elasticache/README.md) · [中文](elasticache/README_ZH.md) | 2026-08-19 |
+| Amazon OpenSearch Service | [English](opensearch/README.md) · [中文](opensearch/README_ZH.md) | 2026-08-19 |
+| Amazon QLDB | [English](qldb/README.md) · [中文](qldb/README_ZH.md) | 2026-08-19 |
+| Amazon Neptune | [English](neptune/README.md) · [中文](neptune/README_ZH.md) | 2026-08-19 |
+| Amazon DocumentDB | [English](documentdb/README.md) · [中文](documentdb/README_ZH.md) | 2026-08-19 |
 
 ## Official sources
 
