@@ -20,6 +20,16 @@
 | Amazon SNS | [English](sns/README.md) · [中文](sns/README_ZH.md) | 2026-08-19 |
 | Elastic Load Balancing | [English](elb/README.md) · [中文](elb/README_ZH.md) | 2026-08-19 |
 | Amazon Route 53 | [English](route53/README.md) · [中文](route53/README_ZH.md) | 2026-08-19 |
+| Amazon CloudFront | [English](cloudfront/README.md) · [中文](cloudfront/README_ZH.md) | 2026-08-19 |
+| Amazon API Gateway | [English](api-gateway/README.md) · [中文](api-gateway/README_ZH.md) | 2026-08-19 |
+| AWS Key Management Service | [English](kms/README.md) · [中文](kms/README_ZH.md) | 2026-08-19 |
+| AWS Secrets Manager | [English](secrets-manager/README.md) · [中文](secrets-manager/README_ZH.md) | 2026-08-19 |
+| AWS WAF | [English](waf/README.md) · [中文](waf/README_ZH.md) | 2026-08-19 |
+| AWS Shield | [English](shield/README.md) · [中文](shield/README_ZH.md) | 2026-08-19 |
+| Amazon GuardDuty | [English](guardduty/README.md) · [中文](guardduty/README_ZH.md) | 2026-08-19 |
+| AWS Security Hub CSPM | [English](security-hub/README.md) · [中文](security-hub/README_ZH.md) | 2026-08-19 |
+| AWS Organizations | [English](organizations/README.md) · [中文](organizations/README_ZH.md) | 2026-08-19 |
+| AWS Config | [English](config/README.md) · [中文](config/README_ZH.md) | 2026-08-19 |
 
 ## 官方来源
 
