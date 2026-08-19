@@ -86,6 +86,20 @@
 | AWS Artifact | [English](artifact/README.md) · [中文](artifact/README_ZH.md) | 2026-08-19 |
 | AWS Directory Service | [English](directory-service/README.md) · [中文](directory-service/README_ZH.md) | 2026-08-19 |
 | AWS Service Catalog | [English](service-catalog/README.md) · [中文](service-catalog/README_ZH.md) | 2026-08-19 |
+| AWS CodeCommit | [English](codecommit/README.md) · [中文](codecommit/README_ZH.md) | 2026-08-19 |
+| AWS CodeBuild | [English](codebuild/README.md) · [中文](codebuild/README_ZH.md) | 2026-08-19 |
+| AWS CodeDeploy | [English](codedeploy/README.md) · [中文](codedeploy/README_ZH.md) | 2026-08-19 |
+| AWS CodePipeline | [English](codepipeline/README.md) · [中文](codepipeline/README_ZH.md) | 2026-08-19 |
+| AWS CodeArtifact | [English](codeartifact/README.md) · [中文](codeartifact/README_ZH.md) | 2026-08-19 |
+| Amazon CodeGuru | [English](codeguru/README.md) · [中文](codeguru/README_ZH.md) | 2026-08-19 |
+| AWS CodeStar | [English](codestar/README.md) · [中文](codestar/README_ZH.md) | 2026-08-19 |
+| Amazon AppFlow | [English](appflow/README.md) · [中文](appflow/README_ZH.md) | 2026-08-19 |
+| AWS DataSync | [English](datasync/README.md) · [中文](datasync/README_ZH.md) | 2026-08-19 |
+| AWS Transfer Family | [English](transfer-family/README.md) · [中文](transfer-family/README_ZH.md) | 2026-08-19 |
+| AWS Application Migration Service | [English](mgn/README.md) · [中文](mgn/README_ZH.md) | 2026-08-19 |
+| AWS License Manager | [English](license-manager/README.md) · [中文](license-manager/README_ZH.md) | 2026-08-19 |
+| Amazon Managed Blockchain | [English](managed-blockchain/README.md) · [中文](managed-blockchain/README_ZH.md) | 2026-08-19 |
+| AWS Health | [English](health/README.md) · [中文](health/README_ZH.md) | 2026-08-19 |
 | Solutions Architect（SAA-C03） | [English](certifications/solutions-architect/README.md) · [中文](certifications/solutions-architect/README_ZH.md) | 2026-08-19 |
 | Developer Associate（DVA-C02） | [English](certifications/developer-associate/README.md) · [中文](certifications/developer-associate/README_ZH.md) | 2026-08-19 |
 
