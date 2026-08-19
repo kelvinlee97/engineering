@@ -100,8 +100,22 @@
 | AWS License Manager | [English](license-manager/README.md) · [中文](license-manager/README_ZH.md) | 2026-08-19 |
 | Amazon Managed Blockchain | [English](managed-blockchain/README.md) · [中文](managed-blockchain/README_ZH.md) | 2026-08-19 |
 | AWS Health | [English](health/README.md) · [中文](health/README_ZH.md) | 2026-08-19 |
+| AWS OpsWorks | [English](opsworks/README.md) · [中文](opsworks/README_ZH.md) | 2026-08-19 |
+| Amazon Connect | [English](connect/README.md) · [中文](connect/README_ZH.md) | 2026-08-19 |
+| AWS Managed Services | [English](managed-services/README.md) · [中文](managed-services/README_ZH.md) | 2026-08-19 |
+| AWS 共担责任模型 | [English](shared-responsibility-model/README.md) · [中文](shared-responsibility-model/README_ZH.md) | 2026-08-19 |
+| AWS Well-Architected Framework | [English](well-architected/README.md) · [中文](well-architected/README_ZH.md) | 2026-08-19 |
+| AWS 定价模式 | [English](pricing-models/README.md) · [中文](pricing-models/README_ZH.md) | 2026-08-19 |
+| AWS Billing and Cost Management | [English](billing-cost-management/README.md) · [中文](billing-cost-management/README_ZH.md) | 2026-08-19 |
+| AWS Service Quotas | [English](service-quotas/README.md) · [中文](service-quotas/README_ZH.md) | 2026-08-19 |
+| AWS Resource Groups & Tag Editor | [English](resource-groups-tag-editor/README.md) · [中文](resource-groups-tag-editor/README_ZH.md) | 2026-08-19 |
+| 云计算基础 | [English](foundations-cloud-computing/README.md) · [中文](foundations-cloud-computing/README_ZH.md) | 2026-08-19 |
+| AWS SAM 与 Serverless Application Repository | [English](sam/README.md) · [中文](sam/README_ZH.md) | 2026-08-19 |
+| AWS 生态 | [English](aws-ecosystem/README.md) · [中文](aws-ecosystem/README_ZH.md) | 2026-08-19 |
 | Solutions Architect（SAA-C03） | [English](certifications/solutions-architect/README.md) · [中文](certifications/solutions-architect/README_ZH.md) | 2026-08-19 |
 | Developer Associate（DVA-C02） | [English](certifications/developer-associate/README.md) · [中文](certifications/developer-associate/README_ZH.md) | 2026-08-19 |
+| Cloud Practitioner（CLF-C02） | [English](certifications/cloud-practitioner/README.md) · [中文](certifications/cloud-practitioner/README_ZH.md) | 2026-08-19 |
+| AWS 云角色能力（Competencies） | [English](certifications/competencies/README.md) · [中文](certifications/competencies/README_ZH.md) | 2026-08-19 |
 
 ## 官方来源
 
