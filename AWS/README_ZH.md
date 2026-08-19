@@ -58,6 +58,20 @@
 | Amazon Lightsail | [English](lightsail/README.md) · [中文](lightsail/README_ZH.md) | 2026-08-19 |
 | AWS Outposts | [English](outposts/README.md) · [中文](outposts/README_ZH.md) | 2026-08-19 |
 | AWS Cloud9 | [English](cloud9/README.md) · [中文](cloud9/README_ZH.md) | 2026-08-19 |
+| Amazon CloudWatch | [English](cloudwatch/README.md) · [中文](cloudwatch/README_ZH.md) | 2026-08-19 |
+| AWS CloudTrail | [English](cloudtrail/README.md) · [中文](cloudtrail/README_ZH.md) | 2026-08-19 |
+| AWS X-Ray | [English](x-ray/README.md) · [中文](x-ray/README_ZH.md) | 2026-08-19 |
+| AWS Systems Manager | [English](systems-manager/README.md) · [中文](systems-manager/README_ZH.md) | 2026-08-19 |
+| AWS Certificate Manager | [English](acm/README.md) · [中文](acm/README_ZH.md) | 2026-08-19 |
+| AWS Direct Connect | [English](direct-connect/README.md) · [中文](direct-connect/README_ZH.md) | 2026-08-19 |
+| AWS Global Accelerator | [English](global-accelerator/README.md) · [中文](global-accelerator/README_ZH.md) | 2026-08-19 |
+| AWS Elastic Beanstalk | [English](elastic-beanstalk/README.md) · [中文](elastic-beanstalk/README_ZH.md) | 2026-08-19 |
+| Amazon Elastic Container Registry | [English](ecr/README.md) · [中文](ecr/README_ZH.md) | 2026-08-19 |
+| AWS Backup | [English](backup/README.md) · [中文](backup/README_ZH.md) | 2026-08-19 |
+| Amazon Cognito | [English](cognito/README.md) · [中文](cognito/README_ZH.md) | 2026-08-19 |
+| AWS IAM Identity Center | [English](iam-identity-center/README.md) · [中文](iam-identity-center/README_ZH.md) | 2026-08-19 |
+| AWS Control Tower | [English](control-tower/README.md) · [中文](control-tower/README_ZH.md) | 2026-08-19 |
+| AWS Resource Access Manager | [English](ram/README.md) · [中文](ram/README_ZH.md) | 2026-08-19 |
 | Solutions Architect（SAA-C03） | [English](certifications/solutions-architect/README.md) · [中文](certifications/solutions-architect/README_ZH.md) | 2026-08-19 |
 | Developer Associate（DVA-C02） | [English](certifications/developer-associate/README.md) · [中文](certifications/developer-associate/README_ZH.md) | 2026-08-19 |
 
