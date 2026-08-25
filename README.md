@@ -20,6 +20,7 @@ The material reflects personal study and experience. It is not official document
 | [`Codex/goal/`](Codex/goal/) | Guide to the `/goal` slash command for long-running work with a verifiable stopping condition | [English](Codex/goal/README.md) · [中文](Codex/goal/README_ZH.md) |
 | [`AGENTS.md`](AGENTS.md) | Canonical repository instructions for engineering work and Codex interaction guidance | [Instructions](AGENTS.md) |
 | [`.agents/skills/youtube-transcript/`](.agents/skills/youtube-transcript/) | Project-level browser-only YouTube Transcript workflow | [Skill](.agents/skills/youtube-transcript/SKILL.md) · [tool module](Codex/youtube-transcript/) |
+| [`Ubuntu/apt/`](Ubuntu/apt/) | Ubuntu APT commands for package installation, upgrades, inspection, and troubleshooting | [English](Ubuntu/apt/README.md) · [中文](Ubuntu/apt/README_ZH.md) |
 | [`Git/`](Git/) | Operational Git commands for safe synchronisation, release traceability, rollback, and recovery | [English](Git/README.md) · [中文](Git/README_ZH.md) |
 | [`YouTube/`](YouTube/) | Reader-friendly bilingual video summaries organized by learning topic | [English catalog](YouTube/README.md) · [中文目录](YouTube/README_ZH.md) |
 | [`Ghostty/`](Ghostty/) | Cross-platform Ghostty and terminal tool setup | [English](Ghostty/README.md) · [中文](Ghostty/README_ZH.md) · [Config](Ghostty/config.ghostty) |

@@ -20,6 +20,7 @@ English version: [README.md](README.md)
 | [`Codex/goal/`](Codex/goal/) | `/goal` slash command 指南：面向有可验证停止条件的长任务 | [English](Codex/goal/README.md) · [中文](Codex/goal/README_ZH.md) |
 | [`AGENTS.md`](AGENTS.md) | 工程工作与 Codex 交互的仓库权威规则 | [规则](AGENTS.md) |
 | [`.agents/skills/youtube-transcript/`](.agents/skills/youtube-transcript/) | 工程级、仅浏览器的 YouTube Transcript 工作流 | [Skill](.agents/skills/youtube-transcript/SKILL.md) · [工具模块](Codex/youtube-transcript/) |
+| [`Ubuntu/apt/`](Ubuntu/apt/) | Ubuntu APT 软件包安装、更新、检查与排障命令 | [English](Ubuntu/apt/README.md) · [中文](Ubuntu/apt/README_ZH.md) |
 | [`Git/`](Git/) | 面向运维场景的 Git 安全同步、发布可追溯、回滚与恢复命令指南 | [English](Git/README.md) · [中文](Git/README_ZH.md) |
 | [`YouTube/`](YouTube/) | 按学习主题整理、面向读者的双语视频摘要 | [English 目录](YouTube/README.md) · [中文目录](YouTube/README_ZH.md) |
 | [`Ghostty/`](Ghostty/) | 跨平台 Ghostty 和终端工具配置 | [English](Ghostty/README.md) · [中文](Ghostty/README_ZH.md) · [配置](Ghostty/config.ghostty) |
