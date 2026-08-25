@@ -15,14 +15,13 @@ uv run ruff check .           # lint
 uv run mypy src               # strict type-check
 uv run pytest                 # test the package
 
-cd ../../Ghostty/workstation
-/bin/zsh -n install.zsh doctor.zsh uninstall.zsh  # syntax-check scripts
-./doctor.zsh                                      # verify an installed workstation
+cd ../../Ghostty
+ghostty +validate-config --config-file=config.ghostty  # validate Ghostty configuration
 ```
 
 ## Coding Style & Naming Conventions
 
-Use four spaces in Python and keep lines within Ruff's 100-character limit. Maintain strict type checking and place Python tests in `tests/test_*.py`. Write workstation automation as executable `zsh` scripts; retain the existing defensive validation and managed-file conventions. Use lowercase, hyphenated directory slugs for video topics and titles. Keep prose direct, reader-facing, and based on primary or official sources; label personal interpretation clearly.
+Use four spaces in Python and keep lines within Ruff's 100-character limit. Maintain strict type checking and place Python tests in `tests/test_*.py`. Keep terminal setup documentation direct and platform-specific; validate Ghostty configuration with the Ghostty CLI. Use lowercase, hyphenated directory slugs for video topics and titles. Keep prose direct, reader-facing, and based on primary or official sources; label personal interpretation clearly.
 
 ## Testing & Publication
 

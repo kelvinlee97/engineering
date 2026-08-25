@@ -22,7 +22,7 @@ English version: [README.md](README.md)
 | [`.agents/skills/youtube-transcript/`](.agents/skills/youtube-transcript/) | 工程级、仅浏览器的 YouTube Transcript 工作流 | [Skill](.agents/skills/youtube-transcript/SKILL.md) · [工具模块](Codex/youtube-transcript/) |
 | [`Git/`](Git/) | 面向运维场景的 Git 安全同步、发布可追溯、回滚与恢复命令指南 | [English](Git/README.md) · [中文](Git/README_ZH.md) |
 | [`YouTube/`](YouTube/) | 按学习主题整理、面向读者的双语视频摘要 | [English 目录](YouTube/README.md) · [中文目录](YouTube/README_ZH.md) |
-| [`Ghostty/workstation/`](Ghostty/workstation/) | 面向全新 Mac 的 Ghostty 工作台安装器和用户说明 | [English](Ghostty/workstation/README.md) · [中文](Ghostty/workstation/README_ZH.md) |
+| [`Ghostty/`](Ghostty/) | 跨平台 Ghostty 和终端工具配置 | [English](Ghostty/README.md) · [中文](Ghostty/README_ZH.md) · [配置](Ghostty/config.ghostty) |
 | [`ZooKeeper/`](ZooKeeper/) | ZooKeeper 运维文档，包括事故处理 Runbook | [English](ZooKeeper/README.md) · [中文](ZooKeeper/README_ZH.md) |
 | [`Kubernetes/`](Kubernetes/) | Kubernetes 运维文档，包括事故处理 Runbook | [English](Kubernetes/README.md) · [中文](Kubernetes/README_ZH.md) |
 | [`Nginx/`](Nginx/) | 面向初级运维的 Nginx 与 OpenResty 部署、运维指南 | [English](Nginx/README.md) · [中文](Nginx/README_ZH.md) |
