@@ -1,46 +1,46 @@
 ---
 name: git-delivery
-description: "GitHub-only Git delivery workflow driven by the gh CLI: validate changes, create a feature branch, stage only relevant files, commit, push, open a pull request, merge it, and delete the branch. Use when the user asks to commit, push, open or merge a pull request, deliver, publish, or release finished GitHub work, or explicitly invokes $git-delivery. Requires GitHub and the gh CLI. Stop and ask before acting when unrelated changes, secrets, merge conflicts, or destructive operations are involved."
+description: "GitHub-only delivery workflow: validate changes, branch, stage, commit, push, and open a pull request. Use when the user asks to commit, push, open a pull request, deliver, publish, or release GitHub work, or invokes $git-delivery. Merge and delete branches only when explicitly requested. Requires gh."
 ---
 
 # Git Delivery (GitHub + gh CLI)
 
-Deliver completed local work to the default branch via a GitHub pull request, then clean up. GitHub-only; use the gh CLI for all remote operations.
+Deliver local work through a GitHub pull request. Use `gh` for GitHub API/PR operations and `git` for local work and transport. Merge or delete only on explicit request.
 
 ## Preflight
 
 1. `gh auth status` — confirm access; stop if not authenticated.
 2. `gh repo view --json defaultBranchRef -q .defaultBranchRef.name` — get the default branch (used below).
-3. `git status --short` — note unrelated/uncommitted changes; never stage or commit them.
+3. Snapshot `git status --short`, `git diff --cached --name-only`, and `git diff --name-only`; stop if any existing change is unrelated, including staged files.
 4. Run applicable validation (docs: link/EN-ZH check; code: tests/build/lint). Stop and ask if it fails or the scope is unclear.
 
 ## Starting states
 
-- **State A — uncommitted changes**: step 1 carries them to the new branch; in step 2 stage only this task's paths.
-- **State B — commits already on the local default branch** (ahead of origin): never push the default branch directly. In step 1 branch from your local default (no `origin/` prefix) so the commits move onto the branch; after step 3's push, restore the local default per step 3's preconditions.
-- **State C — already on a feature branch**: `git fetch origin`, verify only this task's commits (`git log origin/<default>..HEAD --oneline`), push, continue from step 4.
-- Uncommitted changes plus local commits at once: commit the relevant changes first or stop and ask.
+- **State A — uncommitted changes**: carry them to a new branch; stage only task paths.
+- **State B — local default is ahead of origin**: verify every ahead commit is this task; branch from local default; do not create an empty commit.
+- **State C — feature branch**: fetch and verify `git log origin/<default>..HEAD --oneline` contains only this task; stop on anything unexpected, then push and continue at step 4.
+- Mixed uncommitted changes and local commits: stop and ask.
 
 ## Deliver
 
-1. **Branch from the latest base**: `git fetch origin`; `git switch -c <type>/<slug> origin/<default>` (reuse the branch with `git switch` if it already exists). State B: no `origin/` prefix. State C: skip steps 1–3.
-2. **Stage only this task's paths**: `git add <paths>`; verify with `git status --short` and `git diff --cached --stat`. An empty staged diff is expected in State B.
-3. **Commit and push**: `git commit -m "<type>: <subject>"` (`docs|feat|fix`); `git push -u origin <branch>`. State B: after the push, restore the local default with `git switch <default> && git reset --hard origin/<default>` only when (1) push succeeded, (2) the branch holds every commit, (3) no unrelated uncommitted changes.
-4. **Open the PR (idempotent)**: `gh pr view <branch> --json number -q .number 2>/dev/null || gh pr create --base <default> --head <branch> --title "<title>" --body "<summary>"`; then `PR=$(gh pr view <branch> --json number -q .number)`.
-5. **Merge gate**: wait for a terminal state with `gh pr checks $PR --watch`; if no checks are configured, note that in the report. `gh pr view $PR --json mergeable,mergeStateStatus -q '"\(.mergeable)/\(.mergeStateStatus)"'` must be `MERGEABLE/CLEAN`. Never merge a failing or conflicting PR.
-6. **Merge and clean up**: `gh pr merge $PR --squash --delete-branch`; fall back to `--merge` if squash is unavailable and say so.
-7. **Sync local**: `git switch <default>`; `git pull --ff-only`; `git fetch --prune origin`. If `pull --ff-only` fails, stop — no `--rebase` or force.
-8. **Verify**: `MERGED=$(gh pr view $PR --json mergeCommit -q .mergeCommit.oid)`; `git merge-base --is-ancestor $MERGED <default>` must exit 0; `git status --short` shows no new changes from this flow; `<branch>` is gone locally (`git branch -a`) and remotely (`git ls-remote --heads origin <branch>` empty).
-9. **Rollback**: if the merged work is broken, `git switch -c fix/revert-<slug> origin/<default>`; `git revert <sha>`; push; PR; merge via the same flow.
-10. **Hard rules**: never push the default branch directly; never force-push shared branches; only delete non-default branches.
+1. **Branch**: `git fetch origin`; State A uses `git switch -c <type>/<slug> origin/<default>`, State B uses local default, and State C skips this step. Inspect any reused branch first.
+2. **Stage**: `git add <paths>`; `git diff --cached --name-only` must contain only task paths; review the cached stat.
+3. **Commit and push**: State A commits using the repository convention; State B does not commit. Push with `git push -u origin <branch>`. State B restores local default only after the branch contains the old tip and the worktree is clean.
+4. **Open the PR**: query with `gh pr list --head <branch>`; create only after a successful empty result, then read its number. Stop on query errors.
+5. **Merge gate**: without an explicit merge request, report the PR and stop. Otherwise wait for checks (note if none exist), require `MERGEABLE/CLEAN`, and satisfy required reviews/checks.
+6. **Merge and clean up**: `gh pr merge $PR --squash --delete-branch`. If squash is rejected as unavailable, stop and ask before changing merge strategy.
+7. **Sync local**: `git switch <default>`; `git pull --ff-only`; `git fetch --prune origin`. If pull fails, stop — no rebase or force.
+8. **Verify**: require PR state `MERGED`; read `mergeCommit`, verify it is an ancestor of `<default>`, compare `git status --short` with the preflight baseline, and verify `<branch>` is gone locally and from `git ls-remote --heads origin <branch>`.
+9. **Rollback**: branch from `origin/<default>`; use `git revert <sha>` for a squash commit or `git revert -m 1 <sha>` for a merge commit; then use the same PR flow.
+10. **Hard rules**: never push the default branch directly, force-push shared branches, or delete the default branch; never merge or delete without explicit user authorization.
 
 ## Stop and ask
 
-- Unrelated worktree changes exist (keep them untouched).
-- Secrets, credentials, internal addresses, or irreversible deletion are involved.
-- Merge conflicts, a remote branch changed under you, or any step fails (leave the working tree as-is, no forced cleanup).
+- Unrelated worktree or staged changes exist; secrets or credentials are involved.
+- An unexpected commit, merge conflict, remote branch change, validation failure, command error, or unsupported merge strategy occurs.
+- Leave the working tree as-is; do not force cleanup.
 
 ## Notes
 
-- GitHub-only; requires an authenticated gh CLI.
+- GitHub-only; requires an authenticated `gh` CLI.
 - Follow repo-level AGENTS.md or user overrides when they conflict with these defaults.
