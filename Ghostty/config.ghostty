@@ -1,24 +1,17 @@
-# Font
-font-family = JetBrainsMono Nerd Font
+# Cross-platform Ghostty configuration.
+
+# Appearance
 font-size = 12
-font-thicken = true
-font-thicken-strength = 100
-
-# Appearance: follow macOS Auto Appearance.
 theme = light:Catppuccin Latte,dark:Catppuccin Mocha
-window-theme = system
-
-# Generate a theme-aware 256-color palette so Codex and other TUIs remain
-# readable in both the light and dark themes.
 palette-generate = true
 palette-harmonious = true
+window-theme = system
 window-padding-x = 12
 window-padding-y = 12
 window-padding-balance = true
-macos-titlebar-style = tabs
 
 # Behavior
-confirm-close-surface = false
+confirm-close-surface = always
 quit-after-last-window-closed = true
 cursor-style = bar
 cursor-style-blink = true
@@ -33,9 +26,8 @@ keybind = ctrl+shift+j=goto_split:bottom
 keybind = ctrl+shift+k=goto_split:top
 keybind = ctrl+shift+d=new_split:right
 keybind = ctrl+shift+minus=new_split:down
+keybind = ctrl+shift+w=close_surface
 keybind = shift+enter=text:\x1b\r
 
-# Shell integration
-shell-integration = zsh
+# Let Ghostty detect bash or zsh automatically.
 shell-integration-features = cursor,sudo,title,path,ssh-env,ssh-terminfo
-macos-option-as-alt = left
