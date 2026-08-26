@@ -2,6 +2,8 @@
 
 English version: [README.md](README.md)
 
+知识库站点：[GitHub Pages](https://kelvinlee97.github.io/engineering/)
+
 ## 目的
 
 这个仓库是一个个人工程资源集合，用于学习、整理和复用技术知识。内容包括技术研究、工具实践记录，以及可跨项目迁移的工程配置。

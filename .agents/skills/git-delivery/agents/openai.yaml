@@ -1,6 +1,6 @@
 interface:
   display_name: "Git Delivery"
-  short_description: "GitHub PR delivery with explicit merge authorization"
-  default_prompt: "Use $git-delivery to validate, branch, commit, push, and open a PR; merge only when I explicitly ask."
+  short_description: "GitHub PR and batch delivery with explicit merge authorization"
+  default_prompt: "Use $git-delivery to validate, branch, commit, push, and open a PR; for batch content use one PR per batch; merge only when I explicitly ask."
 policy:
   allow_implicit_invocation: true
