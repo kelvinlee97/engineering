@@ -5,7 +5,7 @@ import json
 import sys
 from pathlib import Path
 
-from yt_transcript.capture import load_browser_export, validate_reads, write_local_capture
+from yt_transcript.capture import load_browser_export, validate_capture, write_local_capture
 from yt_transcript.models import CaptureStatus
 from yt_transcript.publication import validate_publication
 
@@ -38,8 +38,8 @@ def main() -> int:
     args = _parser().parse_args()
     try:
         if args.command == "capture":
-            metadata, segments, second_read = load_browser_export(args.browser_export)
-            validation = validate_reads(metadata, segments, second_read)
+            metadata, segments = load_browser_export(args.browser_export)
+            validation = validate_capture(metadata, segments)
             payload = {
                 "status": validation.status.value,
                 "segment_count": validation.segment_count,

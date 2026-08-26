@@ -7,11 +7,11 @@ import re
 from dataclasses import asdict
 from pathlib import Path
 from typing import Any
-from urllib.parse import parse_qs, urlparse
 
 from yt_transcript.models import CaptureStatus, Chunk, Segment, ValidationResult, VideoMetadata
 
 _WORD = re.compile(r"[\w’'-]+")
+_CJK = re.compile(r"[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uac00-\ud7af]")
 
 
 def _seconds(value: object) -> float:
@@ -27,7 +27,7 @@ def _seconds(value: object) -> float:
 
 def _segments(value: object) -> list[Segment]:
     if not isinstance(value, list) or not value:
-        raise ValueError("each browser read must contain one or more segments")
+        raise ValueError("browser transcript must contain one or more segments")
     segments: list[Segment] = []
     for index, item in enumerate(value, start=1):
         if not isinstance(item, dict):
@@ -60,16 +60,16 @@ def _metadata(value: object) -> VideoMetadata:
         raise ValueError("channel must be a string or null")
     source_url = value["source_url"].strip()
     video_id = value["video_id"].strip()
-    parsed = urlparse(source_url)
-    source_id = parse_qs(parsed.query).get("v", [None])[0]
-    if (
-        parsed.scheme != "https"
-        or parsed.netloc not in {"www.youtube.com", "youtube.com"}
-        or parsed.path != "/watch"
-    ):
+    source_match = re.fullmatch(
+        r"https://www\.youtube\.com/watch\?v=([A-Za-z0-9_-]+)", source_url
+    )
+    if source_match is None:
         raise ValueError("source_url must be a normalized YouTube watch URL")
+    source_id = source_match.group(1)
     if source_id != video_id:
         raise ValueError("source_url video ID does not match video_id")
+    if not re.fullmatch(r"[A-Za-z0-9_-]{11}", video_id):
+        raise ValueError("video_id must be 11 characters")
     return VideoMetadata(
         source_url=source_url,
         video_id=video_id,
@@ -81,18 +81,27 @@ def _metadata(value: object) -> VideoMetadata:
     )
 
 
-def load_browser_export(path: Path) -> tuple[VideoMetadata, list[Segment], list[Segment]]:
+def load_browser_export(path: Path) -> tuple[VideoMetadata, list[Segment]]:
     payload: Any = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(payload, dict):
         raise ValueError("browser export must be a JSON object")
     metadata = _metadata(payload.get("metadata"))
     segments = _segments(payload.get("segments"))
-    second_read = _segments(payload.get("second_read"))
-    return metadata, segments, second_read
+    return metadata, segments
 
 
 def _canonical(segments: list[Segment]) -> str:
-    return "\n".join(f"{segment.start_seconds:.3f}\t{segment.text}" for segment in segments) + "\n"
+    return json.dumps(
+        [(segment.start_seconds, segment.text) for segment in segments],
+        ensure_ascii=False,
+        separators=(",", ":"),
+    )
+
+
+def _text_units(text: str) -> int:
+    cjk_units = len(_CJK.findall(text))
+    non_cjk_text = _CJK.sub(" ", text)
+    return cjk_units + len(_WORD.findall(non_cjk_text))
 
 
 def _chunks(segments: list[Segment], *, target_words: int = 1000) -> list[Chunk]:
@@ -100,7 +109,7 @@ def _chunks(segments: list[Segment], *, target_words: int = 1000) -> list[Chunk]
     start_index = 0
     words = 0
     for index, segment in enumerate(segments, start=1):
-        words += len(_WORD.findall(segment.text))
+        words += _text_units(segment.text)
         if words >= target_words and index < len(segments):
             first = segments[start_index]
             last = segments[index - 1]
@@ -133,38 +142,26 @@ def _chunks(segments: list[Segment], *, target_words: int = 1000) -> list[Chunk]
     return chunks
 
 
-def validate_reads(
-    metadata: VideoMetadata, segments: list[Segment], second_read: list[Segment]
-) -> ValidationResult:
-    first = segments
+def validate_capture(metadata: VideoMetadata, segments: list[Segment]) -> ValidationResult:
     errors: list[str] = []
     warnings: list[str] = []
-    first_hash = hashlib.sha256(_canonical(first).encode()).hexdigest()
-    second_hash = hashlib.sha256(_canonical(second_read).encode()).hexdigest()
-    if second_hash != first_hash:
-        errors.append("the two browser reads do not match")
-    if len(second_read) != len(first):
-        errors.append("the two browser reads have different segment counts")
-    if second_read[0].start_seconds != first[0].start_seconds:
-        errors.append("the two browser reads have different first timestamps")
-    if second_read[-1].start_seconds != first[-1].start_seconds:
-        errors.append("the two browser reads have different last timestamps")
+    transcript_hash = hashlib.sha256(_canonical(segments).encode()).hexdigest()
 
     previous_start = -1.0
-    for segment in first:
-        if segment.start_seconds <= previous_start:
-            errors.append(f"timestamps are not strictly increasing at {segment.segment_id}")
+    for segment in segments:
+        if segment.start_seconds < previous_start:
+            errors.append(f"timestamps move backwards at {segment.segment_id}")
             break
         previous_start = segment.start_seconds
 
     start_tolerance = min(15.0, metadata.duration_seconds * 0.03)
-    if first[0].start_seconds > start_tolerance:
+    if segments[0].start_seconds > start_tolerance:
         errors.append("first segment starts too late")
     end_tolerance = max(15.0, metadata.duration_seconds * 0.03)
-    if metadata.duration_seconds - first[-1].start_seconds > end_tolerance:
+    if metadata.duration_seconds - segments[-1].start_seconds > end_tolerance:
         errors.append("last segment ends too early")
 
-    for previous, current in zip(first, first[1:], strict=False):
+    for previous, current in zip(segments, segments[1:], strict=False):
         gap = current.start_seconds - previous.start_seconds
         if gap > 60:
             warnings.append(
@@ -174,11 +171,11 @@ def validate_reads(
     status = CaptureStatus.COMPLETE if not errors else CaptureStatus.PARTIAL
     return ValidationResult(
         status=status,
-        transcript_sha256=first_hash,
-        segment_count=len(first),
-        first_start_seconds=first[0].start_seconds,
-        last_start_seconds=first[-1].start_seconds,
-        chunks=_chunks(first),
+        transcript_sha256=transcript_hash,
+        segment_count=len(segments),
+        first_start_seconds=segments[0].start_seconds,
+        last_start_seconds=segments[-1].start_seconds,
+        chunks=_chunks(segments),
         warnings=warnings,
         errors=errors,
     )
@@ -200,7 +197,7 @@ def write_local_capture(
     validation: ValidationResult,
 ) -> None:
     if validation.status is not CaptureStatus.COMPLETE:
-        raise ValueError("cannot write a complete local capture from invalid reads")
+        raise ValueError("cannot write a complete local capture from an invalid transcript")
     output_dir.mkdir(parents=True, exist_ok=True)
     transcript = [
         f"# Transcript: {metadata.title}",
@@ -244,6 +241,7 @@ def write_local_capture(
             "unsupported_english_claims": [],
             "unsupported_chinese_claims": [],
             "timestamp_mismatches": [],
+            "unresolved_capture_warnings": list(validation.warnings),
             "status": "pending",
         },
     }
