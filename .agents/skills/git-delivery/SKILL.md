@@ -1,59 +1,43 @@
 ---
 name: git-delivery
-description: "GitHub-only delivery workflow: validate changes, branch, stage, commit, push, and open a pull request. Use when the user asks to commit, push, open a pull request, deliver, publish, or release GitHub work, or invokes $git-delivery. Batch content publication uses one PR per batch; merge and delete branches only when explicitly requested. Requires gh."
+description: "Use when the user explicitly requests GitHub pull-request delivery or invokes $git-delivery. Validate, branch, stage, commit, push, and open a PR only as requested; merge and delete branches require separate explicit authorization. Requires authenticated gh."
 ---
 
-# Git Delivery (GitHub + gh CLI)
+# Git Delivery
 
-Deliver local work through a GitHub pull request. Use `gh` for GitHub API/PR operations and `git` for local work and transport. Merge or delete only on explicit request.
+Use `git` locally and `gh` for GitHub; follow the nearest `AGENTS.md`.
+
+## Scope
+
+Run only requested stages: commit/push alone does not imply a PR; PR delivery stops before merge unless requested.
 
 ## Preflight
 
-1. `gh auth status` — confirm access; stop if not authenticated.
-2. `gh repo view --json defaultBranchRef -q .defaultBranchRef.name` — get the default branch (used below).
-3. Snapshot `git status --short`, `git diff --cached --name-only`, and `git diff --name-only`; stop if any existing change is unrelated, including staged files.
-4. Run applicable validation (docs: link/EN-ZH check; code: tests/build/lint). Stop and ask if it fails or the scope is unclear.
+1. Run `gh auth status`; stop on failure.
+2. Run `gh repo view --json defaultBranchRef,deleteBranchOnMerge`; get the default branch, confirm `origin` is the push remote, and require deletion authorization if auto-delete is true.
+3. Record `git status --short --branch`, `git diff --cached --name-only`, and `git diff --name-only`. If any existing path is outside the task, stop; never reset or clean it.
+4. Read nearest `AGENTS.md`; run applicable checks for changed paths; stop on failure or ambiguity.
 
-## Starting states
+## Classify the starting state
 
-- **State A — uncommitted changes**: carry them to a new branch; stage only task paths.
-- **State B — local default is ahead of origin**: verify every ahead commit is this task; branch from local default; do not create an empty commit.
-- **State C — feature branch**: fetch and verify `git log origin/<default>..HEAD --oneline` contains only this task; stop on anything unexpected, then push and continue at step 4.
-- Mixed uncommitted changes and local commits: stop and ask.
+After `git fetch origin`, inspect `git log origin/<default>..HEAD --oneline`:
+
+- **A** — uncommitted task changes, no task commits ahead: branch from `origin/<default>` and carry them.
+- **B** — local default has only task commits ahead and is clean: branch from local default; no empty commit or default push.
+- **C** — clean feature branch has only task commits ahead: reuse it and push when requested.
+- Detached HEAD, mixed changes plus commits, unexpected commits, missing `origin`, or a branch conflict: stop.
 
 ## Deliver
 
-1. **Branch**: `git fetch origin`; State A uses `git switch -c <type>/<slug> origin/<default>`, State B uses local default, and State C skips this step. Inspect any reused branch first.
-2. **Stage**: `git add <paths>`; `git diff --cached --name-only` must contain only task paths; review the cached stat.
-3. **Commit and push**: State A commits using the repository convention; State B does not commit. Push with `git push -u origin <branch>`. State B restores local default only after the branch contains the old tip and the worktree is clean.
-4. **Open the PR**: query with `gh pr list --head <branch>`; create only after a successful empty result, then read its number. Stop on query errors.
-5. **Merge gate**: without an explicit merge request, report the PR and stop. Otherwise wait for checks (note if none exist), require `MERGEABLE/CLEAN`, and satisfy required reviews/checks.
-6. **Merge and clean up**: `gh pr merge $PR --squash --delete-branch`. If squash is rejected as unavailable, stop and ask before changing merge strategy.
-7. **Sync local**: `git switch <default>`; `git pull --ff-only`; `git fetch --prune origin`. If pull fails, stop — no rebase or force.
-8. **Verify**: require PR state `MERGED`; read `mergeCommit`, verify it is an ancestor of `<default>`, compare `git status --short` with the preflight baseline, and verify `<branch>` is gone locally and from `git ls-remote --heads origin <branch>`.
-9. **Rollback**: branch from `origin/<default>`; use `git revert <sha>` for a squash commit or `git revert -m 1 <sha>` for a merge commit; then use the same PR flow.
-10. **Hard rules**: never push the default branch directly, force-push shared branches, or delete the default branch; never merge or delete without explicit user authorization.
+1. **Branch**: A uses `git switch -c <type>/<slug> origin/<default>`; B uses local default; C reuses the current branch. Inspect existing branches; never reset one without authorization.
+2. **Stage**: `git add <paths>`; staged paths must contain only the task, then review the cached stat.
+3. **Commit/push**: A commits using the repository convention; B creates no empty commit; C is already committed. Run `git push -u origin <branch>` only when requested.
+4. **PR**: query `gh pr list --head <branch> --state open --limit 1 --json number`; reuse a non-empty result, otherwise run `gh pr create --base <default> --head <branch> --title "<title>" --body "<summary>"`, then read its number with `gh pr view <branch> --json number -q .number`. Inspect closed/merged history before creating another.
+5. **Merge gate**: without an explicit merge request, report the PR and stop. Otherwise run `gh pr checks <PR> --watch`, require `MERGEABLE/CLEAN` and required reviews/checks, and never self-approve or use `--admin`.
+6. **Merge**: run `gh pr merge <PR> --squash`; add `--delete-branch` only with separate deletion authorization, and stop if repository auto-delete is enabled without that authorization. If squash or a merge queue is unavailable, stop.
+7. **Sync**: after merging, run `git switch <default>`, `git pull --ff-only origin <default>`, and `git fetch --prune origin`. If pull fails, stop.
+8. **Verify**: require state `MERGED`, read `mergeCommit`, verify it is an ancestor of `<default>`, and require a clean worktree. Verify branch deletion only when authorized.
 
-## Batch content delivery
+For an explicit rollback, read [references/rollback.md](references/rollback.md).
 
-Use this mode only when the user explicitly requests batch publication. It reduces branch count without weakening the normal pull-request gate:
-
-1. Process each input independently and keep only successful, validated outputs.
-2. Create one `docs/batch-<date>-<slug>` branch for the complete batch; never create one branch per video.
-3. Stage only the batch's summaries, paired catalog changes, and required generated documentation inputs. Never stage raw transcripts, `.local/`, caches, credentials, or unrelated work.
-4. Run the YouTube publication gate for every successful video, then run the knowledge-base validator and Pages build before opening the PR.
-5. Open one PR with the batch manifest and failed-item report. A failed URL is reported once and is not retried or published.
-6. Wait for all applicable checks. Merge only with explicit authorization; after an authorized squash merge, delete only that batch branch.
-
-The batch mode never pushes `main` directly. GitHub Pages deploys only after the validated batch reaches `main`.
-
-## Stop and ask
-
-- Unrelated worktree or staged changes exist; secrets or credentials are involved.
-- An unexpected commit, merge conflict, remote branch change, validation failure, command error, or unsupported merge strategy occurs.
-- Leave the working tree as-is; do not force cleanup.
-
-## Notes
-
-- GitHub-only; requires an authenticated `gh` CLI.
-- Follow repo-level AGENTS.md or user overrides when they conflict with these defaults.
+Never push default, force-push shared branches, use `--admin`, or delete default. Stop on unrelated changes, secrets, access/remote errors, unexpected commits, conflicts, failed checks, validation/query errors, or unsupported strategies; leave the worktree unchanged.

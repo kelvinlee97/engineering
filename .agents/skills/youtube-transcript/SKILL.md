@@ -1,76 +1,30 @@
 ---
 name: youtube-transcript
-description: Read a YouTube page's visible Show transcript panel twice, retain validated local evidence, and create source-grounded English and Chinese summaries. Use when a user provides a YouTube link and requests a transcript, notes, summary, article, or bilingual version. Do not use for media downloads, speech recognition, third-party transcript services, or videos without a visible YouTube Transcript.
+description: Use when a user provides a YouTube URL and requests transcript-derived notes, summaries, articles, or bilingual versions. Perform one Chrome transcript export, report the first failure, and never download media or use non-transcript sources.
 ---
 
-# Browser-only YouTube Transcript
+# YouTube Transcript
 
-Use the in-app Browser. Take transcript text only from YouTube's visible **Show transcript** panel. Do not call `yt-dlp`, `youtube-transcript-api`, Whisper, a third-party transcript service, OCR, or infer content from the title, description, chapters, thumbnail, comments, or model memory.
+Read [references/operations.md](references/operations.md) before capture or publication. Use only the transcript exposed by the YouTube page through one Chrome `tab.content.exportYouTubeTranscript()` call. Never use timed-text URLs, page metadata, media downloads, or third-party transcript sources as transcript evidence.
 
 ## Boundaries
 
-- If the panel is unavailable, empty, unstable, or validation fails, report `blocked` or `partial`; do not publish a full-video summary.
-- Query transcript segment elements only. Do not use a whole-page DOM snapshot, screenshots, or one browser call per segment.
-- A `complete` capture proves only that two supplied browser reads have identical normalized rows and pass structural/timestamp checks. It does not prove caption accuracy, browser-export authenticity, or semantic completeness of a summary.
-- Do not add recommendations, action plans, opinions, corrections, numbers, or external facts not stated in the transcript.
+- Report `blocked` or `partial` immediately if Chrome, export parsing, or validation is unavailable or fails; do not retry or switch capture surfaces.
+- `complete` proves one normalized read passed structural coverage checks, not caption accuracy, export authenticity, or semantic completeness.
+- The workflow is one-shot: never perform a second transcript read after an export failure or success.
+- Add no outside facts, recommendations, corrections, or opinions; preserve source numbers, names, qualifiers, modality, and uncertainty in both languages.
 
-## Capture
+## Workflow
 
-1. Normalize the URL to `https://www.youtube.com/watch?v=<video-id>`. Reuse an exactly matching in-app tab or open it.
-2. Open **Show transcript** and wait for transcript segment rows, not for playback.
-3. Read only rows that contain an interactive transcript row and descendant `transcript-segment-view-model`. Extract timestamp and attributed text into ordered `{start_seconds, text}` rows. Read title, channel, duration, language, and subtitle type from the current player response.
-4. After a short wait, repeat the exact targeted query. If either read changes, scroll only the transcript panel and retry a bounded number of times. Stop as `partial` if it cannot stabilize.
-5. Save a temporary `browser-export.json` containing both complete reads. Do not calculate or supply hash fields yourself:
-
-   ```json
-   {
-     "metadata": {
-       "source_url": "https://www.youtube.com/watch?v=VIDEO_ID",
-       "video_id": "VIDEO_ID",
-       "title": "Video title",
-       "channel": "Channel name",
-       "duration_seconds": 1234,
-       "language": "en",
-       "subtitle_type": "auto-generated"
-     },
-     "segments": [{"start_seconds": 0, "text": "First segment"}],
-     "second_read": [{"start_seconds": 0, "text": "First segment"}]
-   }
-   ```
-
-6. From the engineering repository root, run the validator through the tool module:
-
-   ```bash
-   (
-     cd Codex/youtube-transcript &&
-     uv run yt-transcript capture browser-export.json \
-       --output ../../.local/youtube/<title-slug>--<video-id>
-   )
-   ```
-
-   Continue only on `complete`; then delete the temporary export. The validator writes ignored local-only `transcript.md` and `validation.json`.
-
-## Summarize and audit
-
-7. Read every deterministic chunk listed in local `validation.json`, from first through last. Record each substantive claim, definition, number, example, comparison, step, qualification, limitation, conclusion, and meaningful resource as `included`, `compressed`, or pure `cta`. For every `included` or `compressed` item, set `quote` to a verbatim excerpt from that chunk's text; the publication gate rejects any quote that is not found verbatim in its chunk.
-8. Publish only `summary.md` and `summary_zh.md` in `YouTube/<topic>/<title-slug>--<video-id>/`. Select one existing primary topic based on the complete transcript. Add reciprocal links, a source/coverage note, and matching clickable YouTube timestamps.
-9. Perform a fresh manual audit against the transcript and ledger. Record unresolved missing or unsupported claims and timestamp mismatches in `validation.json`; do not mark the audit complete while any remain.
-10. Run the structural publication gate:
-
-   ```bash
-   (
-     cd Codex/youtube-transcript &&
-     uv run yt-transcript validate-publication \
-       ../../.local/youtube/<title-slug>--<video-id>/validation.json \
-       ../../YouTube/<topic>/<title-slug>--<video-id>/summary.md \
-       ../../YouTube/<topic>/<title-slug>--<video-id>/summary_zh.md
-   )
-   ```
-
-   It checks the ledger structure, verbatim quote attribution, required timestamps, timestamp parity, and reciprocal links; it does not perform semantic verification. Publish only on `complete`.
-
-11. Update both `YouTube` catalogues. Keep raw transcripts, hashes, cue IDs, validation JSON, and tooling instructions out of published summary folders.
+1. Normalize to `https://www.youtube.com/watch?v=<11-character-video-id>` and use one exact Chrome tab.
+2. Call `tab.content.exportYouTubeTranscript()` once, and read title, channel, duration, and caption metadata from that same YouTube page.
+3. Save the parsed export as temporary `browser-export.json`; do not preserve the raw text under `/tmp` as part of the normal workflow. Do not hash the raw export.
+4. Run `yt-transcript capture`; continue only on `complete` and retain ignored local evidence. On any other status, stop and report the failure without retrying.
+5. Process every chunk; mark substantive items `included`, `compressed`, or `cta`, with quotes and source segment IDs for non-CTA items.
+6. Freshly audit both languages and resolve missing, unsupported, timestamp, and capture-warning findings.
+7. Publish only the two summary files in one existing topic folder, with reciprocal links, coverage/source notes, and same-video timestamps.
+8. Run `yt-transcript validate-publication`; publish only on `complete`, then update both catalogues.
 
 ## Delivery report
 
-Report source, language/subtitle type, duration, captured time range, captured/processed segment counts, audit findings, structural validation status, and any remaining manual-verification limitation.
+Report source, language/subtitle type, duration, captured range, counts, warnings, audit findings, structural status, failure reason when blocked/partial, and remaining limits.
