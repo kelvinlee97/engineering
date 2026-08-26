@@ -1,6 +1,6 @@
 ---
 name: git-delivery
-description: "GitHub-only delivery workflow: validate changes, branch, stage, commit, push, and open a pull request. Use when the user asks to commit, push, open a pull request, deliver, publish, or release GitHub work, or invokes $git-delivery. Merge and delete branches only when explicitly requested. Requires gh."
+description: "GitHub-only delivery workflow: validate changes, branch, stage, commit, push, and open a pull request. Use when the user asks to commit, push, open a pull request, deliver, publish, or release GitHub work, or invokes $git-delivery. Batch content publication uses one PR per batch; merge and delete branches only when explicitly requested. Requires gh."
 ---
 
 # Git Delivery (GitHub + gh CLI)
@@ -33,6 +33,19 @@ Deliver local work through a GitHub pull request. Use `gh` for GitHub API/PR ope
 8. **Verify**: require PR state `MERGED`; read `mergeCommit`, verify it is an ancestor of `<default>`, compare `git status --short` with the preflight baseline, and verify `<branch>` is gone locally and from `git ls-remote --heads origin <branch>`.
 9. **Rollback**: branch from `origin/<default>`; use `git revert <sha>` for a squash commit or `git revert -m 1 <sha>` for a merge commit; then use the same PR flow.
 10. **Hard rules**: never push the default branch directly, force-push shared branches, or delete the default branch; never merge or delete without explicit user authorization.
+
+## Batch content delivery
+
+Use this mode only when the user explicitly requests batch publication. It reduces branch count without weakening the normal pull-request gate:
+
+1. Process each input independently and keep only successful, validated outputs.
+2. Create one `docs/batch-<date>-<slug>` branch for the complete batch; never create one branch per video.
+3. Stage only the batch's summaries, paired catalog changes, and required generated documentation inputs. Never stage raw transcripts, `.local/`, caches, credentials, or unrelated work.
+4. Run the YouTube publication gate for every successful video, then run the knowledge-base validator and Pages build before opening the PR.
+5. Open one PR with the batch manifest and failed-item report. A failed URL is reported once and is not retried or published.
+6. Wait for all applicable checks. Merge only with explicit authorization; after an authorized squash merge, delete only that batch branch.
+
+The batch mode never pushes `main` directly. GitHub Pages deploys only after the validated batch reaches `main`.
 
 ## Stop and ask
 

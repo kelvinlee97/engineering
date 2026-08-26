@@ -2,11 +2,11 @@
 
 ## Project Structure & Module Organization
 
-This repository is a public, bilingual engineering knowledge base. Root `README.md` is the English entry point and `README_ZH.md` is its Chinese counterpart. Keep paired documents aligned in structure, links, and factual scope. Topic material lives in `apple/`, `Claude/`, `Codex/`, `Git/`, `Ghostty/`, and `YouTube/`. Use `summary.md` and `summary_zh.md` for published video summaries. The only Python package is `Codex/youtube-transcript/`, with source in `src/yt_transcript/` and tests in `tests/`.
+This repository is a public, bilingual engineering knowledge base. Root `README.md` is the English entry point and `README_ZH.md` is its Chinese counterpart. Keep paired documents aligned in structure, links, and factual scope. Topic material lives in `apple/`, `Claude/`, `Codex/`, `Git/`, `Ghostty/`, and `YouTube/`. Use `summary.md` and `summary_zh.md` for published video summaries. The only Python package is `Codex/youtube-transcript/`, with source in `src/yt_transcript/` and tests in `tests/`. GitHub Pages is the read-only presentation layer; the repository remains the canonical source.
 
 ## Build, Test, and Development Commands
 
-There is no repository-wide build. Run checks for the module you change:
+There is no application build. Run checks for the module or site area you change:
 
 ```bash
 cd Codex/youtube-transcript
@@ -18,6 +18,18 @@ uv run pytest                 # test the package
 cd ../../Ghostty
 ghostty +validate-config --config-file=config.ghostty  # validate Ghostty configuration
 ```
+
+Knowledge site:
+
+```bash
+python3 scripts/knowledge_base.py validate
+python3 scripts/knowledge_base.py stage --output .pages-build
+uvx --from mkdocs==1.6.1 --with mkdocs-material==9.7.7 mkdocs build --strict
+```
+
+The site stages only tracked paired Markdown documents and published YouTube summaries. It excludes `.agents/`, `AGENTS.md`, `.local/`, `.plugin-eval/`, caches, virtual environments, and raw transcript evidence.
+
+For multiple YouTube summaries, use one pull request per batch. Do not create one branch per video or push `main` directly; the Pages deployment runs only after the validated batch is merged.
 
 ## Coding Style & Naming Conventions
 

@@ -2,6 +2,8 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+Knowledge site: [GitHub Pages](https://kelvinlee97.github.io/engineering/)
+
 ## Purpose
 
 This repository is a personal collection of engineering resources for learning, organizing, and reusing technical knowledge. It brings together technology research, practical tool notes, and portable engineering configuration that may be useful across projects.
