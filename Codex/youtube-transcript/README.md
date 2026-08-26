@@ -1,10 +1,10 @@
-# Browser-only YouTube Transcript Skill
+# YouTube Transcript Skill
 
 中文版本：[README_ZH.md](README_ZH.md)
 
-This local-first Codex Skill reads only the transcript that YouTube displays after **Show transcript** is opened. It does not download media, call `yt-dlp` or a third-party transcript API, use Whisper, or infer missing content from a title or description.
+This local-first Codex Skill reads only the transcript exposed by the YouTube page through one Chrome `tab.content.exportYouTubeTranscript()` call. If Chrome export or validation fails, it reports the failure without retrying or switching sources. It does not download media, call `yt-dlp` or a third-party transcript API, use Whisper, or infer missing content from a title or description.
 
-The user gives Codex a YouTube link. Codex opens the page in the in-app browser, reads the transcript DOM twice, validates both reads, saves a local `transcript.md`, and only then writes reader-facing English and Chinese summaries.
+The user gives Codex a YouTube link. Codex exports one complete transcript, validates its coverage, saves a local `transcript.md`, and only then writes reader-facing English and Chinese summaries. A failed first attempt stops the workflow.
 
 ## Output contract
 
@@ -24,13 +24,13 @@ YouTube/<topic>/<title-slug>--<video-id>/
 
 ## Capture contract
 
-A browser export retains two complete ordered reads. The local validator derives their count, endpoints, and canonical SHA-256, then requires non-empty segments with strictly increasing finite timestamps, a normalized URL/video-ID match, a start close to the beginning, and an end close to the reported duration. It records gaps over 60 seconds as warnings for manual audit.
+A Chrome export retains one complete ordered read. The helper returns temporary text, which is converted to the JSON input below; the local validator then derives its count, endpoints, and canonical SHA-256. It requires non-empty segments with non-decreasing finite timestamps, an exact normalized URL/video-ID match, a start close to the beginning, and an end close to the reported duration. It records gaps over 60 seconds as warnings that must be resolved before publication. Export or validation failure stops the workflow.
 
-It produces deterministic chunks of roughly 1,000 words and a local `validation.json` coverage ledger. A complete capture proves structural consistency of the supplied reads; it does not prove browser-export authenticity, semantic completeness of a summary, or that YouTube's captions are word-perfect.
+It produces deterministic chunks of roughly 1,000 text units—English word runs and individual CJK characters—and a local `validation.json` coverage ledger. A complete capture proves structural coverage of the supplied read; it does not prove browser-export authenticity, semantic completeness of a summary, or that YouTube's captions are word-perfect.
 
 ## Summary contract
 
-Before publishing, the Skill must process every chunk, record every substantive item as `included`, `compressed`, or a pure `cta`, then independently audit both summaries. Publication is blocked unless:
+Before publishing, the Skill must process every chunk, record every substantive item as `included`, `compressed`, or a pure `cta` with source segment IDs and quotes, then perform a fresh bilingual audit. Publication is blocked unless:
 
 ```text
 processed segments = captured segments
@@ -44,7 +44,7 @@ No summary may add recommendations, plans, corrections, or outside facts. Pure s
 
 ## Local validator
 
-The validator uses only the Python standard library. It accepts a temporary browser export with two reads:
+The validator uses only the Python standard library. It accepts a temporary browser export with one complete read:
 
 ```json
 {
@@ -57,8 +57,7 @@ The validator uses only the Python standard library. It accepts a temporary brow
     "language": "en",
     "subtitle_type": "auto-generated"
   },
-  "segments": [{"start_seconds": 0, "text": "First segment"}],
-  "second_read": [{"start_seconds": 0, "text": "First segment"}]
+  "segments": [{"start_seconds": 0, "text": "First segment"}]
 }
 ```
 
@@ -80,7 +79,7 @@ uv run yt-transcript validate-publication \
   ../../YouTube/<topic>/<title-slug>--<video-id>/summary_zh.md
 ```
 
-This gate checks ledger structure, required timestamps, timestamp parity, and reciprocal links; it does not determine whether a summary is semantically complete or source-faithful.
+This gate checks ledger structure and contiguous chunks, source video ID, timestamp range, source segment binding, required timestamps, timestamp parity, unresolved capture warnings, and reciprocal links; it does not determine whether a summary is semantically complete or source-faithful.
 
 ## Development
 

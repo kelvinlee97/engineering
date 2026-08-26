@@ -4,3 +4,4 @@
 .pages-build/
 .pages-site/
 __pycache__/
+.plugin-eval/
