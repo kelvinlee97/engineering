@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% set page_language = 'en' %}
+{% if page and page.meta and page.meta.kb_language %}
+  {% set page_language = page.meta.kb_language %}
+{% endif %}
+
+{% block extrahead %}
+  {{ super() }}
+  {% if page_language == 'zh' %}
+    <script>document.documentElement.lang = 'zh-CN';</script>
+  {% endif %}
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const search = document.getElementById('__search');
+      const trigger = document.querySelector('.kb-search-trigger');
+      if (!search || !trigger) return;
+      search.addEventListener('change', () => {
+        if (!search.checked) window.requestAnimationFrame(() => trigger.focus());
+      });
+    });
+  </script>
+{% endblock %}
+
+{% block content %}
+  <div lang="{{ 'zh-CN' if page_language == 'zh' else 'en' }}">
+    {% include "partials/content.html" %}
+  </div>
+{% endblock %}
