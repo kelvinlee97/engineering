@@ -1,44 +1,39 @@
 # Repository Guidelines
 
-## Project Structure & Module Organization
+Applies to all files in this repository; a deeper `AGENTS.md` overrides it.
 
-This repository is a public, bilingual engineering knowledge base. Root `README.md` is the English entry point and `README_ZH.md` is its Chinese counterpart. Keep paired documents aligned in structure, links, and factual scope. Topic material lives in `apple/`, `Claude/`, `Codex/`, `Git/`, `Ghostty/`, and `YouTube/`. Use `summary.md` and `summary_zh.md` for published video summaries. The only Python package is `Codex/youtube-transcript/`, with source in `src/yt_transcript/` and tests in `tests/`. GitHub Pages is the read-only presentation layer; the repository remains the canonical source.
+## Scope
 
-## Build, Test, and Development Commands
+This is a public bilingual engineering knowledge base. When both exist, keep paired `README.md` and `README_ZH.md` files aligned in structure, links, and factual scope. See `README.md` for the repository catalogue. Published YouTube entries contain only `summary.md` and `summary_zh.md`; raw transcript evidence stays in ignored `.local/youtube/`.
 
-There is no application build. Run checks for the module or site area you change:
+The Python module is `Codex/youtube-transcript/`; code is under `Codex/youtube-transcript/src/yt_transcript/` and tests under `Codex/youtube-transcript/tests/test_*.py`. Use lowercase, hyphenated slugs for YouTube topics and titles.
 
-```bash
-cd Codex/youtube-transcript
-uv sync --frozen --group dev  # install locked development dependencies
-uv run ruff check .           # lint
-uv run mypy src               # strict type-check
-uv run pytest                 # test the package
+## Checks
 
-cd ../../Ghostty
-ghostty +validate-config --config-file=config.ghostty  # validate Ghostty configuration
-```
+There is no repository-wide build. Run only checks for the changed area.
 
-Knowledge site:
+Python:
 
 ```bash
-python3 scripts/knowledge_base.py validate
-python3 scripts/knowledge_base.py stage --output .pages-build
-uvx --from mkdocs==1.6.1 --with mkdocs-material==9.7.7 mkdocs build --strict
+(cd Codex/youtube-transcript && \
+  uv sync --frozen --group dev && \
+  uv run ruff check . && \
+  uv run mypy src && \
+  uv run pytest)
 ```
 
-The site stages only tracked paired Markdown documents and published YouTube summaries. It excludes `.agents/`, `AGENTS.md`, `.local/`, `.plugin-eval/`, caches, virtual environments, and raw transcript evidence.
+Ghostty:
 
-For multiple YouTube summaries, use one pull request per batch. Do not create one branch per video or push `main` directly; the Pages deployment runs only after the validated batch is merged.
+```bash
+(cd Ghostty && ghostty +validate-config --config-file=config.ghostty)
+```
 
-## Coding Style & Naming Conventions
+For Python code changes, add or update focused regression tests. For YouTube transcript work, follow `.agents/skills/youtube-transcript/SKILL.md`; publish only when its publication gate reports `complete`.
 
-Use four spaces in Python and keep lines within Ruff's 100-character limit. Maintain strict type checking and place Python tests in `tests/test_*.py`. Keep terminal setup documentation direct and platform-specific; validate Ghostty configuration with the Ghostty CLI. Use lowercase, hyphenated directory slugs for video topics and titles. Keep prose direct, reader-facing, and based on primary or official sources; label personal interpretation clearly.
+## Style and Delivery
 
-## Testing & Publication
+Use four spaces in Python, Ruff's 100-character limit, and strict mypy. Keep prose direct and based on primary or official sources; keep terminal setup platform-specific and label personal interpretation.
 
-Run the relevant commands above before submitting changes. For transcript changes, update or add focused regression tests and run all lint, type, and test checks. Before publishing a video summary, run `yt-transcript validate-publication`; it must report complete. Keep capture evidence in ignored `.local/youtube/` only—never publish raw transcripts, cue IDs, hashes, or validation JSON.
+Use concise Conventional Commit subjects. Stage only intended paths and inspect `git diff --staged`. In pull requests, describe user-visible changes, link related issues when they exist, and include screenshots for visual changes.
 
-## Commits, Pull Requests & Security
-
-Use concise Conventional Commit-style subjects, such as `docs: add bilingual guide` or `fix: validate transcript coverage`. Stage only intended paths, review `git diff --staged`, and describe the user-visible change in each pull request. Link relevant issues and include screenshots only for visual changes. Never commit credentials, private keys, cloud configuration, client/employer code, machine-specific data, caches, or conversation history.
+Never commit credentials, private keys, confidential data, private cloud configuration, client/employer code, machine-specific data, caches, or conversation history.
