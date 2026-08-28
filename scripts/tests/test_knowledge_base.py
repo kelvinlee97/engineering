@@ -69,6 +69,7 @@ class KnowledgeBaseTests(unittest.TestCase):
             self._write(root, "apple/container/README_ZH.md", "# Apple 容器\n")
             self._write(root, "AGENTS.md", "# Internal\n")
             self._write(root, ".agents/skills/youtube-transcript/SKILL.md", "# Skill\n")
+            self._write(root, "pages/knowledge-base.css", "/* test stylesheet */\n")
             output = root / ".pages-build"
 
             stage(root, output, paths)
@@ -83,8 +84,26 @@ class KnowledgeBaseTests(unittest.TestCase):
                 "https://github.com/kelvinlee97/engineering/tree/main/.agents/skills/youtube-transcript",
                 repository,
             )
+            self.assertIn('class="kb-meta"', repository)
+            self.assertIn("kb_language: en", repository)
             dashboard = (output / "index.md").read_text(encoding="utf-8")
-            self.assertIn("[Apple Container](apple/container/index.md)", dashboard)
+            self.assertIn('href="apple/container/"', dashboard)
+            self.assertIn('href="topics/"', dashboard)
+            self.assertIn('href="archive/"', dashboard)
+            self.assertIn('href="index_zh/"', dashboard)
+            self.assertIn("document.querySelector('.md-search__input').focus()", dashboard)
+            self.assertIn("  - footer", dashboard)
+            self.assertIn('href="../"', (output / "index_zh.md").read_text(encoding="utf-8"))
+            topics = (output / "topics/index.md").read_text(encoding="utf-8")
+            self.assertIn('href="../apple/container/"', topics)
+            self.assertIn('class="kb-topic-card__count">1 note</span>', topics)
+            self.assertTrue((output / "topics/index_zh.md").exists())
+            self.assertTrue((output / "archive/index.md").exists())
+            self.assertTrue((output / "archive/index_zh.md").exists())
+            self.assertEqual(
+                (output / "stylesheets/knowledge-base.css").read_text(encoding="utf-8"),
+                "/* test stylesheet */\n",
+            )
             self.assertTrue((output / "index.md").exists())
             self.assertFalse((output / "AGENTS.md").exists())
 

@@ -1,5 +1,6 @@
 site_name: Engineering Knowledge Base
 site_url: https://kelvinlee97.github.io/engineering/
+site_description: Practical, bilingual engineering notes on cloud, infrastructure, developer tooling, and operations.
 repo_name: kelvinlee97/engineering
 repo_url: https://github.com/kelvinlee97/engineering
 docs_dir: .pages-build
@@ -9,9 +10,12 @@ use_directory_urls: true
 theme:
   name: material
   language: en
+  custom_dir: pages/overrides
+  font: false
   features:
     - navigation.sections
-    - navigation.expand
+    - navigation.prune
+    - navigation.path
     - navigation.top
     - search.highlight
     - search.suggest
@@ -27,6 +31,9 @@ theme:
       toggle:
         icon: material/weather-night
         name: Switch to light mode
+
+extra_css:
+  - stylesheets/knowledge-base.css
 
 plugins:
   - search
