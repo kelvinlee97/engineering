@@ -2,17 +2,21 @@
 
 ## Capture
 
-Use exactly `https://www.youtube.com/watch?v=<11-character-video-id>`. Use the Chrome extension's page-content export once because it returns the complete transcript in one read. If Chrome is unavailable or the export fails structural validation, return `blocked` or `partial` immediately; do not retry or switch to the visible panel or another browser.
+Use exactly `https://www.youtube.com/watch?v=<11-character-video-id>`. Import the repository's tested reader from an absolute path, then use it on that tab. The reader reacquires controls across YouTube SPA rerenders, opens Transcript, and reads the expanded panel in one `evaluateAll` call. If no eligible segments mount within 10 seconds, it calls `exportYouTubeTranscript` once instead. This leaves execution time for the helper before the browser's 30-second command deadline. These paths are mutually exclusive. If Chrome, both transcript paths, parsing, or structural validation fails, return `blocked` or `partial` immediately; do not retry or switch sources.
 
-### Preferred Chrome export
+### Chrome transcript read
 
-On the exact YouTube tab, call the helper once:
+From the repository root, use the reader on the exact YouTube tab:
 
 ```js
-const rawExport = await tab.content.exportYouTubeTranscript();
+const readerPath = `${nodeRepl.cwd}/.agents/skills/youtube-transcript/scripts/read-transcript.mjs`;
+const { readYouTubeTranscript } = await import(readerPath);
+const segments = await readYouTubeTranscript(tab);
 ```
 
-The result is temporary plain text, typically with headers such as `Video ID`, `Language`, and `Captions`, followed by lines like `[14:24] The caption text`. Read title, channel, duration, and the normalized source URL from the same page, then convert each timestamp line into the temporary JSON shape accepted by `yt-transcript capture`:
+The 10-second DOM deadline is condition-based rather than a fixed sleep: the reader polls fresh locators every 250 ms and never keeps a detached element handle. Only the expanded searchable Transcript panel is eligible, so hidden duplicate panels cannot enter the read. If segments mount, the helper is never called; if they do not, the helper is called exactly once and its saved export is parsed locally. Do not retry either path.
+
+Read title, channel, duration, caption metadata, and the normalized source URL from the same page, then put `segments` into the temporary JSON shape accepted by `yt-transcript capture`:
 
 ```json
 {
@@ -29,11 +33,11 @@ The result is temporary plain text, typically with headers such as `Video ID`, `
 }
 ```
 
-Do not fetch timed-text URLs or call another transcript source to fill gaps. If the export is empty, malformed, or rejected by `yt-transcript capture`, return the failure immediately. Do not preserve the raw text under `/tmp` as part of the normal workflow.
+Do not fetch timed-text URLs or call another transcript source to fill gaps. If the read is empty, malformed, or rejected by `yt-transcript capture`, return the failure immediately. Do not preserve raw transcript text under `/tmp` as part of the normal workflow.
 
 ## Export and capture
 
-The temporary JSON export contains `metadata` (`source_url`, `video_id`, `title`, `channel`, `duration_seconds`, `language`, `subtitle_type`) and `segments`, a non-empty ordered list of `{start_seconds, text}`. The Chrome helper's raw text is evidence to parse, not the final JSON input. Do not add hashes to the temporary export.
+The temporary JSON export contains `metadata` (`source_url`, `video_id`, `title`, `channel`, `duration_seconds`, `language`, `subtitle_type`) and `segments`, a non-empty ordered list of `{start_seconds, text}`. Do not add hashes to the temporary export.
 
 Example: `"segments": [{"start_seconds": 0, "text": "First segment"}]`
 

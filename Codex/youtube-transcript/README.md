@@ -2,7 +2,7 @@
 
 中文版本：[README_ZH.md](README_ZH.md)
 
-This local-first Codex Skill reads only the transcript exposed by the YouTube page through one Chrome `tab.content.exportYouTubeTranscript()` call. If Chrome export or validation fails, it reports the failure without retrying or switching sources. It does not download media, call `yt-dlp` or a third-party transcript API, use Whisper, or infer missing content from a title or description.
+This local-first Codex Skill first reads the mounted Transcript segments through one Chrome `evaluateAll` call. If YouTube leaves that panel empty, it uses Chrome's YouTube transcript export once instead. The paths are mutually exclusive; failure is reported without retrying or switching to a third-party source. It does not download media, call `yt-dlp` or a transcript API, use Whisper, or infer missing content from a title or description.
 
 The user gives Codex a YouTube link. Codex exports one complete transcript, validates its coverage, saves a local `transcript.md`, and only then writes reader-facing English and Chinese summaries. A failed first attempt stops the workflow.
 
@@ -24,7 +24,7 @@ YouTube/<topic>/<title-slug>--<video-id>/
 
 ## Capture contract
 
-A Chrome export retains one complete ordered read. The helper returns temporary text, which is converted to the JSON input below; the local validator then derives its count, endpoints, and canonical SHA-256. It requires non-empty segments with non-decreasing finite timestamps, an exact normalized URL/video-ID match, a start close to the beginning, and an end close to the reported duration. It records gaps over 60 seconds as warnings that must be resolved before publication. Export or validation failure stops the workflow.
+A Chrome capture retains one complete ordered read. The Skill opens YouTube's Transcript panel, waits up to 10 seconds for its segments, and extracts their timestamps and text together. If no eligible segments mount, it invokes Chrome's transcript helper once and parses the saved export locally, leaving headroom within the browser command deadline. The validator then derives count, endpoints, and canonical SHA-256. It requires non-empty segments with non-decreasing finite timestamps, an exact normalized URL/video-ID match, a start close to the beginning, and an end close to the reported duration. It records gaps over 60 seconds as warnings that must be resolved before publication. Read or validation failure stops the workflow.
 
 It produces deterministic chunks of roughly 1,000 text units—English word runs and individual CJK characters—and a local `validation.json` coverage ledger. A complete capture proves structural coverage of the supplied read; it does not prove browser-export authenticity, semantic completeness of a summary, or that YouTube's captions are word-perfect.
 
@@ -84,6 +84,7 @@ This gate checks ledger structure and contiguous chunks, source video ID, timest
 ## Development
 
 ```bash
+node --test ../../.agents/skills/youtube-transcript/tests/read-transcript.test.mjs
 uv run pytest
 uv run ruff check .
 uv run mypy src
