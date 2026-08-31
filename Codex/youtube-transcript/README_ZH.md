@@ -2,7 +2,7 @@
 
 English version: [README.md](README.md)
 
-这是一个本地优先的 Codex Skill，只通过一次 Chrome `evaluateAll` 调用读取 YouTube 页面已挂载的 Transcript segments。如果读取或校验失败，就报告失败，不重试也不切换来源。它不下载媒体、不调用 `yt-dlp` 或第三方字幕 API、不使用 Whisper，也不从标题或简介补全缺失内容。
+这是一个本地优先的 Codex Skill：优先通过一次 Chrome `evaluateAll` 调用读取 YouTube 页面已挂载的 Transcript segments；如果 YouTube 始终让该面板保持空白，则改用一次 Chrome 内置的 YouTube transcript 导出。两条路径互斥；失败时不重试，也不切换到第三方来源。它不下载媒体、不调用 `yt-dlp` 或字幕 API、不使用 Whisper，也不从标题或简介补全缺失内容。
 
 用户只需提供 YouTube 链接。Codex 会导出一份完整 Transcript、验证覆盖范围、保存本地 `transcript.md`，最后才生成面向读者的英文与中文总结。第一次获取失败就停止流程。
 
@@ -24,7 +24,7 @@ YouTube/<topic>/<title-slug>--<video-id>/
 
 ## 捕获验收约定
 
-Chrome DOM 捕获保留一份完整、有序的 Transcript。Skill 会打开 YouTube 的 Transcript 面板，等待 segments 挂载，再一次性提取时间戳和文本；本地验证器自行推导读取的条目数、首尾时间和规范化 SHA-256，并要求：segment 不为空，时间戳不倒退且为有限数值（相邻字幕 cue 可以相同）；URL 与 video ID 精确匹配规范化格式；开头接近视频开始；结尾接近视频时长。任何超过 60 秒的间隔都会记录为发布前必须解决的警告。读取或校验失败就停止流程。
+Chrome 捕获保留一份完整、有序的 Transcript。Skill 会打开 YouTube 的 Transcript 面板，以条件轮询等待 segments，最多 10 秒，并一次性提取时间戳和文本；如果没有符合条件的 segments 挂载，则调用一次 Chrome transcript helper，并在本地解析其导出文件，从而在浏览器命令时限内为 helper 留出执行空间。本地验证器自行推导读取的条目数、首尾时间和规范化 SHA-256，并要求：segment 不为空，时间戳不倒退且为有限数值（相邻字幕 cue 可以相同）；URL 与 video ID 精确匹配规范化格式；开头接近视频开始；结尾接近视频时长。任何超过 60 秒的间隔都会记录为发布前必须解决的警告。读取或校验失败就停止流程。
 
 验证器会将 Transcript 确定性切成约 1,000 个文本单元的 chunks：英文按词组、中文等 CJK 文字按字符计数，并在本地 `validation.json` 中建立覆盖账本。通过只代表提供的读取覆盖了视频首尾并通过结构检查；不代表浏览器导出真实、总结语义完整，也不代表 YouTube 自动字幕逐字正确。
 
@@ -58,6 +58,7 @@ Skill 将所有 chunk 标记为已处理并完成手工审计后，还必须运�
 ## 开发
 
 ```bash
+node --test ../../.agents/skills/youtube-transcript/tests/read-transcript.test.mjs
 uv run pytest
 uv run ruff check .
 uv run mypy src

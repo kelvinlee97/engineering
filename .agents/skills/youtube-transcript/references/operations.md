@@ -2,45 +2,19 @@
 
 ## Capture
 
-Use exactly `https://www.youtube.com/watch?v=<11-character-video-id>`. Open YouTube's Transcript panel on that tab, wait for its segments to mount, and read all mounted segments in one `evaluateAll` call. If Chrome, the transcript panel, DOM parsing, or structural validation fails, return `blocked` or `partial` immediately; do not retry or switch sources.
+Use exactly `https://www.youtube.com/watch?v=<11-character-video-id>`. Import the repository's tested reader from an absolute path, then use it on that tab. The reader reacquires controls across YouTube SPA rerenders, opens Transcript, and reads the expanded panel in one `evaluateAll` call. If no eligible segments mount within 10 seconds, it calls `exportYouTubeTranscript` once instead. This leaves execution time for the helper before the browser's 30-second command deadline. These paths are mutually exclusive. If Chrome, both transcript paths, parsing, or structural validation fails, return `blocked` or `partial` immediately; do not retry or switch sources.
 
 ### Chrome transcript read
 
-On the exact YouTube tab, expand the description if needed, open Transcript, and wait for the first segment. Then perform the only transcript read:
+From the repository root, use the reader on the exact YouTube tab:
 
 ```js
-const expand = tab.playwright.locator("#description-inline-expander #expand");
-if (await expand.isVisible()) await expand.click();
-
-const transcriptSegments = tab.playwright.locator(
-  'ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-searchable-transcript"]' +
-    '[visibility="ENGAGEMENT_PANEL_VISIBILITY_EXPANDED"] ytd-transcript-segment-renderer',
-);
-if ((await transcriptSegments.count()) === 0) {
-  const showTranscript = tab.playwright
-    .locator("ytd-video-description-transcript-section-renderer button")
-    .filter({ visible: true })
-    .first();
-  await showTranscript.waitFor({ state: "visible", timeoutMs: 15000 });
-  await showTranscript.click();
-  await transcriptSegments.first().waitFor({ state: "attached", timeoutMs: 15000 });
-}
-
-const segments = await transcriptSegments.evaluateAll((elements) =>
-  elements.map((element) => {
-    const timestamp = element.querySelector(".segment-timestamp")?.textContent?.trim();
-    const text = element.querySelector(".segment-text")?.textContent?.replace(/\s+/g, " ").trim();
-    if (!timestamp || !text) throw new Error("Malformed transcript segment");
-    const parts = timestamp.split(":").map(Number);
-    if (parts.length < 2 || parts.length > 3 || parts.some((part) => !Number.isFinite(part))) {
-      throw new Error("Malformed transcript timestamp");
-    }
-    const start_seconds =
-      parts.length === 3 ? parts[0] * 3600 + parts[1] * 60 + parts[2] : parts[0] * 60 + parts[1];
-    return { start_seconds, text };
-  }),
-);
+const readerPath = `${nodeRepl.cwd}/.agents/skills/youtube-transcript/scripts/read-transcript.mjs`;
+const { readYouTubeTranscript } = await import(readerPath);
+const segments = await readYouTubeTranscript(tab);
 ```
+
+The 10-second DOM deadline is condition-based rather than a fixed sleep: the reader polls fresh locators every 250 ms and never keeps a detached element handle. Only the expanded searchable Transcript panel is eligible, so hidden duplicate panels cannot enter the read. If segments mount, the helper is never called; if they do not, the helper is called exactly once and its saved export is parsed locally. Do not retry either path.
 
 Read title, channel, duration, caption metadata, and the normalized source URL from the same page, then put `segments` into the temporary JSON shape accepted by `yt-transcript capture`:
 
