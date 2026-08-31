@@ -2,17 +2,47 @@
 
 ## Capture
 
-Use exactly `https://www.youtube.com/watch?v=<11-character-video-id>`. Use the Chrome extension's page-content export once because it returns the complete transcript in one read. If Chrome is unavailable or the export fails structural validation, return `blocked` or `partial` immediately; do not retry or switch to the visible panel or another browser.
+Use exactly `https://www.youtube.com/watch?v=<11-character-video-id>`. Open YouTube's Transcript panel on that tab, wait for its segments to mount, and read all mounted segments in one `evaluateAll` call. If Chrome, the transcript panel, DOM parsing, or structural validation fails, return `blocked` or `partial` immediately; do not retry or switch sources.
 
-### Preferred Chrome export
+### Chrome transcript read
 
-On the exact YouTube tab, call the helper once:
+On the exact YouTube tab, expand the description if needed, open Transcript, and wait for the first segment. Then perform the only transcript read:
 
 ```js
-const rawExport = await tab.content.exportYouTubeTranscript();
+const expand = tab.playwright.locator("#description-inline-expander #expand");
+if (await expand.isVisible()) await expand.click();
+
+const transcriptSegments = tab.playwright.locator(
+  'ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-searchable-transcript"]' +
+    '[visibility="ENGAGEMENT_PANEL_VISIBILITY_EXPANDED"] ytd-transcript-segment-renderer',
+);
+if ((await transcriptSegments.count()) === 0) {
+  const showTranscript = tab.playwright
+    .locator("ytd-video-description-transcript-section-renderer button")
+    .filter({ visible: true })
+    .first();
+  await showTranscript.waitFor({ state: "visible", timeoutMs: 15000 });
+  await showTranscript.click();
+  await transcriptSegments.first().waitFor({ state: "attached", timeoutMs: 15000 });
+}
+
+const segments = await transcriptSegments.evaluateAll((elements) =>
+  elements.map((element) => {
+    const timestamp = element.querySelector(".segment-timestamp")?.textContent?.trim();
+    const text = element.querySelector(".segment-text")?.textContent?.replace(/\s+/g, " ").trim();
+    if (!timestamp || !text) throw new Error("Malformed transcript segment");
+    const parts = timestamp.split(":").map(Number);
+    if (parts.length < 2 || parts.length > 3 || parts.some((part) => !Number.isFinite(part))) {
+      throw new Error("Malformed transcript timestamp");
+    }
+    const start_seconds =
+      parts.length === 3 ? parts[0] * 3600 + parts[1] * 60 + parts[2] : parts[0] * 60 + parts[1];
+    return { start_seconds, text };
+  }),
+);
 ```
 
-The result is temporary plain text, typically with headers such as `Video ID`, `Language`, and `Captions`, followed by lines like `[14:24] The caption text`. Read title, channel, duration, and the normalized source URL from the same page, then convert each timestamp line into the temporary JSON shape accepted by `yt-transcript capture`:
+Read title, channel, duration, caption metadata, and the normalized source URL from the same page, then put `segments` into the temporary JSON shape accepted by `yt-transcript capture`:
 
 ```json
 {
@@ -29,11 +59,11 @@ The result is temporary plain text, typically with headers such as `Video ID`, `
 }
 ```
 
-Do not fetch timed-text URLs or call another transcript source to fill gaps. If the export is empty, malformed, or rejected by `yt-transcript capture`, return the failure immediately. Do not preserve the raw text under `/tmp` as part of the normal workflow.
+Do not fetch timed-text URLs or call another transcript source to fill gaps. If the read is empty, malformed, or rejected by `yt-transcript capture`, return the failure immediately. Do not preserve raw transcript text under `/tmp` as part of the normal workflow.
 
 ## Export and capture
 
-The temporary JSON export contains `metadata` (`source_url`, `video_id`, `title`, `channel`, `duration_seconds`, `language`, `subtitle_type`) and `segments`, a non-empty ordered list of `{start_seconds, text}`. The Chrome helper's raw text is evidence to parse, not the final JSON input. Do not add hashes to the temporary export.
+The temporary JSON export contains `metadata` (`source_url`, `video_id`, `title`, `channel`, `duration_seconds`, `language`, `subtitle_type`) and `segments`, a non-empty ordered list of `{start_seconds, text}`. Do not add hashes to the temporary export.
 
 Example: `"segments": [{"start_seconds": 0, "text": "First segment"}]`
 

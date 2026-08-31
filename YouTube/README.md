@@ -8,6 +8,7 @@ Reader-friendly bilingual summaries organized by learning topic. Open a title di
 
 | Video | English | 中文 |
 | --- | --- | --- |
+| Building and Structuring an AI-Native Company | [Read](startup/building-and-structuring-an-ai-native-company--Z3JyAqh4ixg/summary.md) | [阅读](startup/building-and-structuring-an-ai-native-company--Z3JyAqh4ixg/summary_zh.md) |
 | How to Actually Start Your Own Business | [Read](startup/how-to-actually-start-your-own-business--JJyLynh5d6M/summary.md) | [阅读](startup/how-to-actually-start-your-own-business--JJyLynh5d6M/summary_zh.md) |
 | I make $32K/month from 3 simple, boring websites | [Read](startup/i-make-32k-month-from-3-simple-boring-websites--5-G9WHwQMwQ/summary.md) | [阅读](startup/i-make-32k-month-from-3-simple-boring-websites--5-G9WHwQMwQ/summary_zh.md) |
 
