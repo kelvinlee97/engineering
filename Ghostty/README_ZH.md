@@ -65,9 +65,8 @@ alias fd='fdfind'
 ### macOS
 
 ```zsh
-ghostty_dir="$HOME/Library/Application Support/com.mitchellh.ghostty"
-mkdir -p "$ghostty_dir"
-cp -i config.ghostty "$ghostty_dir/config.ghostty"
+mkdir -p ~/Library/Application\ Support/com.mitchellh.ghostty
+cp -i config.ghostty ~/Library/Application\ Support/com.mitchellh.ghostty/config.ghostty
 ```
 
 ### Ubuntu 26.04
