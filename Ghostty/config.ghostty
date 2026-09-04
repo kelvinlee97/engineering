@@ -1,7 +1,6 @@
 # Cross-platform Ghostty configuration.
 
 # Appearance
-font-size = 12
 palette-generate = true
 palette-harmonious = true
 window-theme = system
