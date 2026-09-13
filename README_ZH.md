@@ -1,50 +1,61 @@
-# 工程知识库
+# Kelvin 的工程笔记
 
-English version: [README.md](README.md)
+[English](README.md) · 简体中文 · [浏览知识库站点](https://kelvinlee97.github.io/engineering/)
 
-知识库站点：[GitHub Pages](https://kelvinlee97.github.io/engineering/)
+记录系统故障怎么查、AI 编程工具怎么用，以及怎样让日常工程工作更顺手。
 
-## 目的
+我把值得回头查阅的解释、命令和参考资料整理在这里，内容涵盖 SRE 排障手册与开发工具实践，提供中英文版本。
 
-这个仓库是一个个人工程资源集合，用于学习、整理和复用技术知识。内容包括技术研究、工具实践记录，以及可跨项目迁移的工程配置。
+## 从一个实际问题开始
 
-其中的资料来自个人学习与实践，不代表相关项目或产品的官方文档。
+- **[Git 分支分叉了，接下来怎么办？](Git/README_ZH.md)** 先看清状态，再选择同步方式，并了解如何安全恢复。
+- **[Pod 一直 Pending，是 IP 不够吗？](Kubernetes/runbooks/insufficient-ip-or-eni/README_ZH.md)** 区分子网容量、节点限制和其他原因。
+- **[怎样用 Codex CLI 开展工作？](Codex/cli/README_ZH.md)** 从会话管理、斜杠命令和审查流程入手。
 
-## 内容
+## 按你想做的事探索
 
-| 目录 | 说明 | 文档 |
-|------|------|------|
-| [`apple/container/`](apple/container/) | Apple Container 架构、使用方式、限制和官方参考资料的学习笔记 | [English](apple/container/README.md) · [中文](apple/container/README_ZH.md) |
-| [`Claude/subagents/`](Claude/subagents/) | Anthropic Academy Introduction to subagents 完整课程学习指南 | [English](Claude/subagents/README.md) · [中文](Claude/subagents/README_ZH.md) |
-| [`Codex/fork/`](Codex/fork/) | 在 ChatGPT Desktop 中分支 Codex 对话、隔离 worktree 和重置卡住排障的指南 | [English](Codex/fork/README.md) · [中文](Codex/fork/README_ZH.md) |
-| [`Codex/cli/`](Codex/cli/) | Codex CLI slash command、会话控制与安全审查的工程工作流指南 | [English](Codex/cli/README.md) · [中文](Codex/cli/README_ZH.md) |
-| [`Codex/ide/`](Codex/ide/) | 在 VS Code 中连接和使用 Codex IDE context 的指南 | [English](Codex/ide/README.md) · [中文](Codex/ide/README_ZH.md) |
-| [`Codex/goal/`](Codex/goal/) | `/goal` slash command 指南：面向有可验证停止条件的长任务 | [English](Codex/goal/README.md) · [中文](Codex/goal/README_ZH.md) |
-| [`AGENTS.md`](AGENTS.md) | 工程工作与 Codex 交互的仓库权威规则 | [规则](AGENTS.md) |
-| [`.agents/skills/youtube-transcript/`](.agents/skills/youtube-transcript/) | 工程级、仅浏览器的 YouTube Transcript 工作流 | [Skill](.agents/skills/youtube-transcript/SKILL.md) · [工具模块](Codex/youtube-transcript/) |
-| [`Ubuntu/apt/`](Ubuntu/apt/) | Ubuntu APT 软件包安装、更新、检查与排障命令 | [English](Ubuntu/apt/README.md) · [中文](Ubuntu/apt/README_ZH.md) |
-| [`Git/`](Git/) | 面向运维场景的 Git 安全同步、发布可追溯、回滚与恢复命令指南 | [English](Git/README.md) · [中文](Git/README_ZH.md) |
-| [`YouTube/`](YouTube/) | 按学习主题整理、面向读者的双语视频摘要 | [English 目录](YouTube/README.md) · [中文目录](YouTube/README_ZH.md) |
-| [`Ghostty/`](Ghostty/) | 跨平台 Ghostty 和终端工具配置 | [English](Ghostty/README.md) · [中文](Ghostty/README_ZH.md) · [配置](Ghostty/config.ghostty) |
-| [`ZooKeeper/`](ZooKeeper/) | ZooKeeper 运维文档，包括事故处理 Runbook | [English](ZooKeeper/README.md) · [中文](ZooKeeper/README_ZH.md) |
-| [`Kubernetes/`](Kubernetes/) | Kubernetes 运维文档，包括事故处理 Runbook | [English](Kubernetes/README.md) · [中文](Kubernetes/README_ZH.md) |
-| [`Nginx/`](Nginx/) | 面向初级运维的 Nginx 与 OpenResty 部署、运维指南 | [English](Nginx/README.md) · [中文](Nginx/README_ZH.md) |
-| [`Nodejs/`](Nodejs/) | 面向初级运维的 Node.js / Express BFF 部署与事故 Runbook | [English](Nodejs/README.md) · [中文](Nodejs/README_ZH.md) |
-| [`AWS/`](AWS/) | 与 AWS 官方文档对齐的双语 AWS Runbook 与参考 | [English](AWS/README.md) · [中文](AWS/README_ZH.md) |
+### 排查故障与维护系统
 
-## 内容组织原则
+- [Git](Git/README_ZH.md) — 安全同步、发布追溯、回滚与恢复。
+- [Kubernetes](Kubernetes/README_ZH.md) — 运维与事故处理手册。
+- [AWS](AWS/README_ZH.md) — 以官方文档为依据的云服务参考与排障手册。
+- [Nginx 与 OpenResty](Nginx/README_ZH.md) — 面向初学者的部署与运维指南。
+- [Node.js 与 Express](Nodejs/README_ZH.md) — BFF 部署与事故处理。
+- [ZooKeeper](ZooKeeper/README_ZH.md) — 运维与故障处理。
 
-- 保留可复用、主题明确且适合公开仓库的工程资源。
-- 优先采用第一手资料或官方来源支持的信息。
-- 确保文档与当前实际行为一致，并明确区分个人理解。
-- 不保存凭据、公司或客户源码、机密数据、会话历史、缓存或机器专属信息。
+### 使用 AI 编程工具
 
-## 语言约定
+- [Codex CLI](Codex/cli/README_ZH.md) — 命令、会话与审查。
+- [在 VS Code 中使用 Codex](Codex/ide/README_ZH.md) — 连接 IDE，提供相关上下文。
+- [分支 Codex 对话](Codex/fork/README_ZH.md) — 拆分排障思路，隔离 worktree。
+- [为 Codex 设置目标](Codex/goal/README_ZH.md) — 为长任务定义可验证的停止条件。
+- [Claude 子代理](Claude/subagents/README_ZH.md) — Anthropic Academy 入门课程学习指南。
 
-- `README.md` 是默认的英文入口。
-- `README_ZH.md` 是对应的中文版本。
-- 中英文版本应保持相同的结构、链接和事实范围。
+### 准备 SRE 面试
 
-## 仓库状态
+- [Python 练习](Python/README_ZH.md) — 日志处理与算法。
+- [Bash 练习](Bash/README_ZH.md) — 日志分析与进程检查。
 
-这个知识库会随着学习主题的增加，以及现有内容的核查和完善而持续演进。
+### 配置开发环境
+
+- [Ghostty 与终端工具](Ghostty/README_ZH.md) — 按平台整理的配置指南，附可复用的 [Ghostty 配置](Ghostty/config.ghostty)。
+- [Ubuntu APT](Ubuntu/apt/README_ZH.md) — 软件包安装、升级、检查与排障。
+- [Apple Container](apple/container/README_ZH.md) — 架构、用法与限制。
+
+### 从视频里探索新想法
+
+- [YouTube 学习笔记](YouTube/README_ZH.md) — 按主题浏览视频摘要，涵盖创业与 AI 代理等话题。
+
+## 关于这些笔记
+
+这些笔记来自个人学习与实践，不代表产品官方文档。我优先引用第一手资料，并区分个人理解与文档明确说明的行为。内容会随着新主题的学习和旧笔记的复查持续更新。
+
+配对文章提供中英文版本，保持结构、链接和事实范围一致。可通过文章顶部的语言链接切换。
+
+## 给贡献者与维护者
+
+请保持内容聚焦、可复用且适合公开。不要加入凭据、公司或客户代码、机密数据、会话历史、缓存或机器专属信息。
+
+- [仓库规则](AGENTS.md) — 内容范围、检查与交付约定。
+- [YouTube 字幕工作流](.agents/skills/youtube-transcript/SKILL.md) — 视频摘要的制作与检查方式。
+- [字幕工具模块](Codex/youtube-transcript/) — 配套工具。

@@ -51,6 +51,8 @@ class KnowledgeBaseTests(unittest.TestCase):
                 "README_ZH.md",
                 "AWS/README.md",
                 "AWS/README_ZH.md",
+                "Git/README.md",
+                "Git/README_ZH.md",
                 "apple/container/README.md",
                 "apple/container/README_ZH.md",
                 "AGENTS.md",
@@ -65,6 +67,8 @@ class KnowledgeBaseTests(unittest.TestCase):
             self._write(root, "README_ZH.md", "# 工程\n")
             self._write(root, "AWS/README.md", "# AWS\n")
             self._write(root, "AWS/README_ZH.md", "# AWS 中文\n")
+            self._write(root, "Git/README.md", "# Git\n")
+            self._write(root, "Git/README_ZH.md", "# Git 中文\n")
             self._write(root, "apple/container/README.md", "# Apple Container\n")
             self._write(root, "apple/container/README_ZH.md", "# Apple 容器\n")
             self._write(root, "AGENTS.md", "# Internal\n")
@@ -87,6 +91,13 @@ class KnowledgeBaseTests(unittest.TestCase):
             self.assertIn('class="kb-meta"', repository)
             self.assertIn("kb_language: en", repository)
             dashboard = (output / "index.md").read_text(encoding="utf-8")
+            self.assertIn("# Kelvin’s Engineering Notes", dashboard)
+            self.assertIn('href="Git/">Start with a real problem</a>', dashboard)
+            chinese_dashboard = (output / "index_zh.md").read_text(encoding="utf-8")
+            self.assertIn("# Kelvin 的工程笔记", chinese_dashboard)
+            self.assertIn(
+                'href="../Git/index_zh/">从一个实际问题开始</a>', chinese_dashboard
+            )
             self.assertIn('href="apple/container/"', dashboard)
             self.assertIn('href="topics/"', dashboard)
             self.assertIn('href="archive/"', dashboard)

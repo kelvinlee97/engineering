@@ -2,6 +2,12 @@
 
 English version: [README.md](README.md)
 
+> **适用症状：** Pod 持续 `Pending`，事件指向 ENI/IP 容量不足或缺少容器子网。
+>
+> **第一个检查：** 在获授权的集群中执行 `kubectl describe pod <pod-name> -n <namespace>`，查看调度事件。
+>
+> **确认方向：** 若候选节点为 `NotReady` 或 `unreachable`，先排查节点健康。仅凭 `Pending` 状态不能确定 IP 耗尽。
+
 当 Pod 长时间处于 `Pending`，且 scheduler event 出现 `InsufficientIPOrENI`、ENI/IP 扩展资源不足，或 ENI 型 Pod 网络缺少容器子网时，可使用本通用手册。本文以腾讯云容器服务（TKE）的 VPC-CNI 为具体示例；所有环境值均为占位符，必须以实际集群生效配置为准。
 
 TKE 文档说明：在 VPC-CNI 模式下，Pod IP 从容器子网分配；一个节点可调度的 Pod 数量受该节点支持的 ENI 和 IP 数量限制；节点与容器子网还必须位于相同可用区。参考 [TKE 容器网络概述](https://intl.cloud.tencent.com/zh/document/product/457/38966) 和 [TKE 容器集群网络规划](https://cloud.tencent.com/document/product/457/106706)。

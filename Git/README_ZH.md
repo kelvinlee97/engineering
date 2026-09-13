@@ -6,6 +6,36 @@ English version: [README.md](README.md)
 
 本文只讲 Git 原生命令。GitHub、GitLab、Bitbucket 等平台的按钮、保护规则和 CI 配置是平台能力，不能与 Git 本身混为一谈。
 
+## 找到你现在需要的操作
+
+- 保存工作：先看下面的每日命令。
+- 分支分叉：跳到[同步与冲突处理](#分支同步与冲突)。
+- 撤销错误：跳到[回滚与恢复](#回滚恢复与排障)。
+- 准备丢弃文件或改写历史：先看[操作前检查清单](#高风险操作前检查清单)。
+
+## 每日最小命令集
+
+把它当作检查顺序，不要整段直接执行。按仓库实际情况替换路径与已确认的推送目标；若分支分叉，先按同步章节处理，再推送。
+
+```bash
+# 开始工作或准备同步
+git status
+git fetch --prune
+git status
+
+# 检查并提交
+git diff
+git add path/to/file
+git diff --staged
+git commit -m "type: short description"
+
+# 推送前再次确认目标和历史
+git branch --show-current
+git branch -vv
+git remote -v
+git push <confirmed-remote> HEAD:<confirmed-branch>
+```
+
 ## 目录
 
 - [先记住这张关系图](#先记住这张关系图)
@@ -15,7 +45,6 @@ English version: [README.md](README.md)
 - [发布、tag 与变更追溯](#发布tag-与变更追溯)
 - [回滚、恢复与排障](#回滚恢复与排障)
 - [高风险操作与安全边界](#高风险操作与安全边界)
-- [每日最小命令集](#每日最小命令集)
 - [高风险操作前检查清单](#高风险操作前检查清单)
 
 ## 先记住这张关系图
@@ -244,27 +273,6 @@ git bisect reset
 - 凭据泄露时：**先立即吊销或轮换凭据**，再评估访问日志、影响范围和平台允许的历史清理流程。只删除文件或重写历史都不能保证旧凭据未被复制。
 
 官方参考：[git-push](https://git-scm.com/docs/git-push)、[git-clean](https://git-scm.com/docs/git-clean)、[gitignore](https://git-scm.com/docs/gitignore)。
-
-## 每日最小命令集
-
-```bash
-# 开始工作或准备同步
-git status
-git fetch --prune
-git status
-
-# 检查并提交
-git diff
-git add path/to/file
-git diff --staged
-git commit -m "type: short description"
-
-# 推送前再次确认目标和历史
-git branch --show-current
-git branch -vv
-git remote -v
-git push <confirmed-remote> HEAD:<confirmed-branch>
-```
 
 ## 高风险操作前检查清单
 

@@ -533,21 +533,24 @@ def _topic_card_html(documents: list[Document], area: str, language: str, source
 def _dashboard(documents: list[Document], language: str) -> str:
     page = "index.md" if language == "en" else "index_zh.md"
     repository_page = "repository/index.md" if language == "en" else "repository/index_zh.md"
+    start_page = "Git/index.md" if language == "en" else "Git/index_zh.md"
+    if not any(document.page == start_page for document in documents):
+        start_page = repository_page
     topics_page = "topics/index.md" if language == "en" else "topics/index_zh.md"
     archive_page = "archive/index.md" if language == "en" else "archive/index_zh.md"
     is_english = language == "en"
-    title = "Engineering Knowledge Base" if is_english else "工程知识库"
+    title = "Kelvin’s Engineering Notes" if is_english else "Kelvin 的工程笔记"
     description = (
-        "Practical notes on cloud, infrastructure, developer tooling, and operations."
+        "Troubleshoot systems, work with AI coding tools, and make everyday engineering easier."
         if is_english
-        else "记录云、基础设施、开发者工具与运维实践。"
+        else "记录系统故障怎么查、AI 编程工具怎么用，以及怎样让日常工程工作更顺手。"
     )
     search_label = "Search the knowledge base" if is_english else "搜索工程知识库"
     latest_title = "Latest notes" if is_english else "最新笔记"
     topics_title = "Topics" if is_english else "主题"
     video_title = "Video learning" if is_english else "视频学习"
     archive_label = "View full archive" if is_english else "查看完整归档"
-    repository_label = "Repository guide" if is_english else "仓库指南"
+    repository_label = "Start with a real problem" if is_english else "从一个实际问题开始"
     language_target = "index_zh.md" if is_english else "index.md"
     language_label = "中文" if is_english else "English"
     site_links_label = "Site links" if is_english else "站点链接"
@@ -606,7 +609,7 @@ def _dashboard(documents: list[Document], language: str) -> str:
             ),
             f'<nav class="kb-home__links" aria-label="{site_links_label}">',
             (
-                f'<a href="{_escape(_relative_site_url(page, repository_page))}">'
+                f'<a href="{_escape(_relative_site_url(page, start_page))}">'
                 f'{repository_label}</a>'
             ),
             f'<a href="{_escape(_relative_site_url(page, topics_page))}">{topics_title}</a>',

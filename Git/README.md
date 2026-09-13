@@ -6,6 +6,36 @@ This guide is for operations engineers who are comfortable with a terminal and b
 
 It covers native Git commands only. Buttons, branch-protection rules, and CI configuration in GitHub, GitLab, or Bitbucket are platform features, not Git itself.
 
+## Find your next step
+
+- Saving work? Start with the daily commands below.
+- Branches diverged? Go to [synchronisation and conflicts](#branches-synchronisation-and-conflicts).
+- Need to undo a mistake? Go to [rollback and recovery](#rollback-recovery-and-investigation).
+- About to discard files or rewrite history? Read the [pre-flight checklist](#pre-flight-checklist-for-high-risk-operations).
+
+## Minimum daily command set
+
+Use this as a checklist, not a script to run all at once. Replace paths and the confirmed push target for your repository; if histories diverge, follow the synchronisation section before pushing.
+
+```bash
+# Start work or prepare to synchronise.
+git status
+git fetch --prune
+git status
+
+# Inspect and commit.
+git diff
+git add path/to/file
+git diff --staged
+git commit -m "type: short description"
+
+# Confirm history and target before pushing.
+git branch --show-current
+git branch -vv
+git remote -v
+git push <confirmed-remote> HEAD:<confirmed-branch>
+```
+
 ## Contents
 
 - [Keep this model in mind](#keep-this-model-in-mind)
@@ -15,7 +45,6 @@ It covers native Git commands only. Buttons, branch-protection rules, and CI con
 - [Releases, tags, and traceability](#releases-tags-and-traceability)
 - [Rollback, recovery, and investigation](#rollback-recovery-and-investigation)
 - [High-risk operations and security boundaries](#high-risk-operations-and-security-boundaries)
-- [Minimum daily command set](#minimum-daily-command-set)
 - [Pre-flight checklist for high-risk operations](#pre-flight-checklist-for-high-risk-operations)
 
 ## Keep this model in mind
@@ -244,27 +273,6 @@ Official references: [git-revert](https://git-scm.com/docs/git-revert), [git-res
 - If credentials leak: **revoke or rotate them immediately first**, then assess access logs, scope of exposure, and the platform-approved history-cleanup process. Deleting a file or rewriting history cannot guarantee that an old credential was not copied.
 
 Official references: [git-push](https://git-scm.com/docs/git-push), [git-clean](https://git-scm.com/docs/git-clean), and [gitignore](https://git-scm.com/docs/gitignore).
-
-## Minimum daily command set
-
-```bash
-# Start work or prepare to synchronise.
-git status
-git fetch --prune
-git status
-
-# Inspect and commit.
-git diff
-git add path/to/file
-git diff --staged
-git commit -m "type: short description"
-
-# Confirm history and target before pushing.
-git branch --show-current
-git branch -vv
-git remote -v
-git push <confirmed-remote> HEAD:<confirmed-branch>
-```
 
 ## Pre-flight checklist for high-risk operations
 

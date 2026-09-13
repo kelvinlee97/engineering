@@ -2,6 +2,12 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+> **Use when:** Pods stay `Pending` and events point to ENI/IP capacity or a missing Pod subnet.
+>
+> **First check:** In the authorised cluster, run `kubectl describe pod <pod-name> -n <namespace>` and read the scheduler events.
+>
+> **Check your direction:** If candidate nodes are `NotReady` or `unreachable`, investigate node health first. A `Pending` status alone does not establish IP exhaustion.
+
 Use this generic runbook when Pods remain `Pending` and scheduler events report `InsufficientIPOrENI`, an ENI/IP extended-resource shortage, or a missing Pod subnet in an ENI-based Kubernetes network. It is written for Tencent Kubernetes Engine (TKE) VPC-CNI as a concrete example, but all environment values are placeholders and must be confirmed from the active cluster configuration.
 
 TKE documents that, in VPC-CNI mode, Pod IPs are allocated from Pod subnets and a node's schedulable Pod count is constrained by its supported ENIs and IPs. Nodes and Pod subnets must also be in the same availability zone. See [TKE container network overview](https://intl.cloud.tencent.com/document/product/457/38966) and [TKE cluster network planning](https://cloud.tencent.com/document/product/457/106706).

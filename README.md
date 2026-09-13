@@ -1,50 +1,61 @@
-# Engineering Knowledge Base
+# Kelvin’s Engineering Notes
 
-Chinese version: [README_ZH.md](README_ZH.md)
+English · [简体中文](README_ZH.md) · [Browse the knowledge site](https://kelvinlee97.github.io/engineering/)
 
-Knowledge site: [GitHub Pages](https://kelvinlee97.github.io/engineering/)
+Practical notes on troubleshooting systems, working with AI coding tools, and making everyday engineering tasks easier.
 
-## Purpose
+I collect explanations, commands, and references worth revisiting, from SRE runbooks to developer tooling. Articles are available in English and Chinese.
 
-This repository is a personal collection of engineering resources for learning, organizing, and reusing technical knowledge. It brings together technology research, practical tool notes, and portable engineering configuration that may be useful across projects.
+## Start with a real problem
 
-The material reflects personal study and experience. It is not official documentation for the projects or products discussed here.
+- **[Git branches have diverged. What next?](Git/README.md)** Inspect the state, choose a sync strategy, and recover safely.
+- **[A Pod is stuck Pending. Could it be IP capacity?](Kubernetes/runbooks/insufficient-ip-or-eni/README.md)** Distinguish subnet capacity, node limits, and other causes.
+- **[How do I work with Codex CLI?](Codex/cli/README.md)** Start with session control, slash commands, and a review workflow.
 
-## Contents
+## Explore by what you want to do
 
-| Area | Description | Documentation |
-|------|-------------|---------------|
-| [`apple/container/`](apple/container/) | Notes on Apple Container architecture, usage, limitations, and official references | [English](apple/container/README.md) · [中文](apple/container/README_ZH.md) |
-| [`Claude/subagents/`](Claude/subagents/) | Complete study guide to Anthropic Academy's Introduction to subagents course | [English](Claude/subagents/README.md) · [中文](Claude/subagents/README_ZH.md) |
-| [`Codex/fork/`](Codex/fork/) | ChatGPT Desktop guide for branching Codex chats, isolating worktrees, and resetting stalled investigations | [English](Codex/fork/README.md) · [中文](Codex/fork/README_ZH.md) |
-| [`Codex/cli/`](Codex/cli/) | Engineering workflow guide for Codex CLI slash commands, session control, and safe review | [English](Codex/cli/README.md) · [中文](Codex/cli/README_ZH.md) |
-| [`Codex/ide/`](Codex/ide/) | VS Code guide for connecting and using Codex IDE context | [English](Codex/ide/README.md) · [中文](Codex/ide/README_ZH.md) |
-| [`Codex/goal/`](Codex/goal/) | Guide to the `/goal` slash command for long-running work with a verifiable stopping condition | [English](Codex/goal/README.md) · [中文](Codex/goal/README_ZH.md) |
-| [`AGENTS.md`](AGENTS.md) | Canonical repository instructions for engineering work and Codex interaction guidance | [Instructions](AGENTS.md) |
-| [`.agents/skills/youtube-transcript/`](.agents/skills/youtube-transcript/) | Project-level browser-only YouTube Transcript workflow | [Skill](.agents/skills/youtube-transcript/SKILL.md) · [tool module](Codex/youtube-transcript/) |
-| [`Ubuntu/apt/`](Ubuntu/apt/) | Ubuntu APT commands for package installation, upgrades, inspection, and troubleshooting | [English](Ubuntu/apt/README.md) · [中文](Ubuntu/apt/README_ZH.md) |
-| [`Git/`](Git/) | Operational Git commands for safe synchronisation, release traceability, rollback, and recovery | [English](Git/README.md) · [中文](Git/README_ZH.md) |
-| [`YouTube/`](YouTube/) | Reader-friendly bilingual video summaries organized by learning topic | [English catalog](YouTube/README.md) · [中文目录](YouTube/README_ZH.md) |
-| [`Ghostty/`](Ghostty/) | Cross-platform Ghostty and terminal tool setup | [English](Ghostty/README.md) · [中文](Ghostty/README_ZH.md) · [Config](Ghostty/config.ghostty) |
-| [`ZooKeeper/`](ZooKeeper/) | ZooKeeper operational documentation, including incident runbooks | [English](ZooKeeper/README.md) · [中文](ZooKeeper/README_ZH.md) |
-| [`Kubernetes/`](Kubernetes/) | Kubernetes operational documentation, including incident runbooks | [English](Kubernetes/README.md) · [中文](Kubernetes/README_ZH.md) |
-| [`Nginx/`](Nginx/) | Beginner-friendly Nginx and OpenResty deployment and operations guides | [English](Nginx/README.md) · [中文](Nginx/README_ZH.md) |
-| [`Nodejs/`](Nodejs/) | Beginner-friendly Node.js / Express BFF deployment and incident runbooks | [English](Nodejs/README.md) · [中文](Nodejs/README_ZH.md) |
-| [`AWS/`](AWS/) | Bilingual AWS runbooks and references aligned with official AWS documentation | [English](AWS/README.md) · [中文](AWS/README_ZH.md) |
+### Troubleshoot and operate systems
 
-## Organization Principles
+- [Git](Git/README.md) — Synchronisation, release tracking, rollback, and recovery.
+- [Kubernetes](Kubernetes/README.md) — Operations and incident runbooks.
+- [AWS](AWS/README.md) — Cloud references and runbooks grounded in official documentation.
+- [Nginx & OpenResty](Nginx/README.md) — Deployment and operations for beginners.
+- [Node.js & Express](Nodejs/README.md) — BFF deployment and incident response.
+- [ZooKeeper](ZooKeeper/README.md) — Operations and incident handling.
 
-- Keep resources reusable, focused, and suitable for a public repository.
-- Prefer information supported by primary or official sources.
-- Keep documentation consistent with current behavior and clearly identify personal interpretation.
-- Do not store credentials, employer or client source code, confidential data, conversation history, caches, or machine-specific information.
+### Work with AI coding tools
 
-## Language Convention
+- [Codex CLI](Codex/cli/README.md) — Commands, sessions, and review.
+- [Codex in VS Code](Codex/ide/README.md) — Connect the IDE and provide relevant context.
+- [Branch a Codex conversation](Codex/fork/README.md) — Separate investigations and isolate worktrees.
+- [Set a Codex goal](Codex/goal/README.md) — Define long-running work with a verifiable stopping condition.
+- [Claude subagents](Claude/subagents/README.md) — Study guide for Anthropic Academy’s introductory course.
 
-- `README.md` is the default English entry point.
-- `README_ZH.md` is the corresponding Chinese version.
-- English and Chinese versions should keep the same structure, links, and factual scope.
+### Prepare for SRE interviews
 
-## Repository Status
+- [Python exercises](Python/README.md) — Log processing and algorithms.
+- [Bash exercises](Bash/README.md) — Log analysis and process inspection.
 
-This knowledge base evolves as topics are studied and existing notes are verified or refined.
+### Set up your development environment
+
+- [Ghostty & terminal tools](Ghostty/README.md) — Platform-specific setup and a reusable [Ghostty configuration](Ghostty/config.ghostty).
+- [Ubuntu APT](Ubuntu/apt/README.md) — Package installation, upgrades, inspection, and troubleshooting.
+- [Apple Container](apple/container/README.md) — Architecture, usage, and limitations.
+
+### Explore ideas from videos
+
+- [YouTube learning notes](YouTube/README.md) — Video summaries organised by topic, including startups and AI agents.
+
+## About these notes
+
+These notes reflect personal study and experience; they are not official product documentation. I prioritise primary sources and distinguish personal interpretation from documented behaviour. The collection evolves as I study new topics and revisit existing notes.
+
+Paired English and Chinese articles keep matching structure, links, and factual scope. Use the language link at the top of an article to switch.
+
+## For contributors and maintainers
+
+Keep contributions focused, reusable, and suitable for a public repository. Do not include credentials, employer or client code, confidential data, conversation history, caches, or machine-specific information.
+
+- [Repository guidelines](AGENTS.md) — Scope, checks, and delivery conventions.
+- [YouTube transcript workflow](.agents/skills/youtube-transcript/SKILL.md) — How video summaries are prepared and checked.
+- [Transcript tool module](Codex/youtube-transcript/) — Supporting tooling.
