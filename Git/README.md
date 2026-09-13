@@ -2,6 +2,8 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+New to GitHub collaboration? Start with [Publish Changes to GitHub: A Beginner's Guide](publish-to-github/README.md).
+
 This guide is for operations engineers who are comfortable with a terminal and basic Git usage. Its core rule is simple: **inspect first, then change; on shared branches, prefer an auditable new corrective commit over rewriting history.**
 
 It covers native Git commands only. Buttons, branch-protection rules, and CI configuration in GitHub, GitLab, or Bitbucket are platform features, not Git itself.

@@ -9,6 +9,7 @@ I collect explanations, commands, and references worth revisiting, from SRE runb
 ## Start with a real problem
 
 - **[Git branches have diverged. What next?](Git/README.md)** Inspect the state, choose a sync strategy, and recover safely.
+- **[How should I publish changes to GitHub?](Git/publish-to-github/README.md)** Follow a beginner-safe branch, commit, push, pull request, and squash-merge workflow.
 - **[A Pod is stuck Pending. Could it be IP capacity?](Kubernetes/runbooks/insufficient-ip-or-eni/README.md)** Distinguish subnet capacity, node limits, and other causes.
 - **[How do I work with Codex CLI?](Codex/cli/README.md)** Start with session control, slash commands, and a review workflow.
 
@@ -16,7 +17,7 @@ I collect explanations, commands, and references worth revisiting, from SRE runb
 
 ### Troubleshoot and operate systems
 
-- [Git](Git/README.md) — Synchronisation, release tracking, rollback, and recovery.
+- [Git](Git/README.md) — Synchronisation, release tracking, rollback, and recovery; start with the [beginner publishing workflow](Git/publish-to-github/README.md).
 - [Kubernetes](Kubernetes/README.md) — Operations and incident runbooks.
 - [AWS](AWS/README.md) — Cloud references and runbooks grounded in official documentation.
 - [Nginx & OpenResty](Nginx/README.md) — Deployment and operations for beginners.
