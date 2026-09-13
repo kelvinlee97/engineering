@@ -15,7 +15,7 @@ Amazon Redshift is a fully managed, petabyte-scale data warehouse. It uses colum
 - **Redshift Spectrum**: query data directly in S3 without loading it into the warehouse.
 - **Concurrency scaling**: adds transient capacity to serve concurrent queries.
 - **Snapshots**: automatic snapshots (retention up to 35 days) and manual snapshots, restorable to another Region.
-- **Python UDFs**: support ends June 30, 2026; plan migrations to SQL UDFs or Lambda UDFs.
+- **Python UDFs**: support ended after June 30, 2026; migrate remaining functions to SQL UDFs or Lambda UDFs.
 
 ## Common operations (AWS CLI)
 
@@ -64,7 +64,7 @@ aws redshift-serverless create-workgroup --workgroup-name analytics-wg \
 | COPY failures | Validate source file format, IAM role permissions on S3, and column mapping. |
 | Connection limits | Increase cluster size, use connection pooling, or add concurrency scaling. |
 | Snapshot restore slow | Verify snapshot availability and choose sufficient cluster size for restore. |
-| Python UDF errors | Migrate Python UDFs before June 30, 2026 support end. |
+| Python UDF errors | Python UDF execution is no longer supported; migrate to SQL UDFs or Lambda UDFs. |
 
 ## Limits
 
@@ -74,5 +74,6 @@ Cluster counts, node counts, snapshots, and Serverless capacity have per-account
 
 - [What is Amazon Redshift? - Management Guide](https://docs.aws.amazon.com/redshift/latest/mgmt/welcome.html)
 - [Amazon Redshift Database Developer Guide](https://docs.aws.amazon.com/redshift/latest/dg/welcome.html)
+- [Amazon Redshift behavior changes](https://docs.aws.amazon.com/redshift/latest/mgmt/behavior-changes.html)
 - [Amazon Redshift pricing](https://aws.amazon.com/redshift/pricing/)
 - [AWS CLI: redshift commands](https://docs.aws.amazon.com/cli/latest/reference/redshift/)

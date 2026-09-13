@@ -1,6 +1,6 @@
 # Kelvin 的工程笔记
 
-[English](README.md) · 简体中文 · [浏览知识库站点](https://kelvinlee97.github.io/engineering/)
+[English](README.md) · 简体中文 · [浏览知识库站点](https://blog.kelvin.ink/)
 
 记录系统故障怎么查、AI 编程工具怎么用，以及怎样让日常工程工作更顺手。
 

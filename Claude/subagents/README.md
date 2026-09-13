@@ -9,7 +9,7 @@ This is a complete study guide to Anthropic Academy's **Introduction to subagent
 | Lesson | Official article | Official video | Coverage status |
 | --- | --- | --- | --- |
 | [What are subagents?](https://anthropic.skilljar.com/introduction-to-subagents/450698) | Read in full | [Video](https://www.youtube.com/watch?v=jKErNxuxPXg), English auto-generated subtitles read in full | Complete |
-| [Creating a subagent](https://anthropic.skilljar.com/introduction-to-subagents/450699) | Read in full | [Embedded video](https://www.youtube.com/watch?v=arD6qEWa2Xc) is currently unavailable because of a copyright claim | Article complete; video unavailable |
+| [Creating a subagent](https://anthropic.skilljar.com/introduction-to-subagents/450699) | Read in full | [Embedded video](https://www.youtube.com/watch?v=arD6qEWa2Xc) was unavailable on 2026-08-05 because of a copyright claim | Article complete; video unavailable when checked |
 | [Designing effective subagents](https://anthropic.skilljar.com/introduction-to-subagents/450700) | Read in full | [Video](https://www.youtube.com/watch?v=WPxWKT_OaU4), English auto-generated subtitles read in full | Complete |
 | [Using subagents effectively](https://anthropic.skilljar.com/introduction-to-subagents/450701) | Read in full | [Video](https://www.youtube.com/watch?v=n5LoKZ8Oa-A), English auto-generated subtitles read in full | Complete |
 
@@ -342,4 +342,3 @@ All articles were read through an enrolled Anthropic Academy session on 2026-08-
 - [Creating a subagent](https://www.youtube.com/watch?v=arD6qEWa2Xc) — unavailable on 2026-08-05 because of a copyright claim; no transcript was used.
 - [Designing effective subagents](https://www.youtube.com/watch?v=WPxWKT_OaU4) — English auto-generated subtitles read on 2026-08-05.
 - [Using subagents effectively](https://www.youtube.com/watch?v=n5LoKZ8Oa-A) — English auto-generated subtitles read on 2026-08-05.
-

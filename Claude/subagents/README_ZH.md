@@ -9,7 +9,7 @@ English version: [README.md](README.md)
 | 课程 | 官方文章 | 官方视频 | 覆盖状态 |
 | --- | --- | --- | --- |
 | [What are subagents?](https://anthropic.skilljar.com/introduction-to-subagents/450698) | 已完整读取 | [视频](https://www.youtube.com/watch?v=jKErNxuxPXg)，已完整读取英文自动字幕 | 完整 |
-| [Creating a subagent](https://anthropic.skilljar.com/introduction-to-subagents/450699) | 已完整读取 | [嵌入视频](https://www.youtube.com/watch?v=arD6qEWa2Xc)目前因版权主张而无法播放 | 文章完整；视频不可用 |
+| [Creating a subagent](https://anthropic.skilljar.com/introduction-to-subagents/450699) | 已完整读取 | [嵌入视频](https://www.youtube.com/watch?v=arD6qEWa2Xc)于 2026-08-05 因版权主张而无法播放 | 文章完整；核对时视频不可用 |
 | [Designing effective subagents](https://anthropic.skilljar.com/introduction-to-subagents/450700) | 已完整读取 | [视频](https://www.youtube.com/watch?v=WPxWKT_OaU4)，已完整读取英文自动字幕 | 完整 |
 | [Using subagents effectively](https://anthropic.skilljar.com/introduction-to-subagents/450701) | 已完整读取 | [视频](https://www.youtube.com/watch?v=n5LoKZ8Oa-A)，已完整读取英文自动字幕 | 完整 |
 
@@ -342,4 +342,3 @@ Description 还会指导父 agent 编写输入 prompt。模糊的 reviewer 描�
 - [Creating a subagent](https://www.youtube.com/watch?v=arD6qEWa2Xc) — 2026-08-05 因版权主张而无法播放；未使用字幕。
 - [Designing effective subagents](https://www.youtube.com/watch?v=WPxWKT_OaU4) — 2026-08-05 已读取英文自动字幕。
 - [Using subagents effectively](https://www.youtube.com/watch?v=n5LoKZ8Oa-A) — 2026-08-05 已读取英文自动字幕。
-
