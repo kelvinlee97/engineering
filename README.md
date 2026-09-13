@@ -1,6 +1,6 @@
 # Kelvin’s Engineering Notes
 
-English · [简体中文](README_ZH.md) · [Browse the knowledge site](https://kelvinlee97.github.io/engineering/)
+English · [简体中文](README_ZH.md) · [Browse the knowledge site](https://blog.kelvin.ink/)
 
 Practical notes on troubleshooting systems, working with AI coding tools, and making everyday engineering tasks easier.
 

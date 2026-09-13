@@ -15,7 +15,7 @@ Amazon Redshift 是完全托管的 PB 级数据仓库。它采用列式存储和
 - **Redshift Spectrum**：直接查询 S3 中的数据，无需先加载进仓库。
 - **并发扩展（Concurrency scaling）**：按需增加临时容量处理并发查询。
 - **快照**：自动快照（保留最长 35 天）和手动快照，可恢复到其他区域。
-- **Python UDF**：支持于 2026 年 6 月 30 日结束；请规划迁移到 SQL UDF 或 Lambda UDF。
+- **Python UDF**：支持已于 2026 年 6 月 30 日后结束；请把剩余函数迁移到 SQL UDF 或 Lambda UDF。
 
 ## 常用操作（AWS CLI）
 
@@ -64,7 +64,7 @@ aws redshift-serverless create-workgroup --workgroup-name analytics-wg \
 | COPY 失败 | 检查源文件格式、S3 IAM 角色权限和列映射。 |
 | 连接数限制 | 扩大集群、使用连接池，或加并发扩展。 |
 | 快照恢复慢 | 确认快照可用，并按需选择足够大的恢复集群。 |
-| Python UDF 报错 | 在 2026 年 6 月 30 日支持结束前迁移 Python UDF。 |
+| Python UDF 报错 | Python UDF 已不再支持执行；请迁移到 SQL UDF 或 Lambda UDF。 |
 
 ## 配额
 
@@ -74,5 +74,6 @@ aws redshift-serverless create-workgroup --workgroup-name analytics-wg \
 
 - [什么是 Amazon Redshift？- 管理指南](https://docs.aws.amazon.com/redshift/latest/mgmt/welcome.html)
 - [Amazon Redshift 数据库开发者指南](https://docs.aws.amazon.com/redshift/latest/dg/welcome.html)
+- [Amazon Redshift 行为变更](https://docs.aws.amazon.com/redshift/latest/mgmt/behavior-changes.html)
 - [Amazon Redshift 定价](https://aws.amazon.com/redshift/pricing/)
 - [AWS CLI：redshift 命令](https://docs.aws.amazon.com/cli/latest/reference/redshift/)
