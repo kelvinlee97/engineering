@@ -1,6 +1,0 @@
-interface:
-  display_name: "Git Delivery"
-  short_description: "GitHub PR delivery with scoped authorization"
-  default_prompt: "Use $git-delivery for explicit GitHub PR delivery; merge and delete the branch only if I ask for each separately."
-policy:
-  allow_implicit_invocation: true

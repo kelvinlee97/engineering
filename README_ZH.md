@@ -9,6 +9,7 @@
 ## 从一个实际问题开始
 
 - **[Git 分支分叉了，接下来怎么办？](Git/README_ZH.md)** 先看清状态，再选择同步方式，并了解如何安全恢复。
+- **[怎样正确地把改动发布到 GitHub？](Git/publish-to-github/README_ZH.md)** 按适合初学者的分支、提交、推送、Pull Request 和 squash merge 流程操作。
 - **[Pod 一直 Pending，是 IP 不够吗？](Kubernetes/runbooks/insufficient-ip-or-eni/README_ZH.md)** 区分子网容量、节点限制和其他原因。
 - **[怎样用 Codex CLI 开展工作？](Codex/cli/README_ZH.md)** 从会话管理、斜杠命令和审查流程入手。
 
@@ -16,7 +17,7 @@
 
 ### 排查故障与维护系统
 
-- [Git](Git/README_ZH.md) — 安全同步、发布追溯、回滚与恢复。
+- [Git](Git/README_ZH.md) — 安全同步、发布追溯、回滚与恢复；初学者可先阅读[发布流程](Git/publish-to-github/README_ZH.md)。
 - [Kubernetes](Kubernetes/README_ZH.md) — 运维与事故处理手册。
 - [AWS](AWS/README_ZH.md) — 以官方文档为依据的云服务参考与排障手册。
 - [Nginx 与 OpenResty](Nginx/README_ZH.md) — 面向初学者的部署与运维指南。

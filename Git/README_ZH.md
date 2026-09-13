@@ -2,6 +2,8 @@
 
 English version: [README.md](README.md)
 
+刚开始使用 GitHub 协作？请先阅读[正确地把改动发布到 GitHub：初学者指南](publish-to-github/README_ZH.md)。
+
 面向已有终端和基础 Git 使用经验的运维工程师。本文的原则很简单：**先观察，再操作；共享分支优先追加可审计的修复，不改写历史。**
 
 本文只讲 Git 原生命令。GitHub、GitLab、Bitbucket 等平台的按钮、保护规则和 CI 配置是平台能力，不能与 Git 本身混为一谈。
