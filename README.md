@@ -31,6 +31,7 @@ I collect explanations, commands, and references worth revisiting, from SRE runb
 - [Branch a Codex conversation](Codex/fork/README.md) — Separate investigations and isolate worktrees.
 - [Set a Codex goal](Codex/goal/README.md) — Define long-running work with a verifiable stopping condition.
 - [Claude subagents](Claude/subagents/README.md) — Study guide for Anthropic Academy’s introductory course.
+- [AI-native SDLC playbook](Claude/ai-native-sdlc-playbook/README.md) — Redesign delivery around versioned artifacts, feedback loops, and explicit governance gates.
 
 ### Prepare for SRE interviews
 
