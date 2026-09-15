@@ -1,6 +1,16 @@
 # Amazon CodeGuru - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> CodeGuru 其实是共用一个品牌名的两个不相关机器学习工具——Reviewer 在代码运行前审查源代码，Profiler 在生产环境中观察正在运行的进程——而自 2025 年 11 月 7 日起，只有其中一个（Profiler）还能新接入。
+
+本文主要回答一个问题：
+
+1. 鉴于 2025 年 11 月的这次变化，新项目还能采用 CodeGuru 的哪个能力？哪个能力只对存量配置开放？
 
 ## 概述
 
@@ -8,10 +18,11 @@ Amazon CodeGuru 是机器学习服务，包含两个能力：CodeGuru Reviewer �
 
 ## 核心概念
 
-- **CodeGuru Reviewer**：使用程序分析和机器学习检测 Java 和 Python 代码中的复杂缺陷并提出改进建议（资源泄漏、安全问题、最佳实践）；集成 GitHub、Bitbucket 和 S3（通过 GitHub Actions）。
-- **密钥检测**：Reviewer 可发现代码中未受保护的密钥，并与 AWS Secrets Manager 集成。
-- **CodeGuru Profiler**：在生产环境对应用进行性能剖析，可视化性能，定位最昂贵的代码行和低效路径；有助于降低成本与延迟。
-- **可用性变化**：Reviewer 不再支持新的仓库关联（2025 年 11 月 7 日起）；类似能力的替代服务见 AWS 公告。
+| 能力 | 做什么 | 可用性 |
+|---|---|---|
+| CodeGuru Reviewer | 使用程序分析和机器学习检测 Java 和 Python 代码中的复杂缺陷并提出改进建议（资源泄漏、安全问题、最佳实践）；集成 GitHub、Bitbucket 和 S3（通过 GitHub Actions）。 | 自 2025 年 11 月 7 日起不再支持新建仓库关联；现有关联可继续使用。 |
+| 密钥检测 | Reviewer 可发现代码中未受保护的密钥，并与 AWS Secrets Manager 集成。 | 属于 Reviewer 的一部分，可用性限制相同。 |
+| CodeGuru Profiler | 在生产环境对应用进行性能剖析，可视化性能，定位最昂贵的代码行和低效路径；有助于降低成本与延迟。 | 完全可用，不受 Reviewer 变更影响。 |
 
 ## 常用操作（AWS CLI）
 
