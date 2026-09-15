@@ -8,6 +8,19 @@ English | [简体中文](README_ZH.md)
 
 > Amazon GuardDuty is a threat detection service that continuously monitors and analyzes AWS data sources, including CloudTrail management events, VPC Flow Logs, and DNS logs. It also offers optional protection plans for EKS audit logs, RDS login activity, S3 data events, EBS malware scanning, runtime monitoring for EC2/EKS/ECS, Lambda network activity, and AI workloads. GuardDuty uses threat intelligence feeds (malicious IPs and domains, file hashes) and machine learning to produce security findings.
 
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: Amazon GuardDuty detection flow
+    accDescr: Foundational data sources ingest automatically once a detector is enabled. Optional protection plans add more sources. Threat intelligence and machine learning turn this data into findings, which filters and suppression rules can reduce before they reach downstream automation.
+    FD[Foundational sources:<br/>CloudTrail, VPC Flow Logs, DNS] --> Det[Detector]
+    PP[Protection plans:<br/>S3, EKS, RDS, Malware, Runtime...] --> Det
+    Det -->|+ threat intel, ML| Find[Findings]
+    Find --> Filt[Filters / suppression rules]
+    Filt --> Out[EventBridge, Security Hub]
+```
+
 ## Key concepts
 
 - **Detector**: the GuardDuty configuration object; one per account per Region.

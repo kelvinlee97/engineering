@@ -1,10 +1,26 @@
 # Amazon Rekognition - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> Rekognition analyzes images synchronously in a single API call, but video always runs as an asynchronous job that reports completion through SNS — both call into the same underlying detection features (labels, text, faces, moderation).
 
 ## Overview
 
 Amazon Rekognition is a cloud-based image and video analysis service powered by deep learning. With simple APIs you can detect objects, scenes, text, faces, celebrities, and unsafe content in images and videos stored in S3, without ML expertise. It is HIPAA-eligible and uses pay-as-you-go pricing.
+
+```mermaid
+flowchart LR
+    accTitle: Rekognition synchronous image vs asynchronous video analysis
+    accDescr: Image analysis calls return detection results synchronously in a single API call. Video analysis starts an asynchronous job that processes the S3 video and publishes completion to an SNS topic, after which results are retrieved with a get call.
+    I[Image in S3] -->|detect-* call| SR[Synchronous result]
+    V[Video in S3] -->|start-* call| J[Async job]
+    J --> SNS[SNS completion notification]
+    SNS --> G[get-* call for results]
+```
 
 ## Key concepts
 

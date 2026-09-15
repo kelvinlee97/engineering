@@ -8,6 +8,28 @@ English | [简体中文](README_ZH.md)
 
 > AWS Identity and Access Management (IAM) controls authentication (who is signed in) and authorization (who has permissions) for AWS resources. IAM, IAM Identity Center, and AWS STS are included with your AWS account at no additional charge. IAM is eventually consistent.
 
+## Big picture
+
+An authorization decision combines several independent layers; any explicit deny wins, and a request is denied unless something explicitly allows it:
+
+```mermaid
+flowchart TD
+    accTitle: IAM authorization decision layers
+    accDescr: A request is evaluated against the identity-based policy, any resource-based policy, organization SCPs and RCPs, and a permissions boundary if one is set. Any explicit deny at any layer denies the request; otherwise an explicit allow from at least one applicable layer is required.
+    R[Request] --> IP[Identity-based policy]
+    R --> RP[Resource-based policy]
+    R --> SCP[Org SCP / RCP guardrails]
+    R --> PB[Permissions boundary, if set]
+    IP --> D{Explicit deny<br/>anywhere?}
+    RP --> D
+    SCP --> D
+    PB --> D
+    D -- Yes --> Deny[Denied]
+    D -- No --> A{Explicit allow<br/>from applicable layers?}
+    A -- Yes --> Allow[Allowed]
+    A -- No --> Deny
+```
+
 ## Core concepts
 
 - **Root user**: the initial account identity with full access; do not use it for everyday tasks.

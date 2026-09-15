@@ -4,6 +4,10 @@ English version: [README.md](README.md)
 
 当三成员 ZooKeeper ensemble 失去 quorum、不能再接受更新时，才使用此事故专用 Runbook。它不适用于普通重启、单成员损坏或磁盘满 follower 修复；后者应使用[单成员磁盘满恢复手册](../disk-full-transaction-log-recovery/README_ZH.md)。
 
+## 心智模型
+
+> 完全失去 quorum 意味着已经没有幸存的权威数据副本可供同步，因此恢复不是修复，而是重建：每个成员都要逐一清空并重置到同一份已批准 snapshot，过程通过一个刻意临时且严格锁定的管理接口完成，只有全部成员都认可同一份 snapshot 后，才能重新形成 quorum。
+
 ## 安全边界
 
 此流程会破坏成员当前的本地数据库状态，并可能丢失所选 snapshot 之后的写入。在执行第 4 节前，必须获得 incident commander、ZooKeeper owner、应用 owner 和 security owner 批准。若健康多数派可能仍存在、snapshot 来源未知，或未验证根 znode ACL，则不得继续。

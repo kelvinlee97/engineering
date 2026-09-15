@@ -1,10 +1,29 @@
 # Amazon Redshift - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> Redshift 是列式、大规模并行的数据仓库：可以选择自行调整规格的预置集群（RA3 让计算独立于存储扩展；DC2 是固定本地存储），也可以选择由 AWS 自动伸缩 RPU 容量的 Serverless；两种方式都能通过 Spectrum 直接查询 S3 中的冷数据。
 
 ## 概述
 
 Amazon Redshift 是完全托管的 PB 级数据仓库。它采用列式存储和大规模并行处理（MPP），适合快速 SQL 分析，并兼容你现有的 BI 和 SQL 工具。Redshift Serverless 免去集群管理，自动供给容量、按需求扩展，空闲时停止计费。
+
+```mermaid
+flowchart TD
+    accTitle: Redshift 部署与存储选择
+    accDescr: 选择预置集群时可用 RA3 节点（计算与托管存储分离扩展）或 DC2 节点（固定本地存储），也可以选择由 AWS 自动伸缩 RPU 容量的 Redshift Serverless；两种部署都能用 Redshift Spectrum 直接查询 S3 中的数据而无需加载。
+    D{部署方式} -- 预置集群 --> N{节点类型}
+    N -- RA3 --> N1[计算独立于<br/>存储扩展]
+    N -- DC2 --> N2[固定本地存储]
+    D -- Serverless --> S[AWS 自动伸缩<br/>RPU 容量]
+    N1 --> SP[Redshift Spectrum：<br/>直接查询 S3]
+    N2 --> SP
+    S --> SP
+```
 
 ## 核心概念
 

@@ -8,6 +8,18 @@ English | [简体中文](README_ZH.md)
 
 > AWS Health provides visibility into the performance and availability of your AWS services and accounts. It delivers events about service disruptions, scheduled changes, and account notifications so you can prepare for planned activities, troubleshoot in-progress issues, and automate responses. The AWS Health Dashboard is available to all customers at no additional cost.
 
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: AWS Health event delivery
+    accDescr: Service disruptions, scheduled changes, and account notifications become AWS Health events, delivered through the free Health Dashboard, free EventBridge integration for automation, and the paid Health API for support-plan customers.
+    S[Service issues, scheduled<br/>changes, account notices] --> E[Health event]
+    E --> D[Health Dashboard<br/>free, all customers]
+    E --> EB[EventBridge<br/>free, for automation]
+    E --> API[Health API<br/>Business Support+]
+```
+
 ## Key concepts
 
 - **Health events**: notifications about service issues, scheduled maintenance, and account-specific events that may affect your resources.

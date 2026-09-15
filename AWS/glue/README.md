@@ -8,6 +8,20 @@ English | [简体中文](README_ZH.md)
 
 > AWS Glue is a serverless data integration service for discovering, preparing, moving, and integrating data. It provides a central Data Catalog, crawlers for schema discovery, ETL jobs on Spark or Ray engines, streaming ETL, workflows, and visual tooling (Glue Studio). Data in the catalog is queryable from Athena, EMR, and Redshift Spectrum.
 
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: AWS Glue data integration flow
+    accDescr: A crawler connects to data sources, infers schemas, and populates the Data Catalog. ETL jobs, built visually in Glue Studio or scheduled by triggers and workflows, read and write data using the catalog, which is queryable from Athena, EMR, and Redshift Spectrum.
+    Src[Data sources] --> Cr[Crawler]
+    Cr --> Cat[Data Catalog]
+    Cat --> Job[ETL job<br/>Spark / Ray]
+    Job --> Cat
+    Trig[Triggers / workflows] --> Job
+    Cat --> Q[Athena, EMR,<br/>Redshift Spectrum]
+```
+
 ## Key concepts
 
 - **Data Catalog**: a central metadata store of databases, tables (schemas), and partitions.
