@@ -1,6 +1,35 @@
 # AWS Control Tower - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> Control Tower 是叠加在 Organizations 之上的一层治理，而不是它的替代品：它定义了你的 landing zone 中"良好架构"意味着什么，而三种控制类型分别在三个不同的时刻强制执行这个定义——资源被创建之前、被 CloudFormation 供给之前，或者它已经存在之后。
+
+本文主要回答一个问题：
+
+1. 面对一项治理要求，preventive（预防性）、proactive（主动性）、detective（检测性）三种控制类型中，到底是哪一种在真正执行它？执行发生在什么时刻？
+
+## 全景图
+
+```mermaid
+flowchart TD
+    accTitle: 按执行时机划分的 AWS Control Tower 控制类型
+    accDescr: 预防性控制使用服务控制策略直接拒绝某个 API 操作，在任何事情发生之前就将其阻止。主动性控制使用 CloudFormation hooks，在不合规资源被供给之前将其阻止。检测性控制使用 AWS Config 规则找出已经存在的不合规资源，并在仪表盘上报为漂移。
+    Action[有人尝试执行<br/>某个 AWS 操作] --> P{预防性控制：<br/>SCP 是否拒绝?}
+    P -- 是 --> Blocked[操作被阻止，<br/>什么都不发生]
+    P -- 否 --> Prov{是否通过<br/>CloudFormation 供给?}
+    Prov -- 是 --> Pro{主动性控制：<br/>CFN hook 是否标记?}
+    Pro -- 是 --> Blocked2[供给被阻止]
+    Pro -- 否 --> Created[资源已创建]
+    Prov -- 否 --> Created
+    Created --> Det{检测性控制：<br/>Config 规则是否判定不合规?}
+    Det -- 是 --> Drift[在仪表盘上<br/>报告为漂移]
+```
+
+只有检测性控制是事后运作的——预防性和主动性控制都是阻止事情发生，这正是为什么一个已经存在且违反策略的资源，只能被检测性控制发现，而永远无法被追溯性地阻止。
 
 ## 概述
 

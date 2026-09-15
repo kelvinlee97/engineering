@@ -1,6 +1,35 @@
 # AWS Control Tower - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> Control Tower is a layer of governance on top of Organizations, not a replacement for it: it decides what "well-architected" means for your landing zone, and its three control types enforce that definition at three different moments — before a resource can be created, before it can be provisioned by CloudFormation, or after it already exists.
+
+This article answers one practical question:
+
+1. Given a governance requirement, which of the three control types — preventive, proactive, or detective — actually enforces it, and when does that enforcement happen?
+
+## Big picture
+
+```mermaid
+flowchart TD
+    accTitle: AWS Control Tower control types by enforcement timing
+    accDescr: Preventive controls use service control policies to deny an API action outright, blocking it before anything happens. Proactive controls use CloudFormation hooks to block a non-compliant resource before it is provisioned. Detective controls use AWS Config rules to find non-compliant resources that already exist, reporting them as drift on the dashboard.
+    Action[Someone attempts<br/>an AWS action] --> P{Preventive control:<br/>SCP denies it?}
+    P -- yes --> Blocked[Action blocked,<br/>nothing happens]
+    P -- no --> Prov{Provisioned via<br/>CloudFormation?}
+    Prov -- yes --> Pro{Proactive control:<br/>CFN hook flags it?}
+    Pro -- yes --> Blocked2[Provisioning blocked]
+    Pro -- no --> Created[Resource created]
+    Prov -- no --> Created
+    Created --> Det{Detective control:<br/>Config rule finds it noncompliant?}
+    Det -- yes --> Drift[Reported as drift<br/>on the dashboard]
+```
+
+Only detective controls operate after the fact — preventive and proactive controls both stop something from happening, which is why a resource that already exists and violates policy can only be caught by a detective control, never retroactively blocked.
 
 ## Overview
 
