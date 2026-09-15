@@ -1,10 +1,30 @@
 # Amazon Macie - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> Macie continuously inventories your S3 buckets, samples or scans objects for sensitive data and misconfiguration, and turns what it finds into findings that flow to EventBridge or Security Hub for action.
 
 ## Overview
 
 Amazon Macie is a data security service that discovers sensitive data in Amazon S3 using machine learning and pattern matching, evaluates S3 buckets for security and access-control issues, and generates findings you can review and remediate. It provides a bucket inventory, a dashboard, and automated sensitive data discovery.
+
+```mermaid
+flowchart LR
+    accTitle: Macie discovery-to-response pipeline
+    accDescr: Macie inventories S3 buckets, runs automated discovery or classification jobs against objects, produces policy and sensitive-data findings, and routes them to EventBridge or Security Hub CSPM for review and remediation.
+    B[S3 buckets] --> I[Bucket inventory<br/>& policy evaluation]
+    B --> D[Automated discovery /<br/>classification jobs]
+    I --> F[Findings]
+    D --> F
+    F --> E[EventBridge]
+    F --> H[Security Hub CSPM]
+    E --> R[Automated response]
+    H --> R2[Aggregated security posture]
+```
 
 ## Key concepts
 
