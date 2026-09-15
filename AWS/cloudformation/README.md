@@ -1,6 +1,34 @@
 # AWS CloudFormation - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> CloudFormation treats infrastructure as one unit driven by diffing, not by direct commands: every update — safe or not — is really "compute a change set, then execute it," and the stack's event log is the only reliable place to find why a change failed.
+
+This article answers two practical questions:
+
+1. What is the safe path from "I changed the template" to "the change is live"?
+2. Where do I look first when a stack creation or update fails?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: CloudFormation change set workflow
+    accDescr: A template change generates a change set, which is a preview of additions, modifications, and deletions compared to the deployed stack. Executing the change set applies it, generating a sequence of stack events; the first CREATE_FAILED or UPDATE_FAILED event in that sequence is the root cause of any failure.
+    T[Updated template] --> CS[Create change set:<br/>diff vs deployed stack]
+    CS --> R[Review: additions,<br/>modifications, deletions]
+    R --> E["Execute change set"]
+    E --> EV[Stack events]
+    EV --> F{Any FAILED event?}
+    F -- yes --> RC[First FAILED event<br/>= root cause]
+    F -- no --> OK[Stack updated]
+```
+
+The change set step exists specifically so the diff can be reviewed before anything is applied — skipping straight to `update-stack` removes that safety check, not the underlying mechanism.
 
 ## Overview
 
