@@ -1,6 +1,16 @@
 # Amazon Comprehend - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> Comprehend is a set of pre-trained NLP detectors (entities, sentiment, PII, syntax...) plus an optional AutoML layer on top: reach for the `Detect*` APIs first, and only build a custom classifier or entity recognizer when your categories or terms are specific enough that the pre-trained models can't name them.
+
+This article answers one practical question:
+
+1. Should this task use a built-in `Detect*` API, or does it need a custom classifier/recognizer?
 
 ## Overview
 
