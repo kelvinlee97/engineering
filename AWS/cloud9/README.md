@@ -1,6 +1,16 @@
 # AWS Cloud9 - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> Cloud9 is a browser-based IDE glued to one compute resource per environment — either an EC2 instance it manages for you, or your own server reached over SSH — and it is now a maintenance-mode service: existing environments keep working, but no new customers can start.
+
+This article answers one practical question:
+
+1. What are the two ways a Cloud9 environment gets its compute, and what does that imply for new projects?
 
 ## Overview
 
@@ -8,11 +18,13 @@ AWS Cloud9 is a cloud-based integrated development environment (IDE) accessed fr
 
 ## Key concepts
 
-- **Environment**: a place storing your project files and running your development tools; connected to a compute resource.
-- **EC2 environment**: Cloud9 creates and manages an EC2 instance for you (recommended).
-- **SSH environment**: Cloud9 connects to an existing cloud instance or your own server over SSH.
-- **IDE**: browser-based editor with language support, debuggers, and a terminal.
-- **Integration**: clone repositories (CodeCommit, GitHub), run Docker, develop with the AWS CDK, and deploy serverless applications.
+| Concept | What it is |
+|---|---|
+| Environment | A place storing your project files and running your development tools; connected to a compute resource. |
+| EC2 environment | Cloud9 creates and manages an EC2 instance for you (recommended). |
+| SSH environment | Cloud9 connects to an existing cloud instance or your own server over SSH. |
+| IDE | Browser-based editor with language support, debuggers, and a terminal. |
+| Integration | Clone repositories (CodeCommit, GitHub), run Docker, develop with the AWS CDK, and deploy serverless applications. |
 
 ## Common operations (AWS CLI)
 

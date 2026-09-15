@@ -1,6 +1,33 @@
 # AWS Cloud Development Kit（CDK）- Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> CDK 从不直接与 AWS 对话——它把你的代码编译成 CloudFormation 模板，真正供给资源的是 CloudFormation；每个 CDK 命令本质上都是 CloudFormation 部署之前或周围的一个步骤。
+
+本文主要回答两个问题：
+
+1. 每个 CDK CLI 命令实际产出什么？它们的执行顺序是怎样的？
+2. L1、L2、L3 构件与它们最终变成的 CloudFormation 资源是什么关系？
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: CDK 合成与部署路径
+    accDescr: 由若干 Stack（含 L1/L2/L3 构件）组成的 CDK App 被合成为 CloudFormation 模板和资产。cdk diff 将该模板与已部署的栈对比。cdk deploy 把资产上传到 bootstrap 暂存桶，并把模板交给 CloudFormation，由它创建或更新实际资源。
+    A[App：由 L1/L2/L3<br/>构件组成的 Stack] --> S["cdk synth"]
+    S --> T[CloudFormation 模板<br/>+ 资产]
+    T --> DI["cdk diff<br/>（与已部署栈对比）"]
+    T --> DE["cdk deploy"]
+    DE --> UP[资产上传到<br/>bootstrap 暂存桶]
+    UP --> CF[CloudFormation<br/>创建/更新资源]
+```
+
+`cdk bootstrap` 是每个账号/区域一次性的前置步骤，创建这条部署路径依赖的暂存桶和角色——它不属于每次部署都会走的流程本身。
 
 ## 概述
 
