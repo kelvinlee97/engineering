@@ -1,6 +1,37 @@
 # AWS CodeBuild - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> CodeBuild 的一次运行完全由一个文件脚本化：buildspec 的各阶段在一个全新容器中按固定顺序执行，所以失败发生在 "install" 还是 "build" 还是 "post_build"，指向的是同一个文件里完全不同的部分，而不是不同的系统。
+
+本文主要回答一个问题：
+
+1. buildspec 各阶段的执行顺序是怎样的？每个阶段失败通常意味着什么？
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: CodeBuild buildspec 阶段顺序
+    accDescr: 构建项目拉取源代码并运行一个 Docker 构建环境。buildspec 按顺序执行阶段：install、pre_build、build、post_build。阶段结束后按 buildspec 声明收集制品并上传到 S3，所有阶段的输出都会流向 CloudWatch Logs。
+    Src[源：CodeCommit、<br/>S3、GitHub、Bitbucket] --> Env[构建环境<br/>托管或自定义镜像]
+    Env --> I[install]
+    I --> PB[pre_build]
+    PB --> B[build]
+    B --> POB[post_build]
+    POB --> Art[按 buildspec<br/>收集制品]
+    Art --> S3[上传到 S3]
+    I --> Logs[CloudWatch Logs]
+    PB --> Logs
+    B --> Logs
+    POB --> Logs
+```
+
+由于各阶段在同一个容器内严格按顺序执行，把依赖装在 `build` 而不是 `install` 里偶尔也能凑巧跑通——但网络或仓库故障总会最先出现在发起该网络调用的那个阶段，这是定位问题最快的线索。
 
 ## 概述
 

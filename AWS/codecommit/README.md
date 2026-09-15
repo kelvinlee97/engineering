@@ -1,6 +1,16 @@
 # AWS CodeCommit - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> CodeCommit is Git with AWS standing in for the server: every local Git command works unchanged, and the parts that differ from a self-hosted Git server are exactly the AWS-specific layers — IAM for who can push, KMS for encryption at rest, and CloudTrail/SNS for auditing and notifications.
+
+This article answers one practical question:
+
+1. Which parts of a CodeCommit workflow are "just Git," and which parts are AWS-specific and worth checking first when something goes wrong?
 
 ## Overview
 
