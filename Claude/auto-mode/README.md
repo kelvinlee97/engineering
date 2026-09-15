@@ -2,6 +2,34 @@
 
 English | [简体中文](README_ZH.md)
 
+## Mental model
+
+> Claude Code Auto Mode does not allow Claude to approve its own actions. Low-risk work can
+> continue, while a separate classifier checks higher-risk actions against user intent, configured
+> rules, and the environment boundary.
+
+## Big picture
+
+The central question is who decides whether a proposed action runs:
+
+```mermaid
+flowchart TD
+    accTitle: Claude Code Auto Mode action review
+    accDescr: Claude proposes an action. Permission rules and risk classification determine whether it executes directly or reaches an independent classifier, which can approve, reject for a safer alternative, or pause for the user.
+    U[User request] --> C[Claude proposes action]
+    C --> P[Apply deny, ask, and allow rules]
+    P --> R{Risk tier}
+    R -->|Low-risk or recoverable| E[Execute]
+    R -->|Needs review| I[Independent classifier]
+    I -->|Matches intent and boundary| E
+    I -->|Safer path exists| S[Reject and seek alternative]
+    S --> C
+    I -->|Cannot approve safely| H[Pause for user decision]
+```
+
+The classifier is a separate reviewer, not Claude granting itself permission. Deterministic
+permission rules remain the hard enforcement layer.
+
 ## Source
 
 - Video: [How auto mode works with Claude Code](https://www.youtube.com/watch?v=b8SV4U6fEIc)
@@ -11,10 +39,6 @@ English | [简体中文](README_ZH.md)
 - Source coverage: Complete YouTube auto-generated English transcript
 
 This guide is an original summary of the video, not a transcript or a replacement for the official documentation.
-
-## Summary
-
-Claude Code Auto Mode does not allow Claude to approve its own actions. It uses a separate classifier to check whether higher-risk actions match the user's intent, reducing repetitive permission prompts while preserving safety controls.
 
 ## Why Auto Mode exists
 

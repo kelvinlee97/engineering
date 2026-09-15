@@ -4,6 +4,26 @@ Chinese version: [README_ZH.md](README_ZH.md)
 
 This is a complete study guide to Anthropic Academy's **Introduction to subagents** course. It covers all four lessons and the accessible subtitles from their official videos. It is an original summary, not a transcript or a replacement for the course.
 
+## Mental model
+
+> A subagent is valuable when a focused worker can complete substantial intermediate work in
+> isolation and return a small, well-defined result that the parent can verify and use.
+
+```mermaid
+flowchart TD
+    accTitle: Claude Code subagent delegation lifecycle
+    accDescr: The user gives the parent a request. The parent delegates a bounded task and system prompt. The subagent investigates with permitted tools and returns a focused result while its detailed context is discarded.
+    U[User request] --> P[Parent defines bounded task<br/>and expected output]
+    P --> S[Subagent receives task<br/>and system prompt]
+    S --> T[Investigate with permitted tools]
+    T --> R[Return focused result<br/>and relevant obstacles]
+    R --> V[Parent verifies and uses result]
+    S -. detailed context<br/>is discarded .-> X[Isolation boundary]
+```
+
+Isolation protects the main context from investigative noise. The cost is information loss, so
+the delegation contract must define the output and require relevant obstacles to return.
+
 ## Source coverage
 
 | Lesson | Official article | Official video | Coverage status |
@@ -15,9 +35,7 @@ This is a complete study guide to Anthropic Academy's **Introduction to subagent
 
 The second lesson's embedded player and direct YouTube URL both report that the video was blocked because of claimed content by Lynda. No transcript or timestamps have been invented for it. Its written lesson is comprehensive and is summarized below.
 
-## The course in one mental model
-
-> A subagent is useful when a focused worker can do substantial intermediate work in isolation and return a small, well-defined result that the main conversation can verify and use.
+## Course path
 
 The four lessons form one sequence:
 
