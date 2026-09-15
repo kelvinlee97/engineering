@@ -1,10 +1,28 @@
 # Amazon Managed Blockchain (AMB) - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> AMB has two independent shapes: AMB Access gives you API access into public Ethereum/Bitcoin nodes, while private networks let you run a permissioned Hyperledger Fabric network made of member organizations and their peer nodes.
 
 ## Overview
 
 Amazon Managed Blockchain (AMB) provides access to public blockchain networks (Ethereum and Bitcoin) and lets you create private, permissioned blockchain networks with the Hyperledger Fabric framework. AMB Access offers fully managed, dedicated (single-tenant), and serverless multi-tenant API operations for public nodes, and fully managed private networks for use cases requiring access controls.
+
+```mermaid
+flowchart TD
+    accTitle: Managed Blockchain deployment shapes
+    accDescr: AMB Access provides multi-tenant or dedicated API access to public Ethereum and Bitcoin nodes using accessors and tokens. Private networks run permissioned Hyperledger Fabric, where members join via voting and each member runs peer nodes hosting the ledger and chaincode.
+    C{Deployment shape} -- Public network --> P[AMB Access]
+    P --> P1[Multi-tenant or<br/>dedicated nodes]
+    P1 --> P2[Accessor + token<br/>based access]
+    C -- Private network --> F[Hyperledger Fabric network]
+    F --> M[Members<br/>join via proposal + vote]
+    M --> N[Peer nodes<br/>host ledger & chaincode]
+```
 
 ## Key concepts
 

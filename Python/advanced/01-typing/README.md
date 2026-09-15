@@ -2,6 +2,10 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> Type hints are documentation checked by external tools, not by the interpreter: accept the most abstract type a function can work with, and return the most concrete type callers can rely on.
+
 ```python
 def count_errors(statuses: list[int]) -> int:
     return sum(500 <= status < 600 for status in statuses)

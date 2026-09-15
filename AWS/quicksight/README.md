@@ -1,10 +1,30 @@
 # Amazon QuickSight - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> QuickSight connects to data sources, models them into datasets served either from the in-memory SPICE cache or live queries, and lets you work in an editable analysis before publishing a read-only dashboard that can be shared or embedded.
 
 ## Overview
 
 Amazon QuickSight is the business intelligence and data visualization capability of Amazon Quick (the AI-powered service that evolved from QuickSight). It connects to data sources, builds interactive dashboards and analyses, and supports embedding analytics in applications. All existing QuickSight APIs, SDKs, and integrations continue to work.
+
+```mermaid
+flowchart LR
+    accTitle: QuickSight data-to-dashboard flow
+    accDescr: Data sources feed datasets, which are served either through the SPICE in-memory cache or live queries. Datasets are used in analyses, which authors publish as read-only dashboards, shareable with users/groups or embedded in applications.
+    D[Data sources:<br/>Athena, Redshift, RDS, S3, SaaS] --> DS[Datasets<br/>joins, calculated fields]
+    DS --> SP[SPICE cache]
+    DS --> LQ[Live query]
+    SP --> A[Analysis]
+    LQ --> A
+    A -->|publish| DB[Dashboard<br/>read-only]
+    DB --> U[Shared with users/groups]
+    DB --> E[Embedded in applications]
+```
 
 ## Key concepts
 

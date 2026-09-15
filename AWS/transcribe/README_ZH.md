@@ -1,6 +1,12 @@
 # Amazon Transcribe - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> Amazon Transcribe 是自动语音识别（ASR）服务，使用机器学习将音频转换为文本。
 
 ## 概述
 

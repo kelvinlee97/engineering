@@ -2,6 +2,10 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> IDE context is extra evidence handed to Codex — the current file, selection, or diagnostics — not a substitute for repository access. It never implies the whole repository was read, and it never grants permission to commit, push, or change external systems.
+
 This guide explains how to connect Codex to VS Code's IDE context and use that context effectively while working in a repository. It is written for VS Code only.
 
 OpenAI states that the Codex VS Code extension also works with most VS Code forks; this guide intentionally does not document their different menus or setup flows. See the official [Codex IDE extension guide](https://developers.openai.com/codex/ide) for the supported sidebar and editor-context workflow.

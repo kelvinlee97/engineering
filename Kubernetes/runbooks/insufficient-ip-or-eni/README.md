@@ -2,6 +2,10 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> A `Pending` Pod with an ENI/IP-related event is a capacity or health problem somewhere in a chain — node readiness, Pod-subnet IP supply, node ENI/IP allocatable, or the IPAM/admission components that connect them — and the runbook's job is to locate which link is broken before touching any control.
+
 > **Use when:** Pods stay `Pending` and events point to ENI/IP capacity or a missing Pod subnet.
 >
 > **First check:** In the authorised cluster, run `kubectl describe pod <pod-name> -n <namespace>` and read the scheduler events.
@@ -72,23 +76,19 @@ Also collect, through the approved cloud-console or API workflow:
 
 Use the following decision order. Multiple conditions can coexist; clear each condition before closing the incident.
 
-```text
-Pod remains Pending
-    |
-    +-- Candidate node NotReady or unreachable?
-    |       +-- Yes: restore node health first; do not label this only as ENI/IP exhaustion.
-    |
-    +-- Pod subnet missing from the affected availability zone or cluster?
-    |       +-- Yes: add an approved, same-zone Pod subnet through change control.
-    |
-    +-- Pod subnet has insufficient available IPs?
-    |       +-- Yes: extend approved Pod-subnet capacity, then confirm IPAM recognizes it.
-    |
-    +-- Node extended-resource allocatable capacity exhausted?
-    |       +-- Yes: add nodes or use an approved node shape/density plan.
-    |
-    +-- No clear shortage?
-            +-- Inspect CNI/IPAM, admission webhook, and cloud API errors before retrying.
+```mermaid
+flowchart TD
+    accTitle: Failure classification decision order
+    accDescr: Starting from a Pod stuck Pending, check node health first, then Pod subnet presence in the zone, then Pod subnet free IP capacity, then node extended-resource allocatable capacity, and finally IPAM or admission component health if no clear shortage is found.
+    P[Pod remains Pending] --> N{Candidate node<br/>NotReady or unreachable?}
+    N -- Yes --> N1[Restore node health first;<br/>do not label as ENI/IP exhaustion]
+    N -- No --> S{Pod subnet missing from<br/>affected zone or cluster?}
+    S -- Yes --> S1[Add an approved,<br/>same-zone Pod subnet]
+    S -- No --> I{Pod subnet has<br/>insufficient available IPs?}
+    I -- Yes --> I1[Extend approved Pod-subnet capacity,<br/>confirm IPAM recognizes it]
+    I -- No --> E{Node extended-resource<br/>allocatable exhausted?}
+    E -- Yes --> E1[Add nodes or use an approved<br/>node shape/density plan]
+    E -- No --> C[Inspect CNI/IPAM, admission webhook,<br/>and cloud API errors before retrying]
 ```
 
 Do not infer a cause from one event string alone. Correlate scheduler events, node taints and readiness, subnet state, available IP count, extended resource requests, and allocatable capacity.

@@ -1,10 +1,26 @@
 # Amazon OpenSearch Service - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> 域（domain）是托管的 OpenSearch 集群，你可以把数据放在成本/延迟不同的层级上——热数据节点服务活跃查询，UltraWarm 和基于 S3 的冷存储服务老化的只读数据。
 
 ## 概述
 
 Amazon OpenSearch Service 是托管的 OpenSearch 集群服务，负责部署、运维和扩容。域（domain）等同于托管的 OpenSearch 集群。它支持 OpenSearch（当前版本含 3.x）和旧版 Elasticsearch OSS（最高 7.10），用于日志分析、应用监控、点击流分析和全文搜索。
+
+```mermaid
+flowchart LR
+    accTitle: OpenSearch 域的存储分层
+    accDescr: 摄入的数据先落在热数据节点上供活跃查询和索引；数据老化后可迁移到基于 S3 的 UltraWarm 做低成本只读访问，再进一步迁移到冷存储；专用主节点全程负责集群管理。
+    I[摄入的数据] --> H[热层：数据节点<br/>活跃查询/索引]
+    H -->|老化| U[UltraWarm<br/>S3 支持，只读]
+    U -->|进一步老化| C[冷存储<br/>S3 支持]
+    M[专用主节点] -.管理集群.-> H
+```
 
 ## 核心概念
 

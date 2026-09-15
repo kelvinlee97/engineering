@@ -1,10 +1,24 @@
 # Amazon Kendra - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon Kendra 是托管智能搜索服务，使用自然语言处理和语义排序从文档中检索答案，超越传统关键词搜索。注意：Amazon Kendra 已不再对新客户开放；类似能力 AWS 推荐使用 Amazon Bedrock Knowledge Bases。
+> Amazon Kendra 是托管智能搜索服务，使用自然语言处理和语义排序从文档中检索答案，超越传统关键词搜索。注意：Amazon Kendra 已不再对新客户开放；类似能力 AWS 推荐使用 Amazon Bedrock Knowledge Bases。
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: Amazon Kendra 搜索流程
+    accDescr: 数据源连接器把文档同步到索引。查询通过语义搜索和智能排序进行匹配，返回答案、摘要或文档；GenAI 索引还可以为 Amazon Q Business 或 Bedrock 的检索增强生成（RAG）提供支撑。
+    DS[数据源：<br/>SharePoint、S3、数据库] -->|同步| Idx[索引]
+    Q[查询] --> Idx
+    Idx -->|语义搜索 +<br/>排序| Res[答案、摘要、<br/>文档]
+    Idx --> RAG[为 Amazon Q / Bedrock RAG<br/>提供的 GenAI 索引]
+```
 
 ## 核心概念
 

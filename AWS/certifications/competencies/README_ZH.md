@@ -1,6 +1,12 @@
 # AWS 云角色能力（Competencies）- 学习大纲
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> AWS Partner competencies 验证 AWS 合作伙伴在特定解决方案领域（例如 DevOps、安全、数据与分析、迁移、SaaS）具备经 AWS 验证的专业能力和客户成功经验。
 
 ## 概述
 

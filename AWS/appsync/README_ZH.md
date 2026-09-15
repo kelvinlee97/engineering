@@ -1,6 +1,35 @@
 # AWS AppSync - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> AppSync 位于一个 GraphQL schema 和多个独立数据源之间：每个字段都通过自己的 resolver 解析，因此一次查询可以在一次往返中同时触达 DynamoDB、Lambda、RDS 和 HTTP；而订阅会把同一 schema 上的变更通过 WebSocket 推送回去。
+
+本文主要回答两个问题：
+
+1. 一次 GraphQL 请求是如何触达多个不同后端的？
+2. 实时更新如何从一次 mutation 送达订阅它的客户端？
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: AppSync 请求与订阅路径
+    accDescr: GraphQL 查询或变更先经过授权，然后每个字段独立解析到自己的数据源，如 DynamoDB、Lambda、RDS 或 HTTP。改变数据的变更还可以通过 WebSocket 推送给订阅的客户端，AppSync Events 则提供另一个独立的 WebSocket pub/sub 通道。
+    Q[GraphQL 查询/变更] --> A{是否授权?<br/>API key / IAM / Cognito / OIDC}
+    A -- 是 --> RS[逐字段 resolver]
+    RS --> D1[DynamoDB]
+    RS --> D2[Lambda]
+    RS --> D3[RDS / HTTP]
+    RS -- 变更 --> P[发布给订阅者]
+    P --> C[订阅的客户端<br/>WebSocket]
+    E[AppSync Events] -.独立的 pub/sub 通道.-> C
+```
+
+每个字段的 resolver 相互独立，所以一次查询可以触达多个数据源；订阅和 AppSync Events 是叠加在同一个 API 上的两种不同实时机制。
 
 ## 概述
 

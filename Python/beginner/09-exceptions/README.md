@@ -2,6 +2,22 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> `try`/`except`/`else`/`finally` are four mutually exclusive-or-guaranteed blocks: exactly one of `except` or `else` runs depending on whether an exception occurred, and `finally` always runs regardless.
+
+```mermaid
+flowchart TD
+    accTitle: try/except/else/finally execution order
+    accDescr: The try block runs first. If it raises a matching exception, the except block runs; otherwise the else block runs. The finally block always runs last, whether or not an exception occurred.
+    T[Run try block] --> R{Exception raised?}
+    R -- Yes, matches except --> EX[Run except block]
+    R -- No --> EL[Run else block]
+    EX --> F[Run finally block]
+    EL --> F
+    F --> D[Continue after statement]
+```
+
 ```python
 try:
     port = int(raw_port)

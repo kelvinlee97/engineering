@@ -2,6 +2,10 @@
 
 English version: [README.md](README.md)
 
+## 心智模型
+
+> 函数签名是一份契约：位置参数、`*` 之后的仅限关键字参数，以及默认值，共同决定调用方可以怎样传参。默认值只在定义函数时求值一次，这正是可变默认值会成为陷阱的原因。
+
 ```python
 def connect(host: str, port: int = 443, *, timeout: float = 5.0) -> str:
     """返回用于显示的地址。"""

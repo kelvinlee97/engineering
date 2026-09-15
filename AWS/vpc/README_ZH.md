@@ -1,10 +1,36 @@
 # Amazon VPC - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> Amazon Virtual Private Cloud（Amazon VPC）让你在自定义的逻辑隔离虚拟网络中启动 AWS 资源。
 
 ## 概述
 
 Amazon Virtual Private Cloud（Amazon VPC）让你在自定义的逻辑隔离虚拟网络中启动 AWS 资源。每个 AWS 区域都有一个默认 VPC，可直接使用。VPC 本身不收费；部分组件（如 NAT 网关）收费。
+
+```mermaid
+flowchart LR
+    accTitle: VPC 子网流量路径
+    accDescr: 公有子网中的资源通过互联网网关收发流量。私有子网中的资源通过公有子网内的 NAT 网关只出不进地访问互联网，并通过 VPC 端点私有访问 AWS 服务。每个子网关联的路由表决定流量走哪条路径。
+    subgraph VPC
+        subgraph Public["公有子网"]
+            PR[资源] --> IGW[互联网网关]
+        end
+        subgraph Private["私有子网"]
+            PVR[资源] --> NAT[NAT 网关<br/>位于公有子网]
+            PVR --> EP[VPC 端点]
+        end
+        NAT --> IGW
+    end
+    IGW <--> Internet[互联网]
+    EP --> AWS_SVC[AWS 服务]
+```
+
+每个子网关联的路由表决定流量实际走哪条路径。
 
 ## 核心概念
 

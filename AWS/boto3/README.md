@@ -1,6 +1,39 @@
 # boto3 (AWS SDK for Python) - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> boto3 resolves credentials once, through a fixed fallback chain, before any client call — so a working request usually means the chain, not the call, is misconfigured when it fails.
+
+This article answers two practical questions:
+
+1. In what order does boto3 look for credentials, and where should I fix a `NoCredentialsError`?
+2. When should I use a client versus a resource?
+
+## Big picture
+
+```mermaid
+flowchart TD
+    accTitle: boto3 credential resolution order
+    accDescr: boto3 checks credential sources in a fixed order and stops at the first one found: explicit code parameters, environment variables, the shared credentials or config file, an assumed role or SSO session, then container or instance roles. If none are found, calls fail with NoCredentialsError.
+    A[Explicit params<br/>in code] --> B{Found?}
+    B -- no --> C[Environment variables]
+    C --> D{Found?}
+    D -- no --> E[Shared ~/.aws/credentials<br/>or config, SSO]
+    E --> F{Found?}
+    F -- no --> G[Container / EC2 / EKS<br/>instance role]
+    G --> H{Found?}
+    H -- no --> X[NoCredentialsError]
+    B -- yes --> U[Use these credentials]
+    D -- yes --> U
+    F -- yes --> U
+    H -- yes --> U
+```
+
+The chain stops at the first match, so a stale environment variable can silently shadow a correctly configured IAM role further down the chain.
 
 ## Overview
 

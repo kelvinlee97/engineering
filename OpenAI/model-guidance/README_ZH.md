@@ -2,6 +2,24 @@
 
 [English](README.md) · 简体中文
 
+## 心智模型
+
+> 迁移到 GPT-6 Astra 是一次需要评估的配置变更，而不是简单改个名字：API 层面（Responses、受支持的参数）和模型的默认行为（主动性、指令权重、写作风格、任务委派、验证力度）都会发生变化，因此两方面都需要检查，必要时用 prompt 指令重新固定。
+
+```mermaid
+flowchart TD
+    accTitle: GPT-6 Astra 迁移决策流程
+    accDescr: 迁移先修改模型 ID 和 API 参数，再检查 prompt 行为方面的变化，然后用 eval 验证，最后逐步放量并保留回退方案。
+    A[把模型改为 gpt-6-astra] --> B[工具调用改用 Responses API]
+    B --> C[删除不再支持的采样参数]
+    C --> D[检查 reasoning effort 设置]
+    D --> E[重新检查主动性、指令优先级、<br/>写作风格、任务委派与验证相关 prompt]
+    E --> F[针对贴近生产的任务<br/>运行 eval]
+    F --> G{成功率、延迟和成本是否可接受?}
+    G -- 否 --> E
+    G -- 是 --> H[逐步放量，<br/>保留固定版本的回退]
+```
+
 ## 来源
 
 - 官方指南：[Model guidance](https://developers.openai.com/api/docs/guides/latest-model)

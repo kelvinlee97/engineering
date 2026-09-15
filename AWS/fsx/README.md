@@ -1,10 +1,12 @@
 # Amazon FSx - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-Amazon FSx is a family of fully managed file storage services for workloads that need shared file systems. It provides native Windows file servers, a high-performance parallel file system, and POSIX file systems with NetApp and OpenZFS compatibility.
+> Amazon FSx is a family of fully managed file storage services for workloads that need shared file systems. It provides native Windows file servers, a high-performance parallel file system, and POSIX file systems with NetApp and OpenZFS compatibility.
 
 ## File system types
 

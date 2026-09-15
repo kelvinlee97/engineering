@@ -1,10 +1,25 @@
 # Amazon EventBridge - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-Amazon EventBridge is a serverless event-routing service for building event-driven applications. It ingests, filters, transforms, and delivers events between AWS services, your applications, and third-party SaaS. It includes event buses and rules, EventBridge Pipes (point-to-point integrations with enrichment), and EventBridge Scheduler (cron/rate/one-time scheduling).
+> Amazon EventBridge is a serverless event-routing service for building event-driven applications. It ingests, filters, transforms, and delivers events between AWS services, your applications, and third-party SaaS. It includes event buses and rules, EventBridge Pipes (point-to-point integrations with enrichment), and EventBridge Scheduler (cron/rate/one-time scheduling).
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: EventBridge event routing
+    accDescr: Events from AWS services, applications, or SaaS partners arrive on an event bus. Rules match events by pattern and route them, with optional transformation, to targets. Archives capture events for later replay.
+    Src[AWS services, apps,<br/>SaaS partners] -->|events| Bus[Event bus]
+    Bus --> Rule{Rule:<br/>event pattern match?}
+    Rule -->|match| Tgt[Targets:<br/>Lambda, SQS, SNS, Step Functions...]
+    Bus --> Arc[Archive]
+    Arc -->|replay| Bus
+```
 
 ## Key concepts
 

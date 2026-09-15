@@ -2,6 +2,10 @@
 
 English version: [README.md](README.md)
 
+## 心智模型
+
+> 字典把可哈希的键映射到值，并记住插入顺序。键缺失属于错误时用 `mapping[key]`，需要默认值时用 `get()` 或 `setdefault()`。
+
 ```python
 status_counts = {200: 4, 500: 1}
 status_counts[200]             # 4

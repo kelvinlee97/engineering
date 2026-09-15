@@ -1,6 +1,17 @@
 # AWS Billing and Cost Management - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> Billing and Cost Management is five separate capabilities sharing one console: paying the bill, seeing where the money went, labeling it by team/app, forecasting and capping it, and buying it more cheaply in advance — each with its own tools, and IAM access to any of them is off by default.
+
+This article answers two practical questions:
+
+1. Which of the five capabilities does a given task (tagging, budgeting, reserving capacity) belong to?
+2. Why might an IAM user see nothing in the Billing console at all?
 
 ## Overview
 
@@ -8,16 +19,18 @@ AWS Billing and Cost Management is a suite of features for setting up billing, r
 
 ## Key concepts
 
-- **Billing and payments**: monthly bills, invoices, purchase orders, payment profiles, credits, and billing preferences (email delivery, alerts, discount sharing).
-- **Consolidated billing**: AWS Organizations gives one bill across accounts, combined usage for volume discounts and reservation/Savings Plans sharing; no extra fee.
-- **Billing transfer**: one account manages and pays the consolidated bills of multiple AWS Organizations, separating billing from security/governance management.
-- **Cost analysis**: AWS Cost Explorer (visual analysis, forecasting, custom reports), data exports (custom exports of cost/usage datasets), Cost Anomaly Detection, Free Tier monitoring, and split cost allocation for shared ECS resources.
-- **Cost organization**: cost categories (map costs to teams/applications/environments, split charge rules) and cost allocation tags (view costs by tag).
-- **Budgets and planning**: budgets for cost/usage with threshold alerts; in-console Pricing calculator and public Pricing calculator for estimates.
-- **Savings and commitments**: Cost Optimization Hub (recommendations), Savings Plans, and Reservations (EC2, RDS, Redshift, DynamoDB) management.
-- **Billing Conductor**: custom showback/chargeback billing for partners and resellers without changing how AWS bills you.
-- **Price List API**: programmatic access to current pricing data (bulk JSON/CSV).
-- **IAM access**: by default IAM users/roles cannot access the Billing console; enable the Activate IAM Access setting and grant permissions.
+| Capability | What it covers |
+|---|---|
+| Billing and payments | Monthly bills, invoices, purchase orders, payment profiles, credits, and billing preferences (email delivery, alerts, discount sharing). |
+| Consolidated billing | AWS Organizations gives one bill across accounts, combined usage for volume discounts and reservation/Savings Plans sharing; no extra fee. |
+| Billing transfer | One account manages and pays the consolidated bills of multiple AWS Organizations, separating billing from security/governance management. |
+| Cost analysis | AWS Cost Explorer (visual analysis, forecasting, custom reports), data exports (custom exports of cost/usage datasets), Cost Anomaly Detection, Free Tier monitoring, and split cost allocation for shared ECS resources. |
+| Cost organization | Cost categories (map costs to teams/applications/environments, split charge rules) and cost allocation tags (view costs by tag). |
+| Budgets and planning | Budgets for cost/usage with threshold alerts; in-console Pricing calculator and public Pricing calculator for estimates. |
+| Savings and commitments | Cost Optimization Hub (recommendations), Savings Plans, and Reservations (EC2, RDS, Redshift, DynamoDB) management. |
+| Billing Conductor | Custom showback/chargeback billing for partners and resellers without changing how AWS bills you. |
+| Price List API | Programmatic access to current pricing data (bulk JSON/CSV). |
+| IAM access | By default IAM users/roles cannot access the Billing console; enable the Activate IAM Access setting and grant permissions. |
 
 ## Common operations (AWS CLI)
 

@@ -2,6 +2,10 @@
 
 English version: [README.md](README.md)
 
+## 心智模型
+
+> 本页包含两部分内容：下方是各主题速查表的目录，随后是一组 HackerRank 风格的 SRE 小题，每题都给出最小可用的正确算法，并明确说明其时间和空间复杂度。
+
 以下题目使用 [`examples/app.log`](examples/app.log)。它模拟 Nginx combined access log，字段依次包括客户端 IP、身份字段、时间、HTTP 请求、状态码、响应字节数、Referer 和 User-Agent。运行命令时请位于仓库根目录。
 
 ## 入门

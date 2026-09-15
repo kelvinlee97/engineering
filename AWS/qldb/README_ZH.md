@@ -1,6 +1,12 @@
 # Amazon QLDB - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> QLDB 已于 2025 年 7 月 31 日停止支持：请只把本文当作导出和退役存量账本、迁移到 Amazon Aurora PostgreSQL 的 runbook，而不是新项目的起点。
 
 ## 概述
 

@@ -1,6 +1,12 @@
 # AWS Systems Manager - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> AWS Systems Manager 帮助你跨 AWS、本地和多云环境集中查看、管理和操作节点。
 
 ## 概述
 

@@ -2,6 +2,10 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> This page is two things in one: a catalogue of topic cheatsheets (below) and a drill set of small HackerRank-style SRE questions, each solved with the smallest correct algorithm and its time/space cost stated explicitly.
+
 Use [`examples/app.log`](examples/app.log) below. It simulates an Nginx combined access log containing the client IP, identity fields, time, HTTP request, status, response size, Referer, and User-Agent. Run examples from the repository root.
 
 ## Beginner

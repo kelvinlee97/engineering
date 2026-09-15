@@ -1,6 +1,34 @@
 # AWS Config - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> AWS Config only knows about a resource if the recorder was running when it changed: recording, delivery, and rule evaluation are three separate steps in sequence, so a resource can be perfectly real and still invisible to Config, to S3 history, or to compliance rules if any one earlier step was off or unauthorized.
+
+This article answers one practical question:
+
+1. When a resource's history, delivery, or compliance status is missing, which of the three sequential steps actually broke?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: AWS Config recording and evaluation pipeline
+    accDescr: The configuration recorder must be running to capture a resource change as a configuration item. That item is delivered to an S3 bucket as history and snapshots, and an SNS notification fires. Separately, managed or custom rules evaluate recorded resource types and report compliant or noncompliant, and an aggregator can centralize this across accounts and Regions.
+    Chg[Resource change] --> R{Recorder running<br/>for this resource type?}
+    R -- no --> Miss[Change is invisible<br/>to Config]
+    R -- yes --> CI[Configuration item]
+    CI --> S3[S3: history + snapshot]
+    CI --> SNS[SNS notification]
+    CI --> Rules{Config rule<br/>covers this type?}
+    Rules -- yes --> Comp[Compliant / Noncompliant]
+    CI --> Agg[Aggregator:<br/>multi-account/Region view]
+```
+
+Deleting a resource while the recorder is stopped is a common gap: without an active recorder, the deletion event itself is never captured, leaving stale "still exists" results behind.
 
 ## Overview
 

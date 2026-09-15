@@ -1,6 +1,12 @@
 # AWS Competencies for Cloud Roles - Study Outline
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> AWS Partner competencies validate that an AWS Partner has demonstrated technical expertise and proven customer success in a specific solution area (for example, DevOps, Security, Data & Analytics, Migration, SaaS).
 
 ## Overview
 

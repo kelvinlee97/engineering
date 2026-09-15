@@ -1,6 +1,31 @@
 # AWS CodeArtifact - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> CodeArtifact repositories form a directed graph, not a flat list: a repository can declare another repository (including one backed by an external public registry) as its upstream, so a single package manager endpoint can transparently resolve packages that actually live in several different repositories.
+
+This article answers one practical question:
+
+1. When a package version resolves unexpectedly, which repository in the upstream chain actually served it?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: CodeArtifact domain, repository, and upstream relationships
+    accDescr: A domain contains one or more repositories. A repository can declare another repository in the same domain as its upstream, and that upstream repository can itself have an external connection to a public registry such as npmjs.com or PyPI. A package manager pointed at one repository transparently resolves packages from the whole upstream chain.
+    Dom[Domain] --> R1[Repository: shared]
+    Dom --> R2[Repository: team-app]
+    R2 -- upstream --> R1
+    R1 -- external connection --> Pub[Public registry<br/>npmjs.com / PyPI / Maven Central]
+    PM[Package manager<br/>npm / pip / Maven] --> R2
+```
+
+Because upstream relationships can chain, a package that a developer publishes to `team-app` can shadow a same-named package that would otherwise resolve from `shared` or the public registry — the resolution order follows the upstream chain, not alphabetical or recency order.
 
 ## Overview
 

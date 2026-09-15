@@ -1,6 +1,31 @@
 # Amazon CloudSearch - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> A CloudSearch domain has two separate front doors — a document endpoint for writes and a search endpoint for reads — and data uploaded through the first is not searchable until an explicit indexing step runs, so "upload" and "make searchable" are two distinct operations, not one.
+
+This article answers one practical question:
+
+1. What has to happen, in order, between uploading a document and being able to search for it?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: CloudSearch document and search flow
+    accDescr: Documents are uploaded as JSON or XML batches to a domain's document endpoint. Indexing must then be triggered explicitly to make the uploaded data searchable. Queries go through a separate search endpoint and only see data from completed indexing runs.
+    D[JSON/XML document batch] --> DE[Document endpoint<br/>upload-documents]
+    DE --> IDX["index-documents<br/>(explicit step)"]
+    IDX --> Active[Domain index<br/>ACTIVE]
+    Q[Search query] --> SE[Search endpoint]
+    SE --> Active
+```
+
+Because indexing is a separate, explicit call, a successful upload with no subsequent indexing run is the most common reason a document is "there" but not yet searchable.
 
 ## Overview
 

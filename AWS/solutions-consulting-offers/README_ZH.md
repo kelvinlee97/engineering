@@ -1,6 +1,12 @@
 # AWS Consulting Offers - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> AWS Consulting Offers 是 AWS 合作伙伴提供的打包咨询项目，针对特定业务结果（例如迁移、现代化、安全评估和数据分析）。
 
 ## 概述
 

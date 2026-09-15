@@ -1,6 +1,12 @@
 # AWS SDKs and Tools - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> AWS SDKs are language-specific libraries for calling AWS service APIs from your application code: Python (boto3), Java, JavaScript (v3), Go, .
 
 ## Overview
 

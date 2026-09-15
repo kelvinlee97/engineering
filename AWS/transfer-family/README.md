@@ -1,6 +1,12 @@
 # AWS Transfer Family - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> AWS Transfer Family is a fully managed service for transferring files into and out of AWS storage (Amazon S3 and Amazon EFS) over SFTP, FTPS, FTP, AS2, and browser-based web transfers.
 
 ## Overview
 

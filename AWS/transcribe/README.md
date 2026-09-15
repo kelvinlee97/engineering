@@ -1,6 +1,12 @@
 # Amazon Transcribe - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> Amazon Transcribe is an automatic speech recognition (ASR) service that converts audio to text using machine learning.
 
 ## Overview
 

@@ -2,6 +2,10 @@
 
 English version: [README.md](README.md)
 
+## 心智模型
+
+> Docker Desktop 把很多容器藏进同一个共享 Linux VM 里；apple/container 反其道而行，**为每个容器分配独立的轻量 VM**，用一点点启动开销换取 VM 级隔离和按容器计算的资源用量。
+
 ## 项目定位
 
 **apple/container** 是苹果官方开发的 **macOS 原生容器工具**，用 Swift 编写，专为 Apple Silicon 优化。
@@ -12,21 +16,17 @@ English version: [README.md](README.md)
 
 ## 架构设计
 
-```
-┌─────────────────────────────────────────────┐
-│          container CLI (Swift)              │
-│                   │                         │
-│         container-apiserver (launchd)       │
-│              ┌────┴────┐                   │
-│   container-core-images  container-network  │
-│   (镜像管理 XPC helper)  (网络 XPC helper) │
-└─────────────────────────────────────────────┘
-         │                    │
-    ┌────▼────┐        ┌───▼────┐
-    │ Container│        │ Container│
-    │ VM 1    │        │ VM 2    │
-    │(轻量VM) │        │(轻量VM) │
-    └─────────┘        └─────────┘
+CLI 从不直接与某个容器的 VM 通信——它总是先经过 API server 及其 helper，再由 API server 创建并持有每个容器各自的 VM：
+
+```mermaid
+flowchart TD
+    accTitle: apple/container 架构
+    accDescr: container CLI 与由 launchd 管理的 container-apiserver 通信，后者再委托给 container-core-images 和 container-network-vmnet 两个 XPC helper；apiserver 为每个正在运行的容器创建并持有一个轻量 VM。
+    CLI[container CLI<br/>Swift] --> API[container-apiserver<br/>launchd 服务]
+    API --> IMG[container-core-images<br/>镜像 XPC helper]
+    API --> NET[container-network-vmnet<br/>网络 XPC helper]
+    API --> VM1[Container VM 1<br/>轻量 VM]
+    API --> VM2[Container VM 2<br/>轻量 VM]
 ```
 
 ### 核心组件

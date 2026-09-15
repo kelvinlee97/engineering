@@ -1,6 +1,39 @@
 # boto3（AWS SDK for Python）- Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> boto3 在任何客户端调用之前，先按固定的回退顺序解析一次凭据——所以调用失败时，问题通常出在凭据链本身，而不是这次调用。
+
+本文主要回答两个问题：
+
+1. boto3 按什么顺序查找凭据？`NoCredentialsError` 应该去哪里修？
+2. 什么时候该用 client，什么时候该用 resource？
+
+## 全景图
+
+```mermaid
+flowchart TD
+    accTitle: boto3 凭据解析顺序
+    accDescr: boto3 按固定顺序检查凭据来源，找到第一个匹配项就停止：代码中的显式参数、环境变量、共享 credentials 或 config 文件（含 SSO）、容器或 EC2/EKS 实例角色。如果都没找到，调用会失败并抛出 NoCredentialsError。
+    A[代码中的<br/>显式参数] --> B{找到?}
+    B -- 否 --> C[环境变量]
+    C --> D{找到?}
+    D -- 否 --> E[共享 ~/.aws/credentials<br/>或 config、SSO]
+    E --> F{找到?}
+    F -- 否 --> G[容器 / EC2 / EKS<br/>实例角色]
+    G --> H{找到?}
+    H -- 否 --> X[NoCredentialsError]
+    B -- 是 --> U[使用这些凭据]
+    D -- 是 --> U
+    F -- 是 --> U
+    H -- 是 --> U
+```
+
+链条在第一个匹配项处就停止，所以一个过期的环境变量可能会悄悄遮蔽掉链条后面正确配置的 IAM 角色。
 
 ## 概述
 

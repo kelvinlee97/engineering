@@ -1,10 +1,12 @@
 # Amazon FSx - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon FSx 是一组完全托管的文件存储服务，用于需要共享文件系统的工作负载。它提供原生 Windows 文件服务器、高性能并行文件系统，以及兼容 NetApp 和 OpenZFS 的 POSIX 文件系统。
+> Amazon FSx 是一组完全托管的文件存储服务，用于需要共享文件系统的工作负载。它提供原生 Windows 文件服务器、高性能并行文件系统，以及兼容 NetApp 和 OpenZFS 的 POSIX 文件系统。
 
 ## 文件系统类型
 

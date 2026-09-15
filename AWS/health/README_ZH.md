@@ -1,10 +1,24 @@
 # AWS Health - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-AWS Health 提供 AWS 服务与账户的性能和可用性可见性。它通过事件通知服务中断、计划变更和账户通知，帮助你为计划活动做准备、排查进行中的问题并自动化响应。AWS Health Dashboard 对所有客户免费提供。
+> AWS Health 提供 AWS 服务与账户的性能和可用性可见性。它通过事件通知服务中断、计划变更和账户通知，帮助你为计划活动做准备、排查进行中的问题并自动化响应。AWS Health Dashboard 对所有客户免费提供。
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: AWS Health 事件投递
+    accDescr: 服务中断、计划变更和账户通知成为 AWS Health 事件，通过免费的 Health Dashboard、免费的 EventBridge 集成（用于自动化）以及面向具备相应支持计划客户的付费 Health API 投递。
+    S[服务问题、计划变更、<br/>账户通知] --> E[Health 事件]
+    E --> D[Health Dashboard<br/>免费，所有客户]
+    E --> EB[EventBridge<br/>免费，用于自动化]
+    E --> API[Health API<br/>Business Support+]
+```
 
 ## 核心概念
 

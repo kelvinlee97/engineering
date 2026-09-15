@@ -1,10 +1,25 @@
 # AWS Global Accelerator - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-AWS Global Accelerator improves the availability and performance of internet applications for a global audience. It provides static anycast IP addresses and routes traffic over the AWS global network to the optimal regional endpoint based on health, client location, and your policies.
+> AWS Global Accelerator improves the availability and performance of internet applications for a global audience. It provides static anycast IP addresses and routes traffic over the AWS global network to the optimal regional endpoint based on health, client location, and your policies.
+
+## Big picture
+
+```mermaid
+flowchart TD
+    accTitle: AWS Global Accelerator resource hierarchy
+    accDescr: An accelerator exposes static anycast IPs and contains listeners, which route matching traffic to a regional endpoint group. Each endpoint group holds weighted endpoints such as an NLB, ALB, EC2 instance, or Elastic IP.
+    A[Accelerator<br/>static IPs] --> L[Listener<br/>port/protocol]
+    L --> EG1[Endpoint group<br/>Region A]
+    L --> EG2[Endpoint group<br/>Region B]
+    EG1 --> E1[Endpoint: NLB/ALB/<br/>EC2/Elastic IP]
+    EG2 --> E2[Endpoint: NLB/ALB/<br/>EC2/Elastic IP]
+```
 
 ## Key concepts
 

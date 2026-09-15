@@ -1,6 +1,12 @@
 # AWS Well-Architected Framework - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> AWS Well-Architected Framework 是用于在云中设计和运营可靠、安全、高效且经济的工作负载的 Best Practice 集合。
 
 ## 概述
 

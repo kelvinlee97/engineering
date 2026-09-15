@@ -1,6 +1,32 @@
 # AWS CodePipeline - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> A pipeline is a strict sequence of stages, each an ordered list of actions, connected only by artifacts: an action can only see the artifacts the actions before it explicitly output, so a missing input in stage N almost always traces back to a name mismatch in stage N-1's output.
+
+This article answers one practical question:
+
+1. When an action can't find its input, where in the stage/action/artifact chain should I look?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: CodePipeline stage and artifact flow
+    accDescr: A pipeline execution runs stages in order, such as Source, Build, Test, and Deploy. Each stage contains actions that consume input artifacts and produce output artifacts stored in the pipeline's S3 artifact bucket. An approval action pauses the pipeline until a person approves or rejects before the next stage runs.
+    S[Source stage:<br/>action produces source artifact] --> B[Build stage:<br/>action consumes source,<br/>produces build artifact]
+    B --> T[Test stage]
+    T --> Ap{Approval action?}
+    Ap -- pending --> Wait[Pipeline paused]
+    Ap -- approved --> D[Deploy stage:<br/>consumes build artifact]
+    Ap -- rejected --> Stop[Execution stopped]
+```
+
+Because artifacts—not shared state—are the only thing passed between actions, renaming an output artifact in one action without updating the next action's input name is the single most common cause of a "missing artifact" failure.
 
 ## Overview
 

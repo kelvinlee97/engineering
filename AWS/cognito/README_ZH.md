@@ -1,6 +1,32 @@
 # Amazon Cognito - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> Cognito 用两个不同组件回答两个不同问题：user pool 回答"这个人是谁"并返回 JWT，identity pool 回答"他们能碰哪些 AWS 资源"并返回临时 AWS 凭证——只需要第一个问题的应用完全不需要 identity pool。
+
+本文主要回答一个问题：
+
+1. user pool 和 identity pool 之间确切的交接过程是怎样的？什么情况下可以完全跳过 identity pool？
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: Cognito user pool 与 identity pool 流程
+    accDescr: 用户通过 user pool 的应用客户端登录，或通过联合进 user pool 的社交或 SAML/OIDC 身份提供方登录，获得一个 JWT。只需要知道用户身份的应用可以到此为止。还需要调用 AWS 服务的应用会把这个 JWT 传给 identity pool，由它通过 AWS STS 交换出按角色映射限定范围的临时 AWS 凭证。
+    U[用户] --> C{通过 user pool<br/>应用客户端，或联合<br/>IdP 登录}
+    C --> J[user pool<br/>签发 JWT]
+    J --> Done[应用只需要身份：<br/>到此为止]
+    J --> IP[Identity pool]
+    IP --> STS[AWS STS<br/>AssumeRoleWithWebIdentity]
+    STS --> Cred[按角色映射限定的<br/>临时 AWS 凭证]
+```
+
+当应用只需要知道"谁登录了"而不需要知道"他们在 AWS 里能做什么"时，跳过 identity pool 是一种有效且常见的设计——不需要时硬加一个，只会多出一步没有用处的凭证交换。
 
 ## 概述
 

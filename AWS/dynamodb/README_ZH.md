@@ -1,10 +1,12 @@
 # Amazon DynamoDB - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon DynamoDB 是服务化、全托管的 NoSQL 数据库，任意规模下都有个位数毫秒级性能。支持键值（key-value）和文档两种数据模型，无需预置服务器、打补丁或维护。
+> Amazon DynamoDB 是服务化、全托管的 NoSQL 数据库，任意规模下都有个位数毫秒级性能。支持键值（key-value）和文档两种数据模型，无需预置服务器、打补丁或维护。
 
 ## 核心概念
 

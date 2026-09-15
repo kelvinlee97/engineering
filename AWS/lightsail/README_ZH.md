@@ -1,10 +1,27 @@
 # Amazon Lightsail - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon Lightsail 是启动和管理虚拟私有服务器及 Web 应用最简单的 AWS 服务，采用低且可预测的月度定价。一个控制台内集成实例、容器、托管数据库（MySQL/PostgreSQL）、负载均衡器、CDN 分发、块/对象存储、静态 IP、DNS 和快照。
+> Amazon Lightsail 是启动和管理虚拟私有服务器及 Web 应用最简单的 AWS 服务，采用低且可预测的月度定价。一个控制台内集成实例、容器、托管数据库（MySQL/PostgreSQL）、负载均衡器、CDN 分发、块/对象存储、静态 IP、DNS 和快照。
+
+## 全景图
+
+```mermaid
+flowchart TD
+    accTitle: Lightsail 捆绑资源
+    accDescr: 负载均衡器把流量分发到一个或多个 Lightsail 实例；实例可搭配托管数据库、CDN 分发、块存储和快照，都采用可预测的月度定价，还可选择通过 VPC peering 接入更广泛的 AWS 生态。
+    LB[负载均衡器] --> I1[实例]
+    LB --> I2[实例]
+    I1 --> DB[托管数据库]
+    I1 --> BS[块存储]
+    CDN[CDN 分发] --> LB
+    I1 -.->|快照| Snap[快照]
+    I1 -.->|VPC peering| VPC[更广泛的 AWS VPC]
+```
 
 ## 核心概念
 

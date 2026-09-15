@@ -1,6 +1,12 @@
 # AWS Snow Family - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> AWS Snow Family 提供物理设备，用于缺乏可靠网络环境下的离线数据传输和边缘计算。
 
 ## 概述
 

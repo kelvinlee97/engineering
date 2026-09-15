@@ -10,13 +10,19 @@ ZooKeeper is a small, highly available coordination service. Applications use it
 
 This guide builds a production **ensemble**: three ZooKeeper servers holding the same coordination data. One server is the **leader**, which coordinates changes; the other two are **followers**, which keep replicas and vote. A **quorum** is the majority able to communicate: with three servers, two are enough. That is why one member can be restarted safely, but two cannot.
 
-```text
-Application ── TLS ──> zk-1, zk-2, zk-3  (client connection string)
-
-zk-1  ←──────── TLS member communication ────────→  zk-2 / zk-3
+```mermaid
+flowchart TB
+    accTitle: Application, ensemble, and quorum relationship
+    accDescr: Applications connect over TLS to any of zk-1, zk-2, or zk-3 using the client connection string. The three members communicate with each other over TLS. A healthy result is one leader and two followers, where any two members can form a quorum.
+    App[Application] -->|TLS<br/>client connection string| Z1[zk-1]
+    App -->|TLS| Z2[zk-2]
+    App -->|TLS| Z3[zk-3]
+    Z1 <-->|TLS member communication| Z2
+    Z2 <-->|TLS member communication| Z3
+    Z1 <-->|TLS member communication| Z3
+```
 
 Healthy production result: 1 leader + 2 followers; any 2 can form quorum.
-```
 
 Read this section first, then follow the deployment steps in order. “30 minutes” means enough time to understand the model and safety rules; it does not include certificate issuance, firewall approval, or a production change window.
 
@@ -275,8 +281,14 @@ For a TLS-only port, use `zkServer.sh status` with the same client TLS JVM setti
 
 Prometheus is not required to run ZooKeeper. ZooKeeper exposes JVM and server information through JMX; the Prometheus JMX Exporter is one way to convert that information into a standard `/metrics` endpoint for central collection, alerting, and historical trend analysis.
 
-```text
-ZooKeeper JVM → JMX → Prometheus JMX Exporter → Prometheus → Alerting
+```mermaid
+flowchart LR
+    accTitle: Metrics path from ZooKeeper JVM to alerting
+    accDescr: The ZooKeeper JVM exposes JMX, which the Prometheus JMX Exporter converts into a metrics endpoint, which Prometheus scrapes and uses to drive alerting.
+    J[ZooKeeper JVM] --> M[JMX]
+    M --> E[Prometheus JMX Exporter]
+    E --> P[Prometheus]
+    P --> A[Alerting]
 ```
 
 This guide uses the Java agent because it avoids exposing remote JMX/RMI. If your organization already uses Datadog, Zabbix, Elastic, or a cloud monitoring agent, replace only the exporter and collection step; the ZooKeeper ensemble, TLS, and systemd deployment remain unchanged.

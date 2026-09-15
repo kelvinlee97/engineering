@@ -2,6 +2,10 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> A name is a label pointing at an object, not a box holding a value. Copying a name copies the pointer, not the object, so two names can point at the same mutable object.
+
 ```python
 name = "api"
 port = 8080

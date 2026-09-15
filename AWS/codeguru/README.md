@@ -1,6 +1,16 @@
 # Amazon CodeGuru - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> CodeGuru is two unrelated ML tools sharing a brand name — Reviewer looks at source code before it runs, Profiler looks at running processes in production — and as of November 7, 2025, only one of them (Profiler) still accepts new setups.
+
+This article answers one practical question:
+
+1. Given the November 2025 change, which CodeGuru capability can I still adopt for a new project, and which is limited to existing setups?
 
 ## Overview
 
@@ -8,10 +18,11 @@ Amazon CodeGuru is a machine learning service with two capabilities: CodeGuru Re
 
 ## Key concepts
 
-- **CodeGuru Reviewer**: uses program analysis and machine learning to detect complex defects in Java and Python code and suggest improvements (resource leaks, security issues, best practices); integrates with GitHub, Bitbucket, and S3 (via GitHub Actions).
-- **Secrets detection**: Reviewer can find unprotected secrets in code, integrating with AWS Secrets Manager.
-- **CodeGuru Profiler**: profiles applications in production, visualizes performance, and identifies the most expensive lines of code and inefficiencies; helps reduce cost and latency.
-- **Availability change**: new repository associations in Reviewer are no longer supported (since November 7, 2025); see the AWS announcement for alternative services with similar capabilities.
+| Capability | What it does | Availability |
+|---|---|---|
+| CodeGuru Reviewer | Uses program analysis and machine learning to detect complex defects in Java and Python code and suggest improvements (resource leaks, security issues, best practices); integrates with GitHub, Bitbucket, and S3 (via GitHub Actions). | New repository associations no longer supported since November 7, 2025; existing associations continue working. |
+| Secrets detection | Reviewer can find unprotected secrets in code, integrating with AWS Secrets Manager. | Part of Reviewer; same availability constraint. |
+| CodeGuru Profiler | Profiles applications in production, visualizes performance, and identifies the most expensive lines of code and inefficiencies; helps reduce cost and latency. | Fully available; not affected by the Reviewer change. |
 
 ## Common operations (AWS CLI)
 

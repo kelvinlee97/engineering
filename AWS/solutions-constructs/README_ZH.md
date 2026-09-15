@@ -1,6 +1,12 @@
 # AWS Solutions Constructs - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> AWS Solutions Constructs 是 AWS Cloud Development Kit（AWS CDK）的开源扩展。
 
 ## 概述
 

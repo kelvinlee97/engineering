@@ -1,10 +1,12 @@
 # Elastic Load Balancing - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Elastic Load Balancing（ELB）自动把入站流量分发到多个目标（EC2 实例、容器、IP 地址、Lambda 函数），可跨一个或多个可用区，只把流量路由到健康目标。容量自动扩展。
+> Elastic Load Balancing（ELB）自动把入站流量分发到多个目标（EC2 实例、容器、IP 地址、Lambda 函数），可跨一个或多个可用区，只把流量路由到健康目标。容量自动扩展。
 
 ## 负载均衡器类型
 
@@ -12,6 +14,19 @@ Elastic Load Balancing（ELB）自动把入站流量分发到多个目标（EC2 
 - **Network Load Balancer（NLB）**：第 4 层 TCP/UDP；超高性能、静态 IP、TLS 终止；适合极致吞吐。
 - **Gateway Load Balancer（GWLB）**：第 3 层；把流量路由给第三方虚拟设备。
 - **Classic Load Balancer**：上一代产品；建议迁移到 ALB/NLB。
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: Elastic Load Balancing 请求路径
+    accDescr: 客户端连接到负载均衡器上的监听器，监听器把匹配的请求转发给目标组。目标组对已注册目标做健康检查，只把流量路由到健康目标。
+    C[客户端] --> LB[负载均衡器<br/>ALB / NLB / GWLB]
+    LB --> L[监听器<br/>协议/端口]
+    L --> TG[目标组]
+    TG -->|健康检查| T1[健康目标]
+    TG -.->|排除| T2[不健康目标]
+```
 
 ## 核心概念
 

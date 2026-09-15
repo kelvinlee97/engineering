@@ -1,6 +1,12 @@
 # AWS OpsWorks - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> OpsWorks Stacks 已停止服务（2024 年 5 月 26 日）：请把本文当作从其基于 Chef 的 stack/layer 模型迁移到当前服务（Systems Manager、CloudFormation、CodeDeploy、容器、Elastic Beanstalk）的迁移地图。
 
 ## 概述
 

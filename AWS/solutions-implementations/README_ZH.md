@@ -1,6 +1,12 @@
 # AWS Solutions Library（Solutions Implementations）- Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> AWS Solutions Library（原 AWS Solutions Implementations）为常见业务和技术用例提供经过验证的解决方案与指引。
 
 ## 概述
 

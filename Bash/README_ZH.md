@@ -2,6 +2,10 @@
 
 English version: [README.md](README.md)
 
+## 心智模型
+
+> 下面每道题都是把几个小型 Unix 过滤命令（`awk`、`cut`、`sort`、`uniq`、`grep`）串成一条管道，作用在同一份日志上；同样这几块积木，重新组合几乎能回答任何“找出前 N 名”“按某字段统计”“按条件筛选”类型的面试题。
+
 以下题目使用 [`access.log`](access.log)。它模拟 Nginx combined access log，字段依次包括客户端 IP、身份字段、时间、HTTP 请求、状态码、响应字节数、Referer 和 User-Agent。运行命令时请位于仓库根目录。
 
 ## 命令主题

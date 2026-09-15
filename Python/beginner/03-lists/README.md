@@ -2,6 +2,10 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> A list is an ordered, mutable, resizable sequence of references. Methods that end in a return value (`sorted`, `copy`) build a new list; methods that mutate (`sort`, `append`, `remove`) change the original in place and return `None`.
+
 ## Create and access
 
 ```python

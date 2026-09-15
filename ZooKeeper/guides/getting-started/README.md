@@ -6,6 +6,21 @@ ZooKeeper is a distributed coordination service. Applications use it to keep a s
 
 It is not a general database, message queue, object store, or a place for large files and secrets.
 
+## Mental model
+
+> An ensemble of ZooKeeper servers keeps one small, consistently replicated tree of znodes; clients read and write through any member, one elected leader orders writes, and a quorum must agree before a write is considered durable.
+
+```mermaid
+flowchart TB
+    accTitle: Clients, ensemble members, and the leader
+    accDescr: Clients connect to any ensemble member. One member is the elected leader that orders writes; the others are followers holding replicated copies of the same coordination data.
+    C1[Client] --> F1[Follower]
+    C2[Client] --> F2[Follower]
+    C3[Client] --> L[Leader]
+    F1 -.replicated data.-> L
+    F2 -.replicated data.-> L
+```
+
 ## When to use it
 
 Use ZooKeeper when several application instances must agree on a small piece of state.

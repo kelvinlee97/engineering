@@ -1,6 +1,17 @@
 # AWS Billing and Cost Management - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> Billing and Cost Management 是共享一个控制台的五种独立能力：支付账单、查看钱花在哪、按团队/应用打标签、预测和设上限、以及提前更便宜地购买——各有各的工具，而且 IAM 用户默认无法访问其中任何一个。
+
+本文主要回答两个问题：
+
+1. 某项任务（打标签、做预算、预留容量）属于五种能力中的哪一种？
+2. 为什么 IAM 用户打开账单控制台可能什么都看不到？
 
 ## 概述
 
@@ -8,16 +19,18 @@ AWS Billing and Cost Management 是一套功能集合，用于设置账单、取
 
 ## 核心概念
 
-- **账单与支付**：月度账单、发票、采购订单、支付配置、抵扣额和账单偏好（邮件投递、告警、折扣共享）。
-- **合并账单**：AWS Organizations 提供跨账户统一账单，聚合用量享受阶梯折扣和预留/Savings Plans 共享；无额外费用。
-- **账单转移（Billing transfer）**：用一个账户管理并支付多个 AWS Organizations 的合并账单，将账单与安全/治理管理分离。
-- **成本分析**：AWS Cost Explorer（可视化分析、预测、自定义报表）、数据导出（成本/用量数据集的自定义导出）、Cost Anomaly Detection、免费套餐监控，以及共享 ECS 资源的分摊成本数据。
-- **成本组织**：成本类别（将成本映射到团队/应用/环境，支持分摊规则）和成本分配标签（按标签查看成本）。
-- **预算与规划**：带阈值告警的成本/用量预算；控制台内 Pricing calculator 和公共 Pricing calculator 做估算。
-- **节省与承诺**：Cost Optimization Hub（建议）、Savings Plans 和预留（EC2、RDS、Redshift、DynamoDB 等）管理。
-- **Billing Conductor**：为合作伙伴/转售商提供自定义 showback/chargeback 账单，不改变 AWS 对你的计费方式。
-- **Price List API**：编程获取当前定价数据（批量 JSON/CSV）。
-- **IAM 访问**：默认 IAM 用户/角色无法访问账单控制台；需启用 Activate IAM Access 并授予权限。
+| 能力 | 覆盖内容 |
+|---|---|
+| 账单与支付 | 月度账单、发票、采购订单、支付配置、抵扣额和账单偏好（邮件投递、告警、折扣共享）。 |
+| 合并账单 | AWS Organizations 提供跨账户统一账单，聚合用量享受阶梯折扣和预留/Savings Plans 共享；无额外费用。 |
+| 账单转移（Billing transfer） | 用一个账户管理并支付多个 AWS Organizations 的合并账单，将账单与安全/治理管理分离。 |
+| 成本分析 | AWS Cost Explorer（可视化分析、预测、自定义报表）、数据导出（成本/用量数据集的自定义导出）、Cost Anomaly Detection、免费套餐监控，以及共享 ECS 资源的分摊成本数据。 |
+| 成本组织 | 成本类别（将成本映射到团队/应用/环境，支持分摊规则）和成本分配标签（按标签查看成本）。 |
+| 预算与规划 | 带阈值告警的成本/用量预算；控制台内 Pricing calculator 和公共 Pricing calculator 做估算。 |
+| 节省与承诺 | Cost Optimization Hub（建议）、Savings Plans 和预留（EC2、RDS、Redshift、DynamoDB 等）管理。 |
+| Billing Conductor | 为合作伙伴/转售商提供自定义 showback/chargeback 账单，不改变 AWS 对你的计费方式。 |
+| Price List API | 编程获取当前定价数据（批量 JSON/CSV）。 |
+| IAM 访问 | 默认 IAM 用户/角色无法访问账单控制台；需启用 Activate IAM Access 并授予权限。 |
 
 ## 常用操作（AWS CLI）
 

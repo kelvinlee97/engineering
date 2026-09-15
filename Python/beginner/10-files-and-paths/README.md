@@ -2,6 +2,10 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> `Path` objects represent locations, not open resources; opening (`open()`, `with`) is a separate step that must be paired with closing, which `with` does automatically.
+
 Use `pathlib.Path` for filesystem paths:
 
 ```python

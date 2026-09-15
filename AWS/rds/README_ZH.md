@@ -1,10 +1,26 @@
 # Amazon RDS - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> RDS 有两条相互独立的扩展轴：Multi-AZ 提供用于故障转移的同步备用实例，只读副本提供用于读扩展的异步副本——无论哪种方式，写入始终经过主实例。
 
 ## 概述
 
 Amazon Relational Database Service（Amazon RDS）让你在云中更容易地搭建、运维和扩展关系型数据库。AWS 负责备份、软件补丁、自动故障检测与恢复。
+
+```mermaid
+flowchart TD
+    accTitle: RDS 的 Multi-AZ 与只读副本拓扑
+    accDescr: 写入流量进入主实例，主实例同步复制到 Multi-AZ 备用实例用于自动故障转移；主实例还异步复制到只读副本，只读副本承载读流量，也可独立提升为主实例。
+    W[写入流量] --> P[主实例]
+    P -->|同步复制| S[Multi-AZ 备用实例<br/>故障转移目标]
+    P -->|异步复制| R[只读副本]
+    R --> RT[读取流量]
+```
 
 ## 核心概念
 

@@ -2,6 +2,10 @@
 
 English version: [README.md](README.md)
 
+## 心智模型
+
+> `Path` 对象只表示位置，不是已经打开的资源；打开文件（`open()`、`with`）是单独的一步，必须与关闭配对，而 `with` 会自动完成关闭。
+
 使用 `pathlib.Path` 处理文件系统路径：
 
 ```python

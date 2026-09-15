@@ -2,6 +2,10 @@
 
 English version: [README.md](README.md)
 
+## 心智模型
+
+> 字符串方法都会返回新字符串，原始文本永远不会被就地修改。
+
 ```python
 text = "  api,error,503  "
 text.strip()                 # "api,error,503"

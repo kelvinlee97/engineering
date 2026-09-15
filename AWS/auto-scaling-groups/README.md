@@ -1,6 +1,35 @@
 # Amazon EC2 Auto Scaling (Auto Scaling Groups) - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> An Auto Scaling group is a self-healing capacity boundary: it never launches below minimum or above maximum, scaling policies move desired capacity within that boundary, and health checks continuously replace any instance that falls out of the group regardless of why it failed.
+
+This article answers two practical questions:
+
+1. What keeps the instance count inside min/max, and what pushes desired capacity around within it?
+2. How does an unhealthy instance get replaced without manual intervention?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: Auto Scaling group capacity control
+    accDescr: Desired capacity is bounded by the group's min and max size. Scaling policies driven by CloudWatch metrics or schedules move desired capacity within those bounds. Health checks continuously monitor instances; unhealthy ones are terminated and replaced to restore desired capacity, and instance refresh performs rolling replacement when the launch template changes.
+    B["Bounds: min ≤ desired ≤ max"] --> D[Desired capacity]
+    P[Scaling policy:<br/>target tracking / step / scheduled] --> D
+    D --> L[Launch instances<br/>from launch template]
+    L --> H{Health check<br/>passes?}
+    H -- no --> T[Terminate + replace]
+    T --> L
+    H -- yes --> IS[InService]
+    R[Instance refresh:<br/>new launch template version] --> T
+```
+
+Health-driven replacement and policy-driven scaling are two independent loops that both funnel through the same launch-template-based instance creation.
 
 ## Overview
 

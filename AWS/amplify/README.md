@@ -1,6 +1,31 @@
 # AWS Amplify - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> Amplify splits into two mostly independent halves: Hosting, a Git-triggered CI/CD pipeline to the AWS CDN, and a backend generation (Gen 1 CLI vs. Gen 2 `ampx`), which turns TypeScript resource definitions into cloud infrastructure.
+
+This article answers three practical questions:
+
+1. What happens between a `git push` and a live deployment?
+2. How do Gen 1 and Gen 2 backends differ, and which should a new project use?
+3. Where do environments and PR previews fit into the branch model?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: Amplify Hosting deployment flow
+    accDescr: A git push to a connected branch triggers a build, which deploys to that branch's own environment on the AWS CDN. A pull request instead produces a temporary preview app.
+    G[git push to branch] --> B[Build: install,<br/>build, test]
+    B --> D[Deploy to branch<br/>environment on CDN]
+    PR[Pull request opened] --> P[Preview app<br/>temporary URL]
+```
+
+Each connected branch is its own environment with its own backend; a pull request gets an ephemeral preview instead of touching an existing environment.
 
 ## Overview
 

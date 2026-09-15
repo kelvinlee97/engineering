@@ -1,6 +1,12 @@
 # AWS Snow Family - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> The AWS Snow Family provides physical devices for offline data transfer and edge computing in environments without reliable connectivity.
 
 ## Overview
 

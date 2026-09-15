@@ -1,6 +1,12 @@
 # AWS Certified Solutions Architect - Associate (SAA-C03) - Study Outline
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> The SAA-C03 exam is for individuals in a solutions architect role.
 
 ## Exam overview
 

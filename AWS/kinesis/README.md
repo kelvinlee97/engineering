@@ -1,10 +1,12 @@
 # Amazon Kinesis - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-Amazon Kinesis is the AWS streaming data platform. It collects, processes, and analyzes real-time data at scale. The platform includes Kinesis Data Streams, Amazon Data Firehose, Managed Service for Apache Flink, and Kinesis Video Streams.
+> Amazon Kinesis is the AWS streaming data platform. It collects, processes, and analyzes real-time data at scale. The platform includes Kinesis Data Streams, Amazon Data Firehose, Managed Service for Apache Flink, and Kinesis Video Streams.
 
 ## Service components
 
@@ -14,6 +16,19 @@ Amazon Kinesis is the AWS streaming data platform. It collects, processes, and a
 | Amazon Data Firehose | Fully managed streaming delivery to S3, Redshift, OpenSearch, Splunk, and third parties; no consumers to run |
 | Managed Service for Apache Flink | Stream processing with Apache Flink (SQL and DataStream API) |
 | Kinesis Video Streams | Ingestion and playback of video streams for ML and analytics |
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: Kinesis Data Streams producer-consumer flow
+    accDescr: Producers push records with a partition key into a stream's shards, which each provide fixed capacity. Consumers poll shards, typically through the Kinesis Client Library, and enhanced fan-out gives each consumer a dedicated read throughput.
+    P[Producers<br/>PutRecord/PutRecords] -->|partition key| Sh1[Shard 1]
+    P -->|partition key| Sh2[Shard 2]
+    Sh1 --> C[Consumers<br/>KCL / GetRecords]
+    Sh2 --> C
+    Sh1 -.->|enhanced fan-out| C2[Dedicated consumer]
+```
 
 ## Key concepts
 

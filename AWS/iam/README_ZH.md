@@ -1,10 +1,34 @@
 # AWS IAM - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-18
 
-## 概述
+## 心智模型
 
-AWS Identity and Access Management（IAM）控制 AWS 资源的认证（谁登录）与授权（谁有权限）。IAM、IAM Identity Center 和 AWS STS 包含在 AWS 账号中，不额外收费。IAM 是最终一致（eventually consistent）的。
+> AWS Identity and Access Management（IAM）控制 AWS 资源的认证（谁登录）与授权（谁有权限）。IAM、IAM Identity Center 和 AWS STS 包含在 AWS 账号中，不额外收费。IAM 是最终一致（eventually consistent）的。
+
+## 全景图
+
+授权决策由多个独立层共同决定：任何一层的显式拒绝都会否决请求；否则必须至少有一层给出显式允许，请求才会被批准：
+
+```mermaid
+flowchart TD
+    accTitle: IAM 授权决策层级
+    accDescr: 请求会同时对照身份策略、任意资源策略、组织 SCP/RCP，以及（如果设置了）权限边界进行评估。任意一层出现显式拒绝都会拒绝请求；否则需要至少一个适用层给出显式允许。
+    R[请求] --> IP[身份策略]
+    R --> RP[资源策略]
+    R --> SCP[组织 SCP / RCP 护栏]
+    R --> PB[权限边界（如已设置）]
+    IP --> D{任意层<br/>存在显式拒绝?}
+    RP --> D
+    SCP --> D
+    PB --> D
+    D -- 是 --> Deny[拒绝]
+    D -- 否 --> A{适用层中<br/>存在显式允许?}
+    A -- 是 --> Allow[允许]
+    A -- 否 --> Deny
+```
 
 ## 核心概念
 

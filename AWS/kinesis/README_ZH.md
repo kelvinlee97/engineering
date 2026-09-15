@@ -1,10 +1,12 @@
 # Amazon Kinesis - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon Kinesis 是 AWS 流式数据平台，用于大规模收集、处理和分析实时数据。平台包括 Kinesis Data Streams、Amazon Data Firehose、Managed Service for Apache Flink 和 Kinesis Video Streams。
+> Amazon Kinesis 是 AWS 流式数据平台，用于大规模收集、处理和分析实时数据。平台包括 Kinesis Data Streams、Amazon Data Firehose、Managed Service for Apache Flink 和 Kinesis Video Streams。
 
 ## 服务组件
 
@@ -14,6 +16,19 @@ Amazon Kinesis 是 AWS 流式数据平台，用于大规模收集、处理和分
 | Amazon Data Firehose | 完全托管的流式投递到 S3、Redshift、OpenSearch、Splunk 等；无需运行消费者 |
 | Managed Service for Apache Flink | 用 Apache Flink（SQL 和 DataStream API）做流处理 |
 | Kinesis Video Streams | 视频流的摄取和回放，用于机器学习和分析 |
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: Kinesis Data Streams 生产者-消费者流程
+    accDescr: 生产者带分区键把记录推送到流的分片中，每个分片提供固定容量。消费者轮询分片，通常通过 Kinesis Client Library，enhanced fan-out 为每个消费者提供专用读取吞吐。
+    P[生产者<br/>PutRecord/PutRecords] -->|分区键| Sh1[分片 1]
+    P -->|分区键| Sh2[分片 2]
+    Sh1 --> C[消费者<br/>KCL / GetRecords]
+    Sh2 --> C
+    Sh1 -.->|enhanced fan-out| C2[专用消费者]
+```
 
 ## 核心概念
 

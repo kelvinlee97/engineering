@@ -2,6 +2,10 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> Git moves your work through four places — working tree, staging area, local repository, remote repository — and almost every command in this guide only inspects or moves content between them. On a shared branch, prefer an additive `revert` over rewriting history.
+
 New to GitHub collaboration? Start with [Publish Changes to GitHub: A Beginner's Guide](publish-to-github/README.md).
 
 This guide is for operations engineers who are comfortable with a terminal and basic Git usage. Its core rule is simple: **inspect first, then change; on shared branches, prefer an auditable new corrective commit over rewriting history.**

@@ -1,10 +1,30 @@
 # Amazon Macie - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> Macie 持续清点你的 S3 存储桶，对对象采样或扫描以发现敏感数据和配置问题，并把结果转化为 finding，流转到 EventBridge 或 Security Hub 以便采取行动。
 
 ## 概述
 
 Amazon Macie 是一项数据安全服务，使用机器学习和模式匹配发现 Amazon S3 中的敏感数据，评估 S3 存储桶的安全与访问控制问题，并生成可供审查和修复的 finding。它提供存储桶清单、仪表盘和自动化敏感数据发现。
+
+```mermaid
+flowchart LR
+    accTitle: Macie 发现到响应的处理链路
+    accDescr: Macie 清点 S3 存储桶，运行自动化发现或分类任务，生成 policy 与敏感数据 finding，并路由到 EventBridge 或 Security Hub CSPM 以供审查和修复。
+    B[S3 存储桶] --> I[存储桶清单<br/>与策略评估]
+    B --> D[自动化发现 /<br/>分类任务]
+    I --> F[Finding]
+    D --> F
+    F --> E[EventBridge]
+    F --> H[Security Hub CSPM]
+    E --> R[自动化响应]
+    H --> R2[聚合安全态势]
+```
 
 ## 核心概念
 

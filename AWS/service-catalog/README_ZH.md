@@ -1,6 +1,12 @@
 # AWS Service Catalog - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> AWS Service Catalog 让组织创建和管理已批准 IT 服务的目录，从单一资源（基于 AMI 的服务器、数据库、软件）到完整的多层应用架构。
 
 ## 概述
 

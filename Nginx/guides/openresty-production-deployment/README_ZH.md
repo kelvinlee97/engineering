@@ -4,6 +4,10 @@ English version: [README.md](README.md)
 
 本指南在一台 Ubuntu 24.04 LTS VM 上部署**仅 OpenResty**。OpenResty 是集成 LuaJIT 和 Lua 模块的 Nginx Web 平台。它提供 Lua 健康检查、反向代理 `127.0.0.1:3000` 的应用，并使用 Certbot webroot 获取 HTTPS。所有 `<example>` 值必须通过已批准的变更流程替换。
 
+## 心智模型
+
+> OpenResty 直接替代 Nginx Web 服务进程本身：健康检查端点在请求路径中执行经审查的 Lua 脚本，其余流量仍通过 loopback 反向代理给本地应用。
+
 ## 目录
 
 - [明确选择 OpenResty](#明确选择-openresty)
@@ -16,9 +20,13 @@ English version: [README.md](README.md)
 
 ## 明确选择 OpenResty
 
-```text
-客户端 -> OpenResty :443 -> Lua /healthz
-                          -> 应用 127.0.0.1:3000
+```mermaid
+flowchart LR
+    accTitle: OpenResty 在 Lua 健康检查与应用之间分流请求
+    accDescr: 客户端请求到达 OpenResty 的 443 端口，对 healthz 端点执行 Lua 脚本，其余请求反向代理给监听在 loopback 3000 端口的应用。
+    C[客户端] --> O[OpenResty :443]
+    O -->|/healthz| L[Lua content_by_lua_file]
+    O -->|proxy_pass| A[应用<br/>127.0.0.1:3000]
 ```
 
 仅当 Nginx 网关确实需要经审查的 Lua 行为（例如这里的小型健康检查）时选择 OpenResty；基本静态站点与反向代理使用普通 Nginx 即可。OpenResty 是本机 Nginx Web 服务进程的替代品，不是运行中的 Ubuntu `nginx` 服务的插件。两者会争用 `80/443`，绝不可同时运行。

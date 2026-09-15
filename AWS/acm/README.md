@@ -1,6 +1,34 @@
 # AWS Certificate Manager (ACM) - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> ACM is a certificate lifecycle machine, not just a certificate store: it issues or imports a certificate, proves domain ownership through validation, and — only for certificates it issued itself — keeps renewing that proof forever.
+
+This article answers three practical questions:
+
+1. What is the lifecycle a certificate moves through, and where does automation stop?
+2. Which properties of a certificate are fixed at creation (Region, export-ability)?
+3. How do I diagnose a stuck or failing certificate?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: ACM certificate lifecycle
+    accDescr: A certificate is either requested from ACM or imported. Requested certificates go through validation, become issued, and are then renewed and revalidated automatically forever. Imported certificates are issued immediately but never renew automatically.
+    R[Request public cert] --> V{DNS or email<br/>validation}
+    V -- proven --> I[Issued]
+    I --> N[Auto-renew +<br/>auto-revalidate]
+    N --> I
+    M[Import third-party cert] --> I2[Issued immediately]
+    I2 --> X[No automatic renewal]
+```
+
+ACM-issued certificates are self-sustaining once validated. Imported certificates skip validation but require manual rotation before they expire.
 
 ## Overview
 

@@ -1,10 +1,12 @@
 # Amazon ElastiCache - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-Amazon ElastiCache is a fully managed in-memory data store and cache service. It supports the Valkey, Redis OSS, and Memcached engines in either serverless or node-based deployments, and is commonly used for caching, session storage, and real-time data access.
+> Amazon ElastiCache is a fully managed in-memory data store and cache service. It supports the Valkey, Redis OSS, and Memcached engines in either serverless or node-based deployments, and is commonly used for caching, session storage, and real-time data access.
 
 ## Deployment options
 
@@ -12,6 +14,19 @@ Amazon ElastiCache is a fully managed in-memory data store and cache service. It
 |---|---|
 | ElastiCache Serverless | Create a highly available cache in under a minute; capacity scales automatically (compatible with Valkey 7.2+, Memcached 1.6.22+, Redis OSS 7.1) |
 | Node-based cluster | Choose node type, node count, AZ placement, cluster mode, and patch windows for fine-grained control |
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: ElastiCache replication and failover
+    accDescr: A replication group has a primary node serving writes and reads, with replicas in other Availability Zones serving reads. Multi-AZ automatic failover promotes a replica to primary if the primary fails.
+    App[Application] -->|writes| P[Primary node]
+    App -->|reads| P
+    App -->|reads| R1[Replica, AZ 2]
+    P -->|replicates to| R1
+    P -.->|automatic failover| R1
+```
 
 ## Key concepts
 

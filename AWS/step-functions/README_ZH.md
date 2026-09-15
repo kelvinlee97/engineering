@@ -1,6 +1,12 @@
 # AWS Step Functions - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> AWS Step Functions 是无服务器编排服务。
 
 ## 概述
 

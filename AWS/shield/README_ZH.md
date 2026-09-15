@@ -1,6 +1,12 @@
 # AWS Shield - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> AWS Shield 是托管的分布式拒绝服务（DDoS）防护服务。
 
 ## 概述
 

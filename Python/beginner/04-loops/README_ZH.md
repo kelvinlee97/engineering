@@ -2,6 +2,24 @@
 
 English version: [README.md](README.md)
 
+## 心智模型
+
+> 循环的 `else` 代码块本质是在问「循环中有没有触发过 `break`」：只有循环正常遍历完、从未 `break` 时才会执行，因此它天然适合搭配查找逻辑。
+
+```mermaid
+flowchart TD
+    accTitle: 带 break、continue 和 else 的循环
+    accDescr: 每次迭代可能 continue 跳到下一次，也可能 break 提前退出。只有循环遍历完全部元素、从未触发 break 时，才会执行循环的 else 代码块。
+    S[开始下一次迭代] --> C{触发 continue?}
+    C -- 是 --> S
+    C -- 否 --> B{触发 break?}
+    B -- 是 --> X[退出循环，跳过 else]
+    B -- 否 --> M{还有更多元素?}
+    M -- 是 --> S
+    M -- 否 --> E[循环正常结束]
+    E --> L[执行 else 代码块]
+```
+
 ## 遍历值
 
 ```python

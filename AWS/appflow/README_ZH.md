@@ -1,6 +1,31 @@
 # Amazon AppFlow - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> AppFlow 是连接器之间的免代码数据搬运工：一个 flow 声明源、目标、字段映射/过滤器，以及三种触发类型之一，AppFlow 无需任何自定义集成代码就能运行它。
+
+本文主要回答两个问题：
+
+1. Flow 由哪些部分组成？触发器如何决定它何时运行？
+2. AppFlow 搬运数据之后去了哪里？如何让它可被发现？
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: AppFlow 数据流
+    accDescr: 按需、定时或事件驱动三种触发器之一启动 flow，flow 从 SaaS 或 AWS 源连接器读取数据，应用字段映射和过滤器，写入目标连接器（如 S3、Redshift）。落地到 S3 的数据可以在 AWS Glue Data Catalog 中编目。
+    T{触发器：<br/>按需 / 定时 / 事件} --> F[Flow：映射 + 过滤]
+    Src[源连接器<br/>Salesforce、Slack、Zendesk...] --> F
+    F --> Dst[目标连接器<br/>S3、Redshift、Snowflake...]
+    Dst -.S3 输出.-> G[AWS Glue Data Catalog]
+```
+
+触发类型是一次性配置好的固定选择，而不是每次运行时的决定——它决定 flow 是手动触发、按 cron 计划运行，还是响应源端的变更事件。
 
 ## 概述
 

@@ -4,6 +4,10 @@ English version: [README.md](README.md)
 
 本手册用于处理 ZooKeeper 单个节点因磁盘写满、导致本地事务日志不完整且无法启动的场景。命令采用 Apache [Getting Started Guide](https://zookeeper.apache.org/doc/r3.8.6/zookeeperStarted.html) 的二进制发行包布局：从 `<apache-zookeeper-home>` 运行，官方示例配置文件为 `conf/zoo.cfg`，其中 `dataDir=/var/lib/zookeeper`、`clientPort=2181`。只有在确认生效配置和恢复权限后，才能替换主机值。
 
+## 心智模型
+
+> 单个成员的事务日志被截断是本地存储问题，而不是 quorum 问题：只要其他成员仍能组成健康 quorum，安全的修复方式就是把损坏数据移走，让这一个成员从 ensemble 重新同步；绝不能同时动两个成员的数据。
+
 ## 安全边界
 
 典型错误：

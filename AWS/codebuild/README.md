@@ -1,6 +1,37 @@
 # AWS CodeBuild - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> A CodeBuild run is entirely scripted by one file: the buildspec's phases execute in a fixed order in a fresh container, so a failure at "install" versus "build" versus "post_build" points to a completely different part of that same file, not a different system.
+
+This article answers one practical question:
+
+1. In what order do buildspec phases run, and what does failing at each phase usually mean?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: CodeBuild buildspec phase order
+    accDescr: A build project pulls source and runs a Docker build environment. The buildspec executes phases in order: install, pre_build, build, post_build. Artifacts declared in the buildspec are collected after the phases finish and uploaded to S3, and all phase output streams to CloudWatch Logs.
+    Src[Source: CodeCommit,<br/>S3, GitHub, Bitbucket] --> Env[Build environment<br/>managed or custom image]
+    Env --> I[install]
+    I --> PB[pre_build]
+    PB --> B[build]
+    B --> POB[post_build]
+    POB --> Art[Collect artifacts<br/>per buildspec]
+    Art --> S3[Upload to S3]
+    I --> Logs[CloudWatch Logs]
+    PB --> Logs
+    B --> Logs
+    POB --> Logs
+```
+
+Because phases run strictly in order in the same container, a dependency installed in `build` instead of `install` will still work by accident — but a network or registry failure will always surface first at whichever phase issues that network call, which is the fastest way to localize the fix.
 
 ## Overview
 

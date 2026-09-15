@@ -1,6 +1,33 @@
 # AWS Batch - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> AWS Batch 是弹性计算前面的一个队列：作业在按优先级排序的队列中等待，直到计算环境有空位，然后以容器（或数组/多节点容器组）形式运行——你只需描述工作内容和资源需求，供给由 Batch 负责。
+
+本文主要回答两个问题：
+
+1. 排队的作业要满足什么条件才能真正开始运行？
+2. 数组作业和多节点并行作业与普通作业有何不同？
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: AWS Batch 作业执行路径
+    accDescr: 作业定义提交到作业队列，队列按优先级映射到一个或多个计算环境。当 ECS、EKS、EC2 或 Fargate 上的计算环境有容量时，作业从 RUNNABLE 变为 RUNNING 并以容器形式运行，结果上报为 SUCCEEDED 或 FAILED。
+    D[作业定义：<br/>镜像、vCPU/内存、角色] --> S[提交到作业队列]
+    S --> Q{计算环境<br/>有容量?}
+    Q -- 否 --> W[保持 RUNNABLE]
+    W --> Q
+    Q -- 是 --> RUN[在 ECS / EKS / EC2 /<br/>Fargate 上 RUNNING]
+    RUN --> DONE[SUCCEEDED / FAILED]
+```
+
+数组作业只是对每个索引值重复这条路径一次；多节点并行作业则是在一次经过这条路径的过程中协调跨实例的多个容器。
 
 ## 概述
 

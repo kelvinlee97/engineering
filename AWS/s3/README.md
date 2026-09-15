@@ -1,10 +1,24 @@
 # Amazon S3 - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-18
+
+## Mental model
+
+> An S3 object lives in one bucket type, and lifecycle rules can move it down a cost/latency spectrum — from frequent-access storage through infrequent-access to archive tiers — automatically or under your control.
 
 ## Overview
 
 Amazon S3 is an object storage service for storing and protecting any amount of data: data lakes, websites, mobile apps, backup and restore, archives, enterprise applications, and analytics. S3 provides strong read-after-write consistency for PUT and DELETE requests in all AWS Regions.
+
+```mermaid
+flowchart LR
+    accTitle: S3 storage class lifecycle
+    accDescr: Objects typically start in a frequent-access class such as S3 Standard. Lifecycle rules or Intelligent-Tiering can transition them to infrequent-access classes, and further to archive classes such as Glacier Flexible Retrieval or Glacier Deep Archive, trading retrieval latency for lower storage cost.
+    F[Frequent access:<br/>S3 Standard, Express One Zone] -->|lifecycle rule /<br/>Intelligent-Tiering| I[Infrequent access:<br/>Standard-IA, One Zone-IA]
+    I -->|lifecycle rule| A[Archive:<br/>Glacier Instant/Flexible Retrieval,<br/>Glacier Deep Archive]
+```
 
 ## Buckets and objects
 

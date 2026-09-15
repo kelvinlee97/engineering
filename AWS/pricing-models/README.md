@@ -1,10 +1,25 @@
 # AWS Pricing Models - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> Every AWS pricing model trades flexibility for discount along the same axis: On-Demand gives full flexibility at the highest unit price, commitment-based plans trade flexibility for savings, and Spot trades availability guarantees for the deepest discount.
 
 ## Overview
 
 AWS prices services on a pay-as-you-go basis: you pay only for what you use, with no upfront contracts, and you can save by committing to usage or using spare capacity. Understanding the pricing models (On-Demand, Savings Plans, Reserved Instances, Spot, and the Free Tier) helps you control cost while meeting availability needs.
+
+```mermaid
+flowchart LR
+    accTitle: Choosing an AWS pricing model
+    accDescr: On-Demand requires no commitment but costs the most per unit. Savings Plans and Reserved Instances trade a one or three year usage commitment for lower prices. Spot Instances trade interruptibility for the deepest discount, best suited to fault-tolerant workloads.
+    W{Workload shape} -- Unpredictable / short-lived --> OD[On-Demand<br/>no commitment, highest unit cost]
+    W -- Steady-state, predictable --> SP[Savings Plans /<br/>Reserved Instances<br/>1-3yr commitment, lower cost]
+    W -- Fault-tolerant, interruptible --> SI[Spot Instances<br/>deepest discount, can be reclaimed]
+```
 
 ## Key concepts
 

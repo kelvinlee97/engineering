@@ -1,6 +1,16 @@
 # AWS Artifact - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> AWS Artifact 是一个只读的证据与协议门户，而不是合规服务本身：它按需提供 AWS 自己经过审计的报告和协议，但出具你自己组织的合规证据仍是你的责任。
+
+本文主要回答一个问题：
+
+1. 我能从 Artifact 获得什么？哪些仍需要自己完成？
 
 ## 概述
 
@@ -8,11 +18,13 @@ AWS Artifact 提供按需下载 AWS 安全与合规文档，包括 ISO、PCI 和
 
 ## 核心概念
 
-- **合规报告**：可下载的报告，如 ISO、PCI DSS、SOC 1/2/3 以及按区域/服务的合规文档，可提交给审计机构。
-- **协议（Agreements）**：AWS 协议（例如 Business Associate Addendum），按账户或跨组织审查、接受和跟踪。
-- **Marketplace Vendor Insights**：获取在 AWS Marketplace 销售产品的独立软件供应商（ISV）的安全与合规文档。
-- **Assurance Assistant**：基于 AWS 合规文档，以 AI 方式回答合规与尽职调查问题。
-- **共担责任背景**：Artifact 文档证明 AWS 的控制措施；你仍需负责获取并出具自己组织的合规文档。
+| 概念 | 覆盖内容 |
+|---|---|
+| 合规报告 | 可下载的 ISO、PCI DSS、SOC 1/2/3 以及按区域/服务的合规文档，可提交给审计机构。 |
+| 协议（Agreements） | AWS 协议（例如 Business Associate Addendum），按账户或跨组织审查、接受和跟踪。 |
+| Marketplace Vendor Insights | 在 AWS Marketplace 销售产品的独立软件供应商（ISV）的安全与合规文档。 |
+| Assurance Assistant | 基于 AWS 合规文档，以 AI 方式回答合规与尽职调查问题。 |
+| 共担责任背景 | Artifact 文档证明 AWS 的控制措施；你仍需负责获取并出具自己组织的合规文档。 |
 
 ## 常用操作（AWS CLI）
 

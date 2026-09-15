@@ -1,10 +1,25 @@
 # AWS IAM Identity Center - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-AWS IAM Identity Center (successor to AWS Single Sign-On, renamed in July 2022) centrally manages workforce identities and access to AWS accounts and cloud applications. It is the recommended service for multi-account access: you create users/groups or connect an external identity provider, assign permission sets, and users sign in through the access portal.
+> AWS IAM Identity Center (successor to AWS Single Sign-On, renamed in July 2022) centrally manages workforce identities and access to AWS accounts and cloud applications. It is the recommended service for multi-account access: you create users/groups or connect an external identity provider, assign permission sets, and users sign in through the access portal.
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: IAM Identity Center access flow
+    accDescr: An identity source, either the built-in directory or an external IdP via SCIM/SAML, supplies users and groups. A permission set is assigned to a group for a target AWS account. The user signs in at the access portal and lands in the account with the assigned permission set.
+    IdS[Identity source:<br/>directory or external IdP] --> U[Users / groups]
+    U -->|account assignment| PS[Permission set]
+    PS --> Acct[AWS account]
+    U -->|signs in| Portal[Access portal]
+    Portal --> Acct
+```
 
 ## Key concepts
 

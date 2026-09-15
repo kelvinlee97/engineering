@@ -1,6 +1,12 @@
 # AWS Certified Developer - Associate（DVA-C02）- 学习大纲
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> DVA-C02 验证开发、测试、部署和调试 AWS 云应用的熟练度。
 
 ## 考试概览
 

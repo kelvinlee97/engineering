@@ -1,6 +1,31 @@
 # Amazon AppFlow - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> AppFlow is a no-code data-mover between named connectors: a flow declares a source, a destination, field mapping/filters, and one of three trigger types, and AppFlow runs it without any custom integration code.
+
+This article answers two practical questions:
+
+1. What are the parts of a flow, and how does a trigger decide when it runs?
+2. Where does data go after AppFlow moves it, and how is it made discoverable?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: AppFlow data flow
+    accDescr: A trigger, either on-demand, scheduled, or event-driven, starts a flow that reads from a SaaS or AWS source connector, applies field mapping and filters, and writes to a destination connector such as S3 or Redshift. Data landing in S3 can be cataloged in AWS Glue Data Catalog.
+    T{Trigger:<br/>on-demand / scheduled / event} --> F[Flow: mapping + filters]
+    Src[Source connector<br/>Salesforce, Slack, Zendesk...] --> F
+    F --> Dst[Destination connector<br/>S3, Redshift, Snowflake...]
+    Dst -.S3 output.-> G[AWS Glue Data Catalog]
+```
+
+The trigger type is a standing configuration choice, not a per-run decision — it determines whether a flow fires manually, on a cron schedule, or in response to source-side change events.
 
 ## Overview
 

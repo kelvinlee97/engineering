@@ -1,10 +1,12 @@
 # Amazon EMR - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon EMR（原 Amazon Elastic MapReduce）是托管集群平台，用于运行 Apache Spark、Hive、HBase、Flink、Trino、Presto 等大数据框架。支持传统 EC2 集群、EMR Serverless 和 EMR on EKS。
+> Amazon EMR（原 Amazon Elastic MapReduce）是托管集群平台，用于运行 Apache Spark、Hive、HBase、Flink、Trino、Presto 等大数据框架。支持传统 EC2 集群、EMR Serverless 和 EMR on EKS。
 
 ## 部署模式
 
@@ -13,6 +15,19 @@ Amazon EMR（原 Amazon Elastic MapReduce）是托管集群平台，用于运行
 | EMR on EC2 | 按选择的发布版本和应用，在 EC2 实例上预置集群 |
 | EMR Serverless | 无需管理集群即可运行 Spark/Hive 作业，按作业付费 |
 | EMR on EKS | 用 EMR Spark 运行时在 Amazon EKS 上运行 Spark 工作负载 |
+
+## 全景图
+
+```mermaid
+flowchart TD
+    accTitle: EMR on EC2 集群节点角色
+    accDescr: 集群包含一个协调整个集群的主节点、运行 HDFS 和计算的核心节点，以及可选的、只提供计算能力的任务节点（通常使用 Spot 实例）。
+    M[主节点<br/>协调集群] --> C1[核心节点<br/>HDFS + 计算]
+    M --> C2[核心节点<br/>HDFS + 计算]
+    M --> T1[任务节点<br/>仅计算，通常为 Spot]
+    C1 --- S3[(S3，经 EMRFS)]
+    C2 --- S3
+```
 
 ## 核心概念
 

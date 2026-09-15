@@ -1,6 +1,12 @@
 # AWS Well-Architected Framework - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> The AWS Well-Architected Framework is a set of best practices for designing and operating reliable, secure, efficient, and cost-effective workloads in the cloud.
 
 ## Overview
 

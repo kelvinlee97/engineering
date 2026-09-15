@@ -1,10 +1,27 @@
 # AWS Serverless Application Model（SAM）与 Serverless Application Repository - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> SAM 模板是带无服务器简写的 CloudFormation，SAM transform 把它展开为标准资源；SAM CLI 带着同一个模板走完构建、本地测试和部署，而 SAR 只是一个用于分享最终模板的目录。
 
 ## 概述
 
 AWS Serverless Application Model（AWS SAM）是用于构建无服务器应用的开源基础设施即代码框架。它扩展 CloudFormation，用简化语法定义 Lambda 函数、API Gateway API、DynamoDB 表等无服务器资源，并提供 SAM CLI 做本地开发、测试、构建和部署。AWS Serverless Application Repository（SAR）是使用 SAM 模板发布和部署无服务器应用的目录。
+
+```mermaid
+flowchart LR
+    accTitle: SAM CLI 从模板到部署的生命周期
+    accDescr: 带简写资源的 SAM 模板通过 SAM CLI 初始化、构建并本地测试，再经由 serverless transform 部署为标准 CloudFormation 资源；同一模板也可以选择发布到 Serverless Application Repository 供他人部署。
+    I[sam init] --> B[sam build]
+    B --> L[sam local invoke /<br/>start-api]
+    L --> D[sam deploy /<br/>sam sync]
+    D --> CF[CloudFormation stack<br/>经 serverless transform]
+    B -.-> P[sam publish<br/>到 Serverless Application Repository]
+```
 
 ## 核心概念
 

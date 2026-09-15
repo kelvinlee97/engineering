@@ -1,10 +1,25 @@
 # Amazon GuardDuty - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon GuardDuty 是威胁检测服务，持续监控和分析 AWS 数据源，包括 CloudTrail 管理事件、VPC Flow Logs 和 DNS 日志；还提供可选的保护计划，覆盖 EKS 审计日志、RDS 登录活动、S3 数据事件、EBS 恶意软件扫描、EC2/EKS/ECS 运行时监控、Lambda 网络活动和 AI 工作负载。GuardDuty 使用威胁情报（恶意 IP、域名和文件哈希）和机器学习生成安全发现（finding）。
+> Amazon GuardDuty 是威胁检测服务，持续监控和分析 AWS 数据源，包括 CloudTrail 管理事件、VPC Flow Logs 和 DNS 日志；还提供可选的保护计划，覆盖 EKS 审计日志、RDS 登录活动、S3 数据事件、EBS 恶意软件扫描、EC2/EKS/ECS 运行时监控、Lambda 网络活动和 AI 工作负载。GuardDuty 使用威胁情报（恶意 IP、域名和文件哈希）和机器学习生成安全发现（finding）。
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: Amazon GuardDuty 检测流程
+    accDescr: 启用 detector 后基础数据源自动摄取，可选的保护计划增加更多数据源。威胁情报和机器学习把这些数据变成 finding，过滤器和抑制规则可在下游自动化之前减少噪音。
+    FD[基础数据源：<br/>CloudTrail、VPC Flow Logs、DNS] --> Det[Detector]
+    PP[保护计划：<br/>S3、EKS、RDS、恶意软件、运行时...] --> Det
+    Det -->|+ 威胁情报、机器学习| Find[Finding]
+    Find --> Filt[过滤器 / 抑制规则]
+    Filt --> Out[EventBridge、Security Hub]
+```
 
 ## 核心概念
 

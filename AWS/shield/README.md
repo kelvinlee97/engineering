@@ -1,6 +1,12 @@
 # AWS Shield - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> AWS Shield is a managed Distributed Denial of Service (DDoS) protection service.
 
 ## Overview
 

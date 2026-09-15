@@ -2,6 +2,10 @@
 
 English version: [README.md](README.md)
 
+## 心智模型
+
+> `/goal` 把 Codex 从“单轮助手”变成一个受监督的长时间运行 agent：你设定一个目标和一条停止条件，Codex 跨多轮、按 checkpoint 持续朝目标推进，并在它认为已满足停止条件时自行停下。
+
 `/goal` 给 Codex 一个持久目标，让它跨多轮持续推进，而不是完成一轮普通对话就停下来。它适合有明确目标、有验证循环、且足够空间让 Codex 自行推进的工作。goal 激活后，Codex 可以连续工作数小时，并在它认为已达到停止条件时自行结束。
 
 本指南覆盖 Codex CLI 和 ChatGPT Desktop composer 中的 `/goal`。命令菜单和功能可用性会随 Codex 版本、配置和账户变化；以输入 `/` 后实际显示的命令列表为准。

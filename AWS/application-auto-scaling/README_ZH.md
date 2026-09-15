@@ -1,6 +1,36 @@
 # Application Auto Scaling - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> Application Auto Scaling 是同一套控制回路统一套用在多种非 EC2 资源上：把资源注册为带 min/max 边界的 scalable target，附加一个监听指标或时钟的策略，让回路在边界内增减容量。
+
+本文主要回答两个问题：
+
+1. 一个指标或一个计划是如何变成容量变化的？
+2. 四种策略类型分别适合什么扩缩需求？
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: Application Auto Scaling 控制回路
+    accDescr: 注册 scalable target 并设置最小、最大容量。目标跟踪、步进、定时或预测策略监听 CloudWatch 指标或时钟，条件满足时在已注册的边界内调整容量。
+    R[注册 scalable target<br/>min/max 容量] --> P{策略类型}
+    P -->|目标跟踪| M1[让 CloudWatch 指标<br/>接近目标值]
+    P -->|步进扩缩| M2[按告警超限<br/>幅度扩缩]
+    P -->|定时扩缩| M3[在固定时间<br/>扩缩]
+    P -->|预测扩缩| M4[提前应对<br/>预测负载]
+    M1 --> C[在 min/max 内<br/>调整容量]
+    M2 --> C
+    M3 --> C
+    M4 --> C
+```
+
+四种策略类型最终都收敛到同一个受边界约束的容量变化——区别仅在于触发调整的条件。
 
 ## 概述
 

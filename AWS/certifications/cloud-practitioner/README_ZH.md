@@ -1,6 +1,12 @@
 # AWS Certified Cloud Practitioner（CLF-C02）- 学习大纲
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> CLF-C02 考试验证对 AWS 云概念、服务、安全、架构、定价和支持的基础理解。
 
 ## 考试概览
 

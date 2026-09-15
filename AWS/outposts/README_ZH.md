@@ -1,10 +1,25 @@
 # AWS Outposts - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> Outpost 是把 AWS 区域物理延伸到你的建筑里：它通过 service link 连回区域、在本地运行相同的 API，同时本地网关把 Outpost 资源接入你的本地网络。
 
 ## 概述
 
 AWS Outposts 把 AWS 基础设施、服务、API 和工具带到你的现场。Outpost 是安装在你站点的一组 AWS 计算和存储容量，由 AWS 作为某区域的一部分运营和管理。你在本地使用与区域相同的 API 和控制台，获得低延迟和本地数据处理。
+
+```mermaid
+flowchart LR
+    accTitle: Outposts 与区域、本地网络的连接
+    accDescr: 客户站点的 Outpost 硬件通过 service link 连接回所属 AWS 区域，承载相同的 API 和控制台访问；本地网关把 Outpost 子网和资源连接到本地网络，实现低延迟的本地访问。
+    Reg[AWS 区域] <-->|service link<br/>相同 API 与控制台| O[Outpost<br/>rack 或 server，位于你的站点]
+    O --> LGW[本地网关]
+    LGW <--> ON[本地网络]
+```
 
 ## 核心概念
 

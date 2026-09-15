@@ -1,10 +1,12 @@
 # Amazon EMR - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-Amazon EMR (formerly Amazon Elastic MapReduce) is a managed cluster platform for running big data frameworks such as Apache Spark, Hive, HBase, Flink, Trino, and Presto. It supports traditional EC2-based clusters, EMR Serverless, and EMR on EKS.
+> Amazon EMR (formerly Amazon Elastic MapReduce) is a managed cluster platform for running big data frameworks such as Apache Spark, Hive, HBase, Flink, Trino, and Presto. It supports traditional EC2-based clusters, EMR Serverless, and EMR on EKS.
 
 ## Deployment models
 
@@ -13,6 +15,19 @@ Amazon EMR (formerly Amazon Elastic MapReduce) is a managed cluster platform for
 | EMR on EC2 | Provisioned cluster of EC2 instances with a chosen release and applications |
 | EMR Serverless | Run Spark/Hive jobs without managing clusters; pay per job |
 | EMR on EKS | Run Spark workloads on Amazon EKS with the EMR Spark runtime |
+
+## Big picture
+
+```mermaid
+flowchart TD
+    accTitle: EMR on EC2 cluster node roles
+    accDescr: A cluster has one master node coordinating the cluster, core nodes that run HDFS and compute, and optional task nodes that add compute-only capacity, often on Spot instances.
+    M[Master node<br/>coordinates cluster] --> C1[Core node<br/>HDFS + compute]
+    M --> C2[Core node<br/>HDFS + compute]
+    M --> T1[Task node<br/>compute only, often Spot]
+    C1 --- S3[(S3 via EMRFS)]
+    C2 --- S3
+```
 
 ## Key concepts
 

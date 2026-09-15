@@ -1,6 +1,16 @@
 # AWS 生态 - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> AWS 生态是云平台本身加上围绕它的一切——合作伙伴、市场、支持、合规证据，以及指导如何使用它的各种框架——而不是只有一个入口的单一产品。
+
+本文主要回答一个问题：
+
+1. "AWS" 除了服务本身还包含哪些部分？各自在哪里？
 
 ## 概述
 
@@ -8,13 +18,15 @@ AWS 生态包括 AWS 云平台本身（在全球基础设施上提供计算、�
 
 ## 核心概念
 
-- **全球基础设施**：区域、可用区和边缘节点；除特别说明外服务按区域作用域。
-- **服务类别**：计算（EC2、Lambda、ECS、EKS）、存储（S3、EBS、EFS、FSx）、数据库（RDS、DynamoDB、Aurora）、网络（VPC、Route 53、ELB、CloudFront）、分析（Athena、Redshift、EMR）、安全（IAM、KMS、GuardDuty、Security Hub CSPM）、集成（SQS、SNS、EventBridge）和 AI/ML（SageMaker、Lex、Rekognition 等）。
-- **AWS Partner Network（APN）**：提供解决方案、服务和经 AWS 验证能力的咨询与技术合作伙伴。
-- **AWS Marketplace**：可在 AWS 中采购和部署的第三方软件与服务数字目录。
-- **支持计划**：Basic、Developer、Business、Enterprise（当前计划过渡中的 Business Support+、Enterprise Support、AWS Unified Operations）；计划决定支持访问和 Trusted Advisor 等工具。
-- **合规资源**：AWS Artifact 提供报告与协议；共担责任模型帮助理解义务。
-- **框架**：Well-Architected Framework 指导架构评审；AWS Cloud Adoption Framework 指导组织上云。
+| 部分 | 是什么 |
+|---|---|
+| 全球基础设施 | 区域、可用区和边缘节点；除特别说明外服务按区域作用域。 |
+| 服务类别 | 计算（EC2、Lambda、ECS、EKS）、存储（S3、EBS、EFS、FSx）、数据库（RDS、DynamoDB、Aurora）、网络（VPC、Route 53、ELB、CloudFront）、分析（Athena、Redshift、EMR）、安全（IAM、KMS、GuardDuty、Security Hub CSPM）、集成（SQS、SNS、EventBridge）和 AI/ML（SageMaker、Lex、Rekognition 等）。 |
+| AWS Partner Network（APN） | 提供解决方案、服务和经 AWS 验证能力的咨询与技术合作伙伴。 |
+| AWS Marketplace | 可在 AWS 中采购和部署的第三方软件与服务数字目录。 |
+| 支持计划 | Basic、Developer、Business、Enterprise（当前计划过渡中的 Business Support+、Enterprise Support、AWS Unified Operations）；计划决定支持访问和 Trusted Advisor 等工具。 |
+| 合规资源 | AWS Artifact 提供报告与协议；共担责任模型帮助理解义务。 |
+| 框架 | Well-Architected Framework 指导架构评审；AWS Cloud Adoption Framework 指导组织上云。 |
 
 ## 常用操作
 

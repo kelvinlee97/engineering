@@ -1,6 +1,33 @@
 # AWS Cloud Development Kit (CDK) - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> CDK never talks to AWS directly — it compiles your code into a CloudFormation template, and CloudFormation does the actual provisioning; every CDK command is really a step before or around a CloudFormation deployment.
+
+This article answers two practical questions:
+
+1. What does each CDK CLI command actually produce, and in what order do they run?
+2. How do L1, L2, and L3 constructs relate to the CloudFormation resources they end up as?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: CDK synthesis and deployment path
+    accDescr: A CDK app made of one or more stacks is synthesized into a CloudFormation template and assets. cdk diff compares that template to what is deployed. cdk deploy uploads assets to the bootstrap staging bucket and hands the template to CloudFormation, which provisions or updates the actual resources.
+    A[App: stacks of<br/>L1/L2/L3 constructs] --> S["cdk synth"]
+    S --> T[CloudFormation template<br/>+ assets]
+    T --> DI["cdk diff<br/>(compare to deployed stack)"]
+    T --> DE["cdk deploy"]
+    DE --> UP[Upload assets to<br/>bootstrap staging bucket]
+    UP --> CF[CloudFormation<br/>creates/updates resources]
+```
+
+`cdk bootstrap` is a one-time prerequisite per account/Region that creates the staging bucket and roles this deploy path depends on — it is not part of the per-deployment flow itself.
 
 ## Overview
 

@@ -1,6 +1,16 @@
 # AWS Ecosystem - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> The AWS ecosystem is the cloud platform plus everything that surrounds it — partners, marketplace, support, compliance evidence, and the frameworks that guide how you use it — not a single product with one entry point.
+
+This article answers one practical question:
+
+1. What are the pieces of "AWS" beyond the services themselves, and where does each one live?
 
 ## Overview
 
@@ -8,13 +18,15 @@ The AWS ecosystem includes the AWS Cloud platform itself (compute, storage, data
 
 ## Key concepts
 
-- **Global infrastructure**: Regions, Availability Zones, and edge locations; services are Region-scoped unless stated otherwise.
-- **Service categories**: compute (EC2, Lambda, ECS, EKS), storage (S3, EBS, EFS, FSx), databases (RDS, DynamoDB, Aurora), networking (VPC, Route 53, ELB, CloudFront), analytics (Athena, Redshift, EMR), security (IAM, KMS, GuardDuty, Security Hub CSPM), integration (SQS, SNS, EventBridge), and AI/ML (SageMaker, Lex, Rekognition, and more).
-- **AWS Partner Network (APN)**: consulting and technology partners offering solutions, services, and competencies validated by AWS.
-- **AWS Marketplace**: a digital catalog of third-party software and services that you can procure and deploy in AWS.
-- **Support plans**: Basic, Developer, Business, Enterprise (and Business Support+, Enterprise Support, AWS Unified Operations under the current plan transition); plans define support access and tools like Trusted Advisor.
-- **Compliance resources**: AWS Artifact for reports and agreements, and the Shared Responsibility Model for understanding obligations.
-- **Frameworks**: the Well-Architected Framework guides architecture reviews; the AWS Cloud Adoption Framework guides organizational adoption.
+| Piece | What it is |
+|---|---|
+| Global infrastructure | Regions, Availability Zones, and edge locations; services are Region-scoped unless stated otherwise. |
+| Service categories | Compute (EC2, Lambda, ECS, EKS), storage (S3, EBS, EFS, FSx), databases (RDS, DynamoDB, Aurora), networking (VPC, Route 53, ELB, CloudFront), analytics (Athena, Redshift, EMR), security (IAM, KMS, GuardDuty, Security Hub CSPM), integration (SQS, SNS, EventBridge), and AI/ML (SageMaker, Lex, Rekognition, and more). |
+| AWS Partner Network (APN) | Consulting and technology partners offering solutions, services, and competencies validated by AWS. |
+| AWS Marketplace | A digital catalog of third-party software and services that you can procure and deploy in AWS. |
+| Support plans | Basic, Developer, Business, Enterprise (and Business Support+, Enterprise Support, AWS Unified Operations under the current plan transition); plans define support access and tools like Trusted Advisor. |
+| Compliance resources | AWS Artifact for reports and agreements, and the Shared Responsibility Model for understanding obligations. |
+| Frameworks | The Well-Architected Framework guides architecture reviews; the AWS Cloud Adoption Framework guides organizational adoption. |
 
 ## Common operations
 

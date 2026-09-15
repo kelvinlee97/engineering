@@ -1,10 +1,32 @@
 # Amazon EC2 - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-18
 
-## Overview
+## Mental model
 
-Amazon Elastic Compute Cloud (Amazon EC2) provides on-demand, scalable compute capacity in the AWS Cloud. An EC2 instance is a virtual server; the instance type you choose determines the balance of compute, memory, network, and storage available to it.
+> Amazon Elastic Compute Cloud (Amazon EC2) provides on-demand, scalable compute capacity in the AWS Cloud. An EC2 instance is a virtual server; the instance type you choose determines the balance of compute, memory, network, and storage available to it.
+
+## Big picture
+
+The action you take (reboot, stop, hibernate, terminate) determines which state the instance moves through and what happens to its data and billing:
+
+```mermaid
+stateDiagram-v2
+    accTitle: EC2 instance lifecycle
+    accDescr: An instance moves from pending to running. From running, reboot returns to running on the same host. Stop moves to stopped (EBS-backed only), from which start returns to pending. Terminate moves through shutting-down to terminated, which is permanent.
+    [*] --> pending
+    pending --> running
+    running --> running: reboot (same host)
+    running --> stopping: stop / hibernate
+    stopping --> stopped
+    stopped --> pending: start
+    running --> shutting_down: terminate
+    stopped --> shutting_down: terminate
+    shutting_down --> terminated
+    terminated --> [*]
+```
 
 ## Instance lifecycle and billing
 

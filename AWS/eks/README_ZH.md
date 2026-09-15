@@ -1,10 +1,23 @@
 # Amazon EKS - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon Elastic Kubernetes Service（Amazon EKS）是全托管的 Kubernetes 服务。AWS 负责运行 Kubernetes 控制平面；还可以用 **EKS Auto Mode** 让 AWS 一并管理节点、扩缩容、打补丁和安全集成。
+> Amazon Elastic Kubernetes Service（Amazon EKS）是全托管的 Kubernetes 服务。AWS 负责运行 Kubernetes 控制平面；还可以用 **EKS Auto Mode** 让 AWS 一并管理节点、扩缩容、打补丁和安全集成。
+
+## 全景图
+
+```mermaid
+flowchart TD
+    accTitle: EKS standard 与 Auto Mode 的职责划分
+    accDescr: 两种模式下 AWS 都管理 Kubernetes 控制平面。在 EKS standard 中，你管理数据平面：节点、扩缩容和打补丁。在 EKS Auto Mode 中，AWS 同时管理数据平面，包括资源预置、扩缩容、成本优化和打补丁。
+    CP[Kubernetes 控制平面<br/>始终由 AWS 管理] --> Mode{模式}
+    Mode -->|EKS standard| You[你管理节点：<br/>托管节点组、<br/>Fargate 或自管节点]
+    Mode -->|EKS Auto Mode| AWSM[AWS 同时管理节点：<br/>预置、扩缩容、打补丁]
+```
 
 ## 核心概念
 

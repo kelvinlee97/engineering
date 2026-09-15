@@ -1,6 +1,12 @@
 # AWS X-Ray - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> AWS X-Ray collects data about requests your application serves and provides tools to view, filter, and analyze that data.
 
 ## Overview
 

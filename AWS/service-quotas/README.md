@@ -1,6 +1,12 @@
 # AWS Service Quotas - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> AWS Service Quotas lets you view and manage the quotas (limits) for AWS services from one place.
 
 ## Overview
 

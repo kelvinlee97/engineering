@@ -1,10 +1,36 @@
 # Amazon VPC - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> Amazon Virtual Private Cloud (Amazon VPC) lets you launch AWS resources in a logically isolated virtual network that you define.
 
 ## Overview
 
 Amazon Virtual Private Cloud (Amazon VPC) lets you launch AWS resources in a logically isolated virtual network that you define. Each AWS Region includes a default VPC ready for immediate use. There is no charge for the VPC itself; charges apply to some components such as NAT gateways.
+
+```mermaid
+flowchart LR
+    accTitle: VPC subnet traffic paths
+    accDescr: Resources in a public subnet route outbound and inbound traffic through an internet gateway. Resources in a private subnet route outbound-only internet traffic through a NAT gateway in a public subnet, and reach AWS services privately through VPC endpoints. Route tables attached to each subnet decide which path traffic takes.
+    subgraph VPC
+        subgraph Public["Public subnet"]
+            PR[Resource] --> IGW[Internet gateway]
+        end
+        subgraph Private["Private subnet"]
+            PVR[Resource] --> NAT[NAT gateway<br/>in public subnet]
+            PVR --> EP[VPC endpoint]
+        end
+        NAT --> IGW
+    end
+    IGW <--> Internet
+    EP --> AWS_SVC[AWS services]
+```
+
+Route tables attached to each subnet determine which of these paths traffic actually takes.
 
 ## Key concepts
 

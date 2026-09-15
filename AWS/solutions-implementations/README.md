@@ -1,6 +1,12 @@
 # AWS Solutions Library (Solutions Implementations) - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> The AWS Solutions Library (formerly AWS Solutions Implementations) provides vetted solutions and guidance for common business and technical use cases.
 
 ## Overview
 

@@ -1,10 +1,12 @@
 # Amazon DynamoDB - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-Amazon DynamoDB is a serverless, fully managed NoSQL database with single-digit millisecond performance at any scale. It supports key-value and document data models and requires no server provisioning, patching, or maintenance.
+> Amazon DynamoDB is a serverless, fully managed NoSQL database with single-digit millisecond performance at any scale. It supports key-value and document data models and requires no server provisioning, patching, or maintenance.
 
 ## Key concepts
 

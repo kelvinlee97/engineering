@@ -1,10 +1,25 @@
 # Amazon Detective - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-Amazon Detective helps you analyze, investigate, and identify the root cause of security findings and suspicious activity. It automatically extracts time-based events (logins, API calls, network traffic) from AWS CloudTrail and VPC Flow Logs, ingests GuardDuty findings, and uses machine learning and graph analysis to build interactive visualizations for security investigations.
+> Amazon Detective helps you analyze, investigate, and identify the root cause of security findings and suspicious activity. It automatically extracts time-based events (logins, API calls, network traffic) from AWS CloudTrail and VPC Flow Logs, ingests GuardDuty findings, and uses machine learning and graph analysis to build interactive visualizations for security investigations.
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: Amazon Detective data and investigation flow
+    accDescr: CloudTrail, VPC Flow Logs, and GuardDuty findings feed the behavior graph. High-severity findings are clustered into finding groups, and Detective Investigation triages entities, all backed by member accounts contributing data to the administrator's graph.
+    CT[CloudTrail / VPC Flow Logs] --> BG[Behavior graph]
+    GD[GuardDuty findings] --> BG
+    M[Member accounts] -->|contribute data| BG
+    BG --> FG[Finding groups<br/>root cause analysis]
+    BG --> INV[Detective Investigation<br/>IOC triage]
+```
 
 ## Key concepts
 

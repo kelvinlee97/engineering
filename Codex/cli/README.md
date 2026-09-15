@@ -2,6 +2,10 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> Slash commands only control the current chat — they inspect its state, plan work, review changes, or manage saved sessions. They are not shell commands, they do not touch your repository directly, and they do not replace normal Git review.
+
 Codex CLI is an interactive coding assistant in your terminal. Slash commands
 control the current chat: they help you inspect its state, plan work, review
 changes, and manage saved sessions. They are not shell commands and do not

@@ -1,10 +1,28 @@
 # AWS Organizations - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> Organizations is a tree: one root holds OUs, OUs hold accounts, and policies like SCPs attach anywhere in that tree to narrow (never grant) what every account beneath them can do.
 
 ## Overview
 
 AWS Organizations lets you centrally manage multiple AWS accounts: create and invite accounts, group them into organizational units (OUs), apply governance policies, share resources across accounts, and consolidate billing onto a single invoice. It is a global service hosted in the US East (N. Virginia) Region (us-east-1).
+
+```mermaid
+flowchart TD
+    accTitle: AWS Organizations account hierarchy and policy attachment
+    accDescr: A single root sits above organizational units, which can nest up to five levels deep and contain member accounts. Service control policies and other policy types attach to the root, an OU, or an individual account, and their restrictions apply to everything beneath that attachment point. The management account sits outside SCP enforcement.
+    R[Root] --> OU1[Organizational unit]
+    OU1 --> OU2[Nested OU<br/>up to 5 levels]
+    OU2 --> A1[Member account]
+    OU1 --> A2[Member account]
+    R -.SCP/RCP/tag policy<br/>attaches anywhere.-> OU1
+    M[Management account] -.not subject to SCPs.-> R
+```
 
 ## Key concepts
 

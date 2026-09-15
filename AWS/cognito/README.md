@@ -1,6 +1,32 @@
 # Amazon Cognito - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> Cognito answers two different questions with two different components: a user pool answers "who is this person" and hands back a JWT, while an identity pool answers "what AWS resources can they touch" and hands back temporary AWS credentials — an app that only needs the first component never needs an identity pool at all.
+
+This article answers one practical question:
+
+1. What is the exact handoff between a user pool and an identity pool, and when can I skip the identity pool entirely?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: Cognito user pool and identity pool flow
+    accDescr: A user signs in through a user pool app client, or an external social or SAML/OIDC identity provider federated into the user pool, and receives a JWT. An application that only needs to know who the user is can stop there. An application that also needs to call AWS services passes that JWT to an identity pool, which exchanges it via AWS STS for temporary AWS credentials scoped by role mapping.
+    U[User] --> C{Sign in via<br/>user pool app client,<br/>or federated IdP}
+    C --> J[JWT issued<br/>by user pool]
+    J --> Done[App only needs identity:<br/>stop here]
+    J --> IP[Identity pool]
+    IP --> STS[AWS STS<br/>AssumeRoleWithWebIdentity]
+    STS --> Cred[Temporary AWS credentials<br/>scoped by role mapping]
+```
+
+Skipping the identity pool is a valid, common design when an app only needs to know "who is signed in," not "what can they do in AWS" — adding one when it isn't needed only adds an unused credential-exchange step.
 
 ## Overview
 

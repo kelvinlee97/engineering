@@ -1,6 +1,12 @@
 # AWS Service Quotas - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> AWS Service Quotas 让你从单一位置查看和管理 AWS 服务的配额（限制）。
 
 ## 概述
 

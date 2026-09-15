@@ -1,10 +1,28 @@
 # AWS Managed Services (AMS) - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> AMS is an operations team you consume as a service: your changes flow through a controlled request process, and AMS's own baselines handle monitoring, patching, security, and backup underneath.
 
 ## Overview
 
 AWS Managed Services (AMS) is an enterprise service that provides ongoing management of your AWS infrastructure: provisioning, running, monitoring, patching, security, and backup, following AWS best practices and ITSM processes. AMS implements change management and security policies so your team can focus on building applications. Note: AWS has announced end of support for AMS Advanced on June 30, 2027; plan accordingly.
+
+```mermaid
+flowchart LR
+    accTitle: AMS change request flow
+    accDescr: Customers submit change requests through the AMS console. AMS evaluates them against policy and guardrails, then implements approved changes, while AMS-owned baselines continuously handle monitoring, patching, security, and backup in the background.
+    Y[Your team] -->|change request| C[AMS console]
+    C --> P{Policy &<br/>guardrail check}
+    P -- approved --> I[AMS implements change]
+    P -- rejected --> Y
+    I --> E[Your AWS environment]
+    G[AMS baselines:<br/>monitoring, patching,<br/>security, backup] --> E
+```
 
 ## Key concepts
 

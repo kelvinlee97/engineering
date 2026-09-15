@@ -1,10 +1,27 @@
 # Amazon Route 53 - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> 查询落到托管区域后，路由策略决定用哪条记录应答，而健康检查可以在客户端看到结果之前，把不健康的目标从候选中排除。
 
 ## 概述
 
 Amazon Route 53 是高可用、可扩展的域名系统（DNS）Web 服务，三大功能：域名注册、DNS 路由、健康检查。
+
+```mermaid
+flowchart LR
+    accTitle: Route 53 查询解析流程
+    accDescr: DNS 查询在托管区域中匹配记录；这些记录上的路由策略（simple、weighted、latency、failover、geolocation、geoproximity 或 multivalue）决定哪条记录应答；健康检查可以在返回结果前把不健康的目标从候选中排除。
+    Q[DNS 查询] --> HZ[托管区域]
+    HZ --> RP{路由策略}
+    RP --> S[选中的记录]
+    H[健康检查] -.排除不健康目标.-> RP
+    S --> C[客户端]
+```
 
 ## 核心概念
 

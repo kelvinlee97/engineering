@@ -1,10 +1,23 @@
 # Amazon EKS - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-Amazon Elastic Kubernetes Service (Amazon EKS) is a fully managed Kubernetes service. AWS operates the Kubernetes control plane; you can also use **EKS Auto Mode** to let AWS manage nodes, scaling, patching, and security integration.
+> Amazon Elastic Kubernetes Service (Amazon EKS) is a fully managed Kubernetes service. AWS operates the Kubernetes control plane; you can also use **EKS Auto Mode** to let AWS manage nodes, scaling, patching, and security integration.
+
+## Big picture
+
+```mermaid
+flowchart TD
+    accTitle: EKS standard vs Auto Mode responsibility split
+    accDescr: In both modes AWS manages the Kubernetes control plane. In EKS standard, you manage the data plane: nodes, scaling, and patching. In EKS Auto Mode, AWS also manages the data plane, including provisioning, scaling, cost optimization, and patching.
+    CP[Kubernetes control plane<br/>always AWS-managed] --> Mode{Mode}
+    Mode -->|EKS standard| You[You manage nodes:<br/>managed node groups,<br/>Fargate, or self-managed]
+    Mode -->|EKS Auto Mode| AWSM[AWS also manages nodes:<br/>provisioning, scaling, patching]
+```
 
 ## Key concepts
 

@@ -1,6 +1,33 @@
 # AWS Backup - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> AWS Backup separates "when and how long" from "where": a plan's rules decide backup frequency and retention, the vault (and its optional Vault Lock) decides how immutable the result is, and copy rules decide whether it also lands in another Region or account.
+
+This article answers two practical questions:
+
+1. What happens to a backup between its creation and its expiry?
+2. What does Vault Lock actually prevent, and from whom?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: AWS Backup plan lifecycle
+    accDescr: A backup plan's rule triggers a backup job on a schedule, writing to a backup vault. The vault can optionally copy the backup cross-Region or cross-account. Over time the backup transitions from warm to cold storage per the lifecycle rule, then expires at the retention limit. Vault Lock, if enabled, prevents deletion of backups in the vault regardless of these transitions.
+    R[Plan rule:<br/>schedule + retention] --> J[Backup job] --> V[Backup vault]
+    V -.optional.-> X[Cross-Region /<br/>cross-account copy]
+    V --> W[Warm storage]
+    W -- lifecycle rule --> C[Cold storage]
+    C --> E[Expire at<br/>retention limit]
+    L[Vault Lock<br/>governance/compliance] -. blocks deletion of .-> V
+```
+
+Vault Lock is orthogonal to the lifecycle — it does not change when backups transition or expire, it only blocks deletion before that point, including by administrators in compliance mode.
 
 ## Overview
 

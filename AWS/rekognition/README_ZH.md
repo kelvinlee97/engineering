@@ -1,10 +1,26 @@
 # Amazon Rekognition - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> Rekognition 对图像用单次 API 调用同步分析；视频则始终作为异步任务运行，通过 SNS 通知完成——两者背后调用相同的检测能力（标签、文本、人脸、内容审核）。
 
 ## 概述
 
 Amazon Rekognition 是基于深度学习的云图像与视频分析服务。通过简单 API，无需 ML 专业知识即可检测 S3 中图片/视频的对象、场景、文本、人脸、名人和不安全内容。该服务适用于 HIPAA，采用按用即付定价。
+
+```mermaid
+flowchart LR
+    accTitle: Rekognition 同步图像分析与异步视频分析
+    accDescr: 图像分析通过 detect-* 调用同步返回检测结果；视频分析通过 start-* 调用启动异步任务处理 S3 中的视频，完成后发布 SNS 通知，再用 get-* 调用获取结果。
+    I[S3 中的图像] -->|detect-* 调用| SR[同步返回结果]
+    V[S3 中的视频] -->|start-* 调用| J[异步任务]
+    J --> SNS[SNS 完成通知]
+    SNS --> G[get-* 调用获取结果]
+```
 
 ## 核心概念
 

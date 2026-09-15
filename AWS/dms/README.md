@@ -1,10 +1,25 @@
 # AWS Database Migration Service (DMS) - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-AWS Database Migration Service (AWS DMS) migrates relational databases, data warehouses, NoSQL databases, and other data stores into AWS or between combinations of cloud and on-premises environments. It supports one-time migrations and ongoing replication to keep sources and targets in sync, plus Fleet Advisor (discovery) and Schema Conversion (engine conversion).
+> AWS Database Migration Service (AWS DMS) migrates relational databases, data warehouses, NoSQL databases, and other data stores into AWS or between combinations of cloud and on-premises environments. It supports one-time migrations and ongoing replication to keep sources and targets in sync, plus Fleet Advisor (discovery) and Schema Conversion (engine conversion).
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: AWS DMS migration flow
+    accDescr: Fleet Advisor discovers on-premises servers and Schema Conversion converts schemas before migration. A replication instance reads from a source endpoint and writes to a target endpoint through a replication task running full load and/or CDC, with data validation checking the result.
+    FA[Fleet Advisor discovery] --> SC[Schema conversion]
+    SC --> RI[Replication instance]
+    SRC[Source endpoint] --> RI
+    RI -->|replication task:<br/>full load / CDC| TGT[Target endpoint]
+    TGT --> DV[Data validation]
+```
 
 ## Key concepts
 

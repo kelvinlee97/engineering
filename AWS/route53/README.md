@@ -1,10 +1,27 @@
 # Amazon Route 53 - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> A query lands in a hosted zone, a routing policy picks which record(s) to answer with, and health checks can remove unhealthy targets from that choice before a client ever sees them.
 
 ## Overview
 
 Amazon Route 53 is a highly available and scalable Domain Name System (DNS) web service with three main functions: domain registration, DNS routing, and health checking.
+
+```mermaid
+flowchart LR
+    accTitle: Route 53 query resolution flow
+    accDescr: A DNS query is resolved against records in a hosted zone. The routing policy on those records, such as simple, weighted, latency, failover, geolocation, geoproximity, or multivalue, determines which record answers. Health checks can exclude unhealthy targets from that selection before returning an answer to the client.
+    Q[DNS query] --> HZ[Hosted zone]
+    HZ --> RP{Routing policy}
+    RP --> S[Selected record]
+    H[Health checks] -.excludes unhealthy targets.-> RP
+    S --> C[Client]
+```
 
 ## Key concepts
 

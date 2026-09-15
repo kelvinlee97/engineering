@@ -1,10 +1,38 @@
 # AWS 共担责任模型 - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> AWS 的安全与合规由 AWS 和客户共同承担。
 
 ## 概述
 
 AWS 的安全与合规由 AWS 和客户共同承担。AWS 负责运营、管理和控制从主机操作系统与虚拟化层到设施物理安全的组件。客户负责来宾操作系统（包括更新与安全补丁）、相关应用软件，以及 AWS 提供安全控件的配置。
+
+```mermaid
+flowchart TB
+    accTitle: 按技术栈层次划分的共担责任
+    accDescr: AWS 负责云本身的安全，从设施到虚拟化层。客户负责云中的安全，从来宾操作系统到数据、身份和网络配置。各方管理的比例随服务模型从 IaaS 到 PaaS 再到 SaaS 而变化。
+    subgraph Customer["客户：云中的安全"]
+        direction TB
+        D[数据] --> ID[身份与访问管理]
+        ID --> AP[应用]
+        AP --> OS[来宾操作系统、补丁]
+        OS --> NW[网络与防火墙配置]
+        NW --> CE[客户端加密]
+    end
+    subgraph AWS["AWS：云的安全"]
+        direction TB
+        HV[主机操作系统与虚拟化] --> HW[计算、存储、数据库、网络]
+        HW --> FA[设施与物理安全]
+    end
+    Customer --> AWS
+```
+
+服务模型从 IaaS（EC2）到 PaaS（RDS）再到 SaaS（全托管），AWS 承担的比例逐步增加。
 
 ## 核心概念
 

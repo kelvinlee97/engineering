@@ -1,6 +1,16 @@
 # AWS CodeStar - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> AWS CodeStar is a retired product, not a deprecated feature with a grace period: since July 31, 2024 the console and SDK are gone entirely, so this article exists only to help teams recognize legacy CodeStar resources and migrate them to CodeCatalyst or the underlying Code suite services directly.
+
+This article answers one practical question:
+
+1. What should a team with old CodeStar resources actually do now?
 
 ## Overview
 

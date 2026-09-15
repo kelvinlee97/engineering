@@ -1,10 +1,24 @@
 # AWS Directory Service - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-AWS Directory Service provides managed directory options for using Microsoft Active Directory (AD) and LDAP with AWS services and workloads. You can run a fully managed Microsoft AD in the cloud, connect AWS applications to your existing on-premises AD, or use a low-cost AD-compatible directory, depending on your needs.
+> AWS Directory Service provides managed directory options for using Microsoft Active Directory (AD) and LDAP with AWS services and workloads. You can run a fully managed Microsoft AD in the cloud, connect AWS applications to your existing on-premises AD, or use a low-cost AD-compatible directory, depending on your needs.
+
+## Big picture
+
+```mermaid
+flowchart TD
+    accTitle: AWS Directory Service options
+    accDescr: Choose among AWS Managed Microsoft AD for full Active Directory features, AD Connector to proxy authentication to an existing on-premises AD, or Simple AD for low-cost basic directory needs. High-scale SaaS identity needs point to Amazon Cognito instead.
+    Q{Directory need?} -->|Full AD features,<br/>RDS SQL Server, trusts| MAD[AWS Managed Microsoft AD]
+    Q -->|Keep source of truth<br/>on-premises| ADC[AD Connector]
+    Q -->|Basic, low-cost| SAD[Simple AD]
+    Q -->|Large-scale SaaS<br/>social identities| COG[Amazon Cognito]
+```
 
 ## Key concepts
 

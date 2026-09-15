@@ -1,10 +1,12 @@
 # Elastic Load Balancing - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-Elastic Load Balancing (ELB) automatically distributes incoming traffic across targets (EC2 instances, containers, IP addresses, Lambda functions) in one or more Availability Zones, routing traffic only to healthy targets. Capacity scales automatically.
+> Elastic Load Balancing (ELB) automatically distributes incoming traffic across targets (EC2 instances, containers, IP addresses, Lambda functions) in one or more Availability Zones, routing traffic only to healthy targets. Capacity scales automatically.
 
 ## Load balancer types
 
@@ -12,6 +14,19 @@ Elastic Load Balancing (ELB) automatically distributes incoming traffic across t
 - **Network Load Balancer (NLB)**: Layer 4 TCP/UDP; ultra-high performance, static IPs, TLS termination; best for extreme throughput.
 - **Gateway Load Balancer (GWLB)**: Layer 3; routes traffic through third-party virtual appliances.
 - **Classic Load Balancer**: previous generation; migrate to ALB/NLB.
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: Elastic Load Balancing request path
+    accDescr: A client connects to a listener on the load balancer, which forwards matching requests to a target group. The target group health-checks its registered targets and routes only to healthy ones.
+    C[Client] --> LB[Load balancer<br/>ALB / NLB / GWLB]
+    LB --> L[Listener<br/>protocol/port]
+    L --> TG[Target group]
+    TG -->|health checks| T1[Healthy target]
+    TG -.->|excluded| T2[Unhealthy target]
+```
 
 ## Key concepts
 

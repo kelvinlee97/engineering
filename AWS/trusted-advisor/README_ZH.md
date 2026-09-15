@@ -1,6 +1,12 @@
 # AWS Trusted Advisor - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> AWS Trusted Advisor 检查你的 AWS 环境，并推荐省钱、提升可用性与性能、以及消除安全差距的措施。
 
 ## 概述
 

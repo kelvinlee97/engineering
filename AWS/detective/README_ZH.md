@@ -1,10 +1,25 @@
 # Amazon Detective - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon Detective 帮助你分析、调查并快速定位安全 finding 和可疑活动的根因。它自动从 AWS CloudTrail 和 VPC Flow Logs 提取基于时间的事件（登录、API 调用、网络流量），摄取 GuardDuty finding，并使用机器学习和图分析构建交互式可视化用于安全调查。
+> Amazon Detective 帮助你分析、调查并快速定位安全 finding 和可疑活动的根因。它自动从 AWS CloudTrail 和 VPC Flow Logs 提取基于时间的事件（登录、API 调用、网络流量），摄取 GuardDuty finding，并使用机器学习和图分析构建交互式可视化用于安全调查。
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: Amazon Detective 数据与调查流程
+    accDescr: CloudTrail、VPC Flow Logs 和 GuardDuty finding 汇入行为图。高严重性 finding 被聚合为 finding groups，Detective Investigation 对实体进行分流，成员账户向管理员的行为图贡献数据。
+    CT[CloudTrail / VPC Flow Logs] --> BG[行为图]
+    GD[GuardDuty finding] --> BG
+    M[成员账户] -->|贡献数据| BG
+    BG --> FG[Finding groups<br/>根因分析]
+    BG --> INV[Detective Investigation<br/>IOC 分流]
+```
 
 ## 核心概念
 

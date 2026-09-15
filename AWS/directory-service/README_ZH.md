@@ -1,10 +1,24 @@
 # AWS Directory Service - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-AWS Directory Service 提供托管目录选项，让 Microsoft Active Directory（AD）和 LDAP 与 AWS 服务及工作负载配合使用。你可以根据需求在云中运行全托管的 Microsoft AD、将 AWS 应用连接到现有本地 AD，或使用低成本的 AD 兼容目录。
+> AWS Directory Service 提供托管目录选项，让 Microsoft Active Directory（AD）和 LDAP 与 AWS 服务及工作负载配合使用。你可以根据需求在云中运行全托管的 Microsoft AD、将 AWS 应用连接到现有本地 AD，或使用低成本的 AD 兼容目录。
+
+## 全景图
+
+```mermaid
+flowchart TD
+    accTitle: AWS Directory Service 选型
+    accDescr: 需要完整 AD 功能、RDS SQL Server 或信任关系时选择 AWS Managed Microsoft AD；需要将信任源保留在本地时选择 AD Connector；基础、低成本需求选择 Simple AD；大规模 SaaS 社交身份需求则改用 Amazon Cognito。
+    Q{目录需求?} -->|完整 AD 功能、<br/>RDS SQL Server、信任| MAD[AWS Managed Microsoft AD]
+    Q -->|信任源需保留在本地| ADC[AD Connector]
+    Q -->|基础、低成本| SAD[Simple AD]
+    Q -->|大规模 SaaS<br/>社交身份| COG[Amazon Cognito]
+```
 
 ## 核心概念
 

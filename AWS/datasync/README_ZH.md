@@ -1,10 +1,25 @@
 # AWS DataSync - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-AWS DataSync 是安全、可靠、高速的数据传输服务，用于在 AWS 存储服务之间以及与其他位置移动文件/对象数据。它支持本地存储（通过代理）、AWS 存储（S3、EFS、FSx）和其他云存储，内置加密和数据完整性校验。
+> AWS DataSync 是安全、可靠、高速的数据传输服务，用于在 AWS 存储服务之间以及与其他位置移动文件/对象数据。它支持本地存储（通过代理）、AWS 存储（S3、EFS、FSx）和其他云存储，内置加密和数据完整性校验。
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: AWS DataSync 传输流程
+    accDescr: 代理连接本地或其他云存储与 DataSync。任务按需或按计划在源位置和目标位置之间传输数据，并通过 CloudWatch 监控。
+    S[源位置] -->|如为本地则经过代理| A[代理]
+    A --> T[任务]
+    S --> T
+    T -->|传输到| Dst[目标位置<br/>S3、EFS、FSx]
+    T -->|上报到| CW[CloudWatch 指标/事件]
+```
 
 ## 核心概念
 

@@ -1,10 +1,28 @@
 # Amazon MSK - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> MSK manages the Kafka control plane for you — provisioned gives you broker-level control, serverless removes capacity planning entirely — while your applications keep speaking standard Kafka data-plane APIs either way.
 
 ## Overview
 
 Amazon Managed Streaming for Apache Kafka (Amazon MSK) is a fully managed service for building and running applications that use Apache Kafka. AWS manages the control plane (cluster create/update/delete); you use standard Apache Kafka data-plane APIs for producing and consuming, so existing applications and tools work unchanged.
+
+```mermaid
+flowchart TD
+    accTitle: MSK Provisioned vs Serverless
+    accDescr: MSK Provisioned lets you choose broker count and type, with AWS managing ZooKeeper or KRaft metadata. MSK Serverless manages broker capacity for you and scales automatically. Both are accessed by clients through standard Kafka producer and consumer APIs.
+    M{Cluster type} -- Provisioned --> P[Choose broker count & type]
+    P --> P1[AWS manages<br/>ZooKeeper / KRaft]
+    M -- Serverless --> S[AWS manages<br/>broker capacity]
+    S --> S1[Scales automatically]
+    P1 --> C[Standard Kafka<br/>producer/consumer clients]
+    S1 --> C
+```
 
 ## Key concepts
 

@@ -1,6 +1,12 @@
 # AWS Secrets Manager - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> Secrets Manager 把带版本的机密值存在 API 后面，应用在运行时通过调用获取凭证，而不是硬编码；挂接的 Lambda 函数可以按计划轮换这些值，而无需修改应用代码。
 
 ## 概述
 

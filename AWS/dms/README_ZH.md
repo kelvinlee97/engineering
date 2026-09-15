@@ -1,10 +1,25 @@
 # AWS Database Migration Service（DMS）- Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-AWS Database Migration Service（AWS DMS）用于把关系数据库、数据仓库、NoSQL 数据库和其他数据存储迁移到 AWS，或在云与本地之间迁移。它支持一次性迁移和持续复制（保持源与目标同步），并提供 Fleet Advisor（发现）和 Schema Conversion（引擎转换）。
+> AWS Database Migration Service（AWS DMS）用于把关系数据库、数据仓库、NoSQL 数据库和其他数据存储迁移到 AWS，或在云与本地之间迁移。它支持一次性迁移和持续复制（保持源与目标同步），并提供 Fleet Advisor（发现）和 Schema Conversion（引擎转换）。
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: AWS DMS 迁移流程
+    accDescr: Fleet Advisor 发现本地服务器，Schema Conversion 在迁移前转换 schema。复制实例从源端点读取，通过运行全量加载和/或 CDC 的复制任务写入目标端点，数据验证检查结果。
+    FA[Fleet Advisor 发现] --> SC[Schema 转换]
+    SC --> RI[复制实例]
+    SRC[源端点] --> RI
+    RI -->|复制任务：<br/>全量加载 / CDC| TGT[目标端点]
+    TGT --> DV[数据验证]
+```
 
 ## 核心概念
 

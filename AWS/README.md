@@ -1,6 +1,10 @@
 # AWS Knowledge Base
 
+English | [简体中文](README_ZH.md)
+
 > Bilingual runbooks and technical references for AWS services. Facts are checked against official AWS documentation and each page carries its verification date.
+
+Each row below links to a paired English/Chinese runbook covering the same service; open either language link, then use the other language's own toggle link to switch. Start from a service name if you know what you're looking for, or from [Official sources](#official-sources) to go straight to AWS's own documentation.
 
 ## Topics
 

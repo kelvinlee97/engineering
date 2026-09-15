@@ -1,10 +1,27 @@
 # AWS Resource Access Manager (RAM) - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> A resource share bundles resources with principals and a managed permission; sharing within your organization takes effect immediately, while sharing outside it requires the recipient to accept an invitation first.
 
 ## Overview
 
 AWS Resource Access Manager (AWS RAM) lets you share AWS resources across AWS accounts, organizational units, or your entire organization. You create a resource share, choose principals, and attached managed permissions control what recipients can do with the shared resources, avoiding duplicate infrastructure in every account.
+
+```mermaid
+flowchart TD
+    accTitle: AWS RAM resource sharing flow
+    accDescr: A resource share bundles resources, a managed permission, and principals. When principals are accounts, OUs, or the whole organization within the same AWS Organizations, access takes effect immediately. When principals are outside the organization, an invitation is sent and must be accepted before access is granted.
+    O[Resource owner] --> RS[Resource share:<br/>resources + managed permission]
+    RS --> P{Principal type}
+    P -- Account/OU/org<br/>inside AWS Organizations --> IM[Access effective immediately]
+    P -- Account outside<br/>the organization --> INV[Invitation sent]
+    INV -->|accepted| IM2[Access granted]
+```
 
 ## Key concepts
 

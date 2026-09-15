@@ -1,10 +1,24 @@
 # AWS Data Pipeline - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-AWS Data Pipeline 是用于自动化 AWS 服务与本地数据源之间数据移动和转换的 Web 服务。你定义包含数据驱动活动和依赖关系的管道定义，管道在 EC2 实例上调度并运行任务。注意：AWS Data Pipeline 已不再向新客户开放且处于维护模式；现有客户可继续使用，AWS 提供将工作负载迁移到其他服务的指引。
+> AWS Data Pipeline 是用于自动化 AWS 服务与本地数据源之间数据移动和转换的 Web 服务。你定义包含数据驱动活动和依赖关系的管道定义，管道在 EC2 实例上调度并运行任务。注意：AWS Data Pipeline 已不再向新客户开放且处于维护模式；现有客户可继续使用，AWS 提供将工作负载迁移到其他服务的指引。
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: AWS Data Pipeline 执行流程
+    accDescr: 管道定义指定活动、计划、前置条件和资源。激活管道后会供给 EC2 实例，Task Runner 轮询并执行任务，并遵循任务之间的依赖关系。
+    D[管道定义] -->|激活| P[管道]
+    P -->|供给| E[EC2 实例]
+    E -->|被轮询| T[Task Runner]
+    T -->|按顺序执行| DEP[依赖关系]
+```
 
 ## 核心概念
 

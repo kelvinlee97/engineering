@@ -1,6 +1,12 @@
 # AWS Storage Gateway - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> AWS Storage Gateway connects an on-premises software appliance (or the Storage Gateway hardware appliance) to cloud storage, giving your on-premises environment access to AWS-backed file, volume, and tape storage.
 
 ## Overview
 

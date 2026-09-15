@@ -2,9 +2,30 @@
 
 中文版本：[README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> One YouTube link produces one validated local transcript before any summary is written; capture, validation, and summarization are separate gates, and a failure at any gate stops the workflow instead of retrying or falling back to a third-party source.
+
 This local-first Codex Skill first reads the mounted Transcript segments through one Chrome `evaluateAll` call. If YouTube leaves that panel empty, it uses Chrome's YouTube transcript export once instead. The paths are mutually exclusive; failure is reported without retrying or switching to a third-party source. It does not download media, call `yt-dlp` or a transcript API, use Whisper, or infer missing content from a title or description.
 
 The user gives Codex a YouTube link. Codex exports one complete transcript, validates its coverage, saves a local `transcript.md`, and only then writes reader-facing English and Chinese summaries. A failed first attempt stops the workflow.
+
+```mermaid
+flowchart TD
+    accTitle: YouTube transcript capture and publication pipeline
+    accDescr: A YouTube link is captured via the Transcript panel, or the transcript export helper if the panel is empty. The capture is validated for coverage; a failure at capture or validation stops the workflow. A valid transcript is summarized into English and Chinese, audited, and checked by validate-publication before it is published.
+    L[YouTube link] --> P{Transcript panel<br/>has segments?}
+    P -- Yes --> C1[Read via evaluateAll]
+    P -- No --> C2[Use transcript export helper once]
+    C1 --> V{Validation passes?}
+    C2 --> V
+    V -- No --> S[Stop: report failure]
+    V -- Yes --> T[Local transcript.md<br/>+ validation.json]
+    T --> M[Write English + Chinese summaries]
+    M --> A{Bilingual audit +<br/>validate-publication pass?}
+    A -- No --> S
+    A -- Yes --> R[Publish summary.md<br/>+ summary_zh.md]
+```
 
 ## Output contract
 

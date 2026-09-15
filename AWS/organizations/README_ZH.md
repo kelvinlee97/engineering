@@ -1,10 +1,28 @@
 # AWS Organizations - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> Organizations 是一棵树：一个 root 下挂 OU，OU 下挂账号；SCP 等策略可以附加到树上任意节点，只会收紧（永远不会授予）该节点之下所有账号的权限。
 
 ## 概述
 
 AWS Organizations 用于集中管理多个 AWS 账号：创建和邀请账号、按组织单元（OU）分组、应用治理策略、跨账号共享资源，以及合并为一张账单结算。它是全球服务，托管在美东（弗吉尼亚北部）区域（us-east-1）。
+
+```mermaid
+flowchart TD
+    accTitle: AWS Organizations 账号层级与策略附加点
+    accDescr: 一个 root 之下是组织单元，OU 最多嵌套 5 层，并包含成员账号。SCP 等策略类型可以附加到 root、某个 OU 或单个账号，其限制作用于附加点之下的所有对象。管理账号不受 SCP 约束。
+    R[Root] --> OU1[组织单元 OU]
+    OU1 --> OU2[嵌套 OU<br/>最多 5 层]
+    OU2 --> A1[成员账号]
+    OU1 --> A2[成员账号]
+    R -.SCP/RCP/标签策略<br/>可附加到任意节点.-> OU1
+    M[管理账号] -.不受 SCP 约束.-> R
+```
 
 ## 核心概念
 

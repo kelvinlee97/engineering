@@ -1,10 +1,24 @@
 # AWS Direct Connect - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-AWS Direct Connect establishes a dedicated private network connection between your on-premises network and AWS. It bypasses the public internet, provides consistent network experience, and can reduce network costs when transferring large volumes of data. Connections terminate at AWS Direct Connect locations in dedicated or hosted configurations.
+> AWS Direct Connect establishes a dedicated private network connection between your on-premises network and AWS. It bypasses the public internet, provides consistent network experience, and can reduce network costs when transferring large volumes of data. Connections terminate at AWS Direct Connect locations in dedicated or hosted configurations.
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: AWS Direct Connect connection hierarchy
+    accDescr: A dedicated or hosted physical connection carries one or more virtual interfaces. Private VIFs reach a single VPC, public VIFs reach public AWS services, and transit VIFs reach a Direct Connect gateway that fans out to multiple VPCs, accounts, and Regions.
+    C[Dedicated or hosted connection] --> V1[Private VIF] --> VPC1[Single VPC]
+    C --> V2[Public VIF] --> PUB[Public AWS services<br/>S3, DynamoDB]
+    C --> V3[Transit VIF] --> GW[Direct Connect gateway]
+    GW --> VPCn[Multiple VPCs,<br/>accounts, Regions]
+```
 
 ## Key concepts
 

@@ -1,6 +1,35 @@
 # AWS AppSync - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> AppSync sits between a single GraphQL schema and several independent data sources: every field resolves through its own resolver, so a query can fan out to DynamoDB, Lambda, RDS, and HTTP in one round trip, while subscriptions push the same schema's mutations back out over WebSockets.
+
+This article answers two practical questions:
+
+1. How does one GraphQL request reach multiple different backends?
+2. How do real-time updates get from a mutation to a subscribed client?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: AppSync request and subscription paths
+    accDescr: A GraphQL query or mutation is authorized, then each field is resolved independently against its own data source such as DynamoDB, Lambda, RDS, or HTTP. A mutation that changes data can also publish to subscribed clients over WebSockets, and AppSync Events provides a separate WebSocket pub/sub channel.
+    Q[GraphQL query/mutation] --> A{Authorized?<br/>API key / IAM / Cognito / OIDC}
+    A -- yes --> RS[Per-field resolvers]
+    RS --> D1[DynamoDB]
+    RS --> D2[Lambda]
+    RS --> D3[RDS / HTTP]
+    RS -- mutation --> P[Publish to subscribers]
+    P --> C[Subscribed clients<br/>over WebSocket]
+    E[AppSync Events] -.separate pub/sub channel.-> C
+```
+
+Resolvers are independent per field, so one query can touch several data sources; subscriptions and AppSync Events are two distinct real-time mechanisms layered on the same API.
 
 ## Overview
 

@@ -1,10 +1,12 @@
 # Amazon ElastiCache - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon ElastiCache 是完全托管的内存数据存储和缓存服务，支持 Valkey、Redis OSS 和 Memcached 引擎，提供 Serverless 和节点式两种部署方式，常用于缓存、会话存储和实时数据访问。
+> Amazon ElastiCache 是完全托管的内存数据存储和缓存服务，支持 Valkey、Redis OSS 和 Memcached 引擎，提供 Serverless 和节点式两种部署方式，常用于缓存、会话存储和实时数据访问。
 
 ## 部署选项
 
@@ -12,6 +14,19 @@ Amazon ElastiCache 是完全托管的内存数据存储和缓存服务，支持 
 |---|---|
 | ElastiCache Serverless | 一分钟内创建高可用缓存，容量自动伸缩（兼容 Valkey 7.2+、Memcached 1.6.22+、Redis OSS 7.1） |
 | 节点式集群 | 选择节点类型、节点数、可用区分布、集群模式和维护窗口，控制粒度更细 |
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: ElastiCache 复制与故障转移
+    accDescr: 复制组有一个处理写入和读取的主节点，以及位于其他可用区、处理读取的副本。Multi-AZ 自动故障转移会在主节点故障时把副本提升为主节点。
+    App[应用] -->|写入| P[主节点]
+    App -->|读取| P
+    App -->|读取| R1[副本，AZ 2]
+    P -->|复制到| R1
+    P -.->|自动故障转移| R1
+```
 
 ## 核心概念
 

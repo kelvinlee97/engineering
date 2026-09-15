@@ -1,6 +1,12 @@
 # Amazon SES - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> Amazon Simple Email Service（Amazon SES）是可扩展的电子邮件平台，用于发送事务性邮件（订单确认、密码重置）、营销邮件（优惠、新闻简报），也支持接收邮件。
 
 ## 概述
 

@@ -4,6 +4,10 @@ Chinese version: [README_ZH.md](README_ZH.md)
 
 Use this generic procedure when one ZooKeeper member cannot start because a full disk left a local transaction log incomplete. The commands use the Apache binary-distribution layout shown in the [Getting Started Guide](https://zookeeper.apache.org/doc/r3.8.6/zookeeperStarted.html): run them from `<apache-zookeeper-home>`, whose sample configuration is `conf/zoo.cfg`, with `dataDir=/var/lib/zookeeper` and `clientPort=2181`. Replace only the host values after confirming the active configuration and recovery authority.
 
+## Mental model
+
+> A truncated transaction log on one member is a local storage problem, not a quorum problem: as long as the other members still form a healthy quorum, the safe fix is to move the damaged data aside and let that one member resynchronize from the ensemble, never to touch two members' data at once.
+
 ## Safety Boundary
 
 Typical errors:

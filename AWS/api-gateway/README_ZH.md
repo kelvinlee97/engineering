@@ -1,6 +1,34 @@
 # Amazon API Gateway - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> API Gateway 是一道执行策略的前门：每个请求在到达集成之前，都要先经过认证、限流和 stage 处理，后端代码因此不需要自己实现这些横切关注点。
+
+本文主要回答两个问题：
+
+1. 从客户端到后端之间，各项检查和转换的顺序是怎样的？
+2. 请求失败时，应该先看哪一层？
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: API Gateway 请求路径
+    accDescr: 客户端请求到达 stage，先由 IAM、Lambda authorizer 或 Cognito 认证，再检查限流和 usage plan，最后通过集成路由到 Lambda 函数、HTTP 端点、AWS 服务或 mock 响应。
+    C[客户端请求] --> S[Stage / 部署]
+    S --> Auth{是否授权?<br/>IAM / Lambda authorizer / Cognito}
+    Auth -- 否 --> R403[403 Forbidden]
+    Auth -- 是 --> T{是否在限流<br/>和 usage plan 内?}
+    T -- 否 --> R429[429 Too Many Requests]
+    T -- 是 --> I[集成：<br/>Lambda、HTTP、AWS 服务或 mock]
+    I --> Resp[返回客户端]
+```
+
+这条路径上的每一步都直接对应故障排查清单中的一项：403 先看认证，429 先看限流，其他问题再看集成本身。
 
 ## 概述
 

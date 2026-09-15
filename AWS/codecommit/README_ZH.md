@@ -1,6 +1,16 @@
 # AWS CodeCommit - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> CodeCommit 就是由 AWS 充当服务器的 Git：本地 Git 命令完全不用改，与自建 Git 服务器不同的地方恰好就是 AWS 特有的这几层——IAM 决定谁能 push，KMS 负责静态加密，CloudTrail/SNS 负责审计和通知。
+
+本文主要回答一个问题：
+
+1. CodeCommit 工作流中哪些部分"就是 Git"？哪些是 AWS 特有的、出问题时应该优先检查的部分？
 
 ## 概述
 

@@ -1,10 +1,26 @@
 # Amazon OpenSearch Service - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> A domain is a managed OpenSearch cluster where you place data on a spectrum of cost/latency tiers — hot data nodes for active queries, UltraWarm and cold storage backed by S3 for aging read-only data.
 
 ## Overview
 
 Amazon OpenSearch Service is a managed service for deploying, operating, and scaling OpenSearch clusters. A domain is the managed equivalent of an OpenSearch cluster. It supports OpenSearch (current releases, including 3.x) and legacy Elasticsearch OSS up to 7.10, and is used for log analytics, application monitoring, clickstream analysis, and full-text search.
+
+```mermaid
+flowchart LR
+    accTitle: OpenSearch domain storage tiers
+    accDescr: Ingested data lands on hot data nodes for active queries and indexing. As data ages it can move to UltraWarm for cheaper read-only access, and further to cold storage, both backed by S3, while dedicated master nodes handle cluster management throughout.
+    I[Ingested data] --> H[Hot: data nodes<br/>active query/index]
+    H -->|ages out| U[UltraWarm<br/>S3-backed, read-only]
+    U -->|ages further| C[Cold storage<br/>S3-backed]
+    M[Dedicated master nodes] -.manages cluster.-> H
+```
 
 ## Key concepts
 

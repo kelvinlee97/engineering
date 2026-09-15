@@ -1,10 +1,26 @@
 # AWS Glue - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-AWS Glue 是无服务器数据集成服务，用于发现、准备、移动和整合数据。它提供集中式 Data Catalog、schema 发现的爬虫、Spark 或 Ray 引擎的 ETL 作业、流式 ETL、工作流和可视化工具（Glue Studio）。目录中的数据可由 Athena、EMR 和 Redshift Spectrum 查询。
+> AWS Glue 是无服务器数据集成服务，用于发现、准备、移动和整合数据。它提供集中式 Data Catalog、schema 发现的爬虫、Spark 或 Ray 引擎的 ETL 作业、流式 ETL、工作流和可视化工具（Glue Studio）。目录中的数据可由 Athena、EMR 和 Redshift Spectrum 查询。
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: AWS Glue 数据集成流程
+    accDescr: 爬虫连接数据源、推断 schema 并填充 Data Catalog。在 Glue Studio 中可视化构建或由触发器/工作流调度的 ETL 作业读写数据并使用该目录，目录可被 Athena、EMR 和 Redshift Spectrum 查询。
+    Src[数据源] --> Cr[爬虫]
+    Cr --> Cat[Data Catalog]
+    Cat --> Job[ETL 作业<br/>Spark / Ray]
+    Job --> Cat
+    Trig[触发器 / 工作流] --> Job
+    Cat --> Q[Athena、EMR、<br/>Redshift Spectrum]
+```
 
 ## 核心概念
 

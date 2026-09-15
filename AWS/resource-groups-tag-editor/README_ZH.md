@@ -1,6 +1,12 @@
 # AWS Resource Groups & Tag Editor - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> 标签是附加在资源上的元数据；Resource Groups 把一个保存的标签/类型查询变成可复用的运维视图，Tag Editor 则让你直接搜索并批量编辑底层标签。
 
 ## 概述
 

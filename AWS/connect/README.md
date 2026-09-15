@@ -1,6 +1,32 @@
 # Amazon Connect - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> A contact's entire journey is scripted by one flow object, and it never reaches an agent directly: the flow puts it in a queue, and a routing profile — not the flow — is what actually decides which agent picks it up, so routing problems and flow problems have different root causes even though they feel the same to a caller.
+
+This article answers one practical question:
+
+1. When a contact isn't reaching an agent, is the flow or the routing profile/queue the more likely cause?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: Amazon Connect contact routing path
+    accDescr: A customer enters through a phone number or chat/SMS channel and is handled by a contact flow, which can call Lambda for dynamic data and places the contact into a queue. A routing profile maps agents to one or more queues by priority, and an available matching agent receives the contact in their agent workspace. Supervisors see real-time and historical metrics for the whole path.
+    C[Customer: phone,<br/>chat, or SMS] --> F[Contact flow:<br/>IVR, attributes, Lambda]
+    F --> Q[Queue]
+    Q --> RP[Routing profile:<br/>maps agents to queues by priority]
+    RP --> A[Available matching agent<br/>in agent workspace]
+    F -.metrics.-> M[Real-time / historical<br/>metrics dashboard]
+    Q -.metrics.-> M
+```
+
+A contact can be stuck for two very different reasons that look identical to the customer: the flow never queues it correctly, or the routing profile has no agent configured for that queue — the fix is in a different console area for each.
 
 ## Overview
 

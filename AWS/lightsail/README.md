@@ -1,10 +1,27 @@
 # Amazon Lightsail - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-Amazon Lightsail is the simplest way to launch and manage virtual private servers and web applications on AWS, with low, predictable monthly pricing. It bundles instances, containers, managed databases (MySQL/PostgreSQL), load balancers, CDN distributions, block/object storage, static IPs, DNS, and snapshots in one console.
+> Amazon Lightsail is the simplest way to launch and manage virtual private servers and web applications on AWS, with low, predictable monthly pricing. It bundles instances, containers, managed databases (MySQL/PostgreSQL), load balancers, CDN distributions, block/object storage, static IPs, DNS, and snapshots in one console.
+
+## Big picture
+
+```mermaid
+flowchart TD
+    accTitle: Lightsail bundled resources
+    accDescr: A load balancer distributes traffic across one or more Lightsail instances, which can use a managed database, CDN distribution, block storage, and snapshots, all bundled with predictable monthly pricing and optionally peered to a VPC for wider AWS integration.
+    LB[Load balancer] --> I1[Instance]
+    LB --> I2[Instance]
+    I1 --> DB[Managed database]
+    I1 --> BS[Block storage]
+    CDN[CDN distribution] --> LB
+    I1 -.->|snapshot| Snap[Snapshot]
+    I1 -.->|VPC peering| VPC[Broader AWS VPC]
+```
 
 ## Key concepts
 

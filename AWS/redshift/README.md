@@ -1,10 +1,29 @@
 # Amazon Redshift - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> Redshift is a columnar, massively-parallel warehouse you either run as a provisioned cluster you size yourself (RA3 scales storage independently of compute; DC2 is fixed local storage) or as Serverless, which scales RPU capacity for you and can query cold S3 data directly through Spectrum either way.
 
 ## Overview
 
 Amazon Redshift is a fully managed, petabyte-scale data warehouse. It uses columnar storage and massively parallel processing (MPP) for fast SQL analytics, and it integrates with the BI and SQL tools you already use. Redshift Serverless removes cluster administration, automatically provisions capacity, scales for demand, and stops charging when idle.
+
+```mermaid
+flowchart TD
+    accTitle: Redshift deployment and storage choices
+    accDescr: Choose a provisioned cluster with RA3 nodes, which separate compute from managed storage, or DC2 nodes with fixed local storage, or choose Redshift Serverless where AWS scales RPU capacity automatically. Either deployment can use Redshift Spectrum to query data directly in S3 without loading it.
+    D{Deployment} -- Provisioned --> N{Node type}
+    N -- RA3 --> N1[Compute scales<br/>independent of storage]
+    N -- DC2 --> N2[Fixed local storage]
+    D -- Serverless --> S[AWS scales RPU<br/>capacity automatically]
+    N1 --> SP[Redshift Spectrum:<br/>query S3 directly]
+    N2 --> SP
+    S --> SP
+```
 
 ## Key concepts
 

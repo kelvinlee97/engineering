@@ -1,10 +1,24 @@
 # AWS Direct Connect - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-AWS Direct Connect 在本地网络与 AWS 之间建立专用的私有网络连接。它绕过公共互联网，提供一致的网络体验，并在传输大量数据时可降低网络成本。连接在 AWS Direct Connect 站点以专线（dedicated）或托管（hosted）方式接入。
+> AWS Direct Connect 在本地网络与 AWS 之间建立专用的私有网络连接。它绕过公共互联网，提供一致的网络体验，并在传输大量数据时可降低网络成本。连接在 AWS Direct Connect 站点以专线（dedicated）或托管（hosted）方式接入。
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: AWS Direct Connect 连接层级
+    accDescr: 专线或托管的物理连接承载一个或多个虚拟接口。Private VIF 连接单个 VPC，Public VIF 连接公有 AWS 服务，Transit VIF 连接到 Direct Connect gateway，再扇出到多个 VPC、账户和区域。
+    C[专线或托管连接] --> V1[Private VIF] --> VPC1[单个 VPC]
+    C --> V2[Public VIF] --> PUB[公有 AWS 服务<br/>S3、DynamoDB]
+    C --> V3[Transit VIF] --> GW[Direct Connect gateway]
+    GW --> VPCn[多个 VPC、<br/>账户、区域]
+```
 
 ## 核心概念
 

@@ -1,6 +1,33 @@
 # AWS Batch - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> AWS Batch is a queue in front of elastic compute: a job waits in a priority-ordered queue until its compute environment has room, then runs as a container (or an array/multi-node group of containers) — you describe the work and its resource needs, Batch handles provisioning.
+
+This article answers two practical questions:
+
+1. What has to be true for a queued job to actually start running?
+2. How do array jobs and multi-node parallel jobs differ from a plain job?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: AWS Batch job execution path
+    accDescr: A job definition is submitted to a job queue, which is mapped to one or more compute environments with priorities. When a compute environment has capacity on ECS, EKS, EC2, or Fargate, the job moves from RUNNABLE to RUNNING as a container, and its outcome is reported back as SUCCEEDED or FAILED.
+    D[Job definition:<br/>image, vCPU/memory, role] --> S[Submit to job queue]
+    S --> Q{Compute environment<br/>has capacity?}
+    Q -- no --> W[Stay RUNNABLE]
+    W --> Q
+    Q -- yes --> RUN[RUNNING on<br/>ECS / EKS / EC2 / Fargate]
+    RUN --> DONE[SUCCEEDED / FAILED]
+```
+
+Array jobs repeat this same path once per index value; multi-node parallel jobs coordinate several containers across instances within a single pass through it.
 
 ## Overview
 

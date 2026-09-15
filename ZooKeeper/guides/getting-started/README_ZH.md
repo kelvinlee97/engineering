@@ -6,6 +6,21 @@ ZooKeeper 是一个分布式协调服务。应用通过它保存少量共享的�
 
 它不是通用数据库、消息队列、对象存储，也不应用来保存大文件或密码等敏感信息。
 
+## 心智模型
+
+> 一个 ZooKeeper ensemble 维护一棵小型、一致复制的 znode 树；客户端可通过任一成员读写，一台被选出的 leader 负责为写操作排序，且必须获得多数（quorum）确认后，写操作才视为持久化。
+
+```mermaid
+flowchart TB
+    accTitle: 客户端、ensemble 成员与 leader 的关系
+    accDescr: 客户端可连接任一 ensemble 成员。其中一台被选为 leader，负责为写操作排序；其余成员是 follower，保存相同协调数据的副本。
+    C1[客户端] --> F1[Follower]
+    C2[客户端] --> F2[Follower]
+    C3[客户端] --> L[Leader]
+    F1 -.复制数据.-> L
+    F2 -.复制数据.-> L
+```
+
 ## 何时使用
 
 当多个应用实例需要就一小段状态达成一致时，可以使用 ZooKeeper。
