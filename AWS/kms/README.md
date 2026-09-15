@@ -8,6 +8,21 @@ English | [简体中文](README_ZH.md)
 
 > AWS Key Management Service (AWS KMS) lets you create and control the keys used to encrypt and sign your data. KMS keys are protected by FIPS 140-3 Security Level 3 validated hardware security modules (HSMs) and never leave the service unencrypted.
 
+## Big picture
+
+Envelope encryption is the core pattern: KMS never sees your bulk data, only the data key that protects it.
+
+```mermaid
+flowchart LR
+    accTitle: KMS envelope encryption flow
+    accDescr: GenerateDataKey returns a plaintext data key and an encrypted copy of it. The application encrypts data locally with the plaintext key, discards the plaintext, and stores the encrypted key alongside the ciphertext. Decryption reverses this by calling KMS to decrypt the data key first.
+    App[Application] -->|GenerateDataKey| KMS[KMS key]
+    KMS --> PK[Plaintext data key<br/>used, then discarded]
+    KMS --> EK[Encrypted data key<br/>stored with ciphertext]
+    PK -->|encrypts locally| Data[Your data]
+    EK -.->|Decrypt, when needed| KMS
+```
+
 ## Key concepts
 
 - **KMS keys**: symmetric and asymmetric keys, plus HMAC keys; created, managed, used, and deleted inside KMS.

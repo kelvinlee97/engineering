@@ -8,6 +8,19 @@
 
 > Amazon Inspector 是一项漏洞管理服务，自动发现工作负载并持续扫描软件漏洞和意外网络暴露。它扫描 EC2 实例、Amazon ECR 中的容器镜像和 Lambda 函数，并生成带有修复建议和环境特定风险评分的 finding。
 
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: Amazon Inspector 扫描流程
+    accDescr: Inspector 持续扫描 EC2、ECR 和 Lambda 资源，在软件包变化或发布新 CVE 时自动重新扫描。结果成为带环境特定风险评分的 finding，并流向 EventBridge 和 Security Hub 用于响应。
+    R[EC2 / ECR / Lambda<br/>资源] --> S[持续扫描]
+    S -->|新软件包或 CVE| S
+    S --> F[Finding + 风险评分]
+    F --> EB[EventBridge]
+    F --> SH[Security Hub CSPM]
+```
+
 ## 核心概念
 
 - **Finding**：检测到的漏洞或网络暴露的详细报告，包含严重性、受影响资源和修复建议；修复完成后 Inspector 会自动关闭 finding。

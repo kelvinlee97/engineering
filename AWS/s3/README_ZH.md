@@ -1,10 +1,24 @@
 # Amazon S3 - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-18
+
+## 心智模型
+
+> 一个 S3 对象存放在某种桶类型中，生命周期规则可以让它沿成本/延迟谱系下移——从频繁访问存储经低频访问再到归档层——可以自动完成，也可以由你控制。
 
 ## 概述
 
 Amazon S3 是对象存储服务，用于存储和保护任意规模的数据：数据湖、网站、移动应用、备份与恢复、归档、企业应用和分析。S3 在所有区域对 PUT 和 DELETE 请求提供强一致（read-after-write）。
+
+```mermaid
+flowchart LR
+    accTitle: S3 存储类的生命周期
+    accDescr: 对象通常从频繁访问类（如 S3 Standard）开始；生命周期规则或 Intelligent-Tiering 可以把它们转换到低频访问类，再进一步转换到归档类（如 Glacier Flexible Retrieval 或 Glacier Deep Archive），用检索延迟换取更低的存储成本。
+    F[频繁访问：<br/>S3 Standard、Express One Zone] -->|生命周期规则 /<br/>Intelligent-Tiering| I[低频访问：<br/>Standard-IA、One Zone-IA]
+    I -->|生命周期规则| A[归档：<br/>Glacier Instant/Flexible Retrieval、<br/>Glacier Deep Archive]
+```
 
 ## 存储桶与对象
 

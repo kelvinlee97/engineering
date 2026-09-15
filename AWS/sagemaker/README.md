@@ -1,10 +1,27 @@
 # Amazon SageMaker AI - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> SageMaker AI carries you from a notebook, through a managed training job, to a hosted endpoint (real-time, serverless, or batch) — and the 2024 rename to SageMaker AI changed the product's place in a larger unified data/AI platform without changing any existing `sagemaker` API, CLI, or resource name.
 
 ## Overview
 
 Amazon SageMaker AI (renamed from Amazon SageMaker on December 3, 2024) is a fully managed machine learning service for building, training, and deploying ML models in production. It provides managed algorithms, distributed training, notebooks and Studio, model deployment, and MLOps tools. The next generation of Amazon SageMaker is a unified platform for data, analytics, and AI that also includes Lakehouse, Data and AI Governance, SQL analytics, data processing, Unified Studio, and Amazon Bedrock.
+
+```mermaid
+flowchart LR
+    accTitle: SageMaker AI ML lifecycle
+    accDescr: Development starts in a notebook or Studio, feeds a managed training job against data in S3, produces a model artifact, and deploys it to a real-time, serverless, or batch inference endpoint.
+    N[Notebook / Studio] --> T[Training job<br/>data from S3]
+    T --> M[Model artifact]
+    M --> E1[Real-time endpoint]
+    M --> E2[Serverless inference]
+    M --> E3[Batch inference]
+```
 
 ## Key concepts
 

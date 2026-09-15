@@ -17,6 +17,19 @@
 | Managed Service for Apache Flink | 用 Apache Flink（SQL 和 DataStream API）做流处理 |
 | Kinesis Video Streams | 视频流的摄取和回放，用于机器学习和分析 |
 
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: Kinesis Data Streams 生产者-消费者流程
+    accDescr: 生产者带分区键把记录推送到流的分片中，每个分片提供固定容量。消费者轮询分片，通常通过 Kinesis Client Library，enhanced fan-out 为每个消费者提供专用读取吞吐。
+    P[生产者<br/>PutRecord/PutRecords] -->|分区键| Sh1[分片 1]
+    P -->|分区键| Sh2[分片 2]
+    Sh1 --> C[消费者<br/>KCL / GetRecords]
+    Sh2 --> C
+    Sh1 -.->|enhanced fan-out| C2[专用消费者]
+```
+
 ## 核心概念
 
 - **流与分片（Shard）**：分片是容量单位；同一分片内数据有序，吞吐量随分片数扩展。
