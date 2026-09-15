@@ -5,3 +5,4 @@
 .pages-site/
 __pycache__/
 .plugin-eval/
+.venv/

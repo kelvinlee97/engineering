@@ -1,0 +1,15 @@
+# Vendored web fonts
+
+Both font files are subsets (Latin only) distributed by the Fontsource project and are
+licensed under the SIL Open Font License 1.1.
+
+File | Family | Upstream | License
+| --- | --- | --- | --- |
+| `inter-latin-wght-normal.woff2` | Inter Variable | https://github.com/rsms/inter | SIL OFL 1.1 |
+| `jetbrains-mono-latin-wght-normal.woff2` | JetBrains Mono Variable | https://github.com/JetBrains/JetBrainsMono | SIL OFL 1.1 |
+
+Full license text: https://openfontlicense.org/open-font-license-official-text/
+
+These files are served from this site's own origin so no third-party font request is made.
+CJK text is not covered by these subsets and falls back to the system stack declared in
+`pages/knowledge-base.css`.
