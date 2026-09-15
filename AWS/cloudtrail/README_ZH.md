@@ -1,6 +1,32 @@
 # AWS CloudTrail - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> CloudTrail 有三层依次递进的承诺：Event history 始终开启、免费，但固定只保留 90 天；Trail 是主动选择——把管理/数据事件投递到 S3 以延长保留；CloudTrail Lake 则是建立在这些投递数据之上、可查询的审计数据仓库。
+
+本文主要回答两个问题：
+
+1. 为什么 90 天之后事件会消失？如何解决？
+2. 管理事件和数据事件有什么区别？这个区别为什么会影响成本？
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: CloudTrail 事件分层
+    accDescr: 每次 API 调用都会成为一个事件，出现在免费、始终开启、保留 90 天的 Event history 中。Trail 可选择性地捕获管理事件和数据事件，并投递到 S3 存储桶，也可选择投递到 CloudWatch Logs 或 EventBridge 做实时告警。CloudTrail Lake 摄取 Trail 或组织级事件，形成可 SQL 查询、长期保留的事件数据存储。
+    A[API 调用 /<br/>控制台操作] --> EH[Event history<br/>90 天，免费，始终开启]
+    A --> T{是否配置 Trail?}
+    T -- 是 --> S3[S3 存储桶<br/>管理事件 + 选定数据事件]
+    T -- 是 --> CW[CloudWatch Logs /<br/>EventBridge，可选]
+    S3 --> Lake[CloudTrail Lake<br/>事件数据存储，SQL 查询]
+```
+
+Event history 无法延长——无论如何配置，它都固定为 90 天的窗口；长期保留和查询始终需要创建 Trail 或 Lake 事件数据存储。
 
 ## 概述
 

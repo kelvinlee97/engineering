@@ -1,6 +1,32 @@
 # AWS CloudTrail - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> CloudTrail has three layers of increasing commitment: Event history is always-on and free but capped at 90 days, a trail is an explicit choice to keep management/data events longer by shipping them to S3, and CloudTrail Lake is a queryable audit warehouse built on top of that shipped data.
+
+This article answers two practical questions:
+
+1. Why would events be missing after 90 days, and what fixes that?
+2. What is the difference between a management event and a data event, and why does that distinction affect cost?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: CloudTrail event layers
+    accDescr: Every API call becomes an event visible in the free, always-on Event history for 90 days. A trail optionally captures management and data events and delivers them to an S3 bucket, and optionally to CloudWatch Logs or EventBridge for real-time alerting. CloudTrail Lake ingests trail or organization-wide events into a queryable, long-retention event data store.
+    A[API call /<br/>console action] --> EH[Event history<br/>90 days, free, always on]
+    A --> T{Trail configured?}
+    T -- yes --> S3[S3 bucket<br/>management + selected data events]
+    T -- yes --> CW[CloudWatch Logs /<br/>EventBridge, optional]
+    S3 --> Lake[CloudTrail Lake<br/>event data store, SQL query]
+```
+
+Event history cannot be extended — it is a fixed 90-day window regardless of configuration; long-term retention and querying always requires creating a trail or a Lake event data store.
 
 ## Overview
 
