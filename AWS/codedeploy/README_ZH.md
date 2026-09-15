@@ -1,6 +1,37 @@
 # AWS CodeDeploy - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> CodeDeploy 真正的产品是 AppSpec 生命周期钩子序列：就地部署和蓝绿部署都走同一套命名钩子（BeforeInstall、AfterInstall、ApplicationStart、ValidateService……），决定发布是继续还是自动回滚的，是 ValidateService 的退出码，而不仅仅是部署配置本身。
+
+本文主要回答两个问题：
+
+1. 就地部署和蓝绿部署到底有什么不同？又有什么是相同的？
+2. 哪个钩子负责判断"这次部署是健康的，可以继续"？
+
+## 全景图
+
+```mermaid
+flowchart TD
+    accTitle: CodeDeploy AppSpec 生命周期
+    accDescr: 一次部署修订会按顺序触发生命周期钩子：BeforeInstall、安装新修订、AfterInstall、ApplicationStart，然后是 ValidateService。如果 ValidateService 或任何钩子失败，根据配置可能自动回滚；如果成功，部署完成。
+    R[部署修订] --> BI[BeforeInstall 钩子]
+    BI --> INST[安装修订]
+    INST --> AI[AfterInstall 钩子]
+    AI --> AS[ApplicationStart 钩子]
+    AS --> VS[ValidateService 钩子]
+    VS --> OK{退出码为 0?}
+    OK -- 是 --> Done[部署成功]
+    OK -- 否 --> RB{是否启用<br/>自动回滚?}
+    RB -- 是 --> Roll[回滚到<br/>上一版本]
+    RB -- 否 --> Fail[部署失败，<br/>保持现状]
+```
+
+就地部署和蓝绿部署的区别只在于流量是切换到新实例/任务集，还是更新现有实例——驱动这一切的钩子序列和成败判定逻辑完全相同。
 
 ## 概述
 
