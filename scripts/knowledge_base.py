@@ -33,6 +33,9 @@ H1_RE = re.compile(r"(?m)^\s*#(?!#)\s+(.+?)\s*#*\s*$")
 LINK_RE = re.compile(
     r"(?<!\!)\[[^\]]*\]\((?P<target><[^>]*>|[^)\s]+)(?P<tail>[^)]*)\)"
 )
+MERMAID_RE = re.compile(
+    r"(?ms)^```mermaid[^\n]*\n(?P<body>.*?)^```\s*$"
+)
 YOUTUBE_RE = re.compile(
     r"https?://(?:www\.)?youtube\.com/watch\?v=([A-Za-z0-9_-]{11})"
 )
@@ -294,6 +297,26 @@ def _extract_video_id(text: str) -> str | None:
     return next(iter(ids), None)
 
 
+def _mermaid_types(text: str, source: str) -> tuple[list[str], list[str]]:
+    """Return Mermaid diagram types and accessibility validation errors."""
+
+    diagram_types: list[str] = []
+    errors: list[str] = []
+    for index, match in enumerate(MERMAID_RE.finditer(text), start=1):
+        body = match.group("body")
+        lines = [line.strip() for line in body.splitlines() if line.strip()]
+        diagram_types.append(lines[0].split()[0] if lines else "empty")
+        if not re.search(r"(?m)^\s*accTitle:\s*\S", body):
+            errors.append(f"{source}: Mermaid diagram {index} missing accTitle")
+        single_description = re.search(r"(?m)^\s*accDescr:\s*\S", body)
+        multiline_description = re.search(
+            r"(?ms)^\s*accDescr\s*\{\s*\n.+?^\s*\}", body
+        )
+        if not single_description and not multiline_description:
+            errors.append(f"{source}: Mermaid diagram {index} missing accDescr")
+    return diagram_types, errors
+
+
 def _language(source: str) -> str:
     name = PurePosixPath(source).name
     return "zh" if name.endswith("_ZH.md") or name == "summary_zh.md" else "en"
@@ -421,12 +444,15 @@ def discover_documents(
     errors: list[str] = []
     titles: dict[str, str] = {}
     video_ids: dict[str, str | None] = {}
+    mermaid_types: dict[str, list[str]] = {}
 
     for source in candidates:
         source_path = root / source
         try:
             text = source_path.read_text(encoding="utf-8")
             titles[source] = _extract_title(text, source)
+            mermaid_types[source], mermaid_errors = _mermaid_types(text, source)
+            errors.extend(mermaid_errors)
             video_ids[source] = (
                 _extract_video_id(text)
                 if PurePosixPath(source).name.startswith("summary")
@@ -444,6 +470,10 @@ def discover_documents(
             errors.append(f"{source}: missing YouTube source URL")
         if source < pair and video_ids.get(source) != video_ids.get(pair):
             errors.append(f"{source}: paired summaries use different YouTube video IDs")
+        if source < pair and mermaid_types.get(source) != mermaid_types.get(pair):
+            errors.append(
+                f"{source}: paired documents use different Mermaid diagram types or order"
+            )
 
     page_paths: dict[str, str] = {}
     for source in candidates:
