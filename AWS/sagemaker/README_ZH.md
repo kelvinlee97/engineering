@@ -1,10 +1,27 @@
 # Amazon SageMaker AI - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> SageMaker AI 带你从 Notebook，经托管训练任务，到托管端点（实时、无服务器或批处理）；2024 年更名为 SageMaker AI 改变的是它在更大的统一数据/AI 平台中的定位，并未改变任何现有的 `sagemaker` API、CLI 或资源命名。
 
 ## 概述
 
 Amazon SageMaker AI（2024 年 12 月 3 日由 Amazon SageMaker 更名）是全托管机器学习服务，用于在生产中构建、训练和部署 ML 模型。它提供托管算法、分布式训练、Notebook 与 Studio、模型部署和 MLOps 工具。下一代 Amazon SageMaker 是统一的数据、分析与 AI 平台，还包括 Lakehouse、数据与 AI 治理、SQL 分析、数据处理、Unified Studio 和 Amazon Bedrock。
+
+```mermaid
+flowchart LR
+    accTitle: SageMaker AI 的机器学习生命周期
+    accDescr: 开发从 Notebook 或 Studio 开始，驱动针对 S3 数据的托管训练任务，产出模型制品，再部署到实时端点、无服务器推理或批处理推理。
+    N[Notebook / Studio] --> T[训练任务<br/>数据来自 S3]
+    T --> M[模型制品]
+    M --> E1[实时端点]
+    M --> E2[无服务器推理]
+    M --> E3[批处理推理]
+```
 
 ## 核心概念
 

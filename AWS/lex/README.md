@@ -8,6 +8,18 @@ English | [简体中文](README_ZH.md)
 
 > Amazon Lex V2 is a service for building conversational interfaces (chatbots) using voice and text. It provides natural language understanding (NLU) and automatic speech recognition (ASR), so developers can build, test, and publish bots that understand user intent and fulfill tasks, without deep learning expertise. You pay only for the text or speech requests made.
 
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: Amazon Lex conversation flow
+    accDescr: User input is matched to an intent, whose slots are collected from the user turn by turn. Once all required slots are filled, fulfillment runs, either a Lambda function or conditional branching, and a channel delivers the bot's response.
+    U[User utterance] --> I[Intent recognition]
+    I --> S[Slot collection]
+    S -->|all slots filled| F[Fulfillment:<br/>Lambda or conditional branching]
+    F --> R[Response via channel]
+```
+
 ## Key concepts
 
 - **Bot**: the conversational application; you define the conversation flow in the console or via APIs.

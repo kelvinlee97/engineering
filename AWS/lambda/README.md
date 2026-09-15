@@ -11,6 +11,19 @@ English | [简体中文](README_ZH.md)
 - **Lambda Functions**: run code in response to events or API calls; each invocation runs independently and scales horizontally.
 - **Lambda MicroVMs**: isolated compute environments with near-instant startup and state retention for up to 8 hours, designed for workloads that need a dedicated environment per user or job (for example, running untrusted code).
 
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: Lambda invocation flow
+    accDescr: A trigger from an AWS service or HTTP endpoint invokes the function. Lambda reuses a warm execution environment when available or creates a new one, runs the handler, and scales horizontally by adding more environments, bounded by account concurrency limits.
+    T[Trigger:<br/>API Gateway, S3, SQS,<br/>EventBridge, ...] --> Inv[Invocation]
+    Inv --> Env{Warm environment<br/>available?}
+    Env -- Yes --> H[Handler runs]
+    Env -- No --> New[New execution environment] --> H
+    H --> Out[Response / side effects]
+```
+
 ## Key concepts
 
 - **Handler and runtimes**: your code exposes a handler function; Lambda provides managed language runtimes and supports custom runtimes.

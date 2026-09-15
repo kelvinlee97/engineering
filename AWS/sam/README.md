@@ -1,10 +1,27 @@
 # AWS Serverless Application Model (SAM) & Serverless Application Repository - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> A SAM template is CloudFormation with serverless shorthand that the SAM transform expands into standard resources; the SAM CLI takes that same template through build, local test, and deploy, and SAR is simply a catalog for sharing the finished template.
 
 ## Overview
 
 AWS Serverless Application Model (AWS SAM) is an open-source infrastructure-as-code framework for building serverless applications. It extends CloudFormation with simplified syntax for Lambda functions, API Gateway APIs, DynamoDB tables, and other serverless resources, and provides the SAM CLI for local development, testing, building, and deployment. The AWS Serverless Application Repository (SAR) is a catalog for publishing and deploying serverless applications using SAM templates.
+
+```mermaid
+flowchart LR
+    accTitle: SAM CLI lifecycle from template to deployment
+    accDescr: A SAM template with shorthand resources is initialized, built, and tested locally with the SAM CLI, then deployed as standard CloudFormation resources through the serverless transform. The same template can optionally be published to the Serverless Application Repository for others to deploy.
+    I[sam init] --> B[sam build]
+    B --> L[sam local invoke /<br/>start-api]
+    L --> D[sam deploy /<br/>sam sync]
+    D --> CF[CloudFormation stack<br/>via serverless transform]
+    B -.-> P[sam publish<br/>to Serverless Application Repository]
+```
 
 ## Key concepts
 

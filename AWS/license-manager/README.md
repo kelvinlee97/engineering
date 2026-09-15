@@ -8,6 +8,18 @@ English | [简体中文](README_ZH.md)
 
 > AWS License Manager helps you manage software licenses from vendors such as Microsoft, SAP, Oracle, and IBM across AWS accounts and Regions. It provides consolidated visibility and reporting, supports Bring Your Own License (BYOL), enforces license limits with rules, and helps independent software vendors (ISVs) distribute and track licenses through managed entitlements.
 
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: AWS License Manager enforcement and distribution
+    accDescr: A license configuration with hard or soft limits is associated with EC2 or RDS resources for self-managed license enforcement. Separately, ISVs use managed entitlements to grant licenses to end users, who check them out and in.
+    LC[License configuration<br/>hard/soft limits] --> Res[EC2 / RDS resources]
+    Res -->|violation| Rep[Compliance reporting]
+    ISV[ISV] -->|creates & distributes| Gr[Granted license<br/>managed entitlements]
+    Gr -->|check-out / check-in| User[End user]
+```
+
 ## Key concepts
 
 - **License configuration**: rules that define hard or soft limits on license consumption (vCPU, physical cores, sockets, number of machines) for a product.
