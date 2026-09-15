@@ -1,10 +1,26 @@
 # Amazon RDS - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> RDS separates two independent scaling axes: Multi-AZ gives you a synchronous standby for failover, and read replicas give you asynchronous copies for read scaling — writes always go to the primary either way.
 
 ## Overview
 
 Amazon Relational Database Service (Amazon RDS) makes it easier to set up, operate, and scale a relational database in the cloud. AWS manages backups, software patching, automatic failure detection, and recovery.
+
+```mermaid
+flowchart TD
+    accTitle: RDS Multi-AZ and read replica topology
+    accDescr: Write traffic goes to the primary DB instance, which synchronously replicates to a Multi-AZ standby for automatic failover. The primary also asynchronously replicates to read replicas, which serve read traffic and can be promoted independently.
+    W[Write traffic] --> P[Primary instance]
+    P -->|synchronous replication| S[Multi-AZ standby<br/>failover target]
+    P -->|asynchronous replication| R[Read replicas]
+    R --> RT[Read traffic]
+```
 
 ## Key concepts
 

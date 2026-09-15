@@ -8,6 +8,19 @@
 
 > AWS Global Accelerator 为全球用户提升互联网应用程序的可用性和性能。它提供静态任播 IP 地址，并基于健康状态、客户端位置和你的策略，通过 AWS 全球网络将流量路由到最优的区域端点。
 
+## 全景图
+
+```mermaid
+flowchart TD
+    accTitle: AWS Global Accelerator 资源层级
+    accDescr: Accelerator 提供静态任播 IP，并包含把匹配流量路由到区域端点组的监听器。每个端点组持有带权重的端点，例如 NLB、ALB、EC2 实例或弹性 IP。
+    A[Accelerator<br/>静态 IP] --> L[监听器<br/>端口/协议]
+    L --> EG1[端点组<br/>区域 A]
+    L --> EG2[端点组<br/>区域 B]
+    EG1 --> E1[端点：NLB/ALB/<br/>EC2/弹性 IP]
+    EG2 --> E2[端点：NLB/ALB/<br/>EC2/弹性 IP]
+```
+
 ## 核心概念
 
 - **Accelerator**：引导流量的全局资源；提供两个静态 IPv4 地址（双栈为四个），在加速器整个生命周期内保持不变。
