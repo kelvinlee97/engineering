@@ -8,6 +8,18 @@
 
 > Amazon Lex V2 是使用语音和文本构建对话界面（聊天机器人）的服务。它提供自然语言理解（NLU）和自动语音识别（ASR），开发者无需深度学习专业知识即可构建、测试和发布理解用户意图并完成任务的中。你只为发起的文本或语音请求付费。
 
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: Amazon Lex 对话流程
+    accDescr: 用户输入被匹配到某个 intent，然后逐轮收集其 slot。所有必填 slot 收集完成后运行 fulfillment（Lambda 函数或条件分支），最后通过 channel 投递机器人的响应。
+    U[用户话语] --> I[Intent 识别]
+    I --> S[Slot 收集]
+    S -->|所有 slot 已填| F[Fulfillment：<br/>Lambda 或条件分支]
+    F --> R[通过 channel 响应]
+```
+
 ## 核心概念
 
 - **Bot**：对话应用；在控制台或通过 API 定义对话流程。

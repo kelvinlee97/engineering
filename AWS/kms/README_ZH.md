@@ -8,6 +8,21 @@
 
 > AWS Key Management Service（AWS KMS）让你创建并控制用于加密和签名的密钥。KMS key 由通过 FIPS 140-3 安全级别 3 验证的硬件安全模块（HSM）保护，且永远不会以明文形式离开服务。
 
+## 全景图
+
+信封加密（envelope encryption）是核心模式：KMS 从不接触你的大批量数据，只处理保护数据的 data key。
+
+```mermaid
+flowchart LR
+    accTitle: KMS 信封加密流程
+    accDescr: GenerateDataKey 返回一个明文 data key 及其加密副本。应用在本地用明文 key 加密数据后丢弃明文，把加密后的 key 和密文一起存储。解密时先调用 KMS 解密 data key，再反向操作。
+    App[应用] -->|GenerateDataKey| KMS[KMS key]
+    KMS --> PK[明文 data key<br/>用后即弃]
+    KMS --> EK[加密的 data key<br/>与密文一起存储]
+    PK -->|本地加密| Data[你的数据]
+    EK -.->|需要时 Decrypt| KMS
+```
+
 ## 核心概念
 
 - **KMS key**：对称、非对称和 HMAC 密钥；在 KMS 内部完成创建、管理、使用和删除。

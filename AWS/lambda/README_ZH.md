@@ -11,6 +11,19 @@
 - **Lambda Functions（函数）**：响应事件或 API 调用运行代码；每次调用独立运行，水平扩展。
 - **Lambda MicroVMs**：近瞬时启动、状态可保留最长 8 小时的隔离计算环境，适合需要为每个用户/任务提供独立环境的工作负载（例如运行不可信代码）。
 
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: Lambda 调用流程
+    accDescr: 来自 AWS 服务或 HTTP 端点的触发器调用函数。Lambda 在有可用的 warm 执行环境时复用，否则新建一个，运行 handler，并通过增加更多环境水平扩展，受账户并发限制约束。
+    T[触发器：<br/>API Gateway、S3、SQS、<br/>EventBridge 等] --> Inv[调用]
+    Inv --> Env{有可用的<br/>warm 环境?}
+    Env -- 有 --> H[运行 Handler]
+    Env -- 无 --> New[新建执行环境] --> H
+    H --> Out[响应 / 副作用]
+```
+
 ## 核心概念
 
 - **Handler 与运行时**：代码暴露 handler 函数；Lambda 提供托管语言运行时，也支持自定义运行时。

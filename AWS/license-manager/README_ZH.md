@@ -8,6 +8,18 @@
 
 > AWS License Manager 帮助你在多个 AWS 账户和区域管理 Microsoft、SAP、Oracle、IBM 等软件厂商的许可证。它提供统一可见性和报告，支持自带许可证（BYOL），用规则强制许可证限额，并帮助独立软件供应商（ISV）通过托管权益（managed entitlements）分发和跟踪许可证。
 
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: AWS License Manager 的强制与分发
+    accDescr: 带硬性或软性限额的许可证配置关联到 EC2 或 RDS 资源，用于自管理许可证的强制执行。另一条路径中，ISV 通过 managed entitlements 向最终用户授予许可证，用户对其进行 check-out/check-in。
+    LC[许可证配置<br/>硬性/软性限额] --> Res[EC2 / RDS 资源]
+    Res -->|违规| Rep[合规报告]
+    ISV[ISV] -->|创建并分发| Gr[授予的许可证<br/>managed entitlements]
+    Gr -->|check-out / check-in| User[最终用户]
+```
+
 ## 核心概念
 
 - **许可证配置（License configuration）**：定义产品许可证消耗的硬/软限制规则（vCPU、物理核、插槽、机器数）。
