@@ -31,6 +31,7 @@
 - [分支 Codex 对话](Codex/fork/README_ZH.md) — 拆分排障思路，隔离 worktree。
 - [为 Codex 设置目标](Codex/goal/README_ZH.md) — 为长任务定义可验证的停止条件。
 - [Claude 子代理](Claude/subagents/README_ZH.md) — Anthropic Academy 入门课程学习指南。
+- [Claude Code GitHub Actions](Claude/github-actions/README_ZH.md) — 通过明确的权限与安全边界运行交互式和自动化 Claude workflow。
 - [AI 原生 SDLC 实践手册](Claude/ai-native-sdlc-playbook/README_ZH.md) — 以版本化工件、反馈闭环和明确治理关口重新设计交付流程。
 - [OpenAI 最新模型指南](OpenAI/model-guidance/README_ZH.md) — 通过明确的 prompt 与 eval 采用并迁移到当前推荐的 API 模型。
 
@@ -60,5 +61,6 @@
 请保持内容聚焦、可复用且适合公开。不要加入凭据、公司或客户代码、机密数据、会话历史、缓存或机器专属信息。
 
 - [仓库规则](AGENTS.md) — 内容范围、检查与交付约定。
+- [视觉优先笔记工作流](.agents/skills/visual-first-notes/SKILL.md) — 将来源材料转化为心智模型、适当图表和精简的辅助文字。
 - [YouTube 字幕工作流](.agents/skills/youtube-transcript/SKILL.md) — 视频摘要的制作与检查方式。
 - [字幕工具模块](Codex/youtube-transcript/) — 配套工具。

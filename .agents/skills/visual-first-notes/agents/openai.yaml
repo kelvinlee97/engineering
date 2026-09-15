@@ -1,0 +1,4 @@
+interface:
+  display_name: "Visual-First Notes"
+  short_description: "Turn source material into visual-first engineering notes"
+  default_prompt: "Use $visual-first-notes to create a bilingual visual-first engineering article."

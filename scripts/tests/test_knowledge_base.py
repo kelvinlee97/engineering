@@ -43,6 +43,54 @@ class KnowledgeBaseTests(unittest.TestCase):
             with self.assertRaisesRegex(KnowledgeBaseError, "missing local link target"):
                 discover_documents(root, ["AWS/README.md", "AWS/README_ZH.md"])
 
+    def test_mermaid_requires_accessible_title_and_description(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            diagram = "# AWS\n\n```mermaid\nflowchart TD\nA --> B\n```\n"
+            self._write(root, "AWS/README.md", diagram)
+            self._write(root, "AWS/README_ZH.md", diagram.replace("# AWS", "# AWS 中文"))
+
+            with self.assertRaisesRegex(KnowledgeBaseError, "missing accTitle"):
+                discover_documents(root, ["AWS/README.md", "AWS/README_ZH.md"])
+
+    def test_mermaid_types_and_order_must_match_pair(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            flowchart = (
+                "# AWS\n\n```mermaid\nflowchart TD\n"
+                "accTitle: Overview\naccDescr: A flows to B.\nA --> B\n```\n"
+            )
+            sequence = (
+                "# AWS 中文\n\n```mermaid\nsequenceDiagram\n"
+                "accTitle: 总览\naccDescr: A 向 B 发送请求。\nA->>B: request\n```\n"
+            )
+            self._write(root, "AWS/README.md", flowchart)
+            self._write(root, "AWS/README_ZH.md", sequence)
+
+            with self.assertRaisesRegex(KnowledgeBaseError, "different Mermaid diagram types"):
+                discover_documents(root, ["AWS/README.md", "AWS/README_ZH.md"])
+
+    def test_accessible_paired_mermaid_diagrams_pass(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            english = (
+                "# AWS\n\n```mermaid\nflowchart TD\n"
+                "accTitle: Overview\naccDescr: A flows to B.\nA --> B\n```\n"
+            )
+            chinese = english.replace("# AWS", "# AWS 中文").replace(
+                "Overview\naccDescr: A flows to B.",
+                "总览\naccDescr: A 流向 B。",
+            )
+            self._write(root, "AWS/README.md", english)
+            self._write(root, "AWS/README_ZH.md", chinese)
+
+            documents = discover_documents(
+                root,
+                ["AWS/README.md", "AWS/README_ZH.md"],
+            )
+
+            self.assertEqual(len(documents), 2)
+
     def test_stage_rewrites_links_and_excludes_internal_files(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
