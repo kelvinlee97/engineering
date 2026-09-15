@@ -2,6 +2,42 @@
 
 English · [简体中文](README_ZH.md)
 
+## Mental model
+
+> An AI-native SDLC is a versioned artifact loop: each stage consumes the previous stage's durable
+> output, agents accelerate work between gates, and humans remain accountable for approvals that
+> require risk or judgment.
+
+The goal is not unrestricted autonomy. Agents operate inside version-controlled policies,
+deterministic checks, scoped permissions, sandboxes, and protected deployment gates. Humans remain
+accountable for decisions involving risk and judgment.
+
+## The lifecycle as an artifact loop
+
+The loop shows how intent survives implementation and how production evidence becomes future
+planning input:
+
+```mermaid
+flowchart TD
+    accTitle: AI-native software delivery lifecycle
+    accDescr: Intent becomes a specification, an approved plan, code and tests, review and deployment evidence, and operational feedback. Production findings return as new intent while policy and human approval gates constrain the stages.
+    P[Plan<br/>intent.md] --> D[Design<br/>spec.md]
+    D --> B[Build<br/>plan.md + code + tests]
+    B --> T[Test<br/>results + evals]
+    T --> Y[Deploy<br/>PR + review findings]
+    Y --> M[Maintain<br/>incident evidence]
+    M -->|new intent| P
+    G[Versioned policy + deterministic checks] -. constrains .-> D
+    G -. constrains .-> B
+    G -. constrains .-> T
+    H[Human approval gates] -. govern .-> P
+    H -. govern .-> D
+    H -. govern .-> Y
+```
+
+The return edge is the essential change from a linear pipeline: operational evidence becomes a new
+planning artifact instead of disappearing after remediation.
+
 ## Source
 
 - Article: [The AI-Native SDLC playbook](https://claude.com/blog/the-ai-native-sdlc-playbook)
@@ -10,19 +46,6 @@ English · [简体中文](README_ZH.md)
 - Published: August 21, 2026
 
 This guide is an original summary of Anthropic's playbook, not a replacement for the source.
-
-## Summary
-
-AI makes implementation faster, but planning, review, deployment, and governance can remain at
-human speed. Anthropic's proposed answer is an AI-native SDLC: every stage produces a committed,
-machine-readable artifact, the next stage consumes it, and people focus their judgment on explicit
-approval gates rather than manually performing every handoff.
-
-The goal is not unrestricted autonomy. Agents operate inside version-controlled policies,
-deterministic checks, scoped permissions, sandboxes, and protected deployment gates. Humans remain
-accountable for decisions involving risk and judgment.
-
-## The lifecycle as an artifact loop
 
 | Stage | Committed artifact | Main change |
 | --- | --- | --- |

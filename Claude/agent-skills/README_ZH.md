@@ -5,6 +5,30 @@ English version: [README.md](README.md)
 这是 Anthropic Academy **Introduction to agent skills** 的完整学习指南，覆盖全部六课的
 官方文章及可读取的官方视频字幕。本文是原创总结，不是逐字稿，也不能替代官方课程。
 
+## 心智模型
+
+> Skill 是 Claude 根据 description 发现、只在相关时加载的任务型知识。始终生效的规则放在
+> 其他位置；委派工作交给 subagent；事件和外部能力分别交给 hook 或 MCP。
+
+```mermaid
+flowchart TD
+    accTitle: Claude Code skill 的发现与加载过程
+    accDescr: Claude 先看到精简的 skill 名称与 description，再匹配用户请求、加载选中的 SKILL.md，并且只在需要时读取 reference 或运行 script。
+    A[可用 skills] -->|只公开| B[名称 + descriptions]
+    U[用户请求] --> M{语义是否匹配?}
+    B --> M
+    M -->|否| N[不加载 skill]
+    M -->|是| S[加载 SKILL.md]
+    S --> R{需要辅助材料?}
+    R -->|Reference| D[读取相关 reference]
+    R -->|确定性操作| X[运行配套 script]
+    R -->|不需要| W[执行核心工作流]
+    D --> W
+    X --> W
+```
+
+图中的关键边界是渐进披露：发现过程保持轻量，只有任务确实需要时，详细材料才进入上下文。
+
 ## 来源覆盖情况
 
 | 课程 | 官方文章 | 官方视频 | 覆盖状态 |
@@ -19,10 +43,7 @@ English version: [README.md](README.md)
 第一课的嵌入视频没有可导出的字幕。其书面课程包含相同的学习目标与关键结论，因此该课
 仅依据文章整理；本文没有虚构字幕或时间戳。
 
-## 用一个心智模型理解整门课
-
-> Skill 是 Claude 根据 description 发现、只在相关时加载的任务型知识。始终生效的规则
-> 应放在其他位置；委派工作用 subagent 隔离；事件自动化或外部能力则分别交给 hook 与 MCP。
+## 课程路径
 
 六节课组成一条完整链路：
 

@@ -4,6 +4,26 @@ English version: [README.md](README.md)
 
 这是 Anthropic Academy **Introduction to subagents** 的完整学习指南，覆盖全部四课及可读取的官方视频字幕。本文是原创总结，不是逐字稿，也不能替代官方课程。
 
+## 心智模型
+
+> 当一个聚焦的 worker 能在隔离环境中完成大量中间工作，并向 parent 返回一个可验证、
+> 定义清楚的小结果时，subagent 才真正有价值。
+
+```mermaid
+flowchart TD
+    accTitle: Claude Code subagent 委派生命周期
+    accDescr: 用户向 parent 提出请求，parent 把有边界的任务与 system prompt 委派给 subagent；subagent 使用获准工具独立调查并返回聚焦结果，详细上下文随后被丢弃。
+    U[用户请求] --> P[Parent 定义有边界的任务<br/>与预期输出]
+    P --> S[Subagent 接收任务<br/>与 system prompt]
+    S --> T[使用获准工具独立调查]
+    T --> R[返回聚焦结果<br/>与相关障碍]
+    R --> V[Parent 验证并使用结果]
+    S -. 详细上下文<br/>被丢弃 .-> X[隔离边界]
+```
+
+隔离能避免调查噪声占用主上下文，代价是信息可能丢失。因此委派契约必须预先定义输出，
+并要求 subagent 把相关障碍一并返回。
+
 ## 来源覆盖情况
 
 | 课程 | 官方文章 | 官方视频 | 覆盖状态 |
@@ -15,9 +35,7 @@ English version: [README.md](README.md)
 
 第二课的课程播放器和 YouTube 直达链接都明确显示：视频因 Lynda 提出的版权主张而被阻止。本文没有为它虚构字幕或时间戳；其内容依据完整的官方文章整理。
 
-## 用一个心智模型理解整门课
-
-> 当一个聚焦的工作者可以隔离完成大量中间工作，并向主对话返回一个可验证、定义清楚的小结果时，subagent 才真正有价值。
+## 课程路径
 
 四节课组成一条完整链路：
 

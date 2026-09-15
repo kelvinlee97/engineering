@@ -6,6 +6,32 @@ This is a complete study guide to Anthropic Academy's **Introduction to agent sk
 course. It covers all six written lessons and the accessible subtitles from the official
 videos. It is an original summary, not a transcript or a replacement for the course.
 
+## Mental model
+
+> A skill is task-specific knowledge that Claude discovers from its description and loads only
+> when relevant. Always-on rules belong elsewhere; delegated work belongs in subagents; events
+> and external capabilities belong in hooks or MCP.
+
+```mermaid
+flowchart TD
+    accTitle: Claude Code skill discovery and loading
+    accDescr: Claude sees compact skill names and descriptions, matches the request, loads the selected SKILL.md, and reads references or runs scripts only when needed.
+    A[Available skills] -->|expose only| B[Names + descriptions]
+    U[User request] --> M{Semantic match?}
+    B --> M
+    M -->|No| N[Continue without skill]
+    M -->|Yes| S[Load SKILL.md]
+    S --> R{Support needed?}
+    R -->|Reference| D[Read relevant reference]
+    R -->|Operation| X[Run provided script]
+    R -->|No| W[Follow core workflow]
+    D --> W
+    X --> W
+```
+
+The diagram's boundary is progressive disclosure: discovery stays cheap, while detailed material
+enters context only after the task justifies it.
+
 ## Source coverage
 
 | Lesson | Official article | Official video | Coverage status |
@@ -21,11 +47,7 @@ The first lesson's embedded video has no exportable captions. Its written lesson
 same stated learning goals and key takeaways, so that lesson is summarized from the article only.
 No transcript or timestamps have been invented.
 
-## The course in one mental model
-
-> A skill is task-specific knowledge that Claude discovers from its description and loads only
-> when relevant. Keep always-on rules elsewhere, isolate delegated work in subagents, and use
-> hooks or MCP when the requirement is an event or an external capability.
+## Course path
 
 The six lessons form one sequence:
 

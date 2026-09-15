@@ -2,6 +2,33 @@
 
 [English](README.md) | 简体中文
 
+## 心智模型
+
+> Claude Code Auto Mode 不会让 Claude 审批自己的操作。低风险工作可以继续执行，风险较高的
+> 操作则由独立 classifier 对照用户意图、既定规则和环境边界进行检查。
+
+## 全景图
+
+最核心的问题是：谁来决定 Claude 提出的操作是否可以执行？
+
+```mermaid
+flowchart TD
+    accTitle: Claude Code Auto Mode 操作审查流程
+    accDescr: Claude 提出操作后，permission rules 与风险分级决定直接执行还是交给独立 classifier；classifier 可以批准、拒绝并寻找更安全方案，或者暂停交给用户决定。
+    U[用户请求] --> C[Claude 提出操作]
+    C --> P[应用 deny、ask 与 allow rules]
+    P --> R{风险等级}
+    R -->|低风险或可恢复| E[执行]
+    R -->|需要审查| I[独立 classifier]
+    I -->|符合意图和边界| E
+    I -->|存在更安全路径| S[拒绝并寻找替代方案]
+    S --> C
+    I -->|无法安全批准| H[暂停并交给用户决定]
+```
+
+Classifier 是独立审核者，不是 Claude 自己给自己授权；确定性的 permission rules 仍然是硬性
+执行边界。
+
 ## 来源
 
 - 视频：[How auto mode works with Claude Code](https://www.youtube.com/watch?v=b8SV4U6fEIc)
@@ -11,10 +38,6 @@
 - 来源覆盖：已完整读取 YouTube 英文自动字幕
 
 本文是根据视频整理的原创摘要，不是逐字稿，也不能替代官方文档。
-
-## 一句话总结
-
-Claude Code 的 Auto Mode 并不是让 Claude 审批自己的操作，而是通过独立 classifier 检查高风险操作是否符合用户意图，从而减少重复确认，同时保留安全控制。
 
 ## 为什么需要 Auto Mode
 
