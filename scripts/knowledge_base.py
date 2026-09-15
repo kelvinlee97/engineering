@@ -18,6 +18,8 @@ REPOSITORY_URL = "https://github.com/kelvinlee97/engineering"
 GITHUB_BLOB_URL = f"{REPOSITORY_URL}/blob/main"
 PRESENTATION_CSS = Path("pages/knowledge-base.css")
 STAGED_CSS = Path("stylesheets/knowledge-base.css")
+PRESENTATION_ASSETS = Path("pages/assets")
+STAGED_ASSETS = Path("assets")
 EXCLUDED_PARTS = {
     ".agents",
     ".local",
@@ -54,6 +56,22 @@ KIND_LABELS = {
     },
 }
 BLOG_KINDS = set(KIND_LABELS["en"]) - {"catalog"}
+# Reading pace used for the per-article estimate: Latin words and CJK characters are
+# consumed at different rates, so each is counted against its own budget.
+LATIN_WORDS_PER_MINUTE = 220
+CJK_CHARS_PER_MINUTE = 400
+EXCERPT_LENGTH = 150
+# CJK packs far more meaning per character, so its cards get a shorter budget.
+CJK_EXCERPT_LENGTH = 72
+RELATED_LIMIT = 4
+LANGUAGE_LINE_MARKERS = (
+    "Chinese version",
+    "English version",
+    "中文版本",
+    "简体中文",
+)
+CJK_RE = re.compile(r"[\u3400-\u9fff\u3040-\u30ff]")
+LATIN_WORD_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9'\u2019./_-]*")
 
 
 class KnowledgeBaseError(Exception):
@@ -124,6 +142,67 @@ def _extract_title(text: str, source: str) -> str:
 
 def _kind_label(kind: str, language: str) -> str:
     return KIND_LABELS[language].get(kind, kind.replace("-", " ").title())
+
+
+def _strip_markdown(text: str) -> str:
+    """Reduce Markdown to prose so word counts and excerpts ignore syntax."""
+
+    text = re.sub(r"(?ms)^```.*?^```\s*$", " ", text)
+    text = re.sub(r"(?m)^\s{0,3}(---|\*\*\*|___)\s*$", " ", text)
+    text = re.sub(r"<[^>]+>", " ", text)
+    text = re.sub(r"!\[[^\]]*\]\([^)]*\)", " ", text)
+    text = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", text)
+    text = re.sub(r"[`*_#>|]", " ", text)
+    return text
+
+
+def _reading_minutes(text: str) -> int:
+    """Estimate reading time in whole minutes, never less than one."""
+
+    body = _strip_markdown(text)
+    cjk = len(CJK_RE.findall(body))
+    latin = len(LATIN_WORD_RE.findall(CJK_RE.sub(" ", body)))
+    minutes = latin / LATIN_WORDS_PER_MINUTE + cjk / CJK_CHARS_PER_MINUTE
+    return max(1, round(minutes))
+
+
+def _reading_label(text: str, language: str) -> str:
+    minutes = _reading_minutes(text)
+    if language == "en":
+        return f"{minutes} min read"
+    return f"约 {minutes} 分钟"
+
+
+def _excerpt(text: str, language: str) -> str:
+    """First real paragraph of a document, trimmed for use on a card."""
+
+    body = text
+    if body.startswith("---\n"):
+        closing = body.find("\n---\n", 4)
+        if closing != -1:
+            body = body[closing + 5 :]
+    match = H1_RE.search(body)
+    if match:
+        body = body[match.end() :]
+    for block in re.split(r"\n\s*\n", body):
+        block = block.strip()
+        if not block or block.startswith((">", "#", "|", "-", "*", "<", "```", "!")):
+            continue
+        candidate = " ".join(_strip_markdown(block).split())
+        # Skip the reciprocal language-switch line that opens most documents, plus
+        # any other one-liner too short to describe the note.
+        if not candidate or len(candidate) < 40:
+            continue
+        if any(marker in candidate for marker in LANGUAGE_LINE_MARKERS):
+            continue
+        limit = EXCERPT_LENGTH if language == "en" else CJK_EXCERPT_LENGTH
+        if len(candidate) <= limit:
+            return candidate
+        cut = candidate[:limit]
+        if language == "en" and " " in cut:
+            cut = cut[: cut.rindex(" ")]
+        return cut.rstrip(" ,.;:、，。") + "…"
+    return ""
 
 
 def _blog_documents(documents: list[Document], language: str) -> list[Document]:
@@ -447,7 +526,7 @@ def rewrite_links(
     return LINK_RE.sub(replace, text)
 
 
-def _with_generated_context(text: str, document: Document) -> str:
+def _with_generated_context(text: str, document: Document, reading: str = '') -> str:
     match = H1_RE.search(text)
     if not match:
         return text
@@ -464,11 +543,15 @@ def _with_generated_context(text: str, document: Document) -> str:
             f'  <time datetime="{_escape(document.updated)}">'
             f"{updated_label} {_escape(document.updated)}</time>\n"
         )
+    reading_html = ""
+    if reading:
+        reading_html = f'  <span class="kb-meta__reading">{_escape(reading)}</span>\n'
     context = (
         "\n\n"
         f'<div class="kb-meta" role="group" aria-label="{metadata_aria}">\n'
         f'  <span class="kb-meta__kind">{_escape(kind_label)}</span>\n'
         f"{updated}"
+        f"{reading_html}"
         f'  <a class="kb-meta__language" href="{_escape(pair_link)}" '
         f'aria-label="{language_aria}">{pair_label}</a>\n'
         f'  <a class="kb-meta__source" href="{_escape(source_link)}">GitHub source</a>\n'
@@ -489,7 +572,8 @@ def _entry_html(document: Document, source_page: str) -> str:
         f'<a class="kb-entry__link" '
         f'href="{_escape(_relative_site_url(source_page, document.page))}">'
         f'<span class="kb-entry__title">{_escape(document.title)}</span>'
-        f'<span class="kb-entry__meta">{_escape(_kind_label(document.kind, document.language))}'
+        f'<span class="kb-entry__meta">'
+        f'<span class="kb-chip">{_escape(_kind_label(document.kind, document.language))}</span>'
         f"{date}</span>"
         "</a>"
         "</li>"
@@ -522,15 +606,143 @@ def _topic_card_html(documents: list[Document], area: str, language: str, source
         count_label = f"{count} note" if count == 1 else f"{count} notes"
     else:
         count_label = f"{count} 篇笔记"
+    monogram = _monogram(area)
     return (
         f'<a class="kb-topic-card" href="{_escape(_relative_site_url(source_page, catalog.page))}">'
+        f'<span class="kb-topic-card__monogram" aria-hidden="true">{_escape(monogram)}</span>'
+        '<span class="kb-topic-card__body">'
         f'<span class="kb-topic-card__name">{_escape(catalog.title)}</span>'
         f'<span class="kb-topic-card__count">{count_label}</span>'
+        "</span>"
         "</a>"
     )
 
 
-def _dashboard(documents: list[Document], language: str) -> str:
+def _monogram(area: str) -> str:
+    """Short badge text for a topic tile: an acronym, or the first two letters."""
+
+    letters = [part[0] for part in re.split(r"[-_\s]+", area) if part]
+    if len(letters) > 1:
+        return "".join(letters[:2]).upper()
+    stripped = re.sub(r"[^0-9A-Za-z]", "", area)
+    if not stripped:
+        return area[:1]
+    if stripped.isupper():
+        return stripped[:3]
+    return stripped[:2].upper()
+
+
+def _note_card_html(
+    document: Document,
+    source_page: str,
+    excerpt: str,
+    read_more: str,
+) -> str:
+    excerpt_html = (
+        f'<p class="kb-note-card__excerpt">{_escape(excerpt)}</p>' if excerpt else ""
+    )
+    date = (
+        f'<span class="kb-note-card__date">{_escape(document.updated)}</span>'
+        if document.updated
+        else ""
+    )
+    return (
+        f'<a class="kb-note-card" href="{_escape(_relative_site_url(source_page, document.page))}">'
+        '<span class="kb-note-card__top">'
+        f'<span class="kb-chip">{_escape(_kind_label(document.kind, document.language))}</span>'
+        f"{date}"
+        "</span>"
+        f'<span class="kb-note-card__title">{_escape(document.title)}</span>'
+        f"{excerpt_html}"
+        f'<span class="kb-note-card__more">{_escape(read_more)}</span>'
+        "</a>"
+    )
+
+
+def _related_html(
+    document: Document,
+    documents: list[Document],
+    excerpts: dict[str, str] | None = None,
+) -> str:
+    """End-of-article links to nearby notes, so a reader has somewhere to go next."""
+
+    if document.kind == "catalog":
+        return ""
+    pool = [
+        candidate
+        for candidate in _blog_documents(documents, document.language)
+        if candidate.source != document.source
+    ]
+    same_area = [candidate for candidate in pool if candidate.area == document.area]
+    related = same_area[:RELATED_LIMIT]
+    if len(related) < RELATED_LIMIT:
+        chosen = {candidate.source for candidate in related}
+        same_kind = [
+            candidate
+            for candidate in pool
+            if candidate.kind == document.kind and candidate.source not in chosen
+        ]
+        related.extend(same_kind[: RELATED_LIMIT - len(related)])
+    if not related:
+        return ""
+    is_english = document.language == "en"
+    heading = "Keep reading" if is_english else "继续阅读"
+    aria = "Related notes" if is_english else "相关笔记"
+    cards = []
+    for candidate in related:
+        date = (
+            f"<span>{_escape(candidate.updated)}</span>" if candidate.updated else ""
+        )
+        cards.append(
+            '<a class="kb-related__card" '
+            f'href="{_escape(_relative_site_url(document.page, candidate.page))}">'
+            f'<span class="kb-related__card-title">{_escape(candidate.title)}</span>'
+            '<span class="kb-related__card-meta">'
+            f'<span class="kb-chip">'
+            f"{_escape(_kind_label(candidate.kind, candidate.language))}</span>"
+            f"{date}"
+            "</span>"
+            "</a>"
+        )
+    return (
+        "\n\n"
+        f'<section class="kb-related" aria-label="{aria}">\n'
+        f'<h2 class="kb-related__title">{heading}</h2>\n'
+        f'<div class="kb-related__grid">{"".join(cards)}</div>\n'
+        "</section>\n"
+    )
+
+
+def _stats_html(documents: list[Document], language: str) -> str:
+    notes = _blog_documents(documents, language)
+    areas = {
+        document.area
+        for document in documents
+        if document.language == language and document.area != "engineering"
+    }
+    updated = next((document.updated for document in notes if document.updated), "")
+    is_english = language == "en"
+    items = [
+        (str(len(notes)), "notes" if is_english else "篇笔记"),
+        (str(len(areas)), "topics" if is_english else "个主题"),
+    ]
+    if updated:
+        items.append((updated, "last updated" if is_english else "最近更新"))
+    cells = "".join(
+        f'<li class="kb-stat"><span class="kb-stat__value">{_escape(value)}</span>'
+        f'<span class="kb-stat__label">{_escape(label)}</span></li>'
+        for value, label in items
+    )
+    aria = "Knowledge base statistics" if is_english else "知识库统计"
+    return f'<ul class="kb-stats" aria-label="{aria}">{cells}</ul>'
+
+
+def _dashboard(
+    documents: list[Document],
+    language: str,
+    excerpts: dict[str, str] | None = None,
+) -> str:
+    excerpts = excerpts or {}
     page = "index.md" if language == "en" else "index_zh.md"
     repository_page = "repository/index.md" if language == "en" else "repository/index_zh.md"
     start_page = "Git/index.md" if language == "en" else "Git/index_zh.md"
@@ -545,23 +757,29 @@ def _dashboard(documents: list[Document], language: str) -> str:
         if is_english
         else "记录系统故障怎么查、AI 编程工具怎么用，以及怎样让日常工程工作更顺手。"
     )
+    eyebrow = "ENGINEERING NOTES" if is_english else "工程笔记"
     search_label = "Search the knowledge base" if is_english else "搜索工程知识库"
+    featured_title = "Start here" if is_english else "从这里开始"
+    featured_lede = (
+        "Three notes worth reading first."
+        if is_english
+        else "先读这三篇。"
+    )
     latest_title = "Latest notes" if is_english else "最新笔记"
     topics_title = "Topics" if is_english else "主题"
     video_title = "Video learning" if is_english else "视频学习"
     archive_label = "View full archive" if is_english else "查看完整归档"
     repository_label = "Start with a real problem" if is_english else "从一个实际问题开始"
+    read_more = "Read note" if is_english else "阅读笔记"
     language_target = "index_zh.md" if is_english else "index.md"
     language_label = "中文" if is_english else "English"
     site_links_label = "Site links" if is_english else "站点链接"
-    notes = _blog_documents(documents, language)[:6]
-    videos = [document for document in notes if document.kind == "video-summary"]
-    if len(videos) < 3:
-        videos = [
-            document
-            for document in _blog_documents(documents, language)
-            if document.kind == "video-summary"
-        ][:3]
+
+    blog = _blog_documents(documents, language)
+    featured = [document for document in blog if document.kind != "video-summary"][:3]
+    featured_sources = {document.source for document in featured}
+    notes = [document for document in blog if document.source not in featured_sources][:6]
+    videos = [document for document in blog if document.kind == "video-summary"][:3]
     areas = sorted(
         {
             document.area
@@ -571,6 +789,10 @@ def _dashboard(documents: list[Document], language: str) -> str:
     )
     topic_cards = "\n".join(
         _topic_card_html(documents, area, language, page) for area in areas
+    )
+    featured_cards = "\n".join(
+        _note_card_html(document, page, excerpts.get(document.source, ""), read_more)
+        for document in featured
     )
     note_entries = "\n".join(_entry_html(document, page) for document in notes)
     video_entries = "\n".join(_entry_html(document, page) for document in videos)
@@ -588,6 +810,22 @@ def _dashboard(documents: list[Document], language: str) -> str:
         if not is_english and not video_entries
         else ""
     )
+    featured_section = (
+        "\n".join(
+            [
+                '<section class="kb-home__section" aria-labelledby="kb-featured-title">',
+                (
+                    f'<div class="kb-section-heading">'
+                    f'<h2 id="kb-featured-title">{featured_title}</h2>'
+                    f"<span>{featured_lede}</span></div>"
+                ),
+                f'<div class="kb-card-grid">{featured_cards}</div>',
+                "</section>",
+            ]
+        )
+        if featured_cards
+        else ""
+    )
     return _generated_front_matter(
         language,
         title="Home" if is_english else "中文首页",
@@ -597,15 +835,18 @@ def _dashboard(documents: list[Document], language: str) -> str:
         search_exclude=True,
     ) + "\n".join(
         [
-            '<p class="kb-home__eyebrow">ENGINEERING NOTES</p>',
-            f"# {title}",
-            "",
             '<div class="kb-home">',
+            '<header class="kb-hero">',
+            f'<p class="kb-home__eyebrow">{eyebrow}</p>',
+            f'<h1 id="{"home" if is_english else "home-zh"}">{_escape(title)}</h1>',
             f'<p class="kb-home__lede">{description}</p>',
             (
                 f'<button class="kb-search-trigger" type="button" '
+                f'aria-label="{search_label}" '
                 f'onclick="document.getElementById(\'__search\').click(); '
-                f'document.querySelector(\'.md-search__input\').focus()">{search_label}</button>'
+                f'document.querySelector(\'.md-search__input\').focus()">'
+                f"<span>{search_label}</span>"
+                f'<kbd class="kb-search-trigger__hint">/</kbd></button>'
             ),
             f'<nav class="kb-home__links" aria-label="{site_links_label}">',
             (
@@ -616,6 +857,9 @@ def _dashboard(documents: list[Document], language: str) -> str:
             f'<a href="{_escape(_relative_site_url(page, archive_page))}">{archive_label}</a>',
             f'<a href="{_escape(_relative_site_url(page, language_target))}">{language_label}</a>',
             "</nav>",
+            _stats_html(documents, language),
+            "</header>",
+            featured_section,
             '<section class="kb-home__section" aria-labelledby="kb-latest-title">',
             (
                 f'<div class="kb-section-heading"><h2 id="kb-latest-title">{latest_title}</h2>'
@@ -626,7 +870,11 @@ def _dashboard(documents: list[Document], language: str) -> str:
             empty_notes,
             "</section>",
             '<section class="kb-home__section" aria-labelledby="kb-topics-title">',
-            f'<h2 id="kb-topics-title">{topics_title}</h2>',
+            (
+                f'<div class="kb-section-heading"><h2 id="kb-topics-title">{topics_title}</h2>'
+                f'<a href="{_escape(_relative_site_url(page, topics_page))}">'
+                f'{topics_title}</a></div>'
+            ),
             f'<div class="kb-topic-grid">{topic_cards}</div>',
             "</section>",
             '<section class="kb-home__section" aria-labelledby="kb-video-title">',
@@ -743,18 +991,22 @@ def stage(root: Path, output: Path, paths: list[str] | None = None) -> list[Docu
         shutil.rmtree(output)
     output.mkdir(parents=True)
 
+    excerpts: dict[str, str] = {}
     for document in documents:
-        text = (root / document.source).read_text(encoding="utf-8")
-        text = rewrite_links(text, document.source, page_map, tracked)
+        raw = (root / document.source).read_text(encoding="utf-8")
+        excerpts[document.source] = _excerpt(raw, document.language)
+        reading = _reading_label(raw, document.language)
+        text = rewrite_links(raw, document.source, page_map, tracked)
         text = _with_generated_metadata(text, document)
-        text = _with_generated_context(text, document)
+        text = _with_generated_context(text, document, reading)
+        text = text.rstrip("\n") + "\n" + _related_html(document, documents)
         target = output / document.page
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(text, encoding="utf-8")
 
     generated_pages = {
-        "index.md": _dashboard(documents, "en"),
-        "index_zh.md": _dashboard(documents, "zh"),
+        "index.md": _dashboard(documents, "en", excerpts),
+        "index_zh.md": _dashboard(documents, "zh", excerpts),
         "topics/index.md": _topics_page(documents, "en"),
         "topics/index_zh.md": _topics_page(documents, "zh"),
         "archive/index.md": _archive_page(documents, "en"),
@@ -777,6 +1029,10 @@ def stage(root: Path, output: Path, paths: list[str] | None = None) -> list[Docu
     css_target = output / STAGED_CSS
     css_target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(css_source, css_target)
+
+    assets_source = root / PRESENTATION_ASSETS
+    if assets_source.is_dir():
+        shutil.copytree(assets_source, output / STAGED_ASSETS, dirs_exist_ok=True)
     return documents
 
 

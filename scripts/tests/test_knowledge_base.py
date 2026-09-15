@@ -4,7 +4,14 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.knowledge_base import KnowledgeBaseError, discover_documents, stage
+from scripts.knowledge_base import (
+    KnowledgeBaseError,
+    _excerpt,
+    _reading_label,
+    _reading_minutes,
+    discover_documents,
+    stage,
+)
 
 
 class KnowledgeBaseTests(unittest.TestCase):
@@ -74,6 +81,9 @@ class KnowledgeBaseTests(unittest.TestCase):
             self._write(root, "AGENTS.md", "# Internal\n")
             self._write(root, ".agents/skills/youtube-transcript/SKILL.md", "# Skill\n")
             self._write(root, "pages/knowledge-base.css", "/* test stylesheet */\n")
+            asset = root / "pages/assets/fonts/demo.woff2"
+            asset.parent.mkdir(parents=True, exist_ok=True)
+            asset.write_bytes(b"woff2")
             output = root / ".pages-build"
 
             stage(root, output, paths)
@@ -91,10 +101,13 @@ class KnowledgeBaseTests(unittest.TestCase):
             self.assertIn('class="kb-meta"', repository)
             self.assertIn("kb_language: en", repository)
             dashboard = (output / "index.md").read_text(encoding="utf-8")
-            self.assertIn("# Kelvin’s Engineering Notes", dashboard)
+            self.assertIn(">Kelvin’s Engineering Notes</h1>", dashboard)
+            self.assertIn('class="kb-hero"', dashboard)
+            self.assertIn('class="kb-stats"', dashboard)
             self.assertIn('href="Git/">Start with a real problem</a>', dashboard)
             chinese_dashboard = (output / "index_zh.md").read_text(encoding="utf-8")
-            self.assertIn("# Kelvin 的工程笔记", chinese_dashboard)
+            self.assertIn(">Kelvin 的工程笔记</h1>", chinese_dashboard)
+            self.assertIn('class="kb-stats"', chinese_dashboard)
             self.assertIn(
                 'href="../Git/index_zh/">从一个实际问题开始</a>', chinese_dashboard
             )
@@ -108,6 +121,7 @@ class KnowledgeBaseTests(unittest.TestCase):
             topics = (output / "topics/index.md").read_text(encoding="utf-8")
             self.assertIn('href="../apple/container/"', topics)
             self.assertIn('class="kb-topic-card__count">1 note</span>', topics)
+            self.assertIn('class="kb-topic-card__monogram"', topics)
             self.assertTrue((output / "topics/index_zh.md").exists())
             self.assertTrue((output / "archive/index.md").exists())
             self.assertTrue((output / "archive/index_zh.md").exists())
@@ -115,8 +129,73 @@ class KnowledgeBaseTests(unittest.TestCase):
                 (output / "stylesheets/knowledge-base.css").read_text(encoding="utf-8"),
                 "/* test stylesheet */\n",
             )
+            self.assertEqual(
+                (output / "assets/fonts/demo.woff2").read_bytes(),
+                b"woff2",
+            )
             self.assertTrue((output / "index.md").exists())
             self.assertFalse((output / "AGENTS.md").exists())
+
+    def test_reading_time_ignores_markdown_syntax(self) -> None:
+        prose = " ".join(["word"] * 440)
+        self.assertEqual(_reading_minutes(prose), 2)
+        fenced = prose + "\n\n```\n" + " ".join(["noise"] * 2000) + "\n```\n"
+        self.assertEqual(_reading_minutes(fenced), 2)
+        self.assertEqual(_reading_minutes(""), 1)
+
+    def test_reading_time_counts_cjk_separately(self) -> None:
+        self.assertEqual(_reading_minutes("汉" * 800), 2)
+        self.assertEqual(_reading_label("汉" * 800, "zh"), "约 2 分钟")
+        self.assertEqual(_reading_label(" ".join(["word"] * 220), "en"), "1 min read")
+
+    def test_excerpt_skips_headings_and_language_links(self) -> None:
+        text = (
+            "# Amazon S3\n\n"
+            "English · [简体中文](README_ZH.md)\n\n"
+            "## Overview\n\n"
+            "- bullet\n\n"
+            "> Facts verified against official AWS documentation: 2026-08-18\n\n"
+            "Amazon S3 is an object storage service for storing and protecting any "
+            "amount of data.\n"
+        )
+        self.assertEqual(
+            _excerpt(text, "en"),
+            "Amazon S3 is an object storage service for storing and protecting any "
+            "amount of data.",
+        )
+
+    def test_excerpt_truncates_long_paragraphs(self) -> None:
+        long_paragraph = "# T\n\n" + " ".join(["alpha"] * 60) + "\n"
+        excerpt = _excerpt(long_paragraph, "en")
+        self.assertTrue(excerpt.endswith("…"))
+        self.assertLessEqual(len(excerpt), 151)
+
+    def test_related_notes_are_appended_to_articles(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            paths = []
+            for slug in ("s3", "redshift"):
+                for name, heading in (
+                    ("README.md", f"# Amazon {slug}"),
+                    ("README_ZH.md", f"# Amazon {slug} 中文"),
+                ):
+                    relative = f"AWS/{slug}/{name}"
+                    paths.append(relative)
+                    self._write(root, relative, f"{heading}\n\nBody text.\n")
+            self._write(root, "pages/knowledge-base.css", "/* test */\n")
+            output = root / ".pages-build"
+
+            stage(root, output, paths)
+
+            article = (output / "AWS/s3/index.md").read_text(encoding="utf-8")
+            self.assertIn('class="kb-related"', article)
+            self.assertIn("Keep reading", article)
+            self.assertIn('href="../redshift/"', article)
+            self.assertIn('class="kb-meta__reading"', article)
+
+            chinese = (output / "AWS/s3/index_zh.md").read_text(encoding="utf-8")
+            self.assertIn("继续阅读", chinese)
+            self.assertIn('href="../../redshift/index_zh/"', chinese)
 
     def test_youtube_pairs_keep_video_id(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

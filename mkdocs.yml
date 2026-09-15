@@ -13,14 +13,25 @@ theme:
   custom_dir: pages/overrides
   font: false
   features:
+    - navigation.instant
+    - navigation.instant.progress
     - navigation.sections
     - navigation.prune
     - navigation.path
+    - navigation.tracking
     - navigation.top
+    - navigation.footer
+    - toc.follow
     - search.highlight
     - search.suggest
+    - search.share
     - content.code.copy
+    - content.tooltips
   palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
       toggle:
@@ -30,7 +41,7 @@ theme:
       scheme: slate
       toggle:
         icon: material/weather-night
-        name: Switch to light mode
+        name: Switch to system preference
 
 extra_css:
   - stylesheets/knowledge-base.css
@@ -41,11 +52,21 @@ plugins:
 markdown_extensions:
   - admonition
   - attr_list
+  - footnotes
+  - md_in_html
   - meta
+  - tables
   - toc:
       permalink: true
       slugify: !!python/object/apply:pymdownx.slugs.slugify
         kwds:
           case: lower
   - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
