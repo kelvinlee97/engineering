@@ -1,6 +1,35 @@
 # Amazon CloudFront - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> CloudFront 总是先用最近的边缘节点回应请求：缓存命中完全不会碰到源站，只有缓存未命中——其形态由缓存行为的 TTL 和转发的请求头/Cookie 决定——才会变成一次源站请求，这正是缓存配置同时是成本和内容新鲜度主要杠杆的原因。
+
+本文主要回答两个问题：
+
+1. 是什么决定一个请求由缓存响应还是转发到源站？
+2. 签名 URL/Cookie 和 OAC 在私有内容的这条路径中各起什么作用？
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: CloudFront 请求路径
+    accDescr: 客户端请求到达最近的边缘节点。如果对象已缓存且在 TTL 内，直接返回；否则 CloudFront 从源站（带 Origin Access Control 的 S3 或自定义 HTTP 源站）拉取，按匹配的缓存行为缓存后返回。私有内容还需要在两条路径之前先验证签名 URL 或签名 Cookie 是否有效。
+    C[客户端请求] --> Auth{是否需要且<br/>已通过签名 URL/Cookie?}
+    Auth -- 需要但未通过 --> Deny[403 Forbidden]
+    Auth -- 不需要，或已通过 --> E[最近的边缘节点]
+    E --> H{已缓存且<br/>在 TTL 内?}
+    H -- 是 --> S[从缓存返回]
+    H -- 否 --> O[从源站拉取<br/>OAC 下的 S3 / 自定义 HTTP]
+    O --> Cache[按缓存行为的<br/>TTL 缓存]
+    Cache --> S
+```
+
+Origin Access Control 和签名 URL/Cookie 是两道独立的关卡：OAC 阻止源站被直接访问，而签名 URL/Cookie 阻止 CloudFront 本身把对象返回给未授权的访问者。
 
 ## 概述
 

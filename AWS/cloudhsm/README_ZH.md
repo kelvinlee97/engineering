@@ -1,6 +1,31 @@
 # AWS CloudHSM - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> CloudHSM 把控制权拆成两个从不重叠的平面：IAM 决定谁能调用 CloudHSM API 管理集群和 HSM，而 HSM 用户——在 HSM 内部创建和管理，对 IAM 不可见——决定谁能使用密钥。AWS 既看不到你的密钥，也看不到你的 HSM 用户。
+
+本文主要回答两个问题：
+
+1. "能创建集群"和"能使用这个密钥"分别应该改哪套权限系统？
+2. 什么时候该选 CloudHSM 而不是 AWS KMS？
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: CloudHSM 的两个控制平面
+    accDescr: IAM 策略控制对 CloudHSM API 的访问，用于管理集群和 HSM。每个 HSM 内部由单独管理的 HSM 用户控制对密钥和密码学操作的访问。两套系统相互独立；AWS 无法看到 HSM 用户或密钥这一层。
+    I[IAM 策略] --> A[CloudHSM API：<br/>创建/删除集群和 HSM]
+    U[HSM 用户<br/>在 HSM 内部管理] --> K[密钥和<br/>密码学操作]
+    A -.不授予.-> K
+    U -.在 IAM 之外管理.-> I
+```
+
+正因为这两个平面相互独立，拥有完整 CloudHSM API 权限的 IAM 管理员，如果没有有效的 HSM 用户，仍然无法使用或看到集群内的密钥。
 
 ## 概述
 

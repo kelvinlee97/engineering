@@ -1,6 +1,31 @@
 # AWS CloudHSM - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> CloudHSM splits control into two planes that never overlap: IAM governs who can call the CloudHSM API to manage clusters and HSMs, while HSM users — created and managed inside the HSM itself, invisible to IAM — govern who can use the keys. AWS cannot see either your keys or your HSM users.
+
+This article answers two practical questions:
+
+1. Which permission system do I edit for "can create a cluster" versus "can use this key"?
+2. When should I reach for CloudHSM instead of AWS KMS?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: CloudHSM two control planes
+    accDescr: IAM policies control access to the CloudHSM API for managing clusters and HSMs. Inside each HSM, separately managed HSM users control access to cryptographic keys and operations. The two systems are independent; AWS cannot see into the HSM user or key layer.
+    I[IAM policies] --> A[CloudHSM API:<br/>create/delete clusters and HSMs]
+    U[HSM users<br/>managed inside the HSM] --> K[Cryptographic keys<br/>and operations]
+    A -.does not grant.-> K
+    U -.managed outside.-> I
+```
+
+Because the two planes are independent, an IAM administrator with full CloudHSM API access still cannot use or see the keys inside a cluster without a valid HSM user.
 
 ## Overview
 

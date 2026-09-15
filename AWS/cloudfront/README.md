@@ -1,6 +1,35 @@
 # Amazon CloudFront - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> CloudFront answers every request from the nearest edge first: a cache hit never touches your origin, and only a cache miss — shaped by the cache behavior's TTL and forwarded headers/cookies — turns into an origin fetch, which is why cache configuration is the main lever over both cost and freshness.
+
+This article answers two practical questions:
+
+1. What decides whether a request is served from cache or forwarded to the origin?
+2. How do signed URLs/cookies and OAC fit into that path for private content?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: CloudFront request path
+    accDescr: A client request reaches the nearest edge location. If the object is cached and within TTL, it is served directly. Otherwise CloudFront fetches it from the origin, S3 with Origin Access Control or a custom HTTP origin, caches it per the matching cache behavior, and returns it. Private content additionally requires a valid signed URL or signed cookie before either path proceeds.
+    C[Client request] --> Auth{Signed URL/cookie<br/>required and valid?}
+    Auth -- no, and required --> Deny[403 Forbidden]
+    Auth -- not required, or valid --> E[Nearest edge location]
+    E --> H{Cached and<br/>within TTL?}
+    H -- yes --> S[Serve from cache]
+    H -- no --> O[Fetch from origin<br/>S3 via OAC / custom HTTP]
+    O --> Cache[Cache per<br/>cache behavior TTL]
+    Cache --> S
+```
+
+Origin Access Control and signed URLs/cookies are two independent gates: OAC stops the origin from being reached directly, while signed URLs/cookies stop CloudFront itself from serving the object to an unauthorized viewer.
 
 ## Overview
 

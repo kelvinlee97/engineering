@@ -1,6 +1,31 @@
 # Amazon CloudSearch - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> CloudSearch 域有两个独立的入口——用于写入的文档端点和用于读取的搜索端点——通过前者上传的数据在显式执行索引步骤之前并不可搜索，所以"上传"和"让数据可搜索"是两个不同的操作，而不是一个。
+
+本文主要回答一个问题：
+
+1. 从上传文档到能够搜索到它，中间必须依次发生什么？
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: CloudSearch 文档与搜索流程
+    accDescr: 文档以 JSON 或 XML 批次形式上传到域的文档端点。之后必须显式触发索引，上传的数据才可被搜索。查询通过独立的搜索端点进行，只能看到已完成索引的数据。
+    D[JSON/XML 文档批次] --> DE[文档端点<br/>upload-documents]
+    DE --> IDX["index-documents<br/>（显式步骤）"]
+    IDX --> Active[域索引<br/>ACTIVE]
+    Q[搜索查询] --> SE[搜索端点]
+    SE --> Active
+```
+
+正因为索引是一个独立的显式调用，"上传成功但之后没有执行索引"是文档"已存在但还搜不到"最常见的原因。
 
 ## 概述
 
