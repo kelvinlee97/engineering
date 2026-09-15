@@ -32,6 +32,7 @@ I collect explanations, commands, and references worth revisiting, from SRE runb
 - [Set a Codex goal](Codex/goal/README.md) — Define long-running work with a verifiable stopping condition.
 - [Claude subagents](Claude/subagents/README.md) — Study guide for Anthropic Academy’s introductory course.
 - [Claude Code GitHub Actions](Claude/github-actions/README.md) — Run interactive and automated Claude workflows with explicit permissions and security boundaries.
+- [Claude Managed Agents](Claude/managed-agents/README.md) — Hosted agent harness for long-running, asynchronous tasks, as an alternative to the Messages API.
 - [AI-native SDLC playbook](Claude/ai-native-sdlc-playbook/README.md) — Redesign delivery around versioned artifacts, feedback loops, and explicit governance gates.
 - [OpenAI latest model guidance](OpenAI/model-guidance/README.md) — Adopt and migrate to the current recommended API model with explicit prompts and evaluations.
 
