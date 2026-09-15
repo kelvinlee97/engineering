@@ -2,6 +2,26 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> Control flow always picks exactly one path: the first true condition in an `if`/`elif`/`else` chain wins, and later branches are never evaluated.
+
+```mermaid
+flowchart TD
+    accTitle: if/elif/else branch selection
+    accDescr: Python evaluates conditions in order and runs only the first branch whose condition is true, falling through to else when none match.
+    S[Evaluate conditions in order] --> A{if condition true?}
+    A -- Yes --> RA[Run if block]
+    A -- No --> B{elif condition true?}
+    B -- Yes --> RB[Run elif block]
+    B -- No --> C[Run else block]
+    RA --> D[Continue after chain]
+    RB --> D
+    C --> D
+```
+
+Only one branch ever runs, and the rest of the chain is skipped once a match is found.
+
 ## Conditions
 
 ```python

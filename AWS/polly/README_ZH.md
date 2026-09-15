@@ -1,6 +1,12 @@
 # Amazon Polly - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> Polly 对短文本做同步文本转语音，对长文内容做异步合成，再叠加 SSML 和 lexicon 精确控制所选声音的发音方式。
 
 ## 概述
 

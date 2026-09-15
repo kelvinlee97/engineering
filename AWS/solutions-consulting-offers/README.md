@@ -4,10 +4,9 @@ English | [简体中文](README_ZH.md)
 
 > Facts verified against official AWS documentation: 2026-08-19
 
-
 ## Mental model
 
-> AWS Consulting Offers are packaged consulting engagements from AWS Partners that address specific business outcomes (for example, migration, modernization, security assessments, and data analytics). They are part of the AWS Partner Network (APN) and AWS Marketplace ecosystem, giving customers a scoped, repeatable way...
+> AWS Consulting Offers are packaged consulting engagements from AWS Partners that address specific business outcomes (for example, migration, modernization, security assessments, and data analytics).
 
 ## Overview
 

@@ -4,10 +4,9 @@ English | [简体中文](README_ZH.md)
 
 > Facts verified against official AWS documentation: 2026-08-19
 
-
 ## Mental model
 
-> The AWS Snow Family provides physical devices for offline data transfer and edge computing in environments without reliable connectivity. **Note the current lifecycle:** Snowcone (HDD/SSD) was discontinued on November 12, 2024, and AWS Snowball Edge is no longer available to new customers.
+> The AWS Snow Family provides physical devices for offline data transfer and edge computing in environments without reliable connectivity.
 
 ## Overview
 

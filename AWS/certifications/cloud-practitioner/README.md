@@ -4,10 +4,9 @@ English | [简体中文](README_ZH.md)
 
 > Facts verified against official AWS documentation: 2026-08-19
 
-
 ## Mental model
 
-> The CLF-C02 exam validates a foundational understanding of AWS Cloud concepts, services, security, architecture, pricing, and support. It is for individuals who want to demonstrate overall knowledge of the AWS Cloud, regardless of specific technical role.
+> The CLF-C02 exam validates a foundational understanding of AWS Cloud concepts, services, security, architecture, pricing, and support.
 
 ## Exam overview
 

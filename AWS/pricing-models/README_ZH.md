@@ -1,10 +1,25 @@
 # AWS 定价模式 - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> AWS 的每种定价模式都在同一条轴线上用灵活性换折扣：On-Demand 提供完全灵活性但单价最高，承诺型方案用灵活性换取节省，Spot 用可用性保证换取最深的折扣。
 
 ## 概述
 
 AWS 服务按用即付（pay-as-you-go）定价：只为你使用的内容付费，无预付合同；通过承诺用量或使用闲置容量可以节省成本。理解定价模式（On-Demand、Savings Plans、预留实例、Spot 和免费套餐）有助于在满足可用性需求的同时控制成本。
+
+```mermaid
+flowchart LR
+    accTitle: 如何选择 AWS 定价模式
+    accDescr: On-Demand 无需承诺但单价最高；Savings Plans 和预留实例用 1 到 3 年的用量承诺换取更低价格；Spot 实例用可中断性换取最深折扣，适合可容错工作负载。
+    W{工作负载特征} -- 不可预测/短期 --> OD[On-Demand<br/>无承诺，单价最高]
+    W -- 稳定、可预测 --> SP[Savings Plans /<br/>预留实例<br/>1-3年承诺，价格更低]
+    W -- 可容错、可中断 --> SI[Spot 实例<br/>折扣最深，容量可能被回收]
+```
 
 ## 核心概念
 

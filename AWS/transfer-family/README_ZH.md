@@ -4,10 +4,9 @@
 
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-
 ## 心智模型
 
-> AWS Transfer Family 是全托管服务，通过 SFTP、FTPS、FTP、AS2 和浏览器 Web 传输，将文件移入/移出 AWS 存储（Amazon S3 和 Amazon EFS）。 你保留现有客户端、认证和防火墙配置；AWS 托管服务器并自动扩展。
+> AWS Transfer Family 是全托管服务，通过 SFTP、FTPS、FTP、AS2 和浏览器 Web 传输，将文件移入/移出 AWS 存储（Amazon S3 和 Amazon EFS）。
 
 ## 概述
 

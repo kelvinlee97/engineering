@@ -2,6 +2,24 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> A loop's `else` block is a "did we ever `break`?" check: it runs only when the loop reaches its natural end without a `break`, which is why it pairs naturally with a search.
+
+```mermaid
+flowchart TD
+    accTitle: for/while loop with break, continue, and else
+    accDescr: Each iteration may continue to skip ahead or break to exit early. The loop else block runs only when the loop finishes all iterations without ever hitting break.
+    S[Start next iteration] --> C{continue triggered?}
+    C -- Yes --> S
+    C -- No --> B{break triggered?}
+    B -- Yes --> X[Exit loop, skip else]
+    B -- No --> M{More items?}
+    M -- Yes --> S
+    M -- No --> E[Loop finished normally]
+    E --> L[Run else block]
+```
+
 ## Iterate over values
 
 ```python

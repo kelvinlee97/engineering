@@ -2,6 +2,29 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> A generator function does not run when you call it; it returns a paused generator object that executes up to the next `yield` only when something asks for a value, and remembers exactly where it left off.
+
+```mermaid
+sequenceDiagram
+    accTitle: Generator pause and resume across next() calls
+    accDescr: Calling the generator function creates a paused generator without running any code. Each call to next() resumes execution until the next yield, which returns a value and pauses again; running off the end raises StopIteration.
+    participant Caller
+    participant Gen as Generator object
+    Caller->>Gen: server_errors(lines)
+    Gen-->>Caller: paused generator (no code run yet)
+    Caller->>Gen: next(gen)
+    Gen->>Gen: run until yield
+    Gen-->>Caller: yielded value
+    Caller->>Gen: next(gen)
+    Gen->>Gen: resume after yield, run until next yield
+    Gen-->>Caller: yielded value
+    Caller->>Gen: next(gen)
+    Gen->>Gen: resume, reach end of function
+    Gen-->>Caller: StopIteration
+```
+
 An iterable can produce an iterator; an iterator produces one value at a time.
 
 ```python

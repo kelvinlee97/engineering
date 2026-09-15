@@ -4,10 +4,9 @@
 
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-
 ## 心智模型
 
-> AWS Systems Manager 帮助你跨 AWS、本地和多云环境集中查看、管理和操作节点。 节点安装 SSM Agent 并注册为托管节点后，你可以使用 Run Command、Session Manager、Patch Manager、Parameter Store、Automation 和 OpsCenter 等工具，而无需登录服务器。
+> AWS Systems Manager 帮助你跨 AWS、本地和多云环境集中查看、管理和操作节点。
 
 ## 概述
 

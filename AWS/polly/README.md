@@ -1,6 +1,12 @@
 # Amazon Polly - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> Polly converts text to speech synchronously for short requests and asynchronously for long-form content, with SSML and lexicons layered on top to control exactly how the chosen voice sounds.
 
 ## Overview
 

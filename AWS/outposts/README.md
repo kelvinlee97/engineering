@@ -1,10 +1,25 @@
 # AWS Outposts - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> An Outpost is a physical extension of an AWS Region into your building: it runs the same APIs locally over a service link back to the Region, while a local gateway connects Outpost resources to your on-premises network.
 
 ## Overview
 
 AWS Outposts brings AWS infrastructure, services, APIs, and tools to your premises. An Outpost is a pool of AWS compute and storage capacity installed at your site, operated and managed by AWS as an extension of an AWS Region. You use the same APIs and console as in the Region, with local low latency and local data processing.
+
+```mermaid
+flowchart LR
+    accTitle: Outposts connectivity to Region and on-premises network
+    accDescr: The Outpost hardware at the customer site connects back to its parent AWS Region over the service link, which carries the same APIs and console access. A local gateway connects Outpost subnets and resources to the on-premises network for local, low-latency access.
+    Reg[AWS Region] <-->|service link<br/>same APIs & console| O[Outpost<br/>rack or server, at your site]
+    O --> LGW[Local gateway]
+    LGW <--> ON[On-premises network]
+```
 
 ## Key concepts
 

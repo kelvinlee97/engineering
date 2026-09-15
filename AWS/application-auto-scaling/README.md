@@ -1,6 +1,36 @@
 # Application Auto Scaling - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> Application Auto Scaling is one control loop applied uniformly to many non-EC2 resource types: register a resource as a scalable target with min/max bounds, attach a policy that watches a metric or a clock, and let the loop add or remove capacity within those bounds.
+
+This article answers two practical questions:
+
+1. How does a metric or a schedule turn into a capacity change?
+2. Which of the four policy types fits a given scaling need?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: Application Auto Scaling control loop
+    accDescr: A scalable target is registered with min and max capacity. A target tracking, step, scheduled, or predictive policy watches a CloudWatch metric or a clock and, when conditions are met, adjusts capacity within the registered bounds.
+    R[Register scalable target<br/>min/max capacity] --> P{Policy type}
+    P -->|target tracking| M1[Track a CloudWatch metric<br/>near a target value]
+    P -->|step scaling| M2[Scale by alarm<br/>breach size]
+    P -->|scheduled| M3[Scale at a<br/>fixed time]
+    P -->|predictive| M4[Scale ahead of<br/>forecast load]
+    M1 --> C[Adjust capacity<br/>within min/max]
+    M2 --> C
+    M3 --> C
+    M4 --> C
+```
+
+All four policy types converge on the same bounded capacity change — they differ only in what triggers the adjustment.
 
 ## Overview
 

@@ -8,6 +8,20 @@
 
 > AWS Elastic Beanstalk 是一项托管服务，用于在 EC2、S3、负载均衡器等常见 AWS 资源上部署和扩展 Web 应用程序与后台进程。你上传代码，Elastic Beanstalk 负责容量供给、负载均衡、扩展、健康监控和更新，同时你仍可控制底层资源。
 
+## 全景图
+
+```mermaid
+flowchart TD
+    accTitle: Elastic Beanstalk 资源层级
+    accDescr: 一个 application 包含一个或多个版本和环境。每个环境在某个 platform 上运行某个版本，可以是负载均衡器后的 Web server 环境，也可以是从 SQS 队列拉取消息的 worker 环境，并使用可配置的部署策略。
+    App[Application] --> Ver[应用版本]
+    App --> Env[Environment]
+    Env --> Web[Web server 环境<br/>位于负载均衡器后]
+    Env --> Worker[Worker 环境<br/>从 SQS 拉取]
+    Ver -->|按部署策略发布：<br/>rolling、immutable、canary...| Env
+    Env --> Plat[Platform<br/>运行时栈]
+```
+
 ## 核心概念
 
 - **Application**：版本和环境的逻辑容器。

@@ -4,10 +4,9 @@ English | [简体中文](README_ZH.md)
 
 > Facts verified against official AWS documentation: 2026-08-19
 
-
 ## Mental model
 
-> AWS Trusted Advisor inspects your AWS environment and recommends actions to save money, improve system availability and performance, and close security gaps. It checks your account against best practices across five categories: cost optimization, security, fault tolerance, performance, and service limits.
+> AWS Trusted Advisor inspects your AWS environment and recommends actions to save money, improve system availability and performance, and close security gaps.
 
 ## Overview
 

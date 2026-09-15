@@ -8,6 +8,22 @@ English | [简体中文](README_ZH.md)
 
 > Amazon Elastic Container Service (Amazon ECS) is a fully managed container orchestration service for deploying, managing, and scaling containerized applications. It runs workloads across AWS Regions and on-premises without the complexity of managing a control plane.
 
+## Big picture
+
+```mermaid
+flowchart TD
+    accTitle: Amazon ECS resource hierarchy
+    accDescr: A task definition is the blueprint for containers. A cluster provides capacity from EC2, Fargate, ECS Managed Instances, or ECS Anywhere. Within a cluster, a service keeps a desired count of tasks from a task definition running long-term, while a task alone runs a short-lived job.
+    TD[Task definition<br/>image, CPU, memory, IAM role] --> Task[Task<br/>short-lived job]
+    TD --> Svc[Service<br/>long-running, scaled]
+    Svc -->|runs on| Cluster[Cluster]
+    Task -->|runs on| Cluster
+    Cluster --> Cap{Capacity}
+    Cap --> Fargate[AWS Fargate]
+    Cap --> EC2C[EC2 instances /<br/>ECS Managed Instances]
+    Cap --> Any[ECS Anywhere]
+```
+
 ## Key concepts
 
 - **Three layers**: capacity (where containers run), controller (deploy/manage applications), and provisioning (tools to interact with the scheduler).

@@ -1,6 +1,33 @@
 # Amazon Athena - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> Athena is a query engine with no storage of its own: it plans SQL against metadata in a Data Catalog, reads only the S3 bytes that partitioning and file format let it skip past, and every byte scanned is what you pay for.
+
+This article answers two practical questions:
+
+1. What determines how much a query costs?
+2. How does a query relate to a workgroup and to data outside S3?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: Athena query execution
+    accDescr: A submitted query runs inside a workgroup, uses the Data Catalog to resolve table schema and partition locations, scans only the necessary S3 objects (pruned by partitioning and columnar format), optionally joins federated data through a connector, and writes results to an S3 output location.
+    Q[SQL query] --> W[Workgroup:<br/>cost controls + output location]
+    W --> DC[Data Catalog:<br/>schema + partition locations]
+    DC --> S3[Scan S3 objects<br/>pruned by partition/format]
+    Q -.federated query.-> F[Data source connector<br/>e.g. DynamoDB, RDS]
+    S3 --> R[Query results<br/>written to S3]
+    F --> R
+```
+
+Partitioning and columnar formats act as filters before Athena ever reads a byte, which is why they are the primary cost lever, not an optional tuning step.
 
 ## Overview
 

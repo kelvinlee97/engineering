@@ -8,6 +8,19 @@
 
 > Amazon Elastic Container Registry（Amazon ECR）是托管的容器镜像仓库。它支持基于 IAM 访问的私有仓库和公有仓库，可存储 Docker、Open Container Initiative（OCI）镜像以及 OCI 兼容制品。
 
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: Amazon ECR 镜像路径
+    accDescr: 按账户、按区域划分的 registry 内的 repository 保存推送的镜像。每次推送都可能触发扫描，受生命周期策略约束，并可跨区域或跨账户复制。
+    D[docker push] --> R[Repository<br/>位于 registry 中]
+    R --> S[镜像扫描]
+    R --> L[生命周期策略<br/>清理]
+    R --> RP[跨区域/跨账户<br/>复制]
+    R -->|docker pull| C[消费方：<br/>ECS、EKS、Lambda]
+```
+
 ## 核心概念
 
 - **Registry 与 Repository**：registry 按账户、按区域划分；repository 存放镜像版本。

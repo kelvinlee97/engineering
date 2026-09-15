@@ -8,6 +8,17 @@ English | [简体中文](README_ZH.md)
 
 > Amazon Forecast is a fully managed time-series forecasting service that uses statistical and machine learning algorithms to predict future values from historical data, with no ML experience required. Note: Amazon Forecast is no longer available to new customers; existing customers can continue using the service as normal.
 
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: Amazon Forecast pipeline
+    accDescr: Time-series datasets are imported and used to train a predictor. The predictor generates forecasts for a defined horizon, which are evaluated against backtests for accuracy.
+    D[Datasets<br/>time series + metadata] --> P[Predictor<br/>trained model]
+    P --> F[Forecast<br/>for defined horizon]
+    P --> B[Backtest evaluation]
+```
+
 ## Key concepts
 
 - **Time-series forecasting**: predict future data points (demand, traffic, capacity, financial metrics) based on historical series.

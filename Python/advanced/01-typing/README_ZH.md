@@ -2,6 +2,10 @@
 
 English version: [README.md](README.md)
 
+## 心智模型
+
+> 类型标注是给外部工具检查的文档，解释器本身不会强制执行：入参应接受函数实际需要的最抽象类型，返回值应给出调用方可以依赖的最具体类型。
+
 ```python
 def count_errors(statuses: list[int]) -> int:
     return sum(500 <= status < 600 for status in statuses)

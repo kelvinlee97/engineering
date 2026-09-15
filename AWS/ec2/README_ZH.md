@@ -8,6 +8,26 @@
 
 > Amazon Elastic Compute Cloud（Amazon EC2）在 AWS 云中提供按需、可扩展的计算容量。EC2 实例就是一台虚拟服务器；你选择的实例类型决定了它可用的计算、内存、网络和存储资源的配比。
 
+## 全景图
+
+你执行的操作（重启、停止、休眠、终止）决定了实例经历哪些状态，以及数据和计费如何变化：
+
+```mermaid
+stateDiagram-v2
+    accTitle: EC2 实例生命周期
+    accDescr: 实例从 pending 进入 running。running 状态下重启会回到同一宿主机上的 running；停止/休眠进入 stopping，再到 stopped（仅限 EBS 支持的实例），启动后回到 pending；终止会经过 shutting-down 到达永久性的 terminated。
+    [*] --> pending
+    pending --> running
+    running --> running: 重启（同一宿主机）
+    running --> stopping: 停止 / 休眠
+    stopping --> stopped
+    stopped --> pending: 启动
+    running --> shutting_down: 终止
+    stopped --> shutting_down: 终止
+    shutting_down --> terminated
+    terminated --> [*]
+```
+
 ## 实例生命周期与计费
 
 | 状态 | 含义 | 实例使用计费 |

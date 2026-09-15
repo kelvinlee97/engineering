@@ -2,10 +2,19 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
-This guide helps an operator assess a common web path without assuming facts about a particular production environment:
+This guide helps an operator assess a common web path without assuming facts about a particular production environment.
 
-```text
-Browser -> edge gateway -> Node.js BFF -> OpenResty/Lua or downstream services
+## Mental model
+
+> Modernization is a question of operating model, not component names: a BFF, a gateway, and downstream services can each stay exactly as they are today and still be modern, if evidence shows they are stateless, immutably released, and observable — the platform underneath is the last decision, not the first.
+
+```mermaid
+flowchart LR
+    accTitle: Common browser-to-downstream request path
+    accDescr: A browser reaches an edge gateway, which forwards to a Node.js BFF, which calls OpenResty/Lua gateway functions or downstream services.
+    B[Browser] --> E[Edge gateway]
+    E --> N[Node.js BFF]
+    N --> D[OpenResty/Lua or<br/>downstream services]
 ```
 
 The pattern is **not obsolete**. A BFF still provides browser-specific authorization, request adaptation, and aggregation. Nginx/OpenResty remains useful at the edge for TLS, routing, rate limiting, and carefully bounded Lua extensions. What can become outdated is the operating model: manually managed hosts, mutable releases, process-local state, shared long-lived credentials, and no usable evidence during an incident.
@@ -51,17 +60,19 @@ For Kubernetes, Gateway API provides a role-oriented model for infrastructure, g
 
 This is a target model, **not a claim about an existing system**.
 
-```text
-Internet
-  -> CDN/WAF and managed load balancer
-  -> gateway policy (Gateway API or managed equivalent)
-  -> stateless Node.js BFF replicas
-  -> OpenResty/Lua gateway functions and approved downstream services
-  -> managed data and identity services
-
-Every hop -> correlated logs, metrics, traces, and release metadata
-CI -> tested immutable artifact -> progressive release -> monitored rollback
+```mermaid
+flowchart TD
+    accTitle: Incremental target architecture layers
+    accDescr: Internet traffic passes through a CDN/WAF and managed load balancer, gateway policy, stateless Node.js BFF replicas, OpenResty/Lua gateway functions or approved downstream services, and managed data and identity services. Every hop emits correlated logs, metrics, traces, and release metadata, and a CI pipeline produces a tested immutable artifact promoted through progressive release with monitored rollback.
+    I[Internet] --> C[CDN/WAF and<br/>managed load balancer]
+    C --> G[Gateway policy<br/>Gateway API or equivalent]
+    G --> N[Stateless Node.js<br/>BFF replicas]
+    N --> O[OpenResty/Lua gateway functions<br/>and approved downstream services]
+    O --> M[Managed data and<br/>identity services]
+    CI[CI: tested immutable artifact] --> PR[Progressive release] --> RB[Monitored rollback]
 ```
+
+Every hop carries correlated logs, metrics, traces, and release metadata.
 
 - Keep the BFF browser-focused. It authenticates and adapts client requests; it must not become a hidden catch-all for unrelated domain logic.
 - Move only independently deployable, stateless BFF workloads to containers first. Stateful services require a separate data, backup, and recovery design.

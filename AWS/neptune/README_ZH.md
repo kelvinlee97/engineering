@@ -1,10 +1,27 @@
 # Amazon Neptune - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> Neptune 集群由一个主实例和最多 15 个副本组成，它们共享同一个自愈、跨可用区的集群卷——写入始终经过主实例，读取则在副本间水平扩展。
 
 ## 概述
 
 Amazon Neptune 是快速、可靠、完全托管的图数据库，用于高度关联的数据集。它支持属性图（Apache TinkerPop Gremlin 和 openCypher）与 RDF 图（SPARQL），常用于欺诈检测、推荐引擎、知识图谱、药物发现和网络安全。
+
+```mermaid
+flowchart TD
+    accTitle: Neptune 集群架构
+    accDescr: 客户端写入流量经过主实例；最多 15 个只读副本承载读流量并支持自动故障转移；主实例和副本都读写共享的跨三可用区复制的集群卷。
+    W[写入流量] --> PR[主实例]
+    R[读取流量] --> RP[只读副本<br/>最多 15 个]
+    PR --> V[(集群卷<br/>跨 3 个可用区复制)]
+    RP --> V
+    RP -.故障转移提升.-> PR
+```
 
 ## 核心概念
 

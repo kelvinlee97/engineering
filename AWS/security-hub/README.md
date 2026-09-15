@@ -4,14 +4,26 @@ English | [简体中文](README_ZH.md)
 
 > Facts verified against official AWS documentation: 2026-08-19
 
-
 ## Mental model
 
-> AWS Security Hub Cloud Security Posture Management (AWS Security Hub CSPM) provides a comprehensive view of the security state of your AWS environment. It collects findings from AWS services (such as GuardDuty, Inspector, and Macie) and supported partner products, runs continuous checks against security standards, and...
+> AWS Security Hub Cloud Security Posture Management (AWS Security Hub CSPM) provides a comprehensive view of the security state of your AWS environment.
 
 ## Overview
 
 AWS Security Hub Cloud Security Posture Management (AWS Security Hub CSPM) provides a comprehensive view of the security state of your AWS environment. It collects findings from AWS services (such as GuardDuty, Inspector, and Macie) and supported partner products, runs continuous checks against security standards, and gives you a consolidated, prioritized view with security scores.
+
+```mermaid
+flowchart LR
+    accTitle: Security Hub CSPM findings pipeline
+    accDescr: AWS services and partner products send findings, standards run configuration checks against AWS Config data, and both feed a consolidated, prioritized view with security scores that can trigger automation rules or EventBridge remediation.
+    S[AWS services:<br/>GuardDuty, Inspector, Macie] --> F[Findings ASFF]
+    P[Partner products] --> F
+    C[AWS Config data] --> ST[Standards & controls:<br/>FSBP, CIS, PCI DSS, NIST]
+    ST --> F
+    F --> V[Consolidated view<br/>+ security scores]
+    V --> A[Automation rules]
+    V --> E[EventBridge remediation]
+```
 
 ## Key concepts
 

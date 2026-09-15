@@ -4,10 +4,9 @@
 
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-
 ## 心智模型
 
-> AWS Solutions Library（原 AWS Solutions Implementations）为常见业务和技术用例提供经过验证的解决方案与指引。 每个方案都由 AWS 架构师按可靠性、安全和成本效率审查，并附带可在你账户中部署的指引和代码。
+> AWS Solutions Library（原 AWS Solutions Implementations）为常见业务和技术用例提供经过验证的解决方案与指引。
 
 ## 概述
 

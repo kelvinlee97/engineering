@@ -8,6 +8,20 @@ English | [简体中文](README_ZH.md)
 
 > AWS Elastic Beanstalk is a managed service that deploys and scales web applications and worker processes on familiar AWS resources such as EC2, S3, and load balancers. You upload code and Elastic Beanstalk handles capacity provisioning, load balancing, scaling, health monitoring, and updates, while you keep control of the underlying resources.
 
+## Big picture
+
+```mermaid
+flowchart TD
+    accTitle: Elastic Beanstalk resource hierarchy
+    accDescr: An application contains one or more versions and environments. Each environment runs a version on a platform, as either a web server environment behind a load balancer or a worker environment pulling from an SQS queue, using a configurable deployment policy.
+    App[Application] --> Ver[Application version]
+    App --> Env[Environment]
+    Env --> Web[Web server environment<br/>behind load balancer]
+    Env --> Worker[Worker environment<br/>pulls from SQS]
+    Ver -->|deployed via policy:<br/>rolling, immutable, canary...| Env
+    Env --> Plat[Platform<br/>runtime stack]
+```
+
 ## Key concepts
 
 - **Application**: the logical container for versions and environments.

@@ -1,6 +1,16 @@
 # AWS Artifact - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> AWS Artifact is a read-only evidence and agreements portal, not a compliance service: it hands you AWS's own audited reports and agreements on demand, but producing your own organization's compliance evidence stays your responsibility.
+
+This article answers one practical question:
+
+1. What can I get from Artifact, and what is still my job to produce?
 
 ## Overview
 
@@ -8,11 +18,13 @@ AWS Artifact provides on-demand access to AWS security and compliance documents,
 
 ## Key concepts
 
-- **Compliance reports**: downloadable reports such as ISO, PCI DSS, SOC 1/2/3, and region/service-specific compliance documents that you can submit to auditors.
-- **Agreements**: AWS agreements (for example, Business Associate Addendum) that you review, accept, and track per account or across your organization.
-- **Marketplace Vendor Insights**: access security and compliance documents for independent software vendors (ISVs) selling on AWS Marketplace.
-- **Assurance Assistant**: AI-powered answers to your compliance and due-diligence questions based on AWS compliance documentation.
-- **Shared responsibility context**: Artifact documents demonstrate AWS's controls; you remain responsible for obtaining and producing documents for your own organization's compliance.
+| Concept | What it covers |
+|---|---|
+| Compliance reports | Downloadable ISO, PCI DSS, SOC 1/2/3, and region/service-specific compliance documents you can submit to auditors. |
+| Agreements | AWS agreements (for example, Business Associate Addendum) you review, accept, and track per account or across your organization. |
+| Marketplace Vendor Insights | Security and compliance documents for independent software vendors (ISVs) selling on AWS Marketplace. |
+| Assurance Assistant | AI-powered answers to compliance and due-diligence questions, based on AWS compliance documentation. |
+| Shared responsibility context | Artifact documents demonstrate AWS's controls; you remain responsible for obtaining and producing documents for your own organization's compliance. |
 
 ## Common operations (AWS CLI)
 

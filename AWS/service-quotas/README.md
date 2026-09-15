@@ -4,10 +4,9 @@ English | [简体中文](README_ZH.md)
 
 > Facts verified against official AWS documentation: 2026-08-19
 
-
 ## Mental model
 
-> AWS Service Quotas lets you view and manage the quotas (limits) for AWS services from one place. Quotas are the maximum values for resources, actions, and items in your account (for example, IAM roles per account or VPCs per Region).
+> AWS Service Quotas lets you view and manage the quotas (limits) for AWS services from one place.
 
 ## Overview
 

@@ -4,14 +4,35 @@ English | [简体中文](README_ZH.md)
 
 > Facts verified against official AWS documentation: 2026-08-19
 
-
 ## Mental model
 
-> Security and compliance in AWS are a shared responsibility between AWS and the customer. AWS operates, manages, and controls the components from the host operating system and virtualization layer down to the physical security of the facilities.
+> Security and compliance in AWS are a shared responsibility between AWS and the customer.
 
 ## Overview
 
 Security and compliance in AWS are a shared responsibility between AWS and the customer. AWS operates, manages, and controls the components from the host operating system and virtualization layer down to the physical security of the facilities. The customer is responsible for the guest operating system (including updates and security patches), associated application software, and the configuration of AWS-provided security controls.
+
+```mermaid
+flowchart TB
+    accTitle: Shared responsibility split by stack layer
+    accDescr: AWS is responsible for security of the cloud, from facilities up through the virtualization layer. The customer is responsible for security in the cloud, from the guest operating system up through data, identity, and network configuration. How much each side manages shifts with the service model, from IaaS to PaaS to SaaS.
+    subgraph Customer["Customer: security IN the cloud"]
+        direction TB
+        D[Data] --> ID[Identity & access management]
+        ID --> AP[Applications]
+        AP --> OS[Guest OS, patching]
+        OS --> NW[Network & firewall configuration]
+        NW --> CE[Client-side encryption]
+    end
+    subgraph AWS["AWS: security OF the cloud"]
+        direction TB
+        HV[Host OS & virtualization] --> HW[Compute, storage, database, networking]
+        HW --> FA[Facilities & physical security]
+    end
+    Customer --> AWS
+```
+
+More of the stack shifts to AWS as the service model moves from IaaS (EC2) to PaaS (RDS) to SaaS (fully managed).
 
 ## Key concepts
 

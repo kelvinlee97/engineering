@@ -4,10 +4,9 @@ English | [简体中文](README_ZH.md)
 
 > Facts verified against official AWS documentation: 2026-08-19
 
-
 ## Mental model
 
-> Amazon Simple Email Service (Amazon SES) is a scalable email platform for sending transactional email (order confirmations, password resets), marketing email (offers, newsletters), and for receiving email. You can send through the SES API, the SMTP interface, or AWS SDKs, and receive email into S3, SNS, or Lambda.
+> Amazon Simple Email Service (Amazon SES) is a scalable email platform for sending transactional email (order confirmations, password resets), marketing email (offers, newsletters), and for receiving email.
 
 ## Overview
 

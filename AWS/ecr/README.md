@@ -8,6 +8,19 @@ English | [简体中文](README_ZH.md)
 
 > Amazon Elastic Container Registry (Amazon ECR) is a managed container image registry. It supports private repositories with IAM-based access and public repositories, and stores Docker, Open Container Initiative (OCI) images, and OCI-compatible artifacts.
 
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: Amazon ECR image path
+    accDescr: A repository inside a per-account, per-Region registry holds pushed images. Each push can trigger scanning, is subject to lifecycle policies, and can be replicated across Regions or accounts.
+    D[docker push] --> R[Repository<br/>in registry]
+    R --> S[Image scanning]
+    R --> L[Lifecycle policy<br/>cleanup]
+    R --> RP[Cross-Region/account<br/>replication]
+    R -->|docker pull| C[Consumers:<br/>ECS, EKS, Lambda]
+```
+
 ## Key concepts
 
 - **Registry and repository**: a registry is per-account per-Region; repositories hold image versions.

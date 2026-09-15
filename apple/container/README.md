@@ -2,6 +2,10 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> Docker Desktop hides many containers inside one shared Linux VM; apple/container instead gives **each container its own lightweight VM**, trading a little startup overhead for VM-level isolation and per-container resource accounting.
+
 ## Project Overview
 
 **apple/container** is Apple's official **native container tool for macOS**. It is written in Swift and optimized for Apple silicon.
@@ -12,21 +16,17 @@ Chinese version: [README_ZH.md](README_ZH.md)
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────┐
-│          container CLI (Swift)              │
-│                   │                         │
-│         container-apiserver (launchd)       │
-│              ┌────┴────┐                    │
-│   container-core-images  container-network  │
-│   (image XPC helper)     (network XPC helper)│
-└─────────────────────────────────────────────┘
-         │                    │
-    ┌────▼────┐        ┌────▼────┐
-    │Container│        │Container│
-    │ VM 1    │        │ VM 2    │
-    │(light VM)│       │(light VM)│
-    └─────────┘        └─────────┘
+The CLI never talks to a container's VM directly — it always goes through the API server and its helpers, which then create and own one VM per container:
+
+```mermaid
+flowchart TD
+    accTitle: apple/container architecture
+    accDescr: The container CLI talks to the launchd-managed container-apiserver, which delegates to the container-core-images and container-network-vmnet XPC helpers. The apiserver creates and owns one lightweight VM per running container.
+    CLI[container CLI<br/>Swift] --> API[container-apiserver<br/>launchd service]
+    API --> IMG[container-core-images<br/>image XPC helper]
+    API --> NET[container-network-vmnet<br/>network XPC helper]
+    API --> VM1[Container VM 1<br/>lightweight VM]
+    API --> VM2[Container VM 2<br/>lightweight VM]
 ```
 
 ### Core Components

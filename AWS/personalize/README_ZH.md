@@ -1,10 +1,27 @@
 # Amazon Personalize - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> Personalize 把导入的交互数据训练成一个 solution version，再以两种方式提供服务：实时 campaign 用于在线推荐，批处理任务用于离线列表和分群。
 
 ## 概述
 
 Amazon Personalize 是全托管机器学习服务，使用你的数据为用户生成商品推荐，并根据用户对商品/商品元数据的亲和度生成用户分群。它支持实时个性化 API 和批量操作，提供用例优化型 recommender 以及完全可定制的资源。
+
+```mermaid
+flowchart LR
+    accTitle: Personalize 数据到推荐的流水线
+    accDescr: 交互、商品、用户数据导入数据集组；recommender 或自定义 solution 训练出 solution version；再部署为实时 API 的 campaign，或运行批处理推理用于分群和离线列表。
+    D[导入数据：<br/>交互、商品、用户] --> G[数据集组]
+    G --> T[Recommender / solution<br/>训练]
+    T --> V[Solution version]
+    V --> C[Campaign<br/>实时 API]
+    V --> B[批处理推理<br/>分群、列表]
+```
 
 ## 核心概念
 

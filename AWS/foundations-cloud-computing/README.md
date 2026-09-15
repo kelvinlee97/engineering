@@ -8,6 +8,18 @@ English | [简体中文](README_ZH.md)
 
 > Cloud computing delivers on-demand IT resources over the internet with pay-as-you-go pricing. AWS provides compute, storage, databases, networking, analytics, and many other services on a global infrastructure, replacing large up-front capital expenses with variable costs that scale with usage.
 
+## Big picture
+
+```mermaid
+flowchart TD
+    accTitle: AWS global infrastructure hierarchy
+    accDescr: AWS infrastructure is organized as Regions, each containing multiple isolated Availability Zones for high availability, plus edge locations outside Regions used for content delivery closer to users.
+    G[AWS global infrastructure] --> R[Region<br/>geographic area]
+    R --> AZ1[Availability Zone]
+    R --> AZ2[Availability Zone]
+    G --> E[Edge locations<br/>content delivery]
+```
+
 ## Key concepts
 
 - **On-demand self-service**: provision resources when you need them without human interaction, and release them when done.

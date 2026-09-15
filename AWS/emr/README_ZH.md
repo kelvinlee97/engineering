@@ -16,6 +16,19 @@
 | EMR Serverless | 无需管理集群即可运行 Spark/Hive 作业，按作业付费 |
 | EMR on EKS | 用 EMR Spark 运行时在 Amazon EKS 上运行 Spark 工作负载 |
 
+## 全景图
+
+```mermaid
+flowchart TD
+    accTitle: EMR on EC2 集群节点角色
+    accDescr: 集群包含一个协调整个集群的主节点、运行 HDFS 和计算的核心节点，以及可选的、只提供计算能力的任务节点（通常使用 Spot 实例）。
+    M[主节点<br/>协调集群] --> C1[核心节点<br/>HDFS + 计算]
+    M --> C2[核心节点<br/>HDFS + 计算]
+    M --> T1[任务节点<br/>仅计算，通常为 Spot]
+    C1 --- S3[(S3，经 EMRFS)]
+    C2 --- S3
+```
+
 ## 核心概念
 
 - **集群**：主节点加核心节点和任务节点；核心节点运行 HDFS，任务节点增加计算能力。

@@ -4,10 +4,9 @@
 
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-
 ## 心智模型
 
-> AWS Consulting Offers 是 AWS 合作伙伴提供的打包咨询项目，针对特定业务结果（例如迁移、现代化、安全评估和数据分析）。 它们是 AWS Partner Network（APN）和 AWS Marketplace 生态的一部分，让客户以有界、可重复的方式采购合作伙伴专业服务。
+> AWS Consulting Offers 是 AWS 合作伙伴提供的打包咨询项目，针对特定业务结果（例如迁移、现代化、安全评估和数据分析）。
 
 ## 概述
 

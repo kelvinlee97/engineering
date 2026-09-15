@@ -1,10 +1,30 @@
 # Amazon QuickSight - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> QuickSight 连接数据源，把数据建模为数据集（走 SPICE 内存缓存或实时查询），在可编辑的分析中工作，再发布为只读仪表盘用于共享或嵌入。
 
 ## 概述
 
 Amazon QuickSight 是 Amazon Quick（由 QuickSight 演进而来的 AI 驱动服务）中的商业智能与数据可视化能力。它连接数据源、构建交互式仪表盘和分析，并支持在应用中嵌入分析。所有现有 QuickSight API、SDK 和集成继续可用。
+
+```mermaid
+flowchart LR
+    accTitle: QuickSight 从数据到仪表盘的流程
+    accDescr: 数据源为数据集提供数据，数据集通过 SPICE 内存缓存或实时查询提供服务；数据集用于分析，作者将分析发布为只读仪表盘，可共享给用户/组或嵌入应用。
+    D[数据源：<br/>Athena、Redshift、RDS、S3、SaaS] --> DS[数据集<br/>连接、计算字段]
+    DS --> SP[SPICE 缓存]
+    DS --> LQ[实时查询]
+    SP --> A[分析]
+    LQ --> A
+    A -->|发布| DB[仪表盘<br/>只读]
+    DB --> U[共享给用户/组]
+    DB --> E[嵌入应用]
+```
 
 ## 核心概念
 

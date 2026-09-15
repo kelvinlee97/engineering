@@ -8,6 +8,21 @@ English | [简体中文](README_ZH.md)
 
 > Amazon DocumentDB (with MongoDB compatibility) is a fast, reliable, fully managed document database. You can run the same application code, drivers, and tools you use with MongoDB. It separates storage from compute: a cluster volume is replicated six ways across three Availability Zones and grows automatically as data grows.
 
+## Big picture
+
+```mermaid
+flowchart TD
+    accTitle: Amazon DocumentDB cluster architecture
+    accDescr: A cluster has one primary instance and up to 15 replicas, all sharing a single cluster volume that is replicated six ways across three Availability Zones. The reader endpoint load-balances application reads across the replicas while writes go to the primary.
+    App[Application] -->|writes| Primary[Primary instance]
+    App -->|reads via reader endpoint| Reader[Reader endpoint]
+    Reader --> R1[Replica]
+    Reader --> R2[Replica]
+    Primary --> Vol[Shared cluster volume<br/>6-way replicated, 3 AZs]
+    R1 --> Vol
+    R2 --> Vol
+```
+
 ## Key concepts
 
 - **Cluster**: one primary instance plus up to 15 replicas sharing a cluster volume; all instances can serve reads.

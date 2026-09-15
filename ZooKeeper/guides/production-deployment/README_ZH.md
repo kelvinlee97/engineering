@@ -10,13 +10,19 @@ ZooKeeper 是一个小型、高可用的分布式协调服务。应用用它来�
 
 本指南部署的是生产 **ensemble（集群）**：三台 ZooKeeper server 保存同一份协调数据。一台是 **leader**，负责协调变更；另外两台是 **follower**，保存副本并参与投票。**quorum（多数派）** 是能够互相通信的多数节点：三台中只要两台即可。因此一次重启一台是安全的，同时停两台则不是。
 
-```text
-应用 ── TLS ──> zk-1、zk-2、zk-3  （client connection string）
-
-zk-1  ←──────── TLS 成员间通信 ────────→  zk-2 / zk-3
+```mermaid
+flowchart TB
+    accTitle: 应用、ensemble 与 quorum 的关系
+    accDescr: 应用通过 client connection string，以 TLS 连接到 zk-1、zk-2 或 zk-3 中的任意一台；三个成员彼此间也通过 TLS 通信。健康结果是一台 leader 加两台 follower，任意两台即可形成 quorum。
+    App[应用] -->|TLS<br/>client connection string| Z1[zk-1]
+    App -->|TLS| Z2[zk-2]
+    App -->|TLS| Z3[zk-3]
+    Z1 <-->|TLS 成员间通信| Z2
+    Z2 <-->|TLS 成员间通信| Z3
+    Z1 <-->|TLS 成员间通信| Z3
+```
 
 健康生产结果：1 台 leader + 2 台 follower；任意 2 台可形成 quorum。
-```
 
 先读完本节，再按顺序执行部署步骤。“30 分钟”指理解模型和安全规则所需时间，不包括申请证书、防火墙审批或生产变更窗口。
 
@@ -275,8 +281,14 @@ TLS-only port 应以相同 client TLS JVM 设置运行 `zkServer.sh status`；�
 
 运行 ZooKeeper 不依赖 Prometheus。ZooKeeper 通过 JMX 暴露 JVM 与 server 信息；Prometheus JMX Exporter 只是把这些信息转换为标准 `/metrics` endpoint 的一种方式，从而支持集中采集、告警和历史趋势分析。
 
-```text
-ZooKeeper JVM → JMX → Prometheus JMX Exporter → Prometheus → Alerting
+```mermaid
+flowchart LR
+    accTitle: 从 ZooKeeper JVM 到告警的指标链路
+    accDescr: ZooKeeper JVM 暴露 JMX，Prometheus JMX Exporter 将其转换为 metrics endpoint，Prometheus 采集该端点并驱动告警。
+    J[ZooKeeper JVM] --> M[JMX]
+    M --> E[Prometheus JMX Exporter]
+    E --> P[Prometheus]
+    P --> A[Alerting]
 ```
 
 本指南采用 Java agent，因为它避免暴露 remote JMX/RMI。如果组织已经使用 Datadog、Zabbix、Elastic 或云监控 agent，只需替换 exporter 与采集环节；ZooKeeper ensemble、TLS 和 systemd 部署均不受影响。

@@ -2,6 +2,10 @@
 
 English version: [README.md](README.md)
 
+## 心智模型
+
+> 把代码发布到 GitHub 是一条直线，而不是一条命令：修改、检查、测试、commit、推送分支、创建 Pull Request、合并。推送之前，任何改动都到不了队友或 `main`；推送分支本身也不等于已经合并。
+
 安全发布代码不是一条命令，而是一条完整流程：
 
 ```text

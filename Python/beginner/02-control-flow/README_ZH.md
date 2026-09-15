@@ -2,6 +2,26 @@
 
 English version: [README.md](README.md)
 
+## 心智模型
+
+> 流程控制总是精确地选中一条路径：`if`/`elif`/`else` 链中第一个为真的条件获胜，后面的分支不会再被求值。
+
+```mermaid
+flowchart TD
+    accTitle: if/elif/else 分支选择
+    accDescr: Python 按顺序求值各个条件，只执行第一个条件为真的分支，全部不满足时才执行 else。
+    S[按顺序求值条件] --> A{if 条件为真?}
+    A -- 是 --> RA[执行 if 代码块]
+    A -- 否 --> B{elif 条件为真?}
+    B -- 是 --> RB[执行 elif 代码块]
+    B -- 否 --> C[执行 else 代码块]
+    RA --> D[链结束后继续]
+    RB --> D
+    C --> D
+```
+
+只有一个分支会被执行，一旦匹配成功，链中剩余部分都会被跳过。
+
 ## 条件判断
 
 ```python

@@ -4,10 +4,9 @@ English | [简体中文](README_ZH.md)
 
 > Facts verified against official AWS documentation: 2026-08-19
 
-
 ## Mental model
 
-> Amazon Transcribe is an automatic speech recognition (ASR) service that converts audio to text using machine learning. You can transcribe media in real time (streaming) or in batch from S3, with features for language customization, content filtering, speaker separation, and multi-channel audio.
+> Amazon Transcribe is an automatic speech recognition (ASR) service that converts audio to text using machine learning.
 
 ## Overview
 

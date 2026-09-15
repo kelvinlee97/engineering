@@ -8,6 +8,22 @@
 
 > Amazon Elastic Container Service（Amazon ECS）是托管容器编排服务，用于部署、管理和扩展容器化应用。它可以在多个 AWS 区域和本地环境运行工作负载，无需管理控制平面。
 
+## 全景图
+
+```mermaid
+flowchart TD
+    accTitle: Amazon ECS 资源层级
+    accDescr: 任务定义是容器的蓝图。集群提供来自 EC2、Fargate、ECS Managed Instances 或 ECS Anywhere 的容量。在集群内，服务让指定数量的任务长期运行，而任务单独运行时执行一次性作业。
+    TD[任务定义<br/>镜像、CPU、内存、IAM 角色] --> Task[任务<br/>一次性作业]
+    TD --> Svc[服务<br/>长期运行、可扩缩]
+    Svc -->|运行于| Cluster[集群]
+    Task -->|运行于| Cluster
+    Cluster --> Cap{容量}
+    Cap --> Fargate[AWS Fargate]
+    Cap --> EC2C[EC2 实例 /<br/>ECS Managed Instances]
+    Cap --> Any[ECS Anywhere]
+```
+
 ## 核心概念
 
 - **三层结构**：容量（容器运行的基础设施）、控制器（部署/管理应用）、预置（与调度器交互的工具）。

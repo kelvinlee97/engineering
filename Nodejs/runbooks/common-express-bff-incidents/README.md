@@ -4,6 +4,10 @@ Chinese version: [README_ZH.md](README_ZH.md)
 
 Use this generic runbook for an Express BFF supervised by PM2 cluster mode. Replace placeholders only in an authorized environment. Preserve evidence before changing processes, releases, routes, credentials, or downstream targets. A restart can restore service temporarily; it does not prove the root cause.
 
+## Mental model
+
+> A failing request crosses a fixed chain of hops — gateway, PM2/BFF process, route/app logic, downstream dependency, host resources — and each of the ten incidents below is a known way one specific hop breaks; find the first broken hop before touching any control.
+
 ## Contents
 
 - [Safety boundary and first evidence](#safety-boundary-and-first-evidence)
@@ -31,20 +35,22 @@ Never start by running `pm2 restart`, `pm2 reload`, `pm2 delete`, `pm2 flush`, c
 
 ## Decision flow
 
-```text
-User request fails
-  |
-  +-- Reached the gateway? ---- no --> DNS/LB/TLS/gateway owner
-  |
-  +-- Gateway can reach BFF /healthz? -- no --> PM2, port, release, host
-  |
-  +-- BFF accepts request? ---- no --> route, auth, configuration, app logs
-  |
-  +-- BFF reaches downstream? -- no --> DNS/network/downstream owner
-  |
-  +-- Resources healthy? ------ no --> capacity/retention/approved mitigation
-  |
-  +-- Recent release? --------- yes -> compare and use approved rollback
+```mermaid
+flowchart TD
+    accTitle: Incident triage decision flow
+    accDescr: Starting from a failing user request, check in order whether it reached the gateway, whether the gateway can reach the BFF healthz endpoint, whether the BFF accepts the request, whether the BFF reaches downstream, and whether resources are healthy; a recent release at any point redirects to comparison and approved rollback.
+    U[User request fails] --> G{Reached<br/>the gateway?}
+    G -- No --> G1[DNS/LB/TLS/gateway owner]
+    G -- Yes --> H{Gateway reaches<br/>BFF /healthz?}
+    H -- No --> H1[PM2, port, release, host]
+    H -- Yes --> A{BFF accepts<br/>the request?}
+    A -- No --> A1[Route, auth,<br/>configuration, app logs]
+    A -- Yes --> D{BFF reaches<br/>downstream?}
+    D -- No --> D1[DNS/network/<br/>downstream owner]
+    D -- Yes --> R{Resources<br/>healthy?}
+    R -- No --> R1[Capacity/retention/<br/>approved mitigation]
+    R -- Yes --> C{Recent release?}
+    C -- Yes --> C1[Compare and use<br/>approved rollback]
 ```
 
 ## Ten incidents

@@ -16,6 +16,19 @@ English | [简体中文](README_ZH.md)
 | EMR Serverless | Run Spark/Hive jobs without managing clusters; pay per job |
 | EMR on EKS | Run Spark workloads on Amazon EKS with the EMR Spark runtime |
 
+## Big picture
+
+```mermaid
+flowchart TD
+    accTitle: EMR on EC2 cluster node roles
+    accDescr: A cluster has one master node coordinating the cluster, core nodes that run HDFS and compute, and optional task nodes that add compute-only capacity, often on Spot instances.
+    M[Master node<br/>coordinates cluster] --> C1[Core node<br/>HDFS + compute]
+    M --> C2[Core node<br/>HDFS + compute]
+    M --> T1[Task node<br/>compute only, often Spot]
+    C1 --- S3[(S3 via EMRFS)]
+    C2 --- S3
+```
+
 ## Key concepts
 
 - **Cluster**: master node plus core and task nodes; core nodes run HDFS, task nodes add compute.

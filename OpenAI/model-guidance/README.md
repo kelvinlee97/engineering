@@ -2,6 +2,24 @@
 
 English · [简体中文](README_ZH.md)
 
+## Mental model
+
+> Moving to GPT-6 Astra is an evaluated configuration change, not a drop-in rename: the API surface (Responses, supported parameters) and the model's default behavior (initiative, instruction weight, style, delegation, verification) both shift, so each must be checked and, if needed, re-pinned with prompt instructions.
+
+```mermaid
+flowchart TD
+    accTitle: GPT-6 Astra migration decision flow
+    accDescr: Migration changes the model id and API parameters first, then requires checking prompting behavior shifts, then validating with evaluations before a gradual rollout with a fallback kept available.
+    A[Change model to gpt-6-astra] --> B[Switch tool calling to Responses API]
+    B --> C[Remove unsupported sampling parameters]
+    C --> D[Review reasoning effort setting]
+    D --> E[Re-check prompts for initiative,<br/>instruction priority, style,<br/>delegation, and verification]
+    E --> F[Run evaluations against<br/>production-like tasks]
+    F --> G{Success, latency, and cost acceptable?}
+    G -- No --> E
+    G -- Yes --> H[Roll out gradually,<br/>keep pinned fallback]
+```
+
 ## Source
 
 - Official guide: [Model guidance](https://developers.openai.com/api/docs/guides/latest-model)

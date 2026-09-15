@@ -4,14 +4,26 @@ English | [简体中文](README_ZH.md)
 
 > Facts verified against official AWS documentation: 2026-08-19
 
-
 ## Mental model
 
-> Amazon Simple Notification Service (Amazon SNS) is a fully managed publish/subscribe service. Publishers send messages to a topic, which delivers them to subscribed endpoints.
+> Amazon Simple Notification Service (Amazon SNS) is a fully managed publish/subscribe service.
 
 ## Overview
 
 Amazon Simple Notification Service (Amazon SNS) is a fully managed publish/subscribe service. Publishers send messages to a topic, which delivers them to subscribed endpoints.
+
+```mermaid
+flowchart LR
+    accTitle: SNS publish and fanout
+    accDescr: A publisher sends one message to a topic. The topic fans it out to every subscribed endpoint in parallel, covering both application-to-application targets such as SQS, Lambda, and HTTP, and application-to-person targets such as email, SMS, and mobile push.
+    P[Publisher] --> T[Topic]
+    T --> SQS[SQS queue]
+    T --> L[Lambda function]
+    T --> H[HTTP-S endpoint]
+    T --> E[Email]
+    T --> S[SMS]
+    T --> M[Mobile push]
+```
 
 ## Key concepts
 

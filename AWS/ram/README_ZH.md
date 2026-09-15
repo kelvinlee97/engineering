@@ -1,10 +1,27 @@
 # AWS Resource Access Manager (RAM) - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> resource share 把资源、托管权限和主体打包在一起；在同一 AWS Organizations 内共享立即生效，向组织外共享则需要接收方先接受邀请。
 
 ## 概述
 
 AWS Resource Access Manager（AWS RAM）让你跨 AWS 账户、组织单元或整个组织共享 AWS 资源。你创建 resource share、选择主体（principal），附加的托管权限控制接收方对共享资源的操作，避免在每个账户重复创建相同基础设施。
+
+```mermaid
+flowchart TD
+    accTitle: AWS RAM 资源共享流程
+    accDescr: resource share 打包资源、托管权限和主体。当主体是同一 AWS Organizations 内的账户、OU 或整个组织时，访问立即生效；当主体在组织之外时，会发送邀请，接受后才能获得访问权限。
+    O[资源所有者] --> RS[Resource share：<br/>资源 + 托管权限]
+    RS --> P{主体类型}
+    P -- 组织内的<br/>账户/OU/组织 --> IM[访问立即生效]
+    P -- 组织外的账户 --> INV[发送邀请]
+    INV -->|接受| IM2[获得访问权限]
+```
 
 ## 核心概念
 
