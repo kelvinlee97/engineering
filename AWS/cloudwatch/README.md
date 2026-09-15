@@ -1,6 +1,34 @@
 # Amazon CloudWatch - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> CloudWatch is three parallel telemetry streams — metrics, logs, and traces — feeding one alerting/visualization layer: an alarm never inspects a log or a trace directly, it only ever watches a metric, which is why turning a log pattern into an alarm requires an explicit metric filter step in between.
+
+This article answers one practical question:
+
+1. Why can't I alarm on a log pattern directly, and what step is actually required?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: CloudWatch telemetry and alerting path
+    accDescr: AWS services and the CloudWatch agent or OpenTelemetry publish metrics, logs, and traces. Logs can be converted into metrics through a metric filter. An alarm watches one metric against a threshold, and on breach triggers an action such as SNS notification, EC2 Auto Scaling, or Systems Manager. Dashboards visualize metrics and logs together but do not sit in the alerting path.
+    S[AWS services /<br/>CloudWatch agent / OTel] --> M[Metrics]
+    S --> L[Logs]
+    S --> TR[Traces / X-Ray]
+    L -- metric filter --> M
+    M --> A{Alarm:<br/>threshold breached?}
+    A -- yes --> Act[Action: SNS,<br/>Auto Scaling, SSM]
+    M --> D[Dashboards]
+    L --> D
+```
+
+A metric filter is the only bridge from logs to alarms; without one, a recurring error message in logs is visible in Logs Insights but invisible to the alarm system.
 
 ## Overview
 
