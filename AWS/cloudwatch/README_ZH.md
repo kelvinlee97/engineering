@@ -1,6 +1,34 @@
 # Amazon CloudWatch - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> CloudWatch 是三条并行的遥测数据流——指标、日志、追踪——汇入同一个告警/可视化层：告警从不直接检查日志或追踪，它只监视指标，这正是为什么把一个日志模式变成告警，中间必须显式经过指标过滤器这一步。
+
+本文主要回答一个问题：
+
+1. 为什么不能直接对日志模式设置告警？真正需要的步骤是什么？
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: CloudWatch 遥测与告警路径
+    accDescr: AWS 服务以及 CloudWatch 代理或 OpenTelemetry 发布指标、日志和追踪。日志可以通过指标过滤器转换为指标。告警只监视一个指标是否超过阈值，超限时触发动作，如 SNS 通知、EC2 Auto Scaling 或 Systems Manager。仪表盘将指标和日志一起可视化，但并不处于告警路径中。
+    S[AWS 服务 /<br/>CloudWatch 代理 / OTel] --> M[指标]
+    S --> L[日志]
+    S --> TR[追踪 / X-Ray]
+    L -- 指标过滤器 --> M
+    M --> A{告警：<br/>超过阈值?}
+    A -- 是 --> Act[动作：SNS、<br/>Auto Scaling、SSM]
+    M --> D[仪表盘]
+    L --> D
+```
+
+指标过滤器是从日志到告警之间唯一的桥梁；没有它，日志中反复出现的错误消息在 Logs Insights 中可见，但对告警系统来说是不可见的。
 
 ## 概述
 
@@ -78,3 +106,4 @@ aws cloudwatch put-dashboard --dashboard-name ops --dashboard-body file://dashbo
 - [什么是 Amazon CloudWatch？- CloudWatch 用户指南](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html)
 - [Amazon CloudWatch 服务配额](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_limits.html)
 - [Amazon CloudWatch 定价](https://aws.amazon.com/cloudwatch/pricing/)
+- [AWS CLI：cloudwatch 和 logs 命令](https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/)

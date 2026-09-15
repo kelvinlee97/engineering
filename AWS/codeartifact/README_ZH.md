@@ -1,6 +1,31 @@
 # AWS CodeArtifact - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> CodeArtifact 的仓库构成一张有向图，而不是一份平铺列表：一个仓库可以把另一个仓库（包括背后连着公共注册表的仓库）声明为自己的上游，于是同一个包管理器端点可以透明地解析出实际分散在多个仓库中的包。
+
+本文主要回答一个问题：
+
+1. 当某个包版本的解析结果出乎意料时，上游链条中到底是哪个仓库提供了它？
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: CodeArtifact 的 domain、repository 与上游关系
+    accDescr: 一个 domain 包含一个或多个 repository。一个 repository 可以把同一 domain 中的另一个 repository 声明为自己的上游，而该上游 repository 本身还可以有到公共注册表（如 npmjs.com 或 PyPI）的外部连接。指向某个 repository 的包管理器会透明地从整条上游链中解析包。
+    Dom[Domain] --> R1[Repository：shared]
+    Dom --> R2[Repository：team-app]
+    R2 -- 上游 --> R1
+    R1 -- 外部连接 --> Pub[公共注册表<br/>npmjs.com / PyPI / Maven Central]
+    PM[包管理器<br/>npm / pip / Maven] --> R2
+```
+
+由于上游关系可以链式串联，开发者发布到 `team-app` 的包可能会遮蔽掉本应从 `shared` 或公共注册表解析出的同名包——解析顺序遵循上游链，而不是字母顺序或时间顺序。
 
 ## 概述
 
