@@ -2,6 +2,10 @@
 
 English version: [README.md](README.md)
 
+## 心智模型
+
+> 列表是有序、可变、可伸缩的引用序列。返回新结果的方法（`sorted`、`copy`）会创建新列表；就地修改的方法（`sort`、`append`、`remove`）会直接改动原列表并返回 `None`。
+
 ## 创建和访问
 
 ```python

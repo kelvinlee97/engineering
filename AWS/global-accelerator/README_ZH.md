@@ -1,10 +1,12 @@
 # AWS Global Accelerator - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-AWS Global Accelerator 为全球用户提升互联网应用程序的可用性和性能。它提供静态任播 IP 地址，并基于健康状态、客户端位置和你的策略，通过 AWS 全球网络将流量路由到最优的区域端点。
+> AWS Global Accelerator 为全球用户提升互联网应用程序的可用性和性能。它提供静态任播 IP 地址，并基于健康状态、客户端位置和你的策略，通过 AWS 全球网络将流量路由到最优的区域端点。
 
 ## 核心概念
 

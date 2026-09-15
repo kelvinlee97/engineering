@@ -1,10 +1,12 @@
 # Amazon DocumentDB - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon DocumentDB（兼容 MongoDB）是快速、可靠、完全托管的文档数据库。你可以继续使用 MongoDB 的应用代码、驱动和工具。它把存储与计算分离：集群卷在三个可用区间复制 6 份，并随数据增长自动扩容。
+> Amazon DocumentDB（兼容 MongoDB）是快速、可靠、完全托管的文档数据库。你可以继续使用 MongoDB 的应用代码、驱动和工具。它把存储与计算分离：集群卷在三个可用区间复制 6 份，并随数据增长自动扩容。
 
 ## 核心概念
 

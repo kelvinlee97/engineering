@@ -1,10 +1,12 @@
 # AWS Lambda - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-18
 
-## Overview
+## Mental model
 
-AWS Lambda is a serverless compute service: you run code without provisioning or managing servers. AWS manages the underlying infrastructure (maintenance, capacity, scaling, patching) and you focus on application logic. Lambda provides two compute primitives:
+> AWS Lambda is a serverless compute service: you run code without provisioning or managing servers. AWS manages the underlying infrastructure (maintenance, capacity, scaling, patching) and you focus on application logic. Lambda provides two compute primitives:
 
 - **Lambda Functions**: run code in response to events or API calls; each invocation runs independently and scales horizontally.
 - **Lambda MicroVMs**: isolated compute environments with near-instant startup and state retention for up to 8 hours, designed for workloads that need a dedicated environment per user or job (for example, running untrusted code).

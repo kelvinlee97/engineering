@@ -1,10 +1,12 @@
 # Amazon Kendra - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-Amazon Kendra is a managed intelligent search service that uses natural language processing and semantic ranking to retrieve answers from your documents, going beyond keyword search. Note: Amazon Kendra is no longer open to new customers; for similar capabilities, AWS recommends Amazon Bedrock Knowledge Bases.
+> Amazon Kendra is a managed intelligent search service that uses natural language processing and semantic ranking to retrieve answers from your documents, going beyond keyword search. Note: Amazon Kendra is no longer open to new customers; for similar capabilities, AWS recommends Amazon Bedrock Knowledge Bases.
 
 ## Key concepts
 

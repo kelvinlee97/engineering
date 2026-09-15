@@ -1,10 +1,12 @@
 # Amazon GuardDuty - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon GuardDuty 是威胁检测服务，持续监控和分析 AWS 数据源，包括 CloudTrail 管理事件、VPC Flow Logs 和 DNS 日志；还提供可选的保护计划，覆盖 EKS 审计日志、RDS 登录活动、S3 数据事件、EBS 恶意软件扫描、EC2/EKS/ECS 运行时监控、Lambda 网络活动和 AI 工作负载。GuardDuty 使用威胁情报（恶意 IP、域名和文件哈希）和机器学习生成安全发现（finding）。
+> Amazon GuardDuty 是威胁检测服务，持续监控和分析 AWS 数据源，包括 CloudTrail 管理事件、VPC Flow Logs 和 DNS 日志；还提供可选的保护计划，覆盖 EKS 审计日志、RDS 登录活动、S3 数据事件、EBS 恶意软件扫描、EC2/EKS/ECS 运行时监控、Lambda 网络活动和 AI 工作负载。GuardDuty 使用威胁情报（恶意 IP、域名和文件哈希）和机器学习生成安全发现（finding）。
 
 ## 核心概念
 

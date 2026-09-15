@@ -1,10 +1,12 @@
 # AWS IAM - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-18
 
-## 概述
+## 心智模型
 
-AWS Identity and Access Management（IAM）控制 AWS 资源的认证（谁登录）与授权（谁有权限）。IAM、IAM Identity Center 和 AWS STS 包含在 AWS 账号中，不额外收费。IAM 是最终一致（eventually consistent）的。
+> AWS Identity and Access Management（IAM）控制 AWS 资源的认证（谁登录）与授权（谁有权限）。IAM、IAM Identity Center 和 AWS STS 包含在 AWS 账号中，不额外收费。IAM 是最终一致（eventually consistent）的。
 
 ## 核心概念
 

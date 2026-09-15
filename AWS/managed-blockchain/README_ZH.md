@@ -1,10 +1,28 @@
 # Amazon Managed Blockchain（AMB）- Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> AMB 有两种互相独立的形态：AMB Access 提供对公共 Ethereum/Bitcoin 节点的 API 访问；私有网络则运行由成员组织及其 peer 节点组成的许可制 Hyperledger Fabric 网络。
 
 ## 概述
 
 Amazon Managed Blockchain（AMB）提供对公共区块链网络（Ethereum 和 Bitcoin）的访问，并支持用 Hyperledger Fabric 框架创建私有、许可制区块链网络。AMB Access 为公共节点提供全托管、专用（单租户）和无服务器多租户 API 操作；需要访问控制的使用场景可选择全托管私有网络。
+
+```mermaid
+flowchart TD
+    accTitle: Managed Blockchain 的两种部署形态
+    accDescr: AMB Access 通过 accessor 和令牌为公共 Ethereum、Bitcoin 节点提供多租户或专用 API 访问；私有网络运行许可制 Hyperledger Fabric，成员通过提案与投票加入，各成员运行承载账本和 chaincode 的 peer 节点。
+    C{部署形态} -- 公共网络 --> P[AMB Access]
+    P --> P1[多租户或<br/>专用节点]
+    P1 --> P2[Accessor + 令牌<br/>访问]
+    C -- 私有网络 --> F[Hyperledger Fabric 网络]
+    F --> M[成员<br/>通过提案+投票加入]
+    M --> N[Peer 节点<br/>承载账本与 chaincode]
+```
 
 ## 核心概念
 

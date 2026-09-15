@@ -1,10 +1,12 @@
 # Amazon EKS - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon Elastic Kubernetes Service（Amazon EKS）是全托管的 Kubernetes 服务。AWS 负责运行 Kubernetes 控制平面；还可以用 **EKS Auto Mode** 让 AWS 一并管理节点、扩缩容、打补丁和安全集成。
+> Amazon Elastic Kubernetes Service（Amazon EKS）是全托管的 Kubernetes 服务。AWS 负责运行 Kubernetes 控制平面；还可以用 **EKS Auto Mode** 让 AWS 一并管理节点、扩缩容、打补丁和安全集成。
 
 ## 核心概念
 

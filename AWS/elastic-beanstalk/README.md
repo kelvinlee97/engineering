@@ -1,10 +1,12 @@
 # AWS Elastic Beanstalk - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-AWS Elastic Beanstalk is a managed service that deploys and scales web applications and worker processes on familiar AWS resources such as EC2, S3, and load balancers. You upload code and Elastic Beanstalk handles capacity provisioning, load balancing, scaling, health monitoring, and updates, while you keep control of the underlying resources.
+> AWS Elastic Beanstalk is a managed service that deploys and scales web applications and worker processes on familiar AWS resources such as EC2, S3, and load balancers. You upload code and Elastic Beanstalk handles capacity provisioning, load balancing, scaling, health monitoring, and updates, while you keep control of the underlying resources.
 
 ## Key concepts
 

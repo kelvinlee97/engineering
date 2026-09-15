@@ -1,6 +1,34 @@
 # Amazon API Gateway - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> API Gateway is a policy-enforcing front door: every request passes through authentication, throttling, and a stage before it ever reaches an integration, so backend code never has to implement those cross-cutting concerns itself.
+
+This article answers two practical questions:
+
+1. What order do checks and transformations happen in, between the client and the backend?
+2. Which layer should I look at first when a request fails?
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: API Gateway request path
+    accDescr: A client request reaches a stage, is authenticated by IAM, a Lambda authorizer, or Cognito, is checked against throttling and usage plans, and is then routed through an integration to a Lambda function, HTTP endpoint, AWS service, or a mock response.
+    C[Client request] --> S[Stage / deployment]
+    S --> Auth{Authorized?<br/>IAM / Lambda authorizer / Cognito}
+    Auth -- no --> R403[403 Forbidden]
+    Auth -- yes --> T{Within throttle<br/>and usage plan?}
+    T -- no --> R429[429 Too Many Requests]
+    T -- yes --> I[Integration:<br/>Lambda, HTTP, AWS service, or mock]
+    I --> Resp[Response to client]
+```
+
+Each stage in this path maps directly to a troubleshooting checklist entry: a 403 means look at auth, a 429 means look at throttling, and anything else means look at the integration.
 
 ## Overview
 

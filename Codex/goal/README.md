@@ -2,6 +2,10 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> `/goal` turns Codex from a single-turn assistant into a supervised long-running agent: you set one objective and one stopping condition, Codex keeps working across turns and checkpoints toward it, and it stops on its own once it believes that condition is met.
+
 `/goal` gives Codex one durable objective to keep working toward across turns, instead of stopping after a single normal turn. It is useful for work with a clear target, a validation loop, and enough room for Codex to make progress without you steering every step. When a goal is active, Codex can keep working for hours and stops when it is confident the stopping condition has been met.
 
 This guide covers `/goal` in the Codex CLI and in the ChatGPT desktop app composer. Menus and feature availability can vary by Codex version, configuration, and account; the command list shown after typing `/` is the source of truth for your current client.

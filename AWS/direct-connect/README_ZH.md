@@ -1,10 +1,12 @@
 # AWS Direct Connect - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-AWS Direct Connect 在本地网络与 AWS 之间建立专用的私有网络连接。它绕过公共互联网，提供一致的网络体验，并在传输大量数据时可降低网络成本。连接在 AWS Direct Connect 站点以专线（dedicated）或托管（hosted）方式接入。
+> AWS Direct Connect 在本地网络与 AWS 之间建立专用的私有网络连接。它绕过公共互联网，提供一致的网络体验，并在传输大量数据时可降低网络成本。连接在 AWS Direct Connect 站点以专线（dedicated）或托管（hosted）方式接入。
 
 ## 核心概念
 

@@ -1,10 +1,12 @@
 # Amazon EventBridge - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon EventBridge 是无服务器事件路由服务，用于构建事件驱动应用。它负责事件的摄取、过滤、转换和投递，连接 AWS 服务、你的应用和第三方 SaaS。包含事件总线与规则、EventBridge Pipes（带富化的一对一集成）和 EventBridge Scheduler（cron/rate/一次性调度）。
+> Amazon EventBridge 是无服务器事件路由服务，用于构建事件驱动应用。它负责事件的摄取、过滤、转换和投递，连接 AWS 服务、你的应用和第三方 SaaS。包含事件总线与规则、EventBridge Pipes（带富化的一对一集成）和 EventBridge Scheduler（cron/rate/一次性调度）。
 
 ## 核心概念
 

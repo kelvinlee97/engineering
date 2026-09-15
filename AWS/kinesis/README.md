@@ -1,10 +1,12 @@
 # Amazon Kinesis - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-Amazon Kinesis is the AWS streaming data platform. It collects, processes, and analyzes real-time data at scale. The platform includes Kinesis Data Streams, Amazon Data Firehose, Managed Service for Apache Flink, and Kinesis Video Streams.
+> Amazon Kinesis is the AWS streaming data platform. It collects, processes, and analyzes real-time data at scale. The platform includes Kinesis Data Streams, Amazon Data Firehose, Managed Service for Apache Flink, and Kinesis Video Streams.
 
 ## Service components
 

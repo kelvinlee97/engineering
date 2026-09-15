@@ -1,10 +1,12 @@
 # AWS IAM Identity Center - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-AWS IAM Identity Center（AWS Single Sign-On 的继任者，2022 年 7 月更名）集中管理员工身份以及对 AWS 账户和云应用的访问。它是多账户访问的推荐方案：创建用户/组或连接外部身份提供方，分配 permission set，用户通过访问门户登录。
+> AWS IAM Identity Center（AWS Single Sign-On 的继任者，2022 年 7 月更名）集中管理员工身份以及对 AWS 账户和云应用的访问。它是多账户访问的推荐方案：创建用户/组或连接外部身份提供方，分配 permission set，用户通过访问门户登录。
 
 ## 核心概念
 

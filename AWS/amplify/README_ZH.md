@@ -1,6 +1,31 @@
 # AWS Amplify - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> Amplify 由两个基本独立的部分组成：Hosting（Git 触发的 CI/CD，部署到 AWS CDN）和后端生成（Gen 1 CLI 或 Gen 2 `ampx`），后者把 TypeScript 资源定义转换为云基础设施。
+
+本文主要回答三个问题：
+
+1. 从 `git push` 到上线部署之间发生了什么？
+2. Gen 1 和 Gen 2 后端有何区别？新项目该用哪个？
+3. 环境和 PR 预览在分支模型中处于什么位置？
+
+## 全景图
+
+```mermaid
+flowchart LR
+    accTitle: Amplify Hosting 部署流程
+    accDescr: 向已连接分支执行 git push 会触发构建，构建结果部署到该分支自己的环境（AWS CDN）。而拉取请求会生成一个临时预览应用。
+    G[git push 到分支] --> B[构建：安装、<br/>build、测试]
+    B --> D[部署到分支环境<br/>（CDN）]
+    PR[打开 Pull Request] --> P[预览应用<br/>临时 URL]
+```
+
+每个连接的分支都是拥有独立后端的独立环境；拉取请求得到的是临时预览，而不会影响现有环境。
 
 ## 概述
 

@@ -1,10 +1,25 @@
 # AWS DataSync - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-AWS DataSync is a secure, reliable, high-speed data transfer service for moving file and object data to, from, and between AWS storage services. It works with on-premises storage (via an agent), AWS storage (S3, EFS, FSx), and other cloud storage, with encryption and data integrity validation built in.
+> AWS DataSync is a secure, reliable, high-speed data transfer service for moving file and object data to, from, and between AWS storage services. It works with on-premises storage (via an agent), AWS storage (S3, EFS, FSx), and other cloud storage, with encryption and data integrity validation built in.
+
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: AWS DataSync transfer flow
+    accDescr: An agent connects on-premises or other-cloud storage to DataSync. A task moves data between a source location and a destination location on demand or on a schedule, and is monitored through CloudWatch.
+    S[Source location] -->|via agent, if on-prem| A[Agent]
+    A --> T[Task]
+    S --> T
+    T -->|transfers to| Dst[Destination location<br/>S3, EFS, FSx]
+    T -->|reports to| CW[CloudWatch metrics/events]
+```
 
 ## Key concepts
 

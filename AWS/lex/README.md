@@ -1,10 +1,12 @@
 # Amazon Lex - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-Amazon Lex V2 is a service for building conversational interfaces (chatbots) using voice and text. It provides natural language understanding (NLU) and automatic speech recognition (ASR), so developers can build, test, and publish bots that understand user intent and fulfill tasks, without deep learning expertise. You pay only for the text or speech requests made.
+> Amazon Lex V2 is a service for building conversational interfaces (chatbots) using voice and text. It provides natural language understanding (NLU) and automatic speech recognition (ASR), so developers can build, test, and publish bots that understand user intent and fulfill tasks, without deep learning expertise. You pay only for the text or speech requests made.
 
 ## Key concepts
 

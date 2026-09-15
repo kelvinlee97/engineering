@@ -1,10 +1,12 @@
 # AWS Directory Service - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-AWS Directory Service 提供托管目录选项，让 Microsoft Active Directory（AD）和 LDAP 与 AWS 服务及工作负载配合使用。你可以根据需求在云中运行全托管的 Microsoft AD、将 AWS 应用连接到现有本地 AD，或使用低成本的 AD 兼容目录。
+> AWS Directory Service 提供托管目录选项，让 Microsoft Active Directory（AD）和 LDAP 与 AWS 服务及工作负载配合使用。你可以根据需求在云中运行全托管的 Microsoft AD、将 AWS 应用连接到现有本地 AD，或使用低成本的 AD 兼容目录。
 
 ## 核心概念
 

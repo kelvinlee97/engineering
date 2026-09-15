@@ -1,10 +1,12 @@
 # Amazon EC2 - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-18
 
-## 概述
+## 心智模型
 
-Amazon Elastic Compute Cloud（Amazon EC2）在 AWS 云中提供按需、可扩展的计算容量。EC2 实例就是一台虚拟服务器；你选择的实例类型决定了它可用的计算、内存、网络和存储资源的配比。
+> Amazon Elastic Compute Cloud（Amazon EC2）在 AWS 云中提供按需、可扩展的计算容量。EC2 实例就是一台虚拟服务器；你选择的实例类型决定了它可用的计算、内存、网络和存储资源的配比。
 
 ## 实例生命周期与计费
 

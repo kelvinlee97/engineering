@@ -2,6 +2,10 @@
 
 English version: [README.md](README.md)
 
+## 心智模型
+
+> 变量名是指向对象的标签，不是装着值的盒子。复制变量名只是复制指针，不是复制对象，因此两个名字可能指向同一个可变对象。
+
 ```python
 name = "api"
 port = 8080

@@ -2,6 +2,10 @@
 
 English version: [README.md](README.md)
 
+## 心智模型
+
+> Pod 处于 `Pending` 且事件指向 ENI/IP，本质上是一条链路上某一环节的容量或健康问题——节点就绪状态、Pod subnet 的 IP 供给、节点 ENI/IP allocatable，或连接它们的 IPAM/admission 组件。本手册的任务是在改动任何配置前，先定位到底是哪一环出了问题。
+
 > **适用症状：** Pod 持续 `Pending`，事件指向 ENI/IP 容量不足或缺少容器子网。
 >
 > **第一个检查：** 在获授权的集群中执行 `kubectl describe pod <pod-name> -n <namespace>`，查看调度事件。
@@ -72,23 +76,19 @@ kubectl get node <node-name> \
 
 按以下顺序判断。多个条件可能同时存在；所有条件都清除前不得关闭事故。
 
-```text
-Pod 持续 Pending
-    |
-    +-- 候选节点 NotReady 或 unreachable？
-    |       +-- 是：先恢复节点健康，不能仅标记为 ENI/IP 耗尽。
-    |
-    +-- 受影响可用区或集群未关联 Pod subnet？
-    |       +-- 是：按变更流程添加同可用区的获批准 Pod subnet。
-    |
-    +-- Pod subnet 的可用 IP 不足？
-    |       +-- 是：扩展获批准的 Pod subnet 容量，再确认 IPAM 已识别。
-    |
-    +-- Node 的扩展资源 allocatable 已耗尽？
-    |       +-- 是：扩容节点，或执行获批准的实例规格/Pod 密度方案。
-    |
-    +-- 未发现明确容量不足？
-            +-- 在重试前检查 CNI/IPAM、admission webhook 与 cloud API 错误。
+```mermaid
+flowchart TD
+    accTitle: 故障分类判断顺序
+    accDescr: 从 Pod 持续 Pending 出发，依次检查节点健康、可用区内是否关联 Pod subnet、Pod subnet 剩余 IP、节点扩展资源 allocatable，若均无明确不足则检查 IPAM 或 admission 组件健康。
+    P[Pod 持续 Pending] --> N{候选节点<br/>NotReady 或 unreachable?}
+    N -- 是 --> N1[先恢复节点健康;<br/>不要仅标记为 ENI/IP 耗尽]
+    N -- 否 --> S{受影响可用区或集群<br/>未关联 Pod subnet?}
+    S -- 是 --> S1[添加获批准的<br/>同可用区 Pod subnet]
+    S -- 否 --> I{Pod subnet<br/>可用 IP 不足?}
+    I -- 是 --> I1[扩展获批准的 Pod subnet 容量,<br/>确认 IPAM 已识别]
+    I -- 否 --> E{Node 扩展资源<br/>allocatable 已耗尽?}
+    E -- 是 --> E1[扩容节点,或执行获批准的<br/>实例规格/密度方案]
+    E -- 否 --> C[重试前检查 CNI/IPAM、<br/>admission webhook 与 cloud API 错误]
 ```
 
 不要只凭一条 event 推断根因。应关联 scheduler event、Node taint 和 Ready 状态、subnet 状态、可用 IP 数、扩展资源 request，以及 allocatable 容量。

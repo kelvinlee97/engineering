@@ -1,10 +1,12 @@
 # Amazon Lightsail - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon Lightsail 是启动和管理虚拟私有服务器及 Web 应用最简单的 AWS 服务，采用低且可预测的月度定价。一个控制台内集成实例、容器、托管数据库（MySQL/PostgreSQL）、负载均衡器、CDN 分发、块/对象存储、静态 IP、DNS 和快照。
+> Amazon Lightsail 是启动和管理虚拟私有服务器及 Web 应用最简单的 AWS 服务，采用低且可预测的月度定价。一个控制台内集成实例、容器、托管数据库（MySQL/PostgreSQL）、负载均衡器、CDN 分发、块/对象存储、静态 IP、DNS 和快照。
 
 ## 核心概念
 

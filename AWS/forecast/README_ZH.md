@@ -1,10 +1,12 @@
 # Amazon Forecast - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon Forecast 是全托管时间序列预测服务，使用统计算法和机器学习算法根据历史数据预测未来值，无需 ML 经验。注意：Amazon Forecast 已不再向新客户开放；现有客户可以继续正常使用。
+> Amazon Forecast 是全托管时间序列预测服务，使用统计算法和机器学习算法根据历史数据预测未来值，无需 ML 经验。注意：Amazon Forecast 已不再向新客户开放；现有客户可以继续正常使用。
 
 ## 核心概念
 

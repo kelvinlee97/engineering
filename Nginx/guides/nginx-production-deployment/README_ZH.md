@@ -4,6 +4,10 @@ English version: [README.md](README.md)
 
 本指南在一台 Ubuntu 24.04 LTS VM 上部署**仅 Nginx**。它提供静态文件、反向代理监听在 `127.0.0.1:3000` 的应用，并通过 Certbot webroot 获取 HTTPS 证书。必须通过已批准的变更流程替换 `<domain>`、`<site>`、`<operations-email>` 与 `<approved-health-path>`；本文不是任何真实服务器已经部署的证据。
 
+## 心智模型
+
+> Nginx 在公网侧终结 HTTPS，并把每个请求分流到两类本地来源：直接从磁盘提供的静态文件，以及只能通过 loopback 代理访问的动态应用——主机本身从不直接暴露应用端口。
+
 ## 目录
 
 - [目标与安全边界](#目标与安全边界)
@@ -17,9 +21,13 @@ English version: [README.md](README.md)
 
 ## 目标与安全边界
 
-```text
-客户端 -> Nginx :443 -> 应用 127.0.0.1:3000
-                     -> 静态文件 /var/www/<site>/
+```mermaid
+flowchart LR
+    accTitle: Nginx 在静态文件与应用之间分流请求
+    accDescr: 客户端请求到达 Nginx 的 443 端口，Nginx 要么直接提供站点目录下的静态文件，要么把请求反向代理给监听在 loopback 3000 端口的应用。
+    C[客户端] --> N[Nginx :443]
+    N -->|静态路径| F[静态文件<br/>/var/www/site/]
+    N -->|proxy_pass| A[应用<br/>127.0.0.1:3000]
 ```
 
 Nginx master 进程读取、验证配置并管理 worker；worker 处理请求。`server` 是虚拟主机，`location` 匹配请求路径，`proxy_pass` 把请求转发给上游应用。不要在该主机安装或运行 OpenResty：两者都会占用 `80`、`443`。

@@ -1,10 +1,12 @@
 # AWS Database Migration Service（DMS）- Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-AWS Database Migration Service（AWS DMS）用于把关系数据库、数据仓库、NoSQL 数据库和其他数据存储迁移到 AWS，或在云与本地之间迁移。它支持一次性迁移和持续复制（保持源与目标同步），并提供 Fleet Advisor（发现）和 Schema Conversion（引擎转换）。
+> AWS Database Migration Service（AWS DMS）用于把关系数据库、数据仓库、NoSQL 数据库和其他数据存储迁移到 AWS，或在云与本地之间迁移。它支持一次性迁移和持续复制（保持源与目标同步），并提供 Fleet Advisor（发现）和 Schema Conversion（引擎转换）。
 
 ## 核心概念
 

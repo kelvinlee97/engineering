@@ -1,10 +1,12 @@
 # Elastic Load Balancing - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Elastic Load Balancing（ELB）自动把入站流量分发到多个目标（EC2 实例、容器、IP 地址、Lambda 函数），可跨一个或多个可用区，只把流量路由到健康目标。容量自动扩展。
+> Elastic Load Balancing（ELB）自动把入站流量分发到多个目标（EC2 实例、容器、IP 地址、Lambda 函数），可跨一个或多个可用区，只把流量路由到健康目标。容量自动扩展。
 
 ## 负载均衡器类型
 

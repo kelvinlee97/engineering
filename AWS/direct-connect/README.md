@@ -1,10 +1,12 @@
 # AWS Direct Connect - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-AWS Direct Connect establishes a dedicated private network connection between your on-premises network and AWS. It bypasses the public internet, provides consistent network experience, and can reduce network costs when transferring large volumes of data. Connections terminate at AWS Direct Connect locations in dedicated or hosted configurations.
+> AWS Direct Connect establishes a dedicated private network connection between your on-premises network and AWS. It bypasses the public internet, provides consistent network experience, and can reduce network costs when transferring large volumes of data. Connections terminate at AWS Direct Connect locations in dedicated or hosted configurations.
 
 ## Key concepts
 

@@ -1,10 +1,12 @@
 # Amazon Kendra - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon Kendra 是托管智能搜索服务，使用自然语言处理和语义排序从文档中检索答案，超越传统关键词搜索。注意：Amazon Kendra 已不再对新客户开放；类似能力 AWS 推荐使用 Amazon Bedrock Knowledge Bases。
+> Amazon Kendra 是托管智能搜索服务，使用自然语言处理和语义排序从文档中检索答案，超越传统关键词搜索。注意：Amazon Kendra 已不再对新客户开放；类似能力 AWS 推荐使用 Amazon Bedrock Knowledge Bases。
 
 ## 核心概念
 

@@ -1,10 +1,12 @@
 # Amazon Kinesis - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon Kinesis 是 AWS 流式数据平台，用于大规模收集、处理和分析实时数据。平台包括 Kinesis Data Streams、Amazon Data Firehose、Managed Service for Apache Flink 和 Kinesis Video Streams。
+> Amazon Kinesis 是 AWS 流式数据平台，用于大规模收集、处理和分析实时数据。平台包括 Kinesis Data Streams、Amazon Data Firehose、Managed Service for Apache Flink 和 Kinesis Video Streams。
 
 ## 服务组件
 

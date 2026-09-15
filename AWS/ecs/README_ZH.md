@@ -1,10 +1,12 @@
 # Amazon ECS - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon Elastic Container Service（Amazon ECS）是托管容器编排服务，用于部署、管理和扩展容器化应用。它可以在多个 AWS 区域和本地环境运行工作负载，无需管理控制平面。
+> Amazon Elastic Container Service（Amazon ECS）是托管容器编排服务，用于部署、管理和扩展容器化应用。它可以在多个 AWS 区域和本地环境运行工作负载，无需管理控制平面。
 
 ## 核心概念
 

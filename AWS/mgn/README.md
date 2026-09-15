@@ -1,10 +1,27 @@
 # AWS Application Migration Service (MGN) - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> MGN keeps a source server continuously replicating into AWS in the background, so cutover is just a short switch from an already-warm target rather than a from-scratch migration.
 
 ## Overview
 
 AWS Application Migration Service (MGN, now documented as AWS Transform MGN) automates the migration of physical, virtual, and cloud servers to AWS with minimal downtime, typically cutover windows of minutes. MGN performs continuous block-level replication of source servers, converts them for launch on AWS, and supports large-scale migrations through templates, applications, and waves.
+
+```mermaid
+flowchart LR
+    accTitle: MGN migration lifecycle
+    accDescr: A source server with the MGN agent replicates continuously to a staging area. Test launches validate the target before cutover. Cutover stops replication and launches the migrated instance, which is then finalized and the source archived.
+    S[Source server<br/>+ MGN agent] -->|continuous block-level<br/>replication| T[Staging area]
+    T --> L[Test launch<br/>blue/green validation]
+    L --> C[Cutover]
+    C --> F[Finalize cutover]
+    F --> A[Archive source]
+```
 
 ## Key concepts
 

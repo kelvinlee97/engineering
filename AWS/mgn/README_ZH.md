@@ -1,10 +1,27 @@
 # AWS Application Migration Service（MGN）- Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> MGN 在后台让源服务器持续复制到 AWS，因此 cutover 只是从一个早已预热好的目标做一次简短切换，而不是从零开始迁移。
 
 ## 概述
 
 AWS Application Migration Service（MGN，官方文档现称 AWS Transform MGN）自动化将物理、虚拟和云服务器迁移到 AWS，停机时间极短，通常切换窗口只有几分钟。MGN 对源服务器执行持续块级复制，转换为可在 AWS 启动的实例，并通过模板、应用程序和 wave 支持大规模迁移。
+
+```mermaid
+flowchart LR
+    accTitle: MGN 迁移生命周期
+    accDescr: 安装了 MGN 代理的源服务器持续复制到 staging 区域；cutover 前用测试启动验证目标；cutover 停止复制并启动迁移后的实例，随后 finalize 并归档源服务器。
+    S[源服务器<br/>+ MGN 代理] -->|持续块级复制| T[Staging 区域]
+    T --> L[测试启动<br/>蓝绿验证]
+    L --> C[Cutover 切换]
+    C --> F[Finalize cutover]
+    F --> A[归档源服务器]
+```
 
 ## 核心概念
 

@@ -1,10 +1,12 @@
 # AWS Global Accelerator - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-AWS Global Accelerator improves the availability and performance of internet applications for a global audience. It provides static anycast IP addresses and routes traffic over the AWS global network to the optimal regional endpoint based on health, client location, and your policies.
+> AWS Global Accelerator improves the availability and performance of internet applications for a global audience. It provides static anycast IP addresses and routes traffic over the AWS global network to the optimal regional endpoint based on health, client location, and your policies.
 
 ## Key concepts
 

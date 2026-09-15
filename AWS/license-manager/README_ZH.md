@@ -1,10 +1,12 @@
 # AWS License Manager - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-AWS License Manager 帮助你在多个 AWS 账户和区域管理 Microsoft、SAP、Oracle、IBM 等软件厂商的许可证。它提供统一可见性和报告，支持自带许可证（BYOL），用规则强制许可证限额，并帮助独立软件供应商（ISV）通过托管权益（managed entitlements）分发和跟踪许可证。
+> AWS License Manager 帮助你在多个 AWS 账户和区域管理 Microsoft、SAP、Oracle、IBM 等软件厂商的许可证。它提供统一可见性和报告，支持自带许可证（BYOL），用规则强制许可证限额，并帮助独立软件供应商（ISV）通过托管权益（managed entitlements）分发和跟踪许可证。
 
 ## 核心概念
 

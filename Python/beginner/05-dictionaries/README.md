@@ -2,6 +2,10 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> A dictionary maps hashable keys to values and remembers insertion order. Choose `mapping[key]` when a missing key is an error and `get()`/`setdefault()` when a default is valid.
+
 ```python
 status_counts = {200: 4, 500: 1}
 status_counts[200]             # 4

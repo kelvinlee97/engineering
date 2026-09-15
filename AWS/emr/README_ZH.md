@@ -1,10 +1,12 @@
 # Amazon EMR - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon EMR（原 Amazon Elastic MapReduce）是托管集群平台，用于运行 Apache Spark、Hive、HBase、Flink、Trino、Presto 等大数据框架。支持传统 EC2 集群、EMR Serverless 和 EMR on EKS。
+> Amazon EMR（原 Amazon Elastic MapReduce）是托管集群平台，用于运行 Apache Spark、Hive、HBase、Flink、Trino、Presto 等大数据框架。支持传统 EC2 集群、EMR Serverless 和 EMR on EKS。
 
 ## 部署模式
 

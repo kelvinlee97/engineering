@@ -4,6 +4,10 @@ Chinese version: [README_ZH.md](README_ZH.md)
 
 Deploy **OpenResty only** on one Ubuntu 24.04 LTS VM. OpenResty is an Nginx-based web platform with LuaJIT and Lua modules. This baseline provides a Lua health endpoint, reverse-proxies an application at `127.0.0.1:3000`, and uses Certbot webroot for HTTPS. Replace every `<example>` value through approved change control.
 
+## Mental model
+
+> OpenResty replaces the Nginx web-server process itself, adding a reviewed Lua script in the request path for the health endpoint while still reverse-proxying ordinary traffic to the local application over loopback.
+
 ## Contents
 
 - [Choose OpenResty deliberately](#choose-openresty-deliberately)
@@ -16,9 +20,13 @@ Deploy **OpenResty only** on one Ubuntu 24.04 LTS VM. OpenResty is an Nginx-base
 
 ## Choose OpenResty deliberately
 
-```text
-Client -> OpenResty :443 -> Lua /healthz
-                        -> application 127.0.0.1:3000
+```mermaid
+flowchart LR
+    accTitle: OpenResty request split between Lua health check and the application
+    accDescr: A client reaches OpenResty on port 443, which runs a Lua script for the healthz endpoint or reverse-proxies other requests to the application listening on loopback port 3000.
+    C[Client] --> O[OpenResty :443]
+    O -->|/healthz| L[Lua content_by_lua_file]
+    O -->|proxy_pass| A[Application<br/>127.0.0.1:3000]
 ```
 
 Choose OpenResty only when an Nginx gateway needs reviewed Lua behavior, such as this small health endpoint. Use ordinary Nginx for basic static serving and reverse proxying. OpenResty replaces the Nginx web-server process on this host; it is not an add-on to a running Ubuntu `nginx` service. Do not run both: they compete for `80/443`.

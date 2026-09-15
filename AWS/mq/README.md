@@ -1,10 +1,29 @@
 # Amazon MQ - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> Amazon MQ is a drop-in managed broker: pick ActiveMQ or RabbitMQ, choose single-instance or a highly-available topology, and AWS handles maintenance, patching, and failover underneath your existing broker-protocol clients.
 
 ## Overview
 
 Amazon MQ is a managed message broker service for Apache ActiveMQ and RabbitMQ. It provides brokers with managed maintenance, version upgrades, CloudWatch monitoring, encryption at rest and in transit, and private VPC endpoints, so you can migrate existing message-broker workloads without rewriting applications.
+
+```mermaid
+flowchart TD
+    accTitle: Amazon MQ deployment topologies
+    accDescr: For ActiveMQ, choose single-instance for development or active/standby multi-AZ for high availability, with optional cross-Region replication. For RabbitMQ, choose single-instance or quorum queues replicated across AZs.
+    E{Engine} -- ActiveMQ --> A1{Deployment mode}
+    A1 -- Dev --> A2[Single instance]
+    A1 -- Production --> A3[Active/standby<br/>multi-AZ]
+    A3 -.optional.-> A4[Cross-Region<br/>replication]
+    E -- RabbitMQ --> R1{Deployment mode}
+    R1 -- Dev --> R2[Single instance]
+    R1 -- Production --> R3[Quorum queues<br/>leader/follower across AZs]
+```
 
 ## Key concepts
 

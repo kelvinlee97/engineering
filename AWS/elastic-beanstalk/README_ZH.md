@@ -1,10 +1,12 @@
 # AWS Elastic Beanstalk - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-AWS Elastic Beanstalk 是一项托管服务，用于在 EC2、S3、负载均衡器等常见 AWS 资源上部署和扩展 Web 应用程序与后台进程。你上传代码，Elastic Beanstalk 负责容量供给、负载均衡、扩展、健康监控和更新，同时你仍可控制底层资源。
+> AWS Elastic Beanstalk 是一项托管服务，用于在 EC2、S3、负载均衡器等常见 AWS 资源上部署和扩展 Web 应用程序与后台进程。你上传代码，Elastic Beanstalk 负责容量供给、负载均衡、扩展、健康监控和更新，同时你仍可控制底层资源。
 
 ## 核心概念
 

@@ -2,6 +2,10 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> `/fork` copies the conversation so far into an independent branch — a new local chat for pure investigation, or a new Git worktree when the branch may edit files — so a stalled or exploratory line of reasoning cannot corrupt the original chat, and neither branch's later messages automatically reach the other.
+
 This guide explains how to fork a local Codex chat in the ChatGPT desktop app. Forking preserves the conversation as a new branch so you can test a different direction without losing the original chat.
 
 It covers the desktop composer, not the Codex CLI. Controls can vary by app version and account access; treat the commands shown after typing `/` as the source of truth for your current client.

@@ -1,10 +1,12 @@
 # Amazon Elastic Container Registry (ECR) - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon Elastic Container Registry（Amazon ECR）是托管的容器镜像仓库。它支持基于 IAM 访问的私有仓库和公有仓库，可存储 Docker、Open Container Initiative（OCI）镜像以及 OCI 兼容制品。
+> Amazon Elastic Container Registry（Amazon ECR）是托管的容器镜像仓库。它支持基于 IAM 访问的私有仓库和公有仓库，可存储 Docker、Open Container Initiative（OCI）镜像以及 OCI 兼容制品。
 
 ## 核心概念
 

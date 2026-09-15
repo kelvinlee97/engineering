@@ -2,6 +2,10 @@
 
 English version: [README.md](README.md)
 
+## 心智模型
+
+> `/fork` 把当前对话已有的内容复制成一个独立分支——纯分析用新的本地对话，可能改文件时用新的 Git worktree——这样卡住或探索性的思路不会污染原对话，且任一分支之后的消息都不会自动同步到另一分支。
+
 本指南说明如何在 ChatGPT Desktop 的本地 Codex 对话中使用 fork。Fork 会将当前对话复制为一个新分支，因此你可以测试另一条思路，同时保留原对话。
 
 本文只覆盖桌面版 composer 的交互，不覆盖 Codex CLI。控件会随 app 版本和账户权限变化；请以在 composer 输入 `/` 后实际显示的命令列表为准。

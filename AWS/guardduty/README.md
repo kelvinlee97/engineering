@@ -1,10 +1,12 @@
 # Amazon GuardDuty - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-Amazon GuardDuty is a threat detection service that continuously monitors and analyzes AWS data sources, including CloudTrail management events, VPC Flow Logs, and DNS logs. It also offers optional protection plans for EKS audit logs, RDS login activity, S3 data events, EBS malware scanning, runtime monitoring for EC2/EKS/ECS, Lambda network activity, and AI workloads. GuardDuty uses threat intelligence feeds (malicious IPs and domains, file hashes) and machine learning to produce security findings.
+> Amazon GuardDuty is a threat detection service that continuously monitors and analyzes AWS data sources, including CloudTrail management events, VPC Flow Logs, and DNS logs. It also offers optional protection plans for EKS audit logs, RDS login activity, S3 data events, EBS malware scanning, runtime monitoring for EC2/EKS/ECS, Lambda network activity, and AI workloads. GuardDuty uses threat intelligence feeds (malicious IPs and domains, file hashes) and machine learning to produce security findings.
 
 ## Key concepts
 

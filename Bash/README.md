@@ -2,6 +2,10 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> Each question below is answered by chaining a few small Unix filters (`awk`, `cut`, `sort`, `uniq`, `grep`) into one pipeline over the same log file; the same handful of building blocks recombine to answer almost any "top N", "count per X", or "filter by Y" interview question.
+
 Use [`access.log`](access.log) below. It simulates an Nginx combined access log containing the client IP, identity fields, time, HTTP request, status, response size, Referer, and User-Agent. Run commands from the repository root.
 
 ## Command guides

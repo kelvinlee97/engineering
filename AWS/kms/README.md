@@ -1,10 +1,12 @@
 # AWS KMS - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-AWS Key Management Service (AWS KMS) lets you create and control the keys used to encrypt and sign your data. KMS keys are protected by FIPS 140-3 Security Level 3 validated hardware security modules (HSMs) and never leave the service unencrypted.
+> AWS Key Management Service (AWS KMS) lets you create and control the keys used to encrypt and sign your data. KMS keys are protected by FIPS 140-3 Security Level 3 validated hardware security modules (HSMs) and never leave the service unencrypted.
 
 ## Key concepts
 

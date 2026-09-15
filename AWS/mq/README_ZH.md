@@ -1,10 +1,29 @@
 # Amazon MQ - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> Amazon MQ 是可直接替换的托管 broker：选择 ActiveMQ 或 RabbitMQ，再选单实例或高可用拓扑，AWS 在你现有的 broker 协议客户端之下负责维护、打补丁和故障转移。
 
 ## 概述
 
 Amazon MQ 是 Apache ActiveMQ 和 RabbitMQ 的托管消息代理服务。它提供托管维护、版本升级、CloudWatch 监控、静态和传输加密以及 VPC 私有端点，让你迁移现有消息代理工作负载时无需重写应用。
+
+```mermaid
+flowchart TD
+    accTitle: Amazon MQ 部署拓扑
+    accDescr: ActiveMQ 可选开发用单实例，或生产用跨可用区 active/standby，并可选跨区域复制；RabbitMQ 可选单实例，或跨可用区复制的 quorum 队列。
+    E{引擎} -- ActiveMQ --> A1{部署模式}
+    A1 -- 开发 --> A2[单实例]
+    A1 -- 生产 --> A3[跨可用区<br/>Active/standby]
+    A3 -.可选.-> A4[跨区域复制]
+    E -- RabbitMQ --> R1{部署模式}
+    R1 -- 开发 --> R2[单实例]
+    R1 -- 生产 --> R3[Quorum 队列<br/>跨可用区主/从]
+```
 
 ## 核心概念
 

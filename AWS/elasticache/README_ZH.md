@@ -1,10 +1,12 @@
 # Amazon ElastiCache - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
 
-## 概述
+## 心智模型
 
-Amazon ElastiCache 是完全托管的内存数据存储和缓存服务，支持 Valkey、Redis OSS 和 Memcached 引擎，提供 Serverless 和节点式两种部署方式，常用于缓存、会话存储和实时数据访问。
+> Amazon ElastiCache 是完全托管的内存数据存储和缓存服务，支持 Valkey、Redis OSS 和 Memcached 引擎，提供 Serverless 和节点式两种部署方式，常用于缓存、会话存储和实时数据访问。
 
 ## 部署选项
 

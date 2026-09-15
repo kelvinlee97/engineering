@@ -1,10 +1,12 @@
 # Foundations of Cloud Computing - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Overview
+## Mental model
 
-Cloud computing delivers on-demand IT resources over the internet with pay-as-you-go pricing. AWS provides compute, storage, databases, networking, analytics, and many other services on a global infrastructure, replacing large up-front capital expenses with variable costs that scale with usage.
+> Cloud computing delivers on-demand IT resources over the internet with pay-as-you-go pricing. AWS provides compute, storage, databases, networking, analytics, and many other services on a global infrastructure, replacing large up-front capital expenses with variable costs that scale with usage.
 
 ## Key concepts
 
