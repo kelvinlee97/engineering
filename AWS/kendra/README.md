@@ -8,6 +8,18 @@ English | [简体中文](README_ZH.md)
 
 > Amazon Kendra is a managed intelligent search service that uses natural language processing and semantic ranking to retrieve answers from your documents, going beyond keyword search. Note: Amazon Kendra is no longer open to new customers; for similar capabilities, AWS recommends Amazon Bedrock Knowledge Bases.
 
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: Amazon Kendra search flow
+    accDescr: Data source connectors sync documents into an index. Queries are matched using semantic search and intelligent ranking, returning answers, snippets, or documents, and the GenAI index can also back retrieval-augmented generation in Amazon Q Business or Bedrock.
+    DS[Data sources:<br/>SharePoint, S3, databases] -->|sync| Idx[Index]
+    Q[Query] --> Idx
+    Idx -->|semantic search +<br/>ranking| Res[Answers, snippets,<br/>documents]
+    Idx --> RAG[GenAI index for<br/>Amazon Q / Bedrock RAG]
+```
+
 ## Key concepts
 
 - **Index**: the searchable store of documents; Kendra offers GenAI Enterprise, Basic Enterprise, and Basic Developer edition indices.

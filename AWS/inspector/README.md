@@ -8,6 +8,19 @@ English | [简体中文](README_ZH.md)
 
 > Amazon Inspector is a vulnerability management service that automatically discovers workloads and continuously scans them for software vulnerabilities and unintended network exposure. It scans EC2 instances, container images in Amazon ECR, and Lambda functions, and produces findings with remediation guidance and an environment-specific risk score.
 
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: Amazon Inspector scanning flow
+    accDescr: Inspector continuously scans EC2, ECR, and Lambda resources, rescanning automatically when packages change or new CVEs are published. Results become findings with an environment-specific risk score, which flow to EventBridge and Security Hub for response.
+    R[EC2 / ECR / Lambda<br/>resources] --> S[Continuous scanning]
+    S -->|new package or CVE| S
+    S --> F[Findings + risk score]
+    F --> EB[EventBridge]
+    F --> SH[Security Hub CSPM]
+```
+
 ## Key concepts
 
 - **Findings**: detailed reports of detected vulnerabilities or network exposure; include severity, affected resource, and remediation recommendations; findings close automatically when remediated.

@@ -17,6 +17,19 @@ English | [简体中文](README_ZH.md)
 | Managed Service for Apache Flink | Stream processing with Apache Flink (SQL and DataStream API) |
 | Kinesis Video Streams | Ingestion and playback of video streams for ML and analytics |
 
+## Big picture
+
+```mermaid
+flowchart LR
+    accTitle: Kinesis Data Streams producer-consumer flow
+    accDescr: Producers push records with a partition key into a stream's shards, which each provide fixed capacity. Consumers poll shards, typically through the Kinesis Client Library, and enhanced fan-out gives each consumer a dedicated read throughput.
+    P[Producers<br/>PutRecord/PutRecords] -->|partition key| Sh1[Shard 1]
+    P -->|partition key| Sh2[Shard 2]
+    Sh1 --> C[Consumers<br/>KCL / GetRecords]
+    Sh2 --> C
+    Sh1 -.->|enhanced fan-out| C2[Dedicated consumer]
+```
+
 ## Key concepts
 
 - **Stream and shard**: a shard is a unit of capacity; data is ordered within a shard, and throughput scales with shard count.
