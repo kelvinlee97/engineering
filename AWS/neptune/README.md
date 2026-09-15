@@ -1,10 +1,27 @@
 # Amazon Neptune - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+## Mental model
+
+> A Neptune cluster is one primary and up to 15 replicas all reading the same self-healing, multi-AZ cluster volume — writes always go through the primary, reads scale out across replicas.
 
 ## Overview
 
 Amazon Neptune is a fast, reliable, fully managed graph database for highly connected datasets. It supports property graphs (Apache TinkerPop Gremlin and openCypher) and RDF graphs (SPARQL), and is used for fraud detection, recommendation engines, knowledge graphs, drug discovery, and network security.
+
+```mermaid
+flowchart TD
+    accTitle: Neptune cluster architecture
+    accDescr: Client writes go through the primary instance. Read replicas, up to fifteen, serve reads and support automatic failover. Both the primary and replicas read and write through a shared cluster volume replicated across three Availability Zones.
+    W[Write traffic] --> PR[Primary instance]
+    R[Read traffic] --> RP[Read replicas<br/>up to 15]
+    PR --> V[(Cluster volume<br/>replicated across 3 AZs)]
+    RP --> V
+    RP -.failover promotion.-> PR
+```
 
 ## Key concepts
 

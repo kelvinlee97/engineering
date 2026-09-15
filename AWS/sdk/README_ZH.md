@@ -1,6 +1,13 @@
 # AWS SDKs and Tools - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+
+## 心智模型
+
+> AWS SDK 是各语言的 AWS 服务 API 客户端库：Python（boto3）、Java、JavaScript（v3）、Go、. NET、Ruby、PHP、C++ 等。
 
 ## 概述
 

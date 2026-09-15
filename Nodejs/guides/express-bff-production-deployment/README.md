@@ -16,9 +16,15 @@ This guide deploys a generic Express BFF on a Linux VM. PM2 runs multiple Node.j
 
 ## Mental model and boundaries
 
-```text
-Browser -> external Nginx/OpenResty -> Express BFF (PM2 cluster)
-                                      -> approved downstream HTTP service
+> The BFF is one more hop between an external gateway and approved downstream services: PM2 keeps several stateless Node.js workers alive behind one private listener, so the gateway and downstream API remain separate, independently operated systems.
+
+```mermaid
+flowchart LR
+    accTitle: Request path through the Express BFF
+    accDescr: A browser reaches an external Nginx or OpenResty gateway, which forwards to the Express BFF running as a PM2 cluster, which in turn calls an approved downstream HTTP service.
+    B[Browser] --> G[External Nginx/OpenResty]
+    G --> BFF[Express BFF<br/>PM2 cluster]
+    BFF --> D[Approved downstream<br/>HTTP service]
 ```
 
 Node.js runs JavaScript outside the browser. Express is a web framework. A BFF is a backend used by a browser-facing application: it can enforce session/authorization rules, adapt requests, and call downstream services. It is not OpenResty, Nginx, or the downstream API.

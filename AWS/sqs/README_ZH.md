@@ -1,6 +1,13 @@
 # Amazon SQS - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+
+## 心智模型
+
+> Amazon Simple Queue Service（Amazon SQS）是托管消息队列服务，用于解耦分布式系统。 消息冗余存储在多台服务器上；支持死信队列（DLQ）和成本分配标签。
 
 ## 概述
 

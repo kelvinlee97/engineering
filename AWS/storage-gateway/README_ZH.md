@@ -1,6 +1,13 @@
 # AWS Storage Gateway - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+
+## 心智模型
+
+> AWS Storage Gateway 把本地软件设备（或 Storage Gateway 硬件设备）与云存储连接起来，让本地环境可以使用 AWS 托管的文件、卷和磁带存储，是混合存储架构的桥梁。
 
 ## 概述
 

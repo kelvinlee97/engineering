@@ -2,6 +2,10 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> A function signature is a contract: positional parameters, `*`-separated keyword-only parameters, and defaults each control how callers may pass arguments. Defaults are evaluated once, at definition time, which is why mutable defaults are a trap.
+
 ```python
 def connect(host: str, port: int = 443, *, timeout: float = 5.0) -> str:
     """Return a display address."""

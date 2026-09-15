@@ -2,6 +2,10 @@
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
+## Mental model
+
+> A comprehension is a loop rewritten as an expression: `[expression for item in iterable if condition]` reads left to right as "produce this, for each item, when this holds." The enclosing bracket (`[]`, `{}`, `()`) picks the resulting container.
+
 ```python
 squares = [number**2 for number in range(5)]
 even = {number for number in range(10) if number % 2 == 0}

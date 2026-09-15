@@ -8,6 +8,18 @@
 
 > AWS Directory Service 提供托管目录选项，让 Microsoft Active Directory（AD）和 LDAP 与 AWS 服务及工作负载配合使用。你可以根据需求在云中运行全托管的 Microsoft AD、将 AWS 应用连接到现有本地 AD，或使用低成本的 AD 兼容目录。
 
+## 全景图
+
+```mermaid
+flowchart TD
+    accTitle: AWS Directory Service 选型
+    accDescr: 需要完整 AD 功能、RDS SQL Server 或信任关系时选择 AWS Managed Microsoft AD；需要将信任源保留在本地时选择 AD Connector；基础、低成本需求选择 Simple AD；大规模 SaaS 社交身份需求则改用 Amazon Cognito。
+    Q{目录需求?} -->|完整 AD 功能、<br/>RDS SQL Server、信任| MAD[AWS Managed Microsoft AD]
+    Q -->|信任源需保留在本地| ADC[AD Connector]
+    Q -->|基础、低成本| SAD[Simple AD]
+    Q -->|大规模 SaaS<br/>社交身份| COG[Amazon Cognito]
+```
+
 ## 核心概念
 
 - **AWS Managed Microsoft AD**：由 AWS 管理的真实 Microsoft Windows Server Active Directory；支持 AD 感知应用、EC2 加域、RDS for SQL Server、WorkSpaces、组策略、schema 扩展、LDAPS、MFA，以及与本地 AD 的信任关系。

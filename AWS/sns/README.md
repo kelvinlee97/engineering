@@ -1,6 +1,13 @@
 # Amazon SNS - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+
+## Mental model
+
+> Amazon Simple Notification Service (Amazon SNS) is a fully managed publish/subscribe service. Publishers send messages to a topic, which delivers them to subscribed endpoints.
 
 ## Overview
 

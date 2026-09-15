@@ -1,6 +1,13 @@
 # Amazon SNS - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+
+## 心智模型
+
+> Amazon Simple Notification Service（Amazon SNS）是全托管的发布/订阅消息服务。 发布者向主题（Topic）发送消息，主题把消息投递给订阅的端点。
 
 ## 概述
 

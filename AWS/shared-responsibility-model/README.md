@@ -1,6 +1,13 @@
 # AWS Shared Responsibility Model - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+
+## Mental model
+
+> Security and compliance in AWS are a shared responsibility between AWS and the customer. AWS operates, manages, and controls the components from the host operating system and virtualization layer down to the physical security of the facilities.
 
 ## Overview
 

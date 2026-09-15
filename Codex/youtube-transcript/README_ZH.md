@@ -2,9 +2,30 @@
 
 English version: [README.md](README.md)
 
+## 心智模型
+
+> 一条 YouTube 链接在生成任何总结之前，必须先产出一份经过验证的本地 transcript；捕获、验证、总结是三道独立关卡，任一关卡失败都会直接停止流程，而不是重试或切换到第三方来源。
+
 这是一个本地优先的 Codex Skill：优先通过一次 Chrome `evaluateAll` 调用读取 YouTube 页面已挂载的 Transcript segments；如果 YouTube 始终让该面板保持空白，则改用一次 Chrome 内置的 YouTube transcript 导出。两条路径互斥；失败时不重试，也不切换到第三方来源。它不下载媒体、不调用 `yt-dlp` 或字幕 API、不使用 Whisper，也不从标题或简介补全缺失内容。
 
 用户只需提供 YouTube 链接。Codex 会导出一份完整 Transcript、验证覆盖范围、保存本地 `transcript.md`，最后才生成面向读者的英文与中文总结。第一次获取失败就停止流程。
+
+```mermaid
+flowchart TD
+    accTitle: YouTube transcript 捕获与发布流程
+    accDescr: 一条 YouTube 链接先通过 Transcript 面板捕获，面板为空时改用 transcript 导出 helper。捕获结果先经过覆盖率验证，捕获或验证失败都会停止流程。通过验证的 transcript 才会被总结为中英文，再经过审计和 validate-publication 检查后才能发布。
+    L[YouTube 链接] --> P{Transcript 面板<br/>有 segments?}
+    P -- 有 --> C1[通过 evaluateAll 读取]
+    P -- 没有 --> C2[调用一次 transcript 导出 helper]
+    C1 --> V{通过验证?}
+    C2 --> V
+    V -- 否 --> S[停止：报告失败]
+    V -- 是 --> T[本地 transcript.md<br/>+ validation.json]
+    T --> M[撰写中英文总结]
+    M --> A{双语审计 +<br/>validate-publication 通过?}
+    A -- 否 --> S
+    A -- 是 --> R[发布 summary.md<br/>+ summary_zh.md]
+```
 
 ## 输出约定
 

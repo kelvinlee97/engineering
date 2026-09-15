@@ -1,6 +1,13 @@
 # AWS Step Functions - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+
+## 心智模型
+
+> AWS Step Functions 是无服务器编排服务。 你把工作流（状态机）定义为一串步骤，协调 Lambda 函数、AWS 服务和人工审批流程。
 
 ## 概述
 

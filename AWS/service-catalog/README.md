@@ -1,6 +1,13 @@
 # AWS Service Catalog - Runbook & Reference
 
+English | [简体中文](README_ZH.md)
+
 > Facts verified against official AWS documentation: 2026-08-19
+
+
+## Mental model
+
+> AWS Service Catalog lets organizations create and manage catalogs of approved IT services, from single resources (AMI-based servers, databases, software) to complete multi-tier application architectures. Administrators assemble portfolios with constraints and access control; end users discover and self-service...
 
 ## Overview
 

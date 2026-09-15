@@ -1,6 +1,13 @@
 # Amazon VPC - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+
+## 心智模型
+
+> Amazon Virtual Private Cloud（Amazon VPC）让你在自定义的逻辑隔离虚拟网络中启动 AWS 资源。 每个 AWS 区域都有一个默认 VPC，可直接使用。
 
 ## 概述
 

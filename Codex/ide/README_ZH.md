@@ -2,6 +2,10 @@
 
 English version: [README.md](README.md)
 
+## 心智模型
+
+> IDE context 只是额外交给 Codex 的证据——当前文件、选区或诊断信息——不能替代仓库访问；它不代表整个仓库已被读取，也不会授予提交、推送或修改外部系统的权限。
+
 本指南说明如何让 Codex 连接 VS Code 的 IDE context，并在仓库开发时有效利用这些上下文。本文只面向 VS Code。
 
 OpenAI 官方说明指出，Codex VS Code 扩展也兼容多数 VS Code forks；但不同产品的菜单和配置流程并不相同，因此本文不把 VS Code 步骤泛化到其他 IDE。有关受支持的侧栏和编辑器上下文流程，请参见官方 [Codex IDE extension guide](https://developers.openai.com/codex/ide)。

@@ -1,10 +1,28 @@
 # Amazon MSK - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+## 心智模型
+
+> MSK 替你管理 Kafka 控制面——Provisioned 给你 broker 级别的控制，Serverless 则完全免去容量规划——无论哪种模式，你的应用都用标准 Kafka 数据面 API 保持不变。
 
 ## 概述
 
 Amazon Managed Streaming for Apache Kafka（Amazon MSK）是运行 Apache Kafka 应用的完全托管服务。AWS 管理控制面（集群创建/更新/删除）；你用标准 Kafka 数据面 API 生产/消费，现有应用和工具无需修改即可使用。
+
+```mermaid
+flowchart TD
+    accTitle: MSK Provisioned 与 Serverless 对比
+    accDescr: MSK Provisioned 让你选择 broker 数量和类型，AWS 管理 ZooKeeper 或 KRaft 元数据；MSK Serverless 由 AWS 管理 broker 容量并自动伸缩；两者都通过标准 Kafka 生产者/消费者客户端访问。
+    M{集群类型} -- Provisioned --> P[选择 broker 数量与类型]
+    P --> P1[AWS 管理<br/>ZooKeeper / KRaft]
+    M -- Serverless --> S[AWS 管理<br/>broker 容量]
+    S --> S1[自动伸缩]
+    P1 --> C[标准 Kafka<br/>生产者/消费者客户端]
+    S1 --> C
+```
 
 ## 核心概念
 

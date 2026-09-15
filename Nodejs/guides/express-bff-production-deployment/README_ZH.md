@@ -16,9 +16,15 @@ English version: [README.md](README.md)
 
 ## 心智模型与边界
 
-```text
-浏览器 -> 外部 Nginx/OpenResty -> Express BFF（PM2 cluster）
-                                    -> 已批准的下游 HTTP 服务
+> BFF 是外部网关与已批准下游服务之间新增的一跳：PM2 在一个私有监听端口后维持若干无状态 Node.js Worker，网关与下游 API 仍是各自独立运维的系统。
+
+```mermaid
+flowchart LR
+    accTitle: 请求经过 Express BFF 的路径
+    accDescr: 浏览器请求到达外部 Nginx 或 OpenResty 网关，网关转发给以 PM2 cluster 运行的 Express BFF，BFF 再调用已批准的下游 HTTP 服务。
+    B[浏览器] --> G[外部 Nginx/OpenResty]
+    G --> BFF[Express BFF<br/>PM2 cluster]
+    BFF --> D[已批准的下游<br/>HTTP 服务]
 ```
 
 Node.js 在浏览器外运行 JavaScript；Express 是 Web 框架；BFF 是面向浏览器的后端，可处理 Session/授权、请求适配和下游 HTTP 调用。它不等于 OpenResty、Nginx 或下游 API。

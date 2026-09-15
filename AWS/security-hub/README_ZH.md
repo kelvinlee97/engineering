@@ -1,6 +1,13 @@
 # AWS Security Hub CSPM - Runbook 与参考
 
+[English](README.md) | 简体中文
+
 > 事实核对时间（对照 AWS 官方文档）：2026-08-19
+
+
+## 心智模型
+
+> AWS Security Hub Cloud Security Posture Management（AWS Security Hub CSPM）提供 AWS 环境安全态势的综合视图。 它收集 AWS 服务（如 GuardDuty、Inspector、Macie）和受支持合作伙伴产品的安全发现，按安全标准持续执行检查，并通过安全评分给出整合、按优先级排序的视图。
 
 ## 概述
 

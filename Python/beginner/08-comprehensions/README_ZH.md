@@ -2,6 +2,10 @@
 
 English version: [README.md](README.md)
 
+## 心智模型
+
+> 推导式是把循环改写成表达式：`[表达式 for 元素 in 可迭代对象 if 条件]` 从左到右读作「当条件成立时，为每个元素生成这个结果」。外层括号（`[]`、`{}`、`()`）决定最终容器的类型。
+
 ```python
 squares = [number**2 for number in range(5)]
 even = {number for number in range(10) if number % 2 == 0}
