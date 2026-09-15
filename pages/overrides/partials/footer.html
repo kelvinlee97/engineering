@@ -7,39 +7,61 @@
 
 <footer class="md-footer">
   {% if "navigation.footer" in features %}
-    {% if page.previous_page or page.next_page %}
-      {% if not page.meta or page.meta.hide is not defined or "footer" not in page.meta.hide %}
-        <nav class="md-footer__inner md-grid" aria-label="{{ lang.t('footer') }}">
-          {% if page.previous_page %}
-            {% set direction = lang.t("footer.previous") %}
-            <a href="{{ page.previous_page.url | url }}"
-               class="md-footer__link md-footer__link--prev"
-               aria-label="{{ direction }}: {{ page.previous_page.title | e }}">
-              <div class="md-footer__button md-icon">
-                {% include ".icons/material/arrow-left.svg" %}
-              </div>
-              <div class="md-footer__title">
-                <span class="md-footer__direction">{{ direction }}</span>
-                <div class="md-ellipsis">{{ page.previous_page.title }}</div>
-              </div>
-            </a>
-          {% endif %}
-          {% if page.next_page %}
-            {% set direction = lang.t("footer.next") %}
-            <a href="{{ page.next_page.url | url }}"
-               class="md-footer__link md-footer__link--next"
-               aria-label="{{ direction }}: {{ page.next_page.title | e }}">
-              <div class="md-footer__title">
-                <span class="md-footer__direction">{{ direction }}</span>
-                <div class="md-ellipsis">{{ page.next_page.title }}</div>
-              </div>
-              <div class="md-footer__button md-icon">
-                {% include ".icons/material/arrow-right.svg" %}
-              </div>
-            </a>
-          {% endif %}
-        </nav>
+    {#
+      MkDocs derives previous/next from the flat nav, which interleaves each
+      English page with its Chinese translation. Walk the nav ourselves and keep
+      only the pages in the reader's current language, skipping the generated
+      hubs (they opt out of the footer via `hide: footer`).
+    #}
+    {% set siblings = [] %}
+    {% for candidate in nav.pages %}
+      {% set candidate_meta = candidate.meta or {} %}
+      {% if candidate_meta.kb_language == page_language
+            and "footer" not in (candidate_meta.hide or []) %}
+        {% set _ = siblings.append(candidate) %}
       {% endif %}
+    {% endfor %}
+    {% set neighbours = namespace(previous=None, next=None, seen=false) %}
+    {% for candidate in siblings %}
+      {% if page and candidate.file.src_uri == page.file.src_uri %}
+        {% set neighbours.seen = true %}
+      {% elif not neighbours.seen %}
+        {% set neighbours.previous = candidate %}
+      {% elif neighbours.next is none %}
+        {% set neighbours.next = candidate %}
+      {% endif %}
+    {% endfor %}
+    {% if neighbours.seen and (neighbours.previous or neighbours.next) %}
+      <nav class="md-footer__inner md-grid" aria-label="{{ lang.t('footer') }}">
+        {% if neighbours.previous %}
+          {% set direction = lang.t("footer.previous") %}
+          <a href="{{ neighbours.previous.url | url }}"
+             class="md-footer__link md-footer__link--prev"
+             aria-label="{{ direction }}: {{ neighbours.previous.title | e }}">
+            <div class="md-footer__button md-icon">
+              {% include ".icons/material/arrow-left.svg" %}
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">{{ direction }}</span>
+              <div class="md-ellipsis">{{ neighbours.previous.title }}</div>
+            </div>
+          </a>
+        {% endif %}
+        {% if neighbours.next %}
+          {% set direction = lang.t("footer.next") %}
+          <a href="{{ neighbours.next.url | url }}"
+             class="md-footer__link md-footer__link--next"
+             aria-label="{{ direction }}: {{ neighbours.next.title | e }}">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">{{ direction }}</span>
+              <div class="md-ellipsis">{{ neighbours.next.title }}</div>
+            </div>
+            <div class="md-footer__button md-icon">
+              {% include ".icons/material/arrow-right.svg" %}
+            </div>
+          </a>
+        {% endif %}
+      </nav>
     {% endif %}
   {% endif %}
   <div class="md-footer-meta md-typeset">
