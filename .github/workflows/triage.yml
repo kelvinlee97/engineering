@@ -1,0 +1,135 @@
+name: Triage
+
+on:
+  issues:
+    types: [opened, reopened]
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+  push:
+    branches: [main]
+    paths:
+      - ".github/labels.json"
+      - ".github/workflows/triage.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: triage-${{ github.event_name }}-${{ github.event.issue.number || github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  labels:
+    name: Sync label set
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const wanted = JSON.parse(fs.readFileSync('.github/labels.json', 'utf8'));
+            const existing = await github.paginate(github.rest.issues.listLabelsForRepo, {
+              owner: context.repo.owner, repo: context.repo.repo, per_page: 100,
+            });
+            const byName = new Map(existing.map((l) => [l.name, l]));
+            for (const label of wanted) {
+              const args = {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: label.name,
+                color: label.color,
+                description: label.description || '',
+              };
+              const current = byName.get(label.name);
+              if (!current) {
+                await github.rest.issues.createLabel(args);
+                core.info(`created ${label.name}`);
+              } else if (current.color !== label.color || (current.description || '') !== args.description) {
+                await github.rest.issues.updateLabel(args);
+                core.info(`updated ${label.name}`);
+              }
+            }
+
+  issue-triage:
+    name: Label and assign new issues
+    if: github.event_name == 'issues'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/github-script@v8
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const text = `${issue.title}\n${issue.body || ''}`.toLowerCase();
+            const rules = [
+              ['area: aws', /\baws\b|ec2|eks|\bvpc\b|\beni\b|s3\b|cloudformation/],
+              ['area: kubernetes', /kubernetes|k8s|kubectl|kubelet|\bpod\b|helm/],
+              ['area: linux', /\bbash\b|shell|ubuntu|nginx|systemd|\bapt\b/],
+              ['area: dev-tools', /\bgit\b|ghostty|claude|macos|\bterminal\b/],
+              ['area: languages', /python|node\.?js|npm|zookeeper|\buv\b/],
+              ['area: youtube', /youtube|transcript|subtitle/],
+              ['area: site', /mkdocs|\bsite\b|\bcss\b|\bpages\b|\btheme\b/],
+              ['area: tooling', /\bci\b|workflow|github action|\bscript\b|validate/],
+              ['translation', /translat|chinese|中文|readme_zh|bilingual/],
+              ['bug', /\bbug\b|broken|\berror\b|fails?\b|typo|incorrect|404/],
+              ['enhancement', /feature request|\bproposal\b|would be nice|please add|new article/],
+              ['question', /^how |\bhow do i\b|\bquestion\b|\?\s*$/m],
+            ];
+            const labels = rules.filter(([, re]) => re.test(text)).map(([name]) => name);
+            if (!labels.some((l) => l.startsWith('area:'))) labels.push('needs-triage');
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: issue.number, labels,
+            });
+            core.info(`labels: ${labels.join(', ')}`);
+
+            // Assign the repository owner so nothing sits unowned.
+            if ((issue.assignees || []).length === 0) {
+              try {
+                await github.rest.issues.addAssignees({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: issue.number, assignees: [context.repo.owner],
+                });
+              } catch (error) {
+                core.warning(`could not assign ${context.repo.owner}: ${error.message}`);
+              }
+            }
+
+  pr-triage:
+    name: Label pull requests
+    if: github.event_name == 'pull_request_target'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/labeler@v6
+        with:
+          configuration-path: .github/labeler.yml
+          sync-labels: true
+      - name: Apply a size label
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const changed = pr.additions + pr.deletions;
+            const size = changed < 20 ? 'XS' : changed < 100 ? 'S' : changed < 400 ? 'M' : changed < 1000 ? 'L' : 'XL';
+            const current = pr.labels.map((l) => l.name).filter((n) => n.startsWith('size/'));
+            for (const stale of current.filter((n) => n !== `size/${size}`)) {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: pr.number, name: stale,
+              }).catch(() => {});
+            }
+            if (!current.includes(`size/${size}`)) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: pr.number, labels: [`size/${size}`],
+              });
+            }

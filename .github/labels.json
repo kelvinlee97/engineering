@@ -1,0 +1,102 @@
+[
+  {
+    "name": "area: aws",
+    "color": "ff9900",
+    "description": "AWS articles"
+  },
+  {
+    "name": "area: kubernetes",
+    "color": "326ce5",
+    "description": "Kubernetes articles"
+  },
+  {
+    "name": "area: linux",
+    "color": "4d4d4d",
+    "description": "Bash, Ubuntu, Nginx articles"
+  },
+  {
+    "name": "area: dev-tools",
+    "color": "5319e7",
+    "description": "Git, Ghostty, Claude, macOS articles"
+  },
+  {
+    "name": "area: languages",
+    "color": "3572a5",
+    "description": "Python, Node.js, ZooKeeper articles"
+  },
+  {
+    "name": "area: youtube",
+    "color": "ff0000",
+    "description": "YouTube summaries and the transcript tool"
+  },
+  {
+    "name": "area: site",
+    "color": "0e8a16",
+    "description": "Published site, MkDocs config, CSS"
+  },
+  {
+    "name": "area: tooling",
+    "color": "c5def5",
+    "description": "Scripts, CI, repository automation"
+  },
+  {
+    "name": "documentation",
+    "color": "0075ca",
+    "description": "Markdown content changes"
+  },
+  {
+    "name": "dependencies",
+    "color": "0366d6",
+    "description": "Dependency updates"
+  },
+  {
+    "name": "translation",
+    "color": "bfd4f2",
+    "description": "English/Chinese pairing or translation work"
+  },
+  {
+    "name": "bug",
+    "color": "d73a4a",
+    "description": "Something is wrong or broken"
+  },
+  {
+    "name": "enhancement",
+    "color": "a2eeef",
+    "description": "New content or a feature request"
+  },
+  {
+    "name": "question",
+    "color": "d876e3",
+    "description": "A question about the knowledge base"
+  },
+  {
+    "name": "needs-triage",
+    "color": "ededed",
+    "description": "Not yet categorised by a human"
+  },
+  {
+    "name": "size/XS",
+    "color": "e4e669",
+    "description": ""
+  },
+  {
+    "name": "size/S",
+    "color": "e4e669",
+    "description": ""
+  },
+  {
+    "name": "size/M",
+    "color": "fbca04",
+    "description": ""
+  },
+  {
+    "name": "size/L",
+    "color": "d93f0b",
+    "description": ""
+  },
+  {
+    "name": "size/XL",
+    "color": "b60205",
+    "description": ""
+  }
+]

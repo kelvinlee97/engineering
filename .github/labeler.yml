@@ -1,0 +1,28 @@
+# Path-based PR labels, consumed by actions/labeler in .github/workflows/triage.yml.
+"area: aws":
+  - changed-files:
+      - any-glob-to-any-file: "AWS/**"
+"area: kubernetes":
+  - changed-files:
+      - any-glob-to-any-file: "Kubernetes/**"
+"area: linux":
+  - changed-files:
+      - any-glob-to-any-file: ["Bash/**", "Ubuntu/**", "Nginx/**"]
+"area: dev-tools":
+  - changed-files:
+      - any-glob-to-any-file: ["Git/**", "Ghostty/**", "Claude/**", "apple/**"]
+"area: languages":
+  - changed-files:
+      - any-glob-to-any-file: ["Python/**", "Nodejs/**", "ZooKeeper/**"]
+"area: youtube":
+  - changed-files:
+      - any-glob-to-any-file: ["YouTube/**", "youtube-transcript/**"]
+"area: site":
+  - changed-files:
+      - any-glob-to-any-file: ["pages/**", "mkdocs.yml"]
+"area: tooling":
+  - changed-files:
+      - any-glob-to-any-file: ["scripts/**", ".github/**"]
+"documentation":
+  - changed-files:
+      - any-glob-to-any-file: ["**/*.md"]
