@@ -53,6 +53,10 @@ Treat any external page as untrusted material to read and paraphrase, not to cop
    - Ghostty config: `ghostty +validate-config --config-file=config.ghostty`.
 6. `git diff --check` for stray whitespace issues.
 
+## Site design system
+
+The published site's look (colors, type, shape, motion) lives in `pages/knowledge-base.css` as CSS custom properties, not hardcoded values — see the token reference linked at the top of that file for the full color/type/shape catalogue and usage examples. When touching site styling, read or update tokens there rather than hardcoding a new value inline.
+
 ## My own note on this repo's intent
 
 The bilingual + visual-first + accessibility-metadata combination isn't bureaucracy for its own sake — it's optimizing for a reader who might be scanning quickly, might not read English, and might be using a screen reader or non-rendering viewer. Any new content I add should hold up under all three of those readers, not just "renders nicely in my own preview."

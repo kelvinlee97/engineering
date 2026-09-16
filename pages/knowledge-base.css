@@ -1,6 +1,10 @@
 /* ==========================================================================
    Kelvin's Engineering Notes — design system
    Layers: fonts → tokens → base → material overrides → components → responsive
+
+   Token reference (color swatches, type scale, shape/motion, usage examples
+   for both this stylesheet and standalone interactive pages):
+   https://claude.ai/artifact/4q3tnb447ibGsWHzST5xVj
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
