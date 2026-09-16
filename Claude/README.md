@@ -14,3 +14,4 @@ This module collects study notes on Anthropic's Claude developer tooling: the co
 | [Claude Code GitHub Actions](github-actions/README.md) | Run interactive and automated Claude workflows with explicit permissions and security boundaries. |
 | [Claude Managed Agents](managed-agents/README.md) | Hosted agent harness for long-running, asynchronous tasks, as an alternative to the Messages API. |
 | [The AI-Native SDLC Playbook](ai-native-sdlc-playbook/README.md) | Redesign delivery around versioned artifacts, feedback loops, and explicit governance gates. |
+| [How Warp Builds Self-Improving Agents on Claude](self-improving-agents/README.md) | An inner skill does the work, a scheduled outer skill turns human feedback into pull requests against it. |
