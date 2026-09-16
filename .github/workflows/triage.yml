@@ -62,27 +62,13 @@ jobs:
     permissions:
       issues: write
     steps:
+      - uses: actions/checkout@v7
       - uses: actions/github-script@v8
         with:
           script: |
+            const { issueLabels } = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/triage.js`);
             const issue = context.payload.issue;
-            const text = `${issue.title}\n${issue.body || ''}`.toLowerCase();
-            const rules = [
-              ['area: aws', /\baws\b|ec2|eks|\bvpc\b|\beni\b|s3\b|cloudformation/],
-              ['area: kubernetes', /kubernetes|k8s|kubectl|kubelet|\bpod\b|helm/],
-              ['area: linux', /\bbash\b|shell|ubuntu|nginx|systemd|\bapt\b/],
-              ['area: dev-tools', /\bgit\b|ghostty|claude|macos|\bterminal\b/],
-              ['area: languages', /python|node\.?js|npm|zookeeper|\buv\b/],
-              ['area: youtube', /youtube|transcript|subtitle/],
-              ['area: site', /mkdocs|\bsite\b|\bcss\b|\bpages\b|\btheme\b/],
-              ['area: tooling', /\bci\b|workflow|github action|\bscript\b|validate/],
-              ['translation', /translat|chinese|中文|readme_zh|bilingual/],
-              ['bug', /\bbug\b|broken|\berror\b|fails?\b|typo|incorrect|404/],
-              ['enhancement', /feature request|\bproposal\b|would be nice|please add|new article/],
-              ['question', /^how |\bhow do i\b|\bquestion\b|\?\s*$/m],
-            ];
-            const labels = rules.filter(([, re]) => re.test(text)).map(([name]) => name);
-            if (!labels.some((l) => l.startsWith('area:'))) labels.push('needs-triage');
+            const labels = issueLabels(issue);
             await github.rest.issues.addLabels({
               owner: context.repo.owner, repo: context.repo.repo,
               issue_number: issue.number, labels,
@@ -109,6 +95,9 @@ jobs:
       contents: read
       pull-requests: write
     steps:
+      # pull_request_target checks out the base ref, so the triage module below
+      # is always the trusted copy from main, never the PR's version.
+      - uses: actions/checkout@v7
       - uses: actions/labeler@v6
         with:
           configuration-path: .github/labeler.yml
@@ -117,19 +106,19 @@ jobs:
         uses: actions/github-script@v8
         with:
           script: |
+            const { sizeLabel, staleSizeLabels } = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/triage.js`);
             const pr = context.payload.pull_request;
-            const changed = pr.additions + pr.deletions;
-            const size = changed < 20 ? 'XS' : changed < 100 ? 'S' : changed < 400 ? 'M' : changed < 1000 ? 'L' : 'XL';
-            const current = pr.labels.map((l) => l.name).filter((n) => n.startsWith('size/'));
-            for (const stale of current.filter((n) => n !== `size/${size}`)) {
+            const size = sizeLabel(pr.additions, pr.deletions);
+            const current = pr.labels.map((l) => l.name);
+            for (const stale of staleSizeLabels(current, size)) {
               await github.rest.issues.removeLabel({
                 owner: context.repo.owner, repo: context.repo.repo,
                 issue_number: pr.number, name: stale,
               }).catch(() => {});
             }
-            if (!current.includes(`size/${size}`)) {
+            if (!current.includes(size)) {
               await github.rest.issues.addLabels({
                 owner: context.repo.owner, repo: context.repo.repo,
-                issue_number: pr.number, labels: [`size/${size}`],
+                issue_number: pr.number, labels: [size],
               });
             }

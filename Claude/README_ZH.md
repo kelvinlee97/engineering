@@ -1,0 +1,16 @@
+# Claude
+
+English version: [README.md](README.md)
+
+本模块收录 Anthropic Claude 开发者工具的学习笔记：编程 agent 本身、运行它的各种 harness，以及围绕它们建立的交付实践。
+
+## 笔记
+
+| 笔记 | 说明 |
+| --- | --- |
+| [Claude Code Agent Skills 入门](agent-skills/README_ZH.md) | skill 是什么、何时加载，以及它如何改变一次会话。 |
+| [Claude Code Auto Mode 的工作方式](auto-mode/README_ZH.md) | auto mode 启用的工具选择行为，以及它在实践中改变了什么。 |
+| [Claude Code Subagents 入门](subagents/README_ZH.md) | Anthropic Academy subagents 入门课程的学习指南。 |
+| [Claude Code GitHub Actions](github-actions/README_ZH.md) | 在明确的权限与安全边界下运行交互式和自动化的 Claude 工作流。 |
+| [Claude Managed Agents](managed-agents/README_ZH.md) | 面向长时间异步任务的托管 agent harness，作为 Messages API 之外的另一种选择。 |
+| [AI 原生 SDLC 实践手册](ai-native-sdlc-playbook/README_ZH.md) | 围绕版本化产物、反馈回路和明确的治理关卡重新设计交付流程。 |

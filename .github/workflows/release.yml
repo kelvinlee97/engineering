@@ -42,6 +42,8 @@ jobs:
             if git rev-parse -q --verify "refs/tags/$INPUT_TAG" >/dev/null; then
               echo "::error::tag $INPUT_TAG already exists"; exit 1
             fi
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git tag -a "$INPUT_TAG" -m "Release $INPUT_TAG"
             git push origin "refs/tags/$INPUT_TAG"
             echo "name=$INPUT_TAG" >>"$GITHUB_OUTPUT"
@@ -54,37 +56,7 @@ jobs:
         env:
           TAG: ${{ steps.tag.outputs.name }}
         run: |
-          set -euo pipefail
-          previous="$(git tag --sort=-creatordate --list 'v*' | grep -Fxv "$TAG" | head -n1 || true)"
-          if [ -n "$previous" ]; then
-            range="$previous..$TAG"
-            echo "Changes since $previous" >notes.md
-          else
-            range="$TAG"
-            echo "First release" >notes.md
-          fi
-          echo >>notes.md
-
-          emit() {
-            heading="$1"; pattern="$2"
-            body="$(git log --no-merges --pretty=format:'- %s (%h)' --perl-regexp --grep="$pattern" "$range")"
-            if [ -n "$body" ]; then
-              printf '### %s\n\n%s\n\n' "$heading" "$body" >>notes.md
-            fi
-          }
-          emit "New and updated articles" '^(docs|feat)(\(|:|!)'
-          emit "Fixes" '^fix(\(|:|!)'
-          emit "Site and tooling" '^(ci|build|chore|style|refactor|test|perf)(\(|:|!)'
-          other="$(git log --no-merges --pretty=format:'- %s (%h)' --perl-regexp --invert-grep \
-            --grep='^(docs|feat|fix|ci|build|chore|style|refactor|test|perf)(\(|:|!)' "$range")"
-          if [ -n "$other" ]; then
-            printf '### Other\n\n%s\n\n' "$other" >>notes.md
-          fi
-
-          if [ -n "$previous" ]; then
-            printf '**Full diff**: %s/%s/compare/%s...%s\n' \
-              "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$previous" "$TAG" >>notes.md
-          fi
+          .github/scripts/changelog.sh "$TAG" notes.md
           cat notes.md
 
       - name: Publish the release

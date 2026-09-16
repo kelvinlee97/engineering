@@ -27,8 +27,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Only Python ships in this repo today; add languages here as they appear.
-        language: [python]
+        # The repo's own tooling: scripts/ and .github/scripts/.
+        language: [python, javascript-typescript]
     steps:
       - uses: actions/checkout@v7
       - name: Initialize CodeQL

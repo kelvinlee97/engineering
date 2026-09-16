@@ -42,7 +42,7 @@ jobs:
       - name: Install site dependencies
         run: python -m pip install -r pages/requirements.txt
       - name: Install tooling checks
-        run: python -m pip install ruff mypy types-PyYAML
+        run: python -m pip install ruff mypy pytest types-PyYAML
       - name: Lint repository tooling
         run: ruff check .
       - name: Type-check repository tooling
