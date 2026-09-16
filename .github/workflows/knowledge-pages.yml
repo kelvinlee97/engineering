@@ -86,6 +86,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - uses: actions/checkout@v7
       - name: Configure Pages
         uses: actions/configure-pages@v6
       - name: Deploy to GitHub Pages
@@ -95,10 +96,27 @@ jobs:
         run: |
           set -euo pipefail
           url="${{ steps.deployment.outputs.page_url }}"
-          echo "Checking $url"
-          curl --retry 10 --retry-delay 15 --retry-all-errors -fsS "$url" -o /tmp/index.html
-          echo "--- fetched page (first 20 lines) ---"
-          head -n 20 /tmp/index.html
-          grep -q "Kelvin" /tmp/index.html || { echo "::error::Deployed page is missing expected site title text"; exit 1; }
-          grep -q "ibm-plex-sans-latin-wght-normal.woff2" /tmp/index.html || { echo "::error::Deployed page is not referencing the current font assets — the rebrand may not have propagated"; exit 1; }
-          echo "Smoke test passed: $url is live and serving the current build."
+          # Assert against mkdocs.yml rather than a hardcoded string, so a
+          # rename of the site cannot silently rot this check.
+          expected="$(sed -n 's/^site_name: *//p' mkdocs.yml | head -n 1)"
+          if [ -z "$expected" ]; then
+            echo "::error::Could not read site_name from mkdocs.yml"
+            exit 1
+          fi
+          echo "Checking $url for site name: $expected"
+          # Pages reports success before the CDN necessarily serves the new
+          # build, so retry on stale content, not just on a failed request.
+          for attempt in $(seq 1 10); do
+            curl --retry 5 --retry-delay 5 --retry-all-errors -fsS "$url" -o /tmp/index.html
+            if grep -qF "$expected" /tmp/index.html &&
+              grep -qF "ibm-plex-sans-latin-wght-normal.woff2" /tmp/index.html; then
+              echo "Smoke test passed on attempt $attempt: $url is live and serving the current build."
+              exit 0
+            fi
+            echo "Attempt $attempt: page does not match yet, waiting for the deploy to propagate."
+            sleep 15
+          done
+          echo "--- last fetched page (first 40 lines) ---"
+          head -n 40 /tmp/index.html
+          echo "::error::Deployed page never served the expected site name ($expected) and font assets"
+          exit 1
