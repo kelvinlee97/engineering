@@ -6,6 +6,8 @@ English version: [README.md](README.md)
 >
 > 面向零基础/初学者。如果你已经熟悉基本用法、需要面向运维/生产场景的进阶速查表，请看上一级的 [Git/README.md](../README.md)。
 
+🎮 **[试试可交互版本](https://claude.ai/artifact/K51imF3EDT3op7qr4F6Ms7)**——滚动浏览全部 7 个命令，配合实时的三区域图，最后还能在浏览器内的模拟终端里动手练习。
+
 ## 学习路线图
 
 ```mermaid

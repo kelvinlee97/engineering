@@ -6,6 +6,8 @@ Chinese version: [README_ZH.md](README_ZH.md)
 >
 > Written for absolute beginners. If you're already comfortable with basic Git and need a production/ops-oriented reference instead, see [Git/README.md](../README.md) one level up.
 
+🎮 **[Try the interactive version](https://claude.ai/artifact/K51imF3EDT3op7qr4F6Ms7)** — scroll through all 7 commands with a live three-areas diagram, then practice them in an in-browser sandboxed terminal.
+
 ## Learning roadmap
 
 ```mermaid
