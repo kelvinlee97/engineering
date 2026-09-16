@@ -1,63 +1,67 @@
-← [返回目录](../basics/README.md)
+← [Back to index](../basics/README.md)
 
-# `git init` —— 创建你的第一个仓库
+Chinese version: [README_ZH.md](README_ZH.md)
 
-## 这一步在做什么
+# `git init` — Create Your First Repository
 
-`git init` 把当前文件夹变成一个 Git 仓库：它会在文件夹里创建一个隐藏的 `.git/` 目录，Git 之后所有的历史记录、分支信息、配置都存在这里面。**在此之前，Git 完全不知道这个文件夹的存在。**
+## What this does
+
+`git init` turns the current folder into a Git repository: it creates a hidden `.git/` directory inside it, where Git will store all future history, branch information, and configuration. **Before this, Git has no idea the folder exists.**
 
 ```mermaid
 flowchart LR
-    subgraph Before["git init 之前"]
-        A1[普通文件夹<br/>my-project/]
+    accTitle: The directory before and after git init
+    accDescr: Before running git init the directory is a plain folder. After running it, a hidden .git subdirectory appears, holding the repository's entire history and configuration.
+    subgraph Before["Before git init"]
+        A1[Plain folder<br/>my-project/]
     end
-    subgraph After["git init 之后"]
-        A2[my-project/<br/>├── .git/ ← 新增的仓库大脑<br/>└── 你的文件...]
+    subgraph After["After git init"]
+        A2[my-project/<br/>├── .git/ ← the repo's new brain<br/>└── your files...]
     end
     A1 -- "git init" --> A2
 
     style A2 fill:#22a06b,color:#fff
 ```
 
-## 常用操作
+## Common commands
 
 ```bash
-# 方式一：在当前目录初始化
+# Option 1: initialize in the current directory
 mkdir my-project && cd my-project
 git init
 
-# 方式二：直接指定目录名初始化（会自动创建文件夹）
+# Option 2: initialize into a named directory (created automatically)
 git init my-project
 
-# 初始化时指定默认分支名（推荐，避免 master/main 混乱）
+# Set the initial branch name at init time (recommended, avoids master/main confusion)
 git init -b main
 ```
 
-## 参数说明
+## Flags
 
-| 参数 | 作用 |
+| Flag | Effect |
 |---|---|
-| `-b <name>` / `--initial-branch=<name>` | 指定初始分支名（如 `main`），否则会用 Git 全局配置的默认值 |
-| `--bare` | 创建一个没有工作区、只存历史的"裸仓库"，通常用在服务器端作为远程仓库 |
-| `-q` / `--quiet` | 静默模式，不输出提示信息 |
+| `-b <name>` / `--initial-branch=<name>` | Sets the initial branch name (e.g. `main`); otherwise Git falls back to its global default |
+| `--bare` | Creates a "bare" repository with no working tree, storing history only — typically used as a server-side remote |
+| `-q` / `--quiet` | Suppresses output |
 
-## 验证你做对了
+## Verify it worked
 
 ```bash
-ls -la          # 应该能看到 .git 目录
-git status      # 应显示 "On branch main / No commits yet"
+ls -la          # should show a .git directory
+git status      # should show "On branch main / No commits yet"
 ```
 
-## 常见坑
+## Common pitfalls
 
-- ⚠️ 不要在已经是 Git 仓库的目录里手动删除 `.git` 再重新 `init`——这会丢失全部历史，如果不确定先用 `git status` 检查工作区是否干净。
-- ⚠️ 在自己主目录（`~`）或系统盘根目录执行 `git init` 是常见误操作，Git 会把整个目录当仓库跟踪，务必先 `cd` 到目标项目文件夹。
+- ⚠️ Don't manually delete `.git` and re-run `init` in a directory that's already a repository — this destroys all history. Check `git status` first if you're unsure whether the working tree is clean.
+- ⚠️ Running `git init` in your home directory (`~`) or a system root is a common mistake — Git will start tracking the entire directory as a repo. Always `cd` into your intended project folder first.
 
-## 承上启下
+## What's next
 
-`git init` 是"从零开始"的起点。但更常见的现实场景是：项目已经存在于 GitHub 上，你只是想把它下载到本地——这时候用的不是 `init`，而是下一节的 **`git clone`**。
+`git init` is the "start from scratch" entry point. But the more common real-world scenario is: the project already exists on GitHub, and you just want to download it locally — for that you don't use `init`, you use the next command: **`git clone`**.
 
-👉 下一站：[Git/clone —— 拷贝一个已存在的远程仓库](../clone/README.md)
+👉 Next: [Git/clone — copy an existing remote repository](../clone/README.md)
 
 ---
-参考：[Pro Git 2.1 起步 - 关于版本控制](https://git-scm.com/book/zh/v2/起步-关于版本控制) ｜ [git-init 官方手册](https://git-scm.com/docs/git-init)
+References: [Pro Git 1.1 — About Version Control](https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control) | [git-init manual](https://git-scm.com/docs/git-init)

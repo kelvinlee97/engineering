@@ -1,21 +1,25 @@
-# Git 命令行基础 —— 可视化教程
+# Git Command-Line Basics — A Visual Tutorial
 
-> 本教程覆盖 Git 命令行最核心的 7 个命令，按**日常使用顺序**排列。每个命令一个子目录，包含：概念图解、参数说明、动手实操、常见坑、以及指向下一站的衔接。
+Chinese version: [README_ZH.md](README_ZH.md)
+
+> This tutorial covers the 7 most essential Git command-line commands, ordered by how you'd actually use them day to day. Each command gets its own subdirectory with a concept diagram, common invocations, hands-on steps, common pitfalls, and a link forward to the next one.
 >
-> 面向零基础/初学者。如果你已经熟悉基本用法、需要面向运维/生产场景的进阶速查表，请看上一级的 [Git/README.md](../README.md)。
+> Written for absolute beginners. If you're already comfortable with basic Git and need a production/ops-oriented reference instead, see [Git/README.md](../README.md) one level up.
 
-## 学习路线图
+## Learning roadmap
 
 ```mermaid
 flowchart LR
-    A[init<br/>创建仓库] --> B[clone<br/>拷贝远程仓库]
-    B --> C[add<br/>暂存改动]
+    accTitle: Recommended order for learning Git's 7 core commands
+    accDescr: Start a repository with init or clone, then loop through add, status, and commit; use log and diff to inspect history and differences, with diff often sending you back to add for another round of edits.
+    A[init<br/>create a repo] --> B[clone<br/>copy a remote repo]
+    B --> C[add<br/>stage changes]
     A --> C
-    C --> D[status<br/>查看状态]
+    C --> D[status<br/>check state]
     D --> C
-    C --> E[commit<br/>提交快照]
-    E --> F[log<br/>查看历史]
-    E --> G[diff<br/>对比差异]
+    C --> E[commit<br/>snapshot history]
+    E --> F[log<br/>view history]
+    E --> G[diff<br/>compare versions]
     G --> C
     F --> G
 
@@ -28,58 +32,60 @@ flowchart LR
     style G fill:#7c5cff,color:#fff
 ```
 
-## 目录导航
+## Contents
 
-| 顺序 | 命令 | 一句话理解 | 链接 |
+| Order | Command | One-line takeaway | Link |
 |---|---|---|---|
-| 1 | `git init` | 把一个普通文件夹变成 Git 仓库 | [../init](../init/README.md) |
-| 2 | `git clone` | 把远程仓库完整复制到本地 | [../clone](../clone/README.md) |
-| 3 | `git add` | 把改动放进"待提交"暂存区 | [../add](../add/README.md) |
-| 4 | `git status` | 看清当前工作区/暂存区的状态 | [../status](../status/README.md) |
-| 5 | `git commit` | 把暂存区内容打包成一次历史快照 | [../commit](../commit/README.md) |
-| 6 | `git log` | 查看提交历史 | [../log](../log/README.md) |
-| 7 | `git diff` | 对比两个版本之间的具体差异 | [../diff](../diff/README.md) |
+| 1 | `git init` | Turn a plain folder into a Git repository | [../init](../init/README.md) |
+| 2 | `git clone` | Copy a remote repository to your machine | [../clone](../clone/README.md) |
+| 3 | `git add` | Stage changes for the next commit | [../add](../add/README.md) |
+| 4 | `git status` | Inspect the current state of your working tree/index | [../status](../status/README.md) |
+| 5 | `git commit` | Turn the staged content into a permanent snapshot | [../commit](../commit/README.md) |
+| 6 | `git log` | Browse commit history | [../log](../log/README.md) |
+| 7 | `git diff` | Compare the exact differences between two versions | [../diff](../diff/README.md) |
 
-## 核心心智模型（先建立这个，再看每个命令）
+## The core mental model (learn this first, everything else follows)
 
-Git 管理你代码的"三个区域"，理解了这张图，7 个命令的作用就都说得通了：
+Git manages your code across "three areas". Once this clicks, every one of the 7 commands makes sense:
 
 ```mermaid
 flowchart LR
-    subgraph WD[工作区 Working Directory]
-        F1[你正在编辑的文件]
+    accTitle: Git's three areas and how commands move content between them
+    accDescr: The working directory moves into the staging area via add, the staging area moves into the local repository via commit, and the local repository moves into the remote via push. Clone or pull bring the remote back into the working directory. Diff compares the staging area against the repository, or the working directory against the staging area; log inspects repository history.
+    subgraph WD[Working Directory]
+        F1[Files you're currently editing]
     end
-    subgraph SA[暂存区 Staging Area / Index]
-        F2[git add 后的快照]
+    subgraph SA[Staging Area / Index]
+        F2[Snapshot after git add]
     end
-    subgraph REPO[本地仓库 .git]
-        F3[git commit 后的历史]
+    subgraph REPO[Local Repository .git]
+        F3[History after git commit]
     end
-    subgraph REMOTE[远程仓库 GitHub]
-        F4[git push 后的共享历史]
+    subgraph REMOTE[Remote Repository GitHub]
+        F4[Shared history after git push]
     end
 
     WD -- "git add" --> SA
     SA -- "git commit" --> REPO
     REPO -- "git push" --> REMOTE
     REMOTE -- "git clone / git pull" --> WD
-    REPO -- "git diff" -.对比.-> SA
-    SA -- "git diff --staged" -.对比.-> REPO
-    REPO -- "git log" -.查看历史.-> REPO
+    REPO -- "git diff" -.compares.-> SA
+    SA -- "git diff --staged" -.compares.-> REPO
+    REPO -- "git log" -.inspects history.-> REPO
 ```
 
-- **`git status`** 是"体检报告"：随时告诉你三个区域现在的差异在哪。
-- **`git diff`** 是"放大镜"：具体看差异的每一行内容。
-- **`git log`** 是"时间机器的目录"：看仓库历史上都发生了什么。
+- **`git status`** is a "health check": it always tells you where the three areas currently differ.
+- **`git diff`** is a "magnifying glass": it shows the exact line-by-line content of a difference.
+- **`git log`** is the "table of contents for a time machine": it shows what happened in the repository's history.
 
-准备好了就从第一站开始 👉 [Git/init —— 创建你的第一个仓库](../init/README.md)
+Ready? Start at station one 👉 [Git/init — create your first repository](../init/README.md)
 
 ---
 
-## 参考资料
+## References
 
-- [Pro Git Book（官方免费电子书，中文版）](https://git-scm.com/book/zh/v2)
-- [Git 官方命令参考手册](https://git-scm.com/docs)
-- [Learn Git Branching（交互式练习）](https://learngitbranching.js.org/)
+- [Pro Git Book (free official ebook)](https://git-scm.com/book/en/v2)
+- [Official Git command reference](https://git-scm.com/docs)
+- [Learn Git Branching (interactive exercises)](https://learngitbranching.js.org/)
 
-学完之后，进阶到面向生产/团队协作的场景，请看 [Git/README.md —— 运维视角的 Git 速查表](../README.md)。
+Once you've finished this series, move on to the production/team-collaboration reference at [Git/README.md](../README.md).

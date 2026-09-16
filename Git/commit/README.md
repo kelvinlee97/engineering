@@ -1,85 +1,91 @@
-← [返回目录](../basics/README.md) ｜ 上一站：[Git/status](../status/README.md)
+← [Back to index](../basics/README.md) ｜ Previous: [Git/status](../status/README.md)
 
-# `git commit` —— 把暂存区打包成一次历史快照
+Chinese version: [README_ZH.md](README_ZH.md)
 
-## 这一步在做什么
+# `git commit` — Package the Staging Area into a History Snapshot
 
-`git commit` 把暂存区当前的内容**永久记录**进仓库历史，生成一个带唯一哈希值（如 `a1b2c3d`）的"快照点"。之后无论工作区怎么改，这次提交的内容都不会丢失，你随时可以用 `log`/`diff`/`checkout` 回看或回到这个点。
+## What this does
+
+`git commit` **permanently records** the current content of the staging area into the repository's history, producing a "snapshot point" with a unique hash (e.g. `a1b2c3d`). From then on, no matter how the working tree changes, this commit's content is never lost — you can always inspect or return to it with `log`/`diff`/`checkout`.
 
 ```mermaid
 flowchart LR
-    SA["暂存区<br/>file1.txt ✅<br/>file3.txt ✅"] -- "git commit -m '...'" --> C["新的提交节点<br/>#️⃣ a1b2c3d<br/>父提交 ← 指向上一个"]
-    C --> HEAD["HEAD / 当前分支指针<br/>指向这个新提交"]
+    accTitle: git commit packages the staging area into a new commit
+    accDescr: file1.txt and file3.txt, already added to the staging area, are packaged by git commit into a new commit node with a hash. That node records its parent commit, and both HEAD and the current branch pointer move to point at this new commit.
+    SA["Staging Area<br/>file1.txt ✅<br/>file3.txt ✅"] -- "git commit -m '...'" --> C["New commit node<br/>#️⃣ a1b2c3d<br/>parent ← points to the previous one"]
+    C --> HEAD["HEAD / current branch pointer<br/>points at this new commit"]
 
     style C fill:#22a06b,color:#fff
     style HEAD fill:#4f8cff,color:#fff
 ```
 
-理解提交链：每个提交都记录着"它的上一个提交是谁"，这样串起来就是一条历史链，`git log` 看到的就是这条链。
+Understanding the commit chain: every commit records "who came before it", and chaining those together forms a history — which is exactly what `git log` shows you.
 
 ```mermaid
 gitGraph
+    accTitle: A history chain built from a sequence of commits
+    accDescr: Starting from the earliest init commit, four commits follow in order — add feature A, fix bug, add feature B — each pointing back to the one before it, forming a linear history.
     commit id: "init"
     commit id: "add feature A"
     commit id: "fix bug"
     commit id: "add feature B"
 ```
 
-## 常用操作
+## Common commands
 
 ```bash
-# 提交暂存区内容，附带提交信息
-git commit -m "feat: 添加登录功能"
+# Commit staged content with a message
+git commit -m "feat: add login functionality"
 
-# 跳过 add，直接提交所有【已跟踪文件】的修改（新文件不算，仍需先 add）
-git commit -am "fix: 修复空指针异常"
+# Skip add, commit all changes to already-tracked files directly (new files still need add first)
+git commit -am "fix: fix null pointer exception"
 
-# 打开编辑器写多行详细提交信息（推荐用于复杂改动）
+# Open an editor for a multi-line, detailed commit message (recommended for complex changes)
 git commit
 
-# 修改最近一次提交（改提交信息或补充漏提交的文件），未 push 前使用
+# Amend the most recent commit (fix the message or add missed files); use only before pushing
 git commit --amend
 ```
 
-## 参数说明
+## Flags
 
-| 参数 | 作用 |
+| Flag | Effect |
 |---|---|
-| `-m "<msg>"` | 直接在命令行指定提交信息，避免打开编辑器 |
-| `-a` | 自动 add 所有已跟踪文件的修改（不含全新文件），跳过手动 `git add` |
-| `--amend` | 修正最近一次提交，而不是创建新提交（会改变提交哈希） |
-| `--no-verify` | 跳过 pre-commit 钩子校验（⚠️ 除非确有必要，不建议日常使用） |
+| `-m "<msg>"` | Specifies the commit message directly on the command line, skipping the editor |
+| `-a` | Automatically adds all modifications to already-tracked files (not new files), skipping manual `git add` |
+| `--amend` | Fixes the most recent commit instead of creating a new one (changes its hash) |
+| `--no-verify` | Skips pre-commit hook validation (⚠️ not recommended for routine use unless truly necessary) |
 
-## 好的提交信息长什么样
+## What a good commit message looks like
 
-推荐用 [Conventional Commits](https://www.conventionalcommits.org/zh-hans/) 风格：
+[Conventional Commits](https://www.conventionalcommits.org/) style is recommended:
 
 ```
-<type>: <简短描述，祈使句，不超过50字符>
+<type>: <short description, imperative mood, under 50 characters>
 
-<可选的详细说明，解释"为什么"而不是"做了什么">
+<optional detailed explanation of "why", not "what">
 ```
 
-常见 type：`feat`（新功能）、`fix`（修bug）、`docs`（文档）、`refactor`（重构）、`test`（测试）、`chore`（杂项）。
+Common types: `feat` (new feature), `fix` (bug fix), `docs` (documentation), `refactor`, `test`, `chore` (misc).
 
-## 验证你做对了
+## Verify it worked
 
 ```bash
-git commit -m "docs: 添加 git 教程"
-git log -1          # 应看到刚才的提交出现在最顶部
-git status          # 应显示 "nothing to commit, working tree clean"
+git commit -m "docs: add git tutorial"
+git log -1          # should show this commit at the top
+git status          # should show "nothing to commit, working tree clean"
 ```
 
-## 常见坑
+## Common pitfalls
 
-- ⚠️ `--amend` 会改变提交的哈希值，**如果这个提交已经 push 到远程且被他人拉取过，千万不要 amend**，否则会造成历史分叉，团队协作要用 `git revert` 代替。
-- ⚠️ 提交信息为空或写"update"这种无意义描述，会让 `git log` 排查问题时毫无价值——花10秒写清楚，未来的自己会感谢现在的你。
+- ⚠️ `--amend` changes the commit's hash. **Never amend a commit that's already been pushed and pulled by others** — it forks history. On shared branches, use `git revert` instead.
+- ⚠️ Empty or vague messages like "update" make `git log` useless when debugging later — spend 10 seconds writing something clear and your future self will thank you.
 
-## 承上启下
+## What's next
 
-有了第一次提交，你就正式拥有了"历史"。接下来自然要问：**这个仓库到底提交过什么？** 答案在下一节 **`git log`**。
+With your first commit, you officially have "history". The natural next question is: **what has actually been committed to this repository?** That's answered in the next section, **`git log`**.
 
-👉 下一站：[Git/log —— 查看提交历史](../log/README.md)
+👉 Next: [Git/log — browse commit history](../log/README.md)
 
 ---
-参考：[Pro Git 2.2 - 提交更新](https://git-scm.com/book/zh/v2/Git-基础-记录每次更新到仓库#r_committing_changes) ｜ [git-commit 官方手册](https://git-scm.com/docs/git-commit)
+References: [Pro Git 2.2 — Committing Your Changes](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_committing_changes) | [git-commit manual](https://git-scm.com/docs/git-commit)

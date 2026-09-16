@@ -1,85 +1,89 @@
-← [返回目录](../basics/README.md) ｜ 上一站：[Git/commit](../commit/README.md)
+← [Back to index](../basics/README.md) ｜ Previous: [Git/commit](../commit/README.md)
 
-# `git log` —— 查看提交历史
+Chinese version: [README_ZH.md](README_ZH.md)
 
-## 这一步在做什么
+# `git log` — Browse Commit History
 
-`git log` 显示当前分支的提交历史，从最新的提交往回追溯到最早的提交，是"时间机器的目录索引"。每条记录包含：提交哈希、作者、时间、提交信息。
+## What this does
+
+`git log` shows the commit history of the current branch, tracing backward from the newest commit to the earliest — a "table of contents for a time machine". Each entry includes the commit hash, author, date, and message.
 
 ```mermaid
 flowchart RL
-    C3["提交 c3 (HEAD → main)<br/>fix: 修复登录bug"] --> C2["提交 c2<br/>feat: 添加登录页"]
-    C2 --> C1["提交 c1<br/>init: 项目初始化"]
+    accTitle: Commit history chain, newest commit first
+    accDescr: Starting from the earliest commit c1, c2 points back to c1, and the newest commit c3 points back to c2; both HEAD and the main branch point at c3. git log prints this chain from newest to oldest by default.
+    C3["Commit c3 (HEAD → main)<br/>fix: fix login bug"] --> C2["Commit c2<br/>feat: add login page"]
+    C2 --> C1["Commit c1<br/>init: project initialization"]
 
     style C3 fill:#22a06b,color:#fff
 ```
 
-`git log` 的默认输出就是把这条链**从右往左**（从新到旧）打印出来。
+`git log`'s default output prints this chain **right to left** (newest to oldest).
 
-## 常用操作
+## Common commands
 
 ```bash
-# 默认详细模式
+# Default, detailed mode
 git log
 
-# 每条提交压缩成一行，最常用的日常查看方式
+# Compress each commit to one line — the most common daily view
 git log --oneline
 
-# 图形化展示分支合并关系（团队协作时非常有用）
+# Graphical view of branches and merges (very useful for team collaboration)
 git log --oneline --graph --all
 
-# 只看最近 5 条
+# Only the last 5 commits
 git log -5
 
-# 只看某个作者的提交
-git log --author="张三"
+# Only commits by a specific author
+git log --author="Jane Doe"
 
-# 只看某个文件的修改历史
+# Only the history of a specific file
 git log --follow -- src/app.js
 
-# 搜索提交信息里包含关键词的记录
+# Search commit messages for a keyword
 git log --grep="fix"
 
-# 显示每次提交具体改了哪些内容（结合了 diff）
+# Show exactly what each commit changed (combines log with diff)
 git log -p
 ```
 
-## 参数说明
+## Flags
 
-| 参数 | 作用 |
+| Flag | Effect |
 |---|---|
-| `--oneline` | 每条提交精简为一行：`哈希前缀 + 提交信息` |
-| `--graph` | 用 ASCII 图形画出分支和合并的走向 |
-| `--all` | 显示所有分支的提交，不止当前分支 |
-| `-p` / `--patch` | 附带显示每次提交的具体代码差异 |
-| `--stat` | 显示每次提交改了哪些文件、加减了多少行（比 `-p` 更简洁） |
+| `--oneline` | Compresses each commit to one line: `hash prefix + message` |
+| `--graph` | Draws an ASCII graph of branches and merges |
+| `--all` | Shows commits across all branches, not just the current one |
+| `-p` / `--patch` | Also shows each commit's exact code diff |
+| `--stat` | Shows which files each commit touched and how many lines changed (more concise than `-p`) |
 
-## 实用组合（建议加进你的 alias）
+## A useful alias worth adding
 
 ```bash
 git config --global alias.lg "log --oneline --graph --all --decorate"
-# 之后直接输入
+# then just type
 git lg
 ```
 
-## 验证你理解对了
+## Verify you understood it
 
 ```bash
 git log --oneline
-# 每一行最前面的 7 位字符（如 a1b2c3d）就是提交哈希
-# 可以用它定位到具体某次提交，例如 git show a1b2c3d
+# The 7 characters at the start of each line (e.g. a1b2c3d) are the commit hash
+# Use it to reference a specific commit, e.g. git show a1b2c3d
 ```
 
-## 常见坑
+## Common pitfalls
 
-- ⚠️ 默认 `git log` 输出很长，按 `q` 退出分页器（Git 默认用 `less` 分页）。
-- ⚠️ `--follow` 只能跟踪单个文件的重命名历史，多个文件要分别执行。
+- ⚠️ Default `git log` output can be long — press `q` to exit the pager (Git uses `less` by default).
+- ⚠️ `--follow` only tracks rename history for a single file; run it separately for other files.
 
-## 承上启下
+## What's next
 
-`git log` 告诉你**历史上发生过什么**，但如果你想知道**现在**和**某次提交之间**、或者**两次提交之间**具体差了哪些代码行，就需要最后一节——**`git diff`**。
+`git log` tells you **what happened in history**, but if you want to know exactly which lines differ **right now** vs. a given commit, or **between two commits**, you need the final section: **`git diff`**.
 
-👉 下一站：[Git/diff —— 对比具体差异](../diff/README.md)
+👉 Next: [Git/diff — compare the exact differences](../diff/README.md)
 
 ---
-参考：[Pro Git 2.3 - 查看提交历史](https://git-scm.com/book/zh/v2/Git-基础-查看提交历史) ｜ [git-log 官方手册](https://git-scm.com/docs/git-log)
+References: [Pro Git 2.3 — Viewing the Commit History](https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History) | [git-log manual](https://git-scm.com/docs/git-log)

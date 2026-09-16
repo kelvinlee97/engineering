@@ -1,86 +1,90 @@
-← [返回目录](../basics/README.md) ｜ 上一站：[Git/clone](../clone/README.md)
+← [Back to index](../basics/README.md) ｜ Previous: [Git/clone](../clone/README.md)
 
-# `git add` —— 把改动放进暂存区
+Chinese version: [README_ZH.md](README_ZH.md)
 
-## 这一步在做什么
+# `git add` — Stage Changes for the Next Commit
 
-你在工作区改了文件，Git 已经能感知到"这些文件变了"，但**默认不会自动提交**。`git add` 的作用是把你选中的改动**搬进暂存区（Staging Area）**，相当于对 `git commit` 说："只把这些改动打包进下一次提交，其他没 add 的先不要。"
+## What this does
+
+When you edit files, Git already notices "these files changed" — but it **never commits automatically**. `git add` moves your chosen changes **into the staging area (index)**, effectively telling `git commit`: "only package these changes into the next commit; leave everything else out for now."
 
 ```mermaid
 flowchart LR
-    subgraph WD["工作区"]
-        F1[file1.txt 已修改]
-        F2[file2.txt 已修改]
-        F3[file3.txt 新文件]
+    accTitle: git add moves changes from the working tree into the staging area
+    accDescr: In the working tree, file1.txt and file3.txt are selected with git add and move into the staging area, marked ready to commit. file2.txt was not added and stays in the working tree, so it will not be part of the next commit.
+    subgraph WD["Working Directory"]
+        F1[file1.txt modified]
+        F2[file2.txt modified]
+        F3[file3.txt new file]
     end
-    subgraph SA["暂存区"]
+    subgraph SA["Staging Area"]
         S1[file1.txt ✅]
         S3[file3.txt ✅]
     end
 
     F1 -- "git add file1.txt" --> S1
     F3 -- "git add file3.txt" --> S3
-    F2 -. "未 add，不会被提交" .-> SA
+    F2 -. "not added, won't be committed" .-> SA
 
     style S1 fill:#22a06b,color:#fff
     style S3 fill:#22a06b,color:#fff
     style F2 fill:#c9910e,color:#fff
 ```
 
-**为什么要有暂存区这一层？** 因为它让你可以把一堆混杂的改动**拆分**成多个逻辑清晰的提交——比如同时改了 bug 修复和文档，你可以分两次 `add` + `commit`，而不是一股脑全部糊在一次提交里。
+**Why have a staging area at all?** It lets you **split** a pile of mixed changes into several logically clean commits — for instance, if you fixed a bug and updated docs at the same time, you can `add` + `commit` them separately instead of lumping everything into one commit.
 
-## 常用操作
+## Common commands
 
 ```bash
-# 暂存单个文件
+# Stage a single file
 git add file1.txt
 
-# 暂存多个指定文件
+# Stage several specific files
 git add file1.txt file2.txt
 
-# 暂存某个目录下的所有改动
+# Stage all changes under a directory
 git add src/
 
-# 暂存当前目录及子目录下所有改动（最常用）
+# Stage all changes in the current directory and subdirectories (most common)
 git add .
 
-# 暂存仓库内所有改动（包括其他目录）
+# Stage every change in the whole repository (including other directories)
 git add -A
 
-# 交互式选择，甚至可以只暂存文件里的部分代码块（hunk）
+# Interactively choose changes, even down to individual hunks within a file
 git add -p file1.txt
 ```
 
-## 参数说明
+## Flags
 
-| 参数 | 作用 |
+| Flag | Effect |
 |---|---|
-| `.` | 暂存当前目录下所有新增/修改/删除的文件（不含上级目录） |
-| `-A` / `--all` | 暂存整个仓库范围内的所有改动 |
-| `-p` / `--patch` | 逐块（hunk）交互确认要不要暂存，适合一个文件里只想提交部分改动 |
-| `-u` / `--update` | 只暂存已被 Git 跟踪的文件的修改/删除，不添加新文件 |
+| `.` | Stages all added/modified/deleted files under the current directory (not parent directories) |
+| `-A` / `--all` | Stages all changes across the entire repository |
+| `-p` / `--patch` | Interactively confirms each hunk — useful when you only want to commit part of a file's changes |
+| `-u` / `--update` | Stages modifications/deletions only for files Git already tracks; skips new files |
 
-## 验证你做对了
+## Verify it worked
 
-`git add` 本身没有输出，用下一节的 `git status` 检查：
+`git add` produces no output itself — check with `git status`, covered in the next section:
 
 ```bash
 git status
-# 绿色文字 = 已暂存，会被下次 commit 包含
-# 红色文字 = 还在工作区，未暂存
+# Green text = staged, will be included in the next commit
+# Red text   = still in the working tree, not staged
 ```
 
-## 常见坑
+## Common pitfalls
 
-- ⚠️ `git add .` 会连同 `.env`、密钥文件等一起加入，提交前务必先看 `git status` 确认列表，敏感文件要写进 `.gitignore`。
-- ⚠️ `add` 之后又改了文件？改动不会自动同步进暂存区，需要重新 `git add` 一次，否则 `commit` 里包含的还是旧版本。
-- ⚠️ 想撤销 add（不删文件，只是移出暂存区）：`git restore --staged file1.txt`。
+- ⚠️ `git add .` will also pick up `.env` files, secrets, etc. Always check `git status` before committing, and add sensitive files to `.gitignore`.
+- ⚠️ Edited a file again after `add`-ing it? The change won't automatically sync into the staging area — you need to `git add` it again, or `commit` will still include the old version.
+- ⚠️ To undo an `add` (without deleting the file, just moving it back out of staging): `git restore --staged file1.txt`.
 
-## 承上启下
+## What's next
 
-暂存了改动之后，在真正提交之前，你一定想先确认："我到底暂存了什么？还有什么漏了？" ——这正是下一节 **`git status`** 要回答的问题。
+After staging your changes, before actually committing, you'll want to confirm: "what exactly did I stage? Did I miss anything?" — that's exactly what the next section, **`git status`**, answers.
 
-👉 下一站：[Git/status —— 查看当前状态](../status/README.md)
+👉 Next: [Git/status — check the current state](../status/README.md)
 
 ---
-参考：[Pro Git 2.2 - 记录每次更新到仓库](https://git-scm.com/book/zh/v2/Git-基础-记录每次更新到仓库) ｜ [git-add 官方手册](https://git-scm.com/docs/git-add)
+References: [Pro Git 2.2 — Recording Changes to the Repository](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository) | [git-add manual](https://git-scm.com/docs/git-add)

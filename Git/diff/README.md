@@ -1,19 +1,23 @@
-← [返回目录](../basics/README.md) ｜ 上一站：[Git/log](../log/README.md)
+← [Back to index](../basics/README.md) ｜ Previous: [Git/log](../log/README.md)
 
-# `git diff` —— 对比具体差异
+Chinese version: [README_ZH.md](README_ZH.md)
 
-## 这一步在做什么
+# `git diff` — Compare the Exact Differences
 
-`git diff` 是"放大镜"：`git status` 告诉你哪些文件变了，`git diff` 告诉你**具体哪一行**变了、加了什么、删了什么。它可以对比三种不同的范围，这是最容易搞混的地方，务必看清下图：
+## What this does
+
+`git diff` is a "magnifying glass": `git status` tells you which files changed, `git diff` tells you **exactly which lines** changed, what was added, what was removed. It can compare three different ranges, which is the easiest part to confuse — look closely at the diagram below:
 
 ```mermaid
 flowchart LR
-    WD["工作区<br/>（正在编辑）"]
-    SA["暂存区<br/>（已 add）"]
-    REPO["最近一次提交<br/>（HEAD）"]
+    accTitle: The three common comparison ranges for git diff
+    accDescr: Plain git diff with no arguments compares the working tree against the staging area. git diff --staged or --cached compares the staging area against the most recent commit. git diff HEAD compares the working tree directly against the most recent commit, skipping the staging area entirely.
+    WD["Working Directory<br/>(currently editing)"]
+    SA["Staging Area<br/>(already added)"]
+    REPO["Most recent commit<br/>(HEAD)"]
 
-    WD -- "git diff<br/>（不带参数）" --> SA
-    SA -- "git diff --staged<br/>或 --cached" --> REPO
+    WD -- "git diff<br/>(no arguments)" --> SA
+    SA -- "git diff --staged<br/>or --cached" --> REPO
     WD -- "git diff HEAD" --> REPO
 
     style WD fill:#c9910e,color:#fff
@@ -21,36 +25,36 @@ flowchart LR
     style REPO fill:#7c5cff,color:#fff
 ```
 
-> 一句话记忆：**不带参数的 `git diff`** 看的是"我还没 add 的改动"；**`git diff --staged`** 看的是"我已经 add、马上要 commit 的改动"。
+> One-line memory trick: **`git diff`** with no flags shows "changes I haven't added yet"; **`git diff --staged`** shows "changes I've already added and am about to commit".
 
-## 常用操作
+## Common commands
 
 ```bash
-# 查看工作区 vs 暂存区的差异（还没 add 的改动）
+# Working tree vs staging area (changes not yet added)
 git diff
 
-# 查看暂存区 vs 最近一次提交的差异（已 add、还没 commit 的改动）
+# Staging area vs most recent commit (added, not yet committed)
 git diff --staged
-# 等价写法
+# equivalent
 git diff --cached
 
-# 查看工作区 vs 最近一次提交的全部差异（跳过暂存区概念，一次看全）
+# Working tree vs most recent commit, all at once (skips the staging-area distinction)
 git diff HEAD
 
-# 对比两次具体提交之间的差异
+# Compare between two specific commits
 git diff a1b2c3d..e4f5g6h
 
-# 对比两个分支的差异
+# Compare between two branches
 git diff main..feature/login
 
-# 只看某一个文件的差异
+# Only a single file's diff
 git diff -- src/app.js
 
-# 只显示改了哪些文件及行数统计，不显示具体内容
+# File-level stats only (which files changed, line counts), no actual content
 git diff --stat
 ```
 
-## 读懂 diff 输出
+## Reading diff output
 
 ```diff
 diff --git a/app.js b/app.js
@@ -64,48 +68,50 @@ index 83db48f..bf269b4 100644
    }
 ```
 
-| 符号 | 含义 |
+| Symbol | Meaning |
 |---|---|
-| `---` / `+++` | 分别代表"改动前"（a）和"改动后"（b）版本 |
-| `@@ -10,7 +10,7 @@` | 定位到原文件第10行开始的7行，对应新文件同样位置 |
-| `-` 开头的行 | 被删除/替换掉的旧代码（红色） |
-| `+` 开头的行 | 新增的代码（绿色） |
+| `---` / `+++` | The "before" (a) and "after" (b) versions, respectively |
+| `@@ -10,7 +10,7 @@` | Locates line 10 for 7 lines in the original file, and the same position in the new file |
+| Lines starting with `-` | Old code removed/replaced (shown in red) |
+| Lines starting with `+` | New code added (shown in green) |
 
-## 参数说明
+## Flags
 
-| 参数 | 作用 |
+| Flag | Effect |
 |---|---|
-| `--staged` / `--cached` | 对比暂存区与最近提交 |
-| `--stat` | 仅显示文件级别的增删行数统计，不展示具体代码 |
-| `--word-diff` | 按单词级别高亮差异，而不是整行，适合看文档改动 |
-| `--color-words` | 类似 `--word-diff`，输出更紧凑 |
+| `--staged` / `--cached` | Compares the staging area against the most recent commit |
+| `--stat` | Shows only file-level added/removed line counts, no actual code |
+| `--word-diff` | Highlights differences at the word level instead of the whole line — good for prose/docs |
+| `--color-words` | Similar to `--word-diff`, more compact output |
 
-## 验证你理解对了
+## Verify you understood it
 
 ```bash
-echo "// 新注释" >> file1.txt
-git diff                 # 应该能看到刚加的这一行，标绿色 +
+echo "// new comment" >> file1.txt
+git diff                 # should show this new line, marked green with +
 git add file1.txt
-git diff                 # 现在应该没有输出了（已经在暂存区，不在工作区差异里）
-git diff --staged        # 这时候能看到刚才那行差异
+git diff                 # should now show nothing (it's in the staging area, not a working-tree diff anymore)
+git diff --staged        # should now show that line's diff
 ```
 
-## 常见坑
+## Common pitfalls
 
-- ⚠️ 提交前忘记 `git diff --staged` 走一遍最终确认，容易把调试用的 `console.log`、临时代码一起提交上去。
-- ⚠️ 二进制文件（图片等）diff 不出内容，Git 会提示 `Binary files differ`，属正常现象。
+- ⚠️ Forgetting to run `git diff --staged` as a final check before committing can let debug `console.log` calls or temporary code slip into a commit.
+- ⚠️ Binary files (images, etc.) can't be diffed for content — Git will say `Binary files differ`, which is expected.
 
-## 回顾：你已经学完了 7 个核心命令 🎉
+## Recap: you've finished all 7 core commands 🎉
 
 ```mermaid
 flowchart LR
+    accTitle: The complete learning loop across all 7 core commands
+    accDescr: Starting from init, the sequence moves through clone, add, status, commit, log, and finally diff, forming one complete learning path for everyday Git workflow.
     init --> clone --> add --> status --> commit --> log --> diff
     style diff fill:#22a06b,color:#fff
 ```
 
-至此，你已经能完成"创建/拷贝仓库 → 改动 → 暂存 → 检查 → 提交 → 查历史 → 看差异"的完整闭环。下一阶段可以进入分支与合并（`branch` / `merge` / `rebase`），推荐直接上手 [Learn Git Branching](https://learngitbranching.js.org/) 交互式练习巩固。
+At this point you can complete the full loop: "create/copy a repo → change files → stage → check → commit → view history → compare differences". Next, move on to branching and merging (`branch` / `merge` / `rebase`) — [Learn Git Branching](https://learngitbranching.js.org/) is a great interactive way to solidify it.
 
-👈 返回：[Git 教程首页](../basics/README.md)
+👈 Back to: [Git tutorial home](../basics/README.md)
 
 ---
-参考：[Pro Git 2.2 - 查看已暂存和未暂存的修改](https://git-scm.com/book/zh/v2/Git-基础-记录每次更新到仓库#_git_diff) ｜ [git-diff 官方手册](https://git-scm.com/docs/git-diff)
+References: [Pro Git 2.2 — Viewing Your Staged and Unstaged Changes](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_git_diff) | [git-diff manual](https://git-scm.com/docs/git-diff)
