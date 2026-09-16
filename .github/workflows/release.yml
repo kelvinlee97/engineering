@@ -42,6 +42,8 @@ jobs:
             if git rev-parse -q --verify "refs/tags/$INPUT_TAG" >/dev/null; then
               echo "::error::tag $INPUT_TAG already exists"; exit 1
             fi
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git tag -a "$INPUT_TAG" -m "Release $INPUT_TAG"
             git push origin "refs/tags/$INPUT_TAG"
             echo "name=$INPUT_TAG" >>"$GITHUB_OUTPUT"
