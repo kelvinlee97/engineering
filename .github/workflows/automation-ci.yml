@@ -1,21 +1,12 @@
 name: Automation checks
 
+# Runs on every pull request, with no path filter: it is a required status
+# check on main, and a required check that never reports leaves unrelated
+# pull requests pending forever. The job takes about 15 seconds.
 on:
   pull_request:
-    paths:
-      - ".github/workflows/**"
-      - ".github/labeler.yml"
-      - ".github/labels.json"
-      - ".github/dependabot.yml"
-      - ".github/scripts/**"
   push:
     branches: [main]
-    paths:
-      - ".github/workflows/**"
-      - ".github/labeler.yml"
-      - ".github/labels.json"
-      - ".github/dependabot.yml"
-      - ".github/scripts/**"
   workflow_dispatch:
 
 permissions:
