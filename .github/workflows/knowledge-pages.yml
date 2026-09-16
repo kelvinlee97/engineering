@@ -1,6 +1,7 @@
 name: Knowledge base site
 
 on:
+  workflow_dispatch:
   pull_request:
     paths:
       - "*.md"
@@ -47,7 +48,7 @@ jobs:
       - name: Test knowledge-base builder
         run: python -m unittest discover -s scripts/tests -p 'test_*.py'
       - name: Upload Pages artifact
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
         uses: actions/upload-pages-artifact@v5
         with:
           path: .pages-site
@@ -66,7 +67,7 @@ jobs:
         run: python3 scripts/check_mermaid_diagrams.py
 
   deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     needs: [validate, mermaid]
     runs-on: ubuntu-latest
     permissions:
@@ -82,3 +83,14 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+      - name: Smoke-test the deployed site
+        run: |
+          set -euo pipefail
+          url="${{ steps.deployment.outputs.page_url }}"
+          echo "Checking $url"
+          curl --retry 10 --retry-delay 15 --retry-all-errors -fsS "$url" -o /tmp/index.html
+          echo "--- fetched page (first 20 lines) ---"
+          head -n 20 /tmp/index.html
+          grep -q "Kelvin" /tmp/index.html || { echo "::error::Deployed page is missing expected site title text"; exit 1; }
+          grep -q "ibm-plex-sans-latin-wght-normal.woff2" /tmp/index.html || { echo "::error::Deployed page is not referencing the current font assets — the rebrand may not have propagated"; exit 1; }
+          echo "Smoke test passed: $url is live and serving the current build."
