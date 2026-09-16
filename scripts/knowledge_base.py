@@ -1067,7 +1067,10 @@ def _summary_markdown(documents: list[Document]) -> str:
             "    - [Topics](topics/index.md)",
             "    - [Repository overview](repository/index.md)",
             "    - [Archive](archive/index.md)",
-            "    - [中文 / Chinese](index_zh.md)",
+            # A top-level entry, so the Chinese home page gets its own tab
+            # rather than sitting under Browse — which made every Chinese
+            # page render the breadcrumb "Home > Browse".
+            "- [中文](index_zh.md)",
         ]
     )
     return "\n".join(lines) + "\n"
