@@ -1,0 +1,40 @@
+# Dependency updates and vulnerability alerts.
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates
+version: 2
+
+updates:
+  # GitHub Actions used by the workflows in .github/workflows/.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "ci"
+    labels:
+      - dependencies
+
+  # MkDocs toolchain that builds and publishes the knowledge-base site.
+  - package-ecosystem: pip
+    directory: /pages
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "build"
+    labels:
+      - dependencies
+
+  # Python tooling for the YouTube transcript module (uv.lock + pyproject.toml).
+  - package-ecosystem: uv
+    directory: /youtube-transcript
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "build"
+    labels:
+      - dependencies
