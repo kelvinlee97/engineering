@@ -6,8 +6,14 @@ from pathlib import Path
 
 from scripts.knowledge_base import (
     AWS_GROUPS,
+    HOME_TOPIC_EXCLUDE,
+    LATEST_PER_AREA,
+    SYMPTOM_ENTRIES,
+    TOPIC_META,
     KnowledgeBaseError,
     _excerpt,
+    _home_areas,
+    _latest_documents,
     _summary_markdown,
     _reading_label,
     _reading_minutes,
@@ -151,22 +157,25 @@ class KnowledgeBaseTests(unittest.TestCase):
             self.assertIn('class="kb-meta"', repository)
             self.assertIn("kb_language: en", repository)
             dashboard = (output / "index.md").read_text(encoding="utf-8")
-            self.assertIn(">Kelvin’s Engineering Notes</h1>", dashboard)
+            self.assertIn(">Start from a symptom, or pick a topic.</h1>", dashboard)
             self.assertIn('class="kb-hero"', dashboard)
             self.assertIn('class="kb-stats"', dashboard)
-            self.assertIn('href="Git/">Start with a real problem</a>', dashboard)
+            self.assertIn('class="kb-topic-card__blurb"', dashboard)
+            self.assertIn('class="kb-symptom"', dashboard)
+            self.assertIn('class="kb-coverage__fill"', dashboard)
             chinese_dashboard = (output / "index_zh.md").read_text(encoding="utf-8")
-            self.assertIn(">Kelvin 的工程笔记</h1>", chinese_dashboard)
-            self.assertIn('class="kb-stats"', chinese_dashboard)
             self.assertIn(
-                'href="../Git/index_zh/">从一个实际问题开始</a>', chinese_dashboard
+                ">从一个故障现象开始，或者直接挑一个主题。</h1>", chinese_dashboard
             )
+            self.assertIn('class="kb-stats"', chinese_dashboard)
+            self.assertIn('class="kb-symptom"', chinese_dashboard)
             self.assertIn('href="apple/container/"', dashboard)
-            self.assertIn('href="topics/"', dashboard)
             self.assertIn('href="archive/"', dashboard)
             self.assertIn('href="index_zh/"', dashboard)
             self.assertIn("document.querySelector('.md-search__input').focus()", dashboard)
-            self.assertIn("  - footer", dashboard)
+            # The topic tabs render in the header, so the home page keeps its
+            # full width by hiding the left rail that would only say "Home".
+            self.assertIn("  - navigation", dashboard)
             self.assertIn('href="../"', (output / "index_zh.md").read_text(encoding="utf-8"))
             topics = (output / "topics/index.md").read_text(encoding="utf-8")
             self.assertIn('href="../apple/container/"', topics)
@@ -239,6 +248,48 @@ class KnowledgeBaseTests(unittest.TestCase):
             self.assertIn("        - [Amazon S3](AWS/s3/index.md)\n", summary)
             # Chinese pages reach readers through each article's language link.
             self.assertNotIn("index_zh.md", summary.replace("[中文 / Chinese](index_zh.md)", ""))
+
+    def test_home_topics_all_have_a_name_and_blurb(self) -> None:
+        """A tile with no curated name falls back to an article title."""
+
+        root = Path(__file__).resolve().parents[2]
+        documents = discover_documents(root)
+        for language in ("en", "zh"):
+            for area in _home_areas(documents, language):
+                self.assertIn(area, TOPIC_META, f"{area} needs a TOPIC_META entry")
+        for area in HOME_TOPIC_EXCLUDE:
+            self.assertNotIn(area, _home_areas(documents, "en"))
+
+    def test_symptom_entries_resolve_in_both_languages(self) -> None:
+        root = Path(__file__).resolve().parents[2]
+        pages = {document.page for document in discover_documents(root)}
+        for entry in SYMPTOM_ENTRIES:
+            page = entry[0]
+            self.assertIn(page, pages)
+            self.assertIn(page.replace("index.md", "index_zh.md"), pages)
+
+    def test_latest_notes_are_capped_per_topic(self) -> None:
+        root = Path(__file__).resolve().parents[2]
+        documents = discover_documents(root)
+        latest = _latest_documents(documents, "en")
+
+        self.assertTrue(latest)
+        counts: dict[str, int] = {}
+        for document in latest:
+            counts[document.area] = counts.get(document.area, 0) + 1
+        self.assertLessEqual(max(counts.values()), LATEST_PER_AREA)
+
+    def test_excerpt_skips_a_bare_lead_in_line(self) -> None:
+        """Many articles open with the same colon-terminated lead-in."""
+
+        text = (
+            "# Amazon Athena\n\n"
+            "This article answers three practical questions:\n\n"
+            "Athena reads data straight out of S3, so partitioning and file "
+            "layout decide the bill more than the query text does.\n"
+        )
+
+        self.assertTrue(_excerpt(text, "en").startswith("Athena reads data"))
 
     def test_reading_time_ignores_markdown_syntax(self) -> None:
         prose = " ".join(["word"] * 440)
