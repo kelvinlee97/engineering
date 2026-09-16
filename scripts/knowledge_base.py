@@ -198,6 +198,10 @@ def _excerpt(text: str, language: str) -> str:
             continue
         if any(marker in candidate for marker in LANGUAGE_LINE_MARKERS):
             continue
+        # A colon-terminated line introduces the list that follows; on its own
+        # it describes nothing, and many articles open with the same one.
+        if candidate.endswith((":", "\uff1a")):
+            continue
         limit = EXCERPT_LENGTH if language == "en" else CJK_EXCERPT_LENGTH
         if len(candidate) <= limit:
             return candidate
@@ -662,33 +666,6 @@ def _monogram(area: str) -> str:
     return stripped[:2].upper()
 
 
-def _note_card_html(
-    document: Document,
-    source_page: str,
-    excerpt: str,
-    read_more: str,
-) -> str:
-    excerpt_html = (
-        f'<p class="kb-note-card__excerpt">{_escape(excerpt)}</p>' if excerpt else ""
-    )
-    date = (
-        f'<span class="kb-note-card__date">{_escape(document.updated)}</span>'
-        if document.updated
-        else ""
-    )
-    return (
-        f'<a class="kb-note-card" href="{_escape(_relative_site_url(source_page, document.page))}">'
-        '<span class="kb-note-card__top">'
-        f'<span class="kb-chip">{_escape(_kind_label(document.kind, document.language))}</span>'
-        f"{date}"
-        "</span>"
-        f'<span class="kb-note-card__title">{_escape(document.title)}</span>'
-        f"{excerpt_html}"
-        f'<span class="kb-note-card__more">{_escape(read_more)}</span>'
-        "</a>"
-    )
-
-
 def _related_html(
     document: Document,
     documents: list[Document],
@@ -745,11 +722,9 @@ def _related_html(
 
 def _stats_html(documents: list[Document], language: str) -> str:
     notes = _blog_documents(documents, language)
-    areas = {
-        document.area
-        for document in documents
-        if document.language == language and document.area != "engineering"
-    }
+    # Count the topics the home page actually offers, so the stat and the
+    # tile grid can never disagree.
+    areas = _home_areas(documents, language)
     updated = next((document.updated for document in notes if document.updated), "")
     is_english = language == "en"
     items = [
@@ -767,6 +742,629 @@ def _stats_html(documents: list[Document], language: str) -> str:
     return f'<ul class="kb-stats" aria-label="{aria}">{cells}</ul>'
 
 
+
+# --------------------------------------------------------------------------
+# Navigation
+#
+# MkDocs builds its navigation from the staged tree, which is flat and
+# alphabetical: AWS alone contributes 123 pages, so an auto-generated nav
+# buries every other topic. The constants below group the tree into eight
+# top-level sections (rendered as tabs) and split AWS into service families,
+# and `_summary_markdown` emits them as the literate-nav SUMMARY.md.
+#
+# Chinese pages are deliberately left out of the nav: they double every entry
+# and are reached through the language link each article carries.
+# --------------------------------------------------------------------------
+
+NAV_LABEL_SUFFIXES = (" - Runbook & Reference",)
+
+AWS_GROUPS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    (
+        "Foundations, cost & certification",
+        (
+            "aws-ecosystem",
+            "foundations-cloud-computing",
+            "shared-responsibility-model",
+            "well-architected",
+            "pricing-models",
+            "billing-cost-management",
+            "certifications/cloud-practitioner",
+            "certifications/solutions-architect",
+            "certifications/developer-associate",
+            "certifications/competencies",
+            "solutions-implementations",
+            "solutions-consulting-offers",
+        ),
+    ),
+    (
+        "Compute & containers",
+        (
+            "ec2",
+            "auto-scaling-groups",
+            "application-auto-scaling",
+            "lambda",
+            "batch",
+            "ecs",
+            "eks",
+            "ecr",
+            "lightsail",
+            "outposts",
+            "elastic-beanstalk",
+            "opsworks",
+        ),
+    ),
+    (
+        "Networking & content delivery",
+        (
+            "vpc",
+            "route53",
+            "cloudfront",
+            "elb",
+            "global-accelerator",
+            "direct-connect",
+            "api-gateway",
+            "appsync",
+        ),
+    ),
+    (
+        "Storage & migration",
+        (
+            "s3",
+            "fsx",
+            "storage-gateway",
+            "backup",
+            "snow-family",
+            "datasync",
+            "transfer-family",
+            "mgn",
+        ),
+    ),
+    (
+        "Databases",
+        (
+            "rds",
+            "dynamodb",
+            "elasticache",
+            "documentdb",
+            "neptune",
+            "qldb",
+            "dms",
+            "managed-blockchain",
+        ),
+    ),
+    (
+        "Data & analytics",
+        (
+            "athena",
+            "glue",
+            "emr",
+            "kinesis",
+            "msk",
+            "redshift",
+            "quicksight",
+            "data-pipeline",
+            "opensearch",
+            "cloudsearch",
+            "appflow",
+        ),
+    ),
+    (
+        "Machine learning",
+        (
+            "sagemaker",
+            "comprehend",
+            "forecast",
+            "kendra",
+            "lex",
+            "personalize",
+            "polly",
+            "rekognition",
+            "transcribe",
+            "translate",
+        ),
+    ),
+    (
+        "Application integration",
+        (
+            "sns",
+            "sqs",
+            "mq",
+            "eventbridge",
+            "step-functions",
+            "ses",
+            "connect",
+        ),
+    ),
+    (
+        "Security, identity & compliance",
+        (
+            "iam",
+            "iam-identity-center",
+            "cognito",
+            "directory-service",
+            "acm",
+            "kms",
+            "cloudhsm",
+            "secrets-manager",
+            "guardduty",
+            "inspector",
+            "detective",
+            "macie",
+            "security-hub",
+            "shield",
+            "waf",
+            "artifact",
+        ),
+    ),
+    (
+        "Governance & operations",
+        (
+            "cloudwatch",
+            "cloudtrail",
+            "config",
+            "systems-manager",
+            "x-ray",
+            "trusted-advisor",
+            "health",
+            "service-catalog",
+            "service-quotas",
+            "license-manager",
+            "resource-groups-tag-editor",
+            "organizations",
+            "control-tower",
+            "ram",
+            "managed-services",
+        ),
+    ),
+    (
+        "Developer tools & IaC",
+        (
+            "cloudformation",
+            "cdk",
+            "sam",
+            "solutions-constructs",
+            "codebuild",
+            "codecommit",
+            "codedeploy",
+            "codepipeline",
+            "codeartifact",
+            "codeguru",
+            "codestar",
+            "cloud9",
+            "cli",
+            "sdk",
+            "boto3",
+            "amplify",
+        ),
+    ),
+)
+
+# A topic directory's H1 is an article title ("Essential Git Commands for
+# Operations"), which is too long to read as a sidebar group. These override it.
+AREA_NAV_LABELS = {
+    "Bash": "Bash",
+    "Ghostty": "Ghostty",
+    "Git": "Git",
+    "Nginx": "Nginx & OpenResty",
+    "Nodejs": "Node.js & Express BFF",
+    "Python": "Python",
+    "youtube-transcript": "Transcript tooling",
+}
+
+NAV_SECTIONS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("Troubleshooting", ("Git", "Kubernetes", "Nginx", "Nodejs", "ZooKeeper")),
+    ("AWS", ("AWS",)),
+    ("AI coding tools", ("Claude",)),
+    ("Languages & practice", ("Python", "Bash")),
+    ("Setup", ("Ghostty", "Ubuntu", "apple", "youtube-transcript")),
+    ("Video notes", ("YouTube",)),
+)
+
+
+def _nav_label(title: str) -> str:
+    """Trim the shared article-title suffix so sidebar entries stay scannable."""
+
+    for suffix in NAV_LABEL_SUFFIXES:
+        if title.endswith(suffix):
+            return title[: -len(suffix)].strip()
+    return title
+
+
+def _nav_entry(document: Document, indent: str) -> str:
+    return f"{indent}- [{_escape_markdown_label(_nav_label(document.title))}]({document.page})"
+
+
+def _escape_markdown_label(label: str) -> str:
+    return label.replace("[", r"\[").replace("]", r"\]")
+
+
+def _aws_nav_lines(by_page: dict[str, Document], indent: str) -> list[str]:
+    """Split AWS into service families; anything unmapped lands in `More`."""
+
+    lines: list[str] = []
+    claimed: set[str] = set()
+    for group_name, slugs in AWS_GROUPS:
+        entries = []
+        for slug in slugs:
+            page = f"AWS/{slug}/index.md"
+            document = by_page.get(page)
+            if document is None:
+                continue
+            claimed.add(page)
+            entries.append(_nav_entry(document, indent + "    "))
+        if entries:
+            lines.append(f"{indent}- {group_name}")
+            lines.extend(entries)
+    leftovers = [
+        document
+        for page, document in sorted(by_page.items())
+        if page.startswith("AWS/") and page != "AWS/index.md" and page not in claimed
+    ]
+    if leftovers:
+        lines.append(f"{indent}- More")
+        lines.extend(_nav_entry(document, indent + "    ") for document in leftovers)
+    return lines
+
+
+def _summary_markdown(documents: list[Document]) -> str:
+    """Render the literate-nav SUMMARY.md for the English tree."""
+
+    by_page = {
+        document.page: document
+        for document in documents
+        if document.language == "en"
+    }
+    lines = [
+        "- [Home](index.md)",
+    ]
+    for section_name, areas in NAV_SECTIONS:
+        section_lines: list[str] = []
+        for area in areas:
+            root_page = f"{area}/index.md"
+            root = by_page.get(root_page)
+            children = sorted(
+                (
+                    document
+                    for page, document in by_page.items()
+                    if page.startswith(f"{area}/") and page != root_page
+                ),
+                key=lambda document: document.page,
+            )
+            if area == "AWS":
+                if root is not None:
+                    section_lines.append(_nav_entry(root, "    "))
+                section_lines.extend(_aws_nav_lines(by_page, "    "))
+                continue
+            if root is None and not children:
+                continue
+            if len(areas) == 1:
+                if root is not None:
+                    section_lines.append(_nav_entry(root, "    "))
+                section_lines.extend(_nav_entry(child, "    ") for child in children)
+                continue
+            if root is not None and not children:
+                # A topic with no sub-articles is a link, not a one-item group.
+                section_lines.append(_nav_entry(root, "    "))
+                continue
+            if root is None and len(children) == 1:
+                # A container directory with a single article (apple/container)
+                # reads better as that article than as a one-item group.
+                section_lines.append(_nav_entry(children[0], "    "))
+                continue
+            label = AREA_NAV_LABELS.get(area) or (
+                _nav_label(root.title) if root is not None else area
+            )
+            section_lines.append(f"    - {_escape_markdown_label(label)}")
+            if root is not None:
+                section_lines.append(_nav_entry(root, "        "))
+            section_lines.extend(_nav_entry(child, "        ") for child in children)
+        if section_lines:
+            lines.append(f"- {section_name}")
+            lines.extend(section_lines)
+    lines.extend(
+        [
+            "- Browse",
+            "    - [Topics](topics/index.md)",
+            "    - [Repository overview](repository/index.md)",
+            "    - [Archive](archive/index.md)",
+            "    - [中文 / Chinese](index_zh.md)",
+        ]
+    )
+    return "\n".join(lines) + "\n"
+
+
+# --------------------------------------------------------------------------
+# Home page content
+#
+# The home page answers two questions before anything else: "where is my
+# topic" and "what do I do when something is broken". Neither can be derived
+# from the tree — a topic directory's H1 is an article title, and no metadata
+# says which runbook a reader in an incident wants — so both are curated here.
+# --------------------------------------------------------------------------
+
+# area -> (English name, Chinese name, English blurb, Chinese blurb)
+TOPIC_META: dict[str, tuple[str, str, str, str]] = {
+    "AWS": (
+        "AWS",
+        "AWS",
+        "Service-by-service runbooks and references",
+        "按服务整理的运维手册与参考",
+    ),
+    "Git": (
+        "Git",
+        "Git",
+        "Sync, publish, release and recovery",
+        "同步、发布、回滚与恢复",
+    ),
+    "Kubernetes": (
+        "Kubernetes",
+        "Kubernetes",
+        "Scheduling failures and incident runbooks",
+        "调度失败与故障处理手册",
+    ),
+    "Nginx": (
+        "Nginx & OpenResty",
+        "Nginx 与 OpenResty",
+        "Deployment and reload semantics",
+        "部署与 reload 行为",
+    ),
+    "Nodejs": (
+        "Node.js & Express BFF",
+        "Node.js 与 Express BFF",
+        "Deployment and incident response",
+        "部署与故障响应",
+    ),
+    "ZooKeeper": (
+        "ZooKeeper",
+        "ZooKeeper",
+        "Quorum, snapshots and recovery",
+        "quorum、快照与恢复",
+    ),
+    "Python": (
+        "Python",
+        "Python",
+        "SRE exercises and language cheatsheets",
+        "SRE 练习与语言速查",
+    ),
+    "Bash": (
+        "Bash",
+        "Bash",
+        "Log analysis on the command line",
+        "命令行日志分析",
+    ),
+    "Claude": (
+        "AI coding tools",
+        "AI 编程工具",
+        "Claude Code, agents and skills",
+        "Claude Code、agent 与 skills",
+    ),
+    "YouTube": (
+        "Video notes",
+        "视频笔记",
+        "Summaries of talks on startups and AI",
+        "创业与 AI 演讲摘要",
+    ),
+    "Ghostty": (
+        "Ghostty",
+        "Ghostty",
+        "Terminal setup and a reusable config",
+        "终端配置与可复用配置文件",
+    ),
+    "Ubuntu": (
+        "Ubuntu APT",
+        "Ubuntu APT",
+        "Install, upgrade and troubleshoot packages",
+        "安装、升级与排查软件包",
+    ),
+    "apple": (
+        "Apple Container",
+        "Apple Container",
+        "Architecture, usage and limitations",
+        "架构、用法与限制",
+    ),
+}
+
+# Repository tooling is not something a reader browses for, so it stays in the
+# nav under Setup but off the home page.
+HOME_TOPIC_EXCLUDE = {"youtube-transcript"}
+
+# (page, English question, Chinese question, English answer, Chinese answer)
+SYMPTOM_ENTRIES: tuple[tuple[str, str, str, str, str], ...] = (
+    (
+        "Kubernetes/runbooks/insufficient-ip-or-eni/index.md",
+        "A Pod is stuck Pending",
+        "Pod 一直是 Pending",
+        "Is it IP capacity, or something else?",
+        "是 IP 容量不够，还是别的原因？",
+    ),
+    (
+        "Git/index.md",
+        "Branches have diverged",
+        "分支分叉了",
+        "Read the state before picking a sync strategy.",
+        "先看清状态，再选同步策略。",
+    ),
+    (
+        "Nodejs/runbooks/common-express-bff-incidents/index.md",
+        "The BFF started timing out",
+        "BFF 开始超时",
+        "Ten common Express incidents and their checks.",
+        "十种常见 Express 故障及排查步骤。",
+    ),
+)
+
+# At most two notes per topic, so a topic with 123 pages cannot fill the list.
+LATEST_PER_AREA = 2
+LATEST_LIMIT = 8
+
+
+def _topic_name(area: str, language: str, fallback: str) -> str:
+    meta = TOPIC_META.get(area)
+    if meta is None:
+        return fallback
+    return meta[0] if language == "en" else meta[1]
+
+
+def _topic_blurb(area: str, language: str) -> str:
+    meta = TOPIC_META.get(area)
+    if meta is None:
+        return ""
+    return meta[2] if language == "en" else meta[3]
+
+
+def _area_note_count(documents: list[Document], area: str, language: str) -> int:
+    return sum(
+        document.language == language
+        and document.area == area
+        and document.kind in BLOG_KINDS
+        for document in documents
+    )
+
+
+def _home_areas(documents: list[Document], language: str) -> list[str]:
+    """Topics offered on the home page, deepest first."""
+
+    areas = {
+        document.area
+        for document in documents
+        if document.language == language
+        and document.area != "engineering"
+        and document.area not in HOME_TOPIC_EXCLUDE
+    }
+    return sorted(
+        areas,
+        key=lambda area: (-_area_note_count(documents, area, language), area.lower()),
+    )
+
+
+def _topic_tile_html(
+    documents: list[Document],
+    area: str,
+    language: str,
+    source_page: str,
+) -> str:
+    catalog = _topic_catalog(documents, area, language)
+    if catalog is None:
+        return ""
+    count = _area_note_count(documents, area, language)
+    if count == 0:
+        # A topic whose only page is its own overview still deserves a tile;
+        # claiming "0 notes" would read as an empty section.
+        count_label = "Overview" if language == "en" else "概览"
+    elif language == "en":
+        count_label = f"{count} note" if count == 1 else f"{count} notes"
+    else:
+        count_label = f"{count} 篇笔记"
+    blurb = _topic_blurb(area, language)
+    blurb_html = (
+        f'<span class="kb-topic-card__blurb">{_escape(blurb)}</span>' if blurb else ""
+    )
+    return (
+        f'<a class="kb-topic-card" href="{_escape(_relative_site_url(source_page, catalog.page))}">'
+        f'<span class="kb-topic-card__monogram" aria-hidden="true">'
+        f"{_escape(_monogram(area))}</span>"
+        '<span class="kb-topic-card__body">'
+        f'<span class="kb-topic-card__name">'
+        f"{_escape(_topic_name(area, language, catalog.title))}</span>"
+        f"{blurb_html}"
+        f'<span class="kb-topic-card__count">{_escape(count_label)}</span>'
+        "</span>"
+        "</a>"
+    )
+
+
+def _symptoms_html(documents: list[Document], language: str, source_page: str) -> str:
+    pages = {
+        document.page for document in documents if document.language == language
+    }
+    is_english = language == "en"
+    cards = []
+    for page, question_en, question_zh, answer_en, answer_zh in SYMPTOM_ENTRIES:
+        target = page if is_english else page.replace("index.md", "index_zh.md")
+        if target not in pages:
+            continue
+        question = question_en if is_english else question_zh
+        answer = answer_en if is_english else answer_zh
+        cards.append(
+            f'<a class="kb-symptom" href="{_escape(_relative_site_url(source_page, target))}">'
+            f'<span class="kb-symptom__question">{_escape(question)}</span>'
+            f'<span class="kb-symptom__answer">{_escape(answer)}</span>'
+            "</a>"
+        )
+    return "".join(cards)
+
+
+def _latest_documents(documents: list[Document], language: str) -> list[Document]:
+    """Most recent notes, capped per topic so one large area cannot fill the list."""
+
+    seen: dict[str, int] = {}
+    latest: list[Document] = []
+    for document in _blog_documents(documents, language):
+        if seen.get(document.area, 0) >= LATEST_PER_AREA:
+            continue
+        seen[document.area] = seen.get(document.area, 0) + 1
+        latest.append(document)
+        if len(latest) == LATEST_LIMIT:
+            break
+    return latest
+
+
+def _coverage_html(documents: list[Document], language: str, source_page: str) -> str:
+    """Notes per topic as a bar chart, so relative depth is visible at a glance."""
+
+    rows = [
+        (area, _area_note_count(documents, area, language))
+        for area in _home_areas(documents, language)
+    ]
+    rows = [(area, count) for area, count in rows if count]
+    if not rows:
+        return ""
+    largest = max(count for _, count in rows)
+    cells = []
+    for area, count in rows:
+        catalog = _topic_catalog(documents, area, language)
+        if catalog is None:
+            continue
+        name = _topic_name(area, language, catalog.title)
+        share = max(3, round(count / largest * 100))
+        unit = ("note" if count == 1 else "notes") if language == "en" else "篇笔记"
+        cells.append(
+            f'<a class="kb-coverage__row" '
+            f'href="{_escape(_relative_site_url(source_page, catalog.page))}">'
+            f'<span class="kb-coverage__name">{_escape(name)}</span>'
+            f'<span class="kb-coverage__track" aria-hidden="true">'
+            f'<span class="kb-coverage__fill" style="width:{share}%"></span></span>'
+            f'<span class="kb-coverage__count">{count}'
+            f'<span class="kb-visually-hidden"> {_escape(unit)}</span></span>'
+            "</a>"
+        )
+    return "".join(cells)
+
+
+def _latest_entry_html(document: Document, source_page: str, excerpt: str) -> str:
+    excerpt_html = (
+        f'<span class="kb-entry__excerpt">{_escape(excerpt)}</span>' if excerpt else ""
+    )
+    date = ""
+    if document.updated:
+        date = (
+            f' <time datetime="{_escape(document.updated)}">'
+            f"{_escape(document.updated)}</time>"
+        )
+    return (
+        '<li class="kb-entry">'
+        f'<a class="kb-entry__link kb-entry__link--rich" '
+        f'href="{_escape(_relative_site_url(source_page, document.page))}">'
+        f'<span class="kb-entry__title">{_escape(document.title)}</span>'
+        f'<span class="kb-entry__meta">'
+        f'<span class="kb-chip">{_escape(_kind_label(document.kind, document.language))}</span>'
+        f"{date}</span>"
+        f"{excerpt_html}"
+        "</a>"
+        "</li>"
+    )
+
+
 def _dashboard(
     documents: list[Document],
     language: str,
@@ -774,152 +1372,141 @@ def _dashboard(
 ) -> str:
     excerpts = excerpts or {}
     page = "index.md" if language == "en" else "index_zh.md"
-    repository_page = "repository/index.md" if language == "en" else "repository/index_zh.md"
-    start_page = "Git/index.md" if language == "en" else "Git/index_zh.md"
-    if not any(document.page == start_page for document in documents):
-        start_page = repository_page
-    topics_page = "topics/index.md" if language == "en" else "topics/index_zh.md"
     archive_page = "archive/index.md" if language == "en" else "archive/index_zh.md"
     is_english = language == "en"
-    title = "Kelvin’s Engineering Notes" if is_english else "Kelvin 的工程笔记"
-    description = (
-        "Troubleshoot systems, work with AI coding tools, and make everyday engineering easier."
-        if is_english
-        else "记录系统故障怎么查、AI 编程工具怎么用，以及怎样让日常工程工作更顺手。"
-    )
+
     eyebrow = "ENGINEERING NOTES" if is_english else "工程笔记"
-    search_label = "Search the knowledge base" if is_english else "搜索工程知识库"
-    featured_title = "Start here" if is_english else "从这里开始"
-    featured_lede = (
-        "Three notes worth reading first."
+    heading = (
+        "Start from a symptom, or pick a topic."
         if is_english
-        else "先读这三篇。"
+        else "从一个故障现象开始，或者直接挑一个主题。"
     )
-    latest_title = "Latest notes" if is_english else "最新笔记"
-    topics_title = "Topics" if is_english else "主题"
-    video_title = "Video learning" if is_english else "视频学习"
-    archive_label = "View full archive" if is_english else "查看完整归档"
-    repository_label = "Start with a real problem" if is_english else "从一个实际问题开始"
-    read_more = "Read note" if is_english else "阅读笔记"
+    lede = (
+        "Runbooks, references and study notes from real incidents and real "
+        "setups. Every article ships in English and 简体中文."
+        if is_english
+        else "来自真实故障和真实配置的运维手册、参考与学习笔记。每篇文章都有中英文两个版本。"
+    )
+    search_label = "Search the knowledge base" if is_english else "搜索工程知识库"
+    topics_title = "Pick a topic" if is_english else "挑一个主题"
+    symptom_title = "Or start from a symptom" if is_english else "或者从一个故障现象开始"
+    latest_title = "Recently updated" if is_english else "最近更新"
+    depth_title = "Depth per topic" if is_english else "各主题的篇数"
+    archive_label = "Full archive" if is_english else "完整归档"
     language_target = "index_zh.md" if is_english else "index.md"
     language_label = "中文" if is_english else "English"
     site_links_label = "Site links" if is_english else "站点链接"
+    latest_note = (
+        f"At most {LATEST_PER_AREA} notes per topic, so one large topic "
+        "cannot fill the list."
+        if is_english
+        else f"每个主题最多取 {LATEST_PER_AREA} 篇，避免某个大主题占满整个列表。"
+    )
+    depth_note = (
+        "AWS is written as a service-by-service reference, so it leads by "
+        "count. The other topics are narrower and go deeper."
+        if is_english
+        else "AWS 是按服务逐个整理的参考，所以篇数最多；其它主题更窄也更深。"
+    )
 
-    blog = _blog_documents(documents, language)
-    featured = [document for document in blog if document.kind != "video-summary"][:3]
-    featured_sources = {document.source for document in featured}
-    notes = [document for document in blog if document.source not in featured_sources][:6]
-    videos = [document for document in blog if document.kind == "video-summary"][:3]
-    areas = sorted(
-        {
-            document.area
-            for document in documents
-            if document.language == language and document.area != "engineering"
-        }
+    topic_tiles = "\n".join(
+        _topic_tile_html(documents, area, language, page)
+        for area in _home_areas(documents, language)
     )
-    topic_cards = "\n".join(
-        _topic_card_html(documents, area, language, page) for area in areas
+    symptoms = _symptoms_html(documents, language, page)
+    latest_entries = "\n".join(
+        _latest_entry_html(document, page, excerpts.get(document.source, ""))
+        for document in _latest_documents(documents, language)
     )
-    featured_cards = "\n".join(
-        _note_card_html(document, page, excerpts.get(document.source, ""), read_more)
-        for document in featured
+    coverage = _coverage_html(documents, language, page)
+    empty_latest = (
+        ""
+        if latest_entries
+        else (
+            '<p class="kb-empty">No published notes yet.</p>'
+            if is_english
+            else '<p class="kb-empty">暂时没有已发布笔记。</p>'
+        )
     )
-    note_entries = "\n".join(_entry_html(document, page) for document in notes)
-    video_entries = "\n".join(_entry_html(document, page) for document in videos)
-    empty_notes = (
-        "<p class=\"kb-empty\">No published notes yet.</p>"
-        if is_english and not note_entries
-        else "<p class=\"kb-empty\">暂时没有已发布笔记。</p>"
-        if not is_english and not note_entries
-        else ""
-    )
-    empty_videos = (
-        "<p class=\"kb-empty\">No video summaries yet.</p>"
-        if is_english and not video_entries
-        else "<p class=\"kb-empty\">暂时没有视频摘要。</p>"
-        if not is_english and not video_entries
-        else ""
-    )
-    featured_section = (
-        "\n".join(
+
+    sections = [
+        '<div class="kb-home">',
+        '<header class="kb-hero">',
+        f'<p class="kb-home__eyebrow">{eyebrow}</p>',
+        f'<h1 id="{"home" if is_english else "home-zh"}">{_escape(heading)}</h1>',
+        f'<p class="kb-home__lede">{_escape(lede)}</p>',
+        (
+            f'<button class="kb-search-trigger" type="button" '
+            f'aria-label="{search_label}" '
+            f"onclick=\"document.getElementById('__search').click(); "
+            f"document.querySelector('.md-search__input').focus()\">"
+            f"<span>{search_label}</span>"
+            f'<kbd class="kb-search-trigger__hint">/</kbd></button>'
+        ),
+        f'<nav class="kb-home__links" aria-label="{site_links_label}">',
+        f'<a href="{_escape(_relative_site_url(page, archive_page))}">{archive_label}</a>',
+        f'<a href="{_escape(_relative_site_url(page, language_target))}">{language_label}</a>',
+        "</nav>",
+        _stats_html(documents, language),
+        "</header>",
+    ]
+
+    if topic_tiles:
+        sections.extend(
             [
-                '<section class="kb-home__section" aria-labelledby="kb-featured-title">',
-                (
-                    f'<div class="kb-section-heading">'
-                    f'<h2 id="kb-featured-title">{featured_title}</h2>'
-                    f"<span>{featured_lede}</span></div>"
-                ),
-                f'<div class="kb-card-grid">{featured_cards}</div>',
+                '<section class="kb-home__section" aria-labelledby="kb-topics-title">',
+                f'<h2 class="kb-home__block-title" id="kb-topics-title">{topics_title}</h2>',
+                f'<div class="kb-topic-grid">{topic_tiles}</div>',
                 "</section>",
             ]
         )
-        if featured_cards
-        else ""
+    if symptoms:
+        sections.extend(
+            [
+                '<section class="kb-home__section" aria-labelledby="kb-symptom-title">',
+                f'<h2 class="kb-home__block-title" id="kb-symptom-title">{symptom_title}</h2>',
+                f'<div class="kb-symptoms">{symptoms}</div>',
+                "</section>",
+            ]
+        )
+
+    sections.extend(
+        [
+            '<div class="kb-home__split">',
+            '<section class="kb-home__section" aria-labelledby="kb-latest-title">',
+            (
+                f'<div class="kb-section-heading">'
+                f'<h2 class="kb-home__block-title" id="kb-latest-title">{latest_title}</h2>'
+                f'<a href="{_escape(_relative_site_url(page, archive_page))}">'
+                f"{archive_label}</a></div>"
+            ),
+            f'<ul class="kb-entry-list">{latest_entries}</ul>',
+            empty_latest,
+            f'<p class="kb-home__note">{_escape(latest_note)}</p>',
+            "</section>",
+        ]
     )
+    if coverage:
+        sections.extend(
+            [
+                '<section class="kb-home__section" aria-labelledby="kb-depth-title">',
+                f'<h2 class="kb-home__block-title" id="kb-depth-title">{depth_title}</h2>',
+                f'<div class="kb-coverage">{coverage}</div>',
+                f'<p class="kb-home__note">{_escape(depth_note)}</p>',
+                "</section>",
+            ]
+        )
+    sections.extend(["</div>", "</div>", ""])
+
     return _generated_front_matter(
         language,
         title="Home" if is_english else "中文首页",
+        # The topic tabs live in the header, so they survive this; the left
+        # rail would only repeat "Home" and cost the page a column of width.
         hide_navigation=True,
         hide_toc=True,
-        hide_footer=True,
         search_exclude=True,
-    ) + "\n".join(
-        [
-            '<div class="kb-home">',
-            '<header class="kb-hero">',
-            f'<p class="kb-home__eyebrow">{eyebrow}</p>',
-            f'<h1 id="{"home" if is_english else "home-zh"}">{_escape(title)}</h1>',
-            f'<p class="kb-home__lede">{description}</p>',
-            (
-                f'<button class="kb-search-trigger" type="button" '
-                f'aria-label="{search_label}" '
-                f'onclick="document.getElementById(\'__search\').click(); '
-                f'document.querySelector(\'.md-search__input\').focus()">'
-                f"<span>{search_label}</span>"
-                f'<kbd class="kb-search-trigger__hint">/</kbd></button>'
-            ),
-            f'<nav class="kb-home__links" aria-label="{site_links_label}">',
-            (
-                f'<a href="{_escape(_relative_site_url(page, start_page))}">'
-                f'{repository_label}</a>'
-            ),
-            f'<a href="{_escape(_relative_site_url(page, topics_page))}">{topics_title}</a>',
-            f'<a href="{_escape(_relative_site_url(page, archive_page))}">{archive_label}</a>',
-            f'<a href="{_escape(_relative_site_url(page, language_target))}">{language_label}</a>',
-            "</nav>",
-            _stats_html(documents, language),
-            "</header>",
-            featured_section,
-            '<section class="kb-home__section" aria-labelledby="kb-latest-title">',
-            (
-                f'<div class="kb-section-heading"><h2 id="kb-latest-title">{latest_title}</h2>'
-                f'<a href="{_escape(_relative_site_url(page, archive_page))}">'
-                f'{archive_label}</a></div>'
-            ),
-            f'<ul class="kb-entry-list">{note_entries}</ul>',
-            empty_notes,
-            "</section>",
-            '<section class="kb-home__section" aria-labelledby="kb-topics-title">',
-            (
-                f'<div class="kb-section-heading"><h2 id="kb-topics-title">{topics_title}</h2>'
-                f'<a href="{_escape(_relative_site_url(page, topics_page))}">'
-                f'{topics_title}</a></div>'
-            ),
-            f'<div class="kb-topic-grid">{topic_cards}</div>',
-            "</section>",
-            '<section class="kb-home__section" aria-labelledby="kb-video-title">',
-            (
-                f'<div class="kb-section-heading"><h2 id="kb-video-title">{video_title}</h2>'
-                f'<a href="{_escape(_relative_site_url(page, archive_page))}">'
-                f'{archive_label}</a></div>'
-            ),
-            f'<ul class="kb-entry-list">{video_entries}</ul>',
-            empty_videos,
-            "</section>",
-            "</div>",
-            "",
-        ]
-    )
+    ) + "\n".join(sections)
 
 
 def _topics_page(documents: list[Document], language: str) -> str:
@@ -943,7 +1530,6 @@ def _topics_page(documents: list[Document], language: str) -> str:
     return _generated_front_matter(
         language,
         title=title,
-        hide_navigation=True,
         hide_toc=True,
         hide_footer=True,
         search_exclude=True,
@@ -992,7 +1578,6 @@ def _archive_page(documents: list[Document], language: str) -> str:
     return _generated_front_matter(
         language,
         title=title,
-        hide_navigation=True,
         hide_toc=True,
         hide_footer=True,
         search_exclude=True,
@@ -1041,6 +1626,7 @@ def stage(root: Path, output: Path, paths: list[str] | None = None) -> list[Docu
         "topics/index_zh.md": _topics_page(documents, "zh"),
         "archive/index.md": _archive_page(documents, "en"),
         "archive/index_zh.md": _archive_page(documents, "zh"),
+        "SUMMARY.md": _summary_markdown(documents),
     }
     existing_pages = set(page_map.values())
     conflicts = sorted(existing_pages.intersection(generated_pages))
