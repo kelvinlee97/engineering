@@ -1,4 +1,4 @@
-← [返回目录](../basics/README_ZH.md) ｜ 上一站：[Git/init](../init/README_ZH.md)
+← [返回目录](../00-init/README_ZH.md) ｜ 上一站：[Git/init](../00-init/README_ZH.md)
 
 English version: [README.md](README.md)
 
@@ -66,7 +66,7 @@ git log --oneline -5   # 能看到最近的提交历史
 
 克隆下来之后，你就有了一个和远程一模一样的工作区。接下来只要你开始改动文件，Git 就会察觉到"工作区"和"暂存区/仓库"之间出现了差异——这时候第一个要用的命令就是 **`git add`**，把你想要的改动放进暂存区。
 
-👉 下一站：[Git/add —— 把改动放进暂存区](../add/README_ZH.md)
+👉 下一站：[Git/add —— 把改动放进暂存区](../02-add/README_ZH.md)
 
 ---
 参考：[Pro Git 2.2 - 获取一个 Git 仓库](https://git-scm.com/book/zh/v2/Git-基础-获取-Git-仓库) ｜ [git-clone 官方手册](https://git-scm.com/docs/git-clone)

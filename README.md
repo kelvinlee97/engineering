@@ -55,7 +55,6 @@ Paired English and Chinese articles keep matching structure, links, and factual 
 
 Keep contributions focused, reusable, and suitable for a public repository. Do not include credentials, employer or client code, confidential data, conversation history, caches, or machine-specific information.
 
-- [Repository guidelines](AGENTS.md) — Scope, checks, and delivery conventions.
 - [Visual-first notes workflow](.agents/skills/visual-first-notes/SKILL.md) — Turn source material into mental models, appropriate diagrams, and concise supporting text.
 - [YouTube transcript workflow](.agents/skills/youtube-transcript/SKILL.md) — How video summaries are prepared and checked.
 - [Transcript tool module](youtube-transcript/) — Supporting tooling.

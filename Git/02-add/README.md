@@ -1,4 +1,4 @@
-← [Back to index](../basics/README.md) ｜ Previous: [Git/clone](../clone/README.md)
+← [Back to index](../00-init/README.md) ｜ Previous: [Git/clone](../01-clone/README.md)
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
@@ -84,7 +84,7 @@ git status
 
 After staging your changes, before actually committing, you'll want to confirm: "what exactly did I stage? Did I miss anything?" — that's exactly what the next section, **`git status`**, answers.
 
-👉 Next: [Git/status — check the current state](../status/README.md)
+👉 Next: [Git/status — check the current state](../03-status/README.md)
 
 ---
 References: [Pro Git 2.2 — Recording Changes to the Repository](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository) | [git-add manual](https://git-scm.com/docs/git-add)

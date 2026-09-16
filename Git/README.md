@@ -8,7 +8,7 @@ Chinese version: [README_ZH.md](README_ZH.md)
 
 New to GitHub collaboration? Start with [Publish Changes to GitHub: A Beginner's Guide](publish-to-github/README.md).
 
-New to Git itself (never used the command line for `init`/`clone`/`add`/`commit`/`log`/`diff`)? Start with the [visual beginner tutorial](basics/README.md) before this guide.
+New to Git itself (never used the command line for `init`/`clone`/`add`/`commit`/`log`/`diff`)? Start with the [visual beginner tutorial](00-init/README.md) before this guide.
 
 This guide is for operations engineers who are comfortable with a terminal and basic Git usage. Its core rule is simple: **inspect first, then change; on shared branches, prefer an auditable new corrective commit over rewriting history.**
 

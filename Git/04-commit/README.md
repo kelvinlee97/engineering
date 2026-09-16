@@ -1,4 +1,4 @@
-← [Back to index](../basics/README.md) ｜ Previous: [Git/status](../status/README.md)
+← [Back to index](../00-init/README.md) ｜ Previous: [Git/status](../03-status/README.md)
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
@@ -85,7 +85,7 @@ git status          # should show "nothing to commit, working tree clean"
 
 With your first commit, you officially have "history". The natural next question is: **what has actually been committed to this repository?** That's answered in the next section, **`git log`**.
 
-👉 Next: [Git/log — browse commit history](../log/README.md)
+👉 Next: [Git/log — browse commit history](../05-log/README.md)
 
 ---
 References: [Pro Git 2.2 — Committing Your Changes](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_committing_changes) | [git-commit manual](https://git-scm.com/docs/git-commit)

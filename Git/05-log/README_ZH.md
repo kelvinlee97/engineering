@@ -1,4 +1,4 @@
-← [返回目录](../basics/README_ZH.md) ｜ 上一站：[Git/commit](../commit/README_ZH.md)
+← [返回目录](../00-init/README_ZH.md) ｜ 上一站：[Git/commit](../04-commit/README_ZH.md)
 
 English version: [README.md](README.md)
 
@@ -83,7 +83,7 @@ git log --oneline
 
 `git log` 告诉你**历史上发生过什么**，但如果你想知道**现在**和**某次提交之间**、或者**两次提交之间**具体差了哪些代码行，就需要最后一节——**`git diff`**。
 
-👉 下一站：[Git/diff —— 对比具体差异](../diff/README_ZH.md)
+👉 下一站：[Git/diff —— 对比具体差异](../06-diff/README_ZH.md)
 
 ---
 参考：[Pro Git 2.3 - 查看提交历史](https://git-scm.com/book/zh/v2/Git-基础-查看提交历史) ｜ [git-log 官方手册](https://git-scm.com/docs/git-log)

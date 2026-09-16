@@ -55,7 +55,6 @@
 
 请保持内容聚焦、可复用且适合公开。不要加入凭据、公司或客户代码、机密数据、会话历史、缓存或机器专属信息。
 
-- [仓库规则](AGENTS.md) — 内容范围、检查与交付约定。
 - [视觉优先笔记工作流](.agents/skills/visual-first-notes/SKILL.md) — 将来源材料转化为心智模型、适当图表和精简的辅助文字。
 - [YouTube 字幕工作流](.agents/skills/youtube-transcript/SKILL.md) — 视频摘要的制作与检查方式。
 - [字幕工具模块](youtube-transcript/) — 配套工具。

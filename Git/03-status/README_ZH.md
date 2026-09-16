@@ -1,4 +1,4 @@
-← [返回目录](../basics/README_ZH.md) ｜ 上一站：[Git/add](../add/README_ZH.md)
+← [返回目录](../00-init/README_ZH.md) ｜ 上一站：[Git/add](../02-add/README_ZH.md)
 
 English version: [README.md](README.md)
 
@@ -74,7 +74,7 @@ git status                  # 现在应该出现在 "to be committed" 区域
 
 `git status` 告诉你"哪些文件变了"，但不会告诉你**具体改了哪一行**。想看到逐行的真实差异内容，需要下一节的 **`git diff`**。
 
-👉 下一站：[Git/diff —— 对比具体差异](../diff/README_ZH.md)（也可以先看完 [Git/commit](../commit/README_ZH.md) 再回头看 diff，两者顺序不冲突）
+👉 下一站：[Git/diff —— 对比具体差异](../06-diff/README_ZH.md)（也可以先看完 [Git/commit](../04-commit/README_ZH.md) 再回头看 diff，两者顺序不冲突）
 
 ---
 参考：[Pro Git 2.2 - 检查当前文件状态](https://git-scm.com/book/zh/v2/Git-基础-记录每次更新到仓库) ｜ [git-status 官方手册](https://git-scm.com/docs/git-status)

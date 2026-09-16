@@ -1,4 +1,4 @@
-← [Back to index](../basics/README.md) ｜ Previous: [Git/add](../add/README.md)
+← [Back to index](../00-init/README.md) ｜ Previous: [Git/add](../02-add/README.md)
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
@@ -74,7 +74,7 @@ git status                  # it should now show under "to be committed"
 
 `git status` tells you **which files** changed, but not **exactly which lines**. To see the real line-by-line differences, you need the next section: **`git diff`**.
 
-👉 Next: [Git/diff — compare the exact differences](../diff/README.md) (or read [Git/commit](../commit/README.md) first and come back to diff — the order doesn't matter)
+👉 Next: [Git/diff — compare the exact differences](../06-diff/README.md) (or read [Git/commit](../04-commit/README.md) first and come back to diff — the order doesn't matter)
 
 ---
 References: [Pro Git 2.2 — Checking the Status of Your Files](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository) | [git-status manual](https://git-scm.com/docs/git-status)
