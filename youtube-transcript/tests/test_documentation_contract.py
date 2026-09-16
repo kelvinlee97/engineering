@@ -1,11 +1,11 @@
 from pathlib import Path
 
-REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 
 
 def test_public_capture_examples_use_a_single_complete_read() -> None:
     expected = '"segments": [{"start_seconds": 0, "text": "First segment"}]'
-    assert expected in (REPOSITORY_ROOT / "Codex/youtube-transcript/README.md").read_text(
+    assert expected in (REPOSITORY_ROOT / "youtube-transcript/README.md").read_text(
         encoding="utf-8"
     )
     reference = REPOSITORY_ROOT / ".agents/skills/youtube-transcript/references/operations.md"

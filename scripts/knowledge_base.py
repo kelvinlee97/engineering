@@ -327,7 +327,7 @@ def _kind(source: str) -> str:
     lower_parts = {part.lower() for part in path.parts}
     if path.name.startswith("summary"):
         return "video-summary"
-    if {"codex", "youtube-transcript"}.issubset(lower_parts):
+    if "youtube-transcript" in lower_parts:
         return "tooling"
     if "runbooks" in lower_parts:
         return "runbook"

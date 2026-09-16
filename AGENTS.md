@@ -6,7 +6,7 @@ Applies to all files in this repository; a deeper `AGENTS.md` overrides it.
 
 This is a public bilingual engineering knowledge base. When both exist, keep paired `README.md` and `README_ZH.md` files aligned in structure, links, and factual scope. See `README.md` for the repository catalogue. Use lowercase, hyphenated names for new topic directories and article slugs. Published YouTube entries contain only `summary.md` and `summary_zh.md`; raw transcript evidence stays in ignored `.local/youtube/`.
 
-The Python module is `Codex/youtube-transcript/`; code is under `Codex/youtube-transcript/src/yt_transcript/` and tests under `Codex/youtube-transcript/tests/test_*.py`.
+The Python module is `youtube-transcript/`; code is under `youtube-transcript/src/yt_transcript/` and tests under `youtube-transcript/tests/test_*.py`.
 
 ## Source-backed Articles
 
@@ -27,7 +27,7 @@ There is no repository-wide build. Run only checks for the changed area.
 Python:
 
 ```bash
-(cd Codex/youtube-transcript && \
+(cd youtube-transcript && \
   uv sync --frozen --group dev && \
   uv run ruff check . && \
   uv run mypy src && \

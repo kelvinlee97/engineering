@@ -3,14 +3,14 @@ name: YouTube transcript module
 on:
   pull_request:
     paths:
-      - "Codex/youtube-transcript/**"
+      - "youtube-transcript/**"
       - ".agents/skills/youtube-transcript/**"
       - "YouTube/**"
       - ".github/workflows/youtube-transcript-ci.yml"
   push:
     branches: [main]
     paths:
-      - "Codex/youtube-transcript/**"
+      - "youtube-transcript/**"
       - ".agents/skills/youtube-transcript/**"
       - "YouTube/**"
       - ".github/workflows/youtube-transcript-ci.yml"
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: Codex/youtube-transcript
+        working-directory: youtube-transcript
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
