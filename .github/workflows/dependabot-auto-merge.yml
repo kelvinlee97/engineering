@@ -23,9 +23,11 @@ jobs:
 
       - name: Enable auto-merge for minor and patch updates
         if: contains(fromJSON('["version-update:semver-minor", "version-update:semver-patch"]'), steps.metadata.outputs.update-type)
-        run: |
-          gh pr review --approve "$PR_URL"
-          gh pr merge --auto --squash "$PR_URL"
+        # No `gh pr review --approve` here: GITHUB_TOKEN is not permitted to
+        # approve pull requests ("GitHub Actions is not permitted to approve
+        # pull requests"), and auto-merge does not need an approval unless
+        # branch protection requires one.
+        run: gh pr merge --auto --squash "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
