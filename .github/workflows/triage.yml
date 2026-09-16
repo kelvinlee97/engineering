@@ -98,7 +98,7 @@ jobs:
       # pull_request_target checks out the base ref, so the triage module below
       # is always the trusted copy from main, never the PR's version.
       - uses: actions/checkout@v7
-      - uses: actions/labeler@v6
+      - uses: actions/labeler@v7
         with:
           configuration-path: .github/labeler.yml
           sync-labels: true
