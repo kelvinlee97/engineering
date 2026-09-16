@@ -1,0 +1,15 @@
+# Lint/type-check configuration for the repository's own tooling in scripts/.
+# The youtube-transcript module is a separate project with its own pyproject.toml.
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["youtube-transcript"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+files = ["scripts", ".github/scripts"]
+strict = true

@@ -19,3 +19,13 @@ updates:
     labels: ["dependencies", "area: youtube"]
     commit-message:
       prefix: "build"
+
+  - package-ecosystem: "pip"
+    directory: "/pages"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels: ["dependencies", "area: site"]
+    commit-message:
+      prefix: "build"

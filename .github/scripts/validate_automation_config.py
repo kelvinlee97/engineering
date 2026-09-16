@@ -20,6 +20,12 @@ GITHUB = ROOT / ".github"
 HEX_COLOR = re.compile(r"^[0-9a-f]{6}$")
 
 
+LABEL_REFERENCE_RE = (
+    r"['\"](needs-triage|size/[A-Z]{1,2}|area: [a-z-]+"
+    r"|translation|bug|enhancement|question|dependencies)['\"]"
+)
+
+
 def main() -> int:
     errors: list[str] = []
 
@@ -47,14 +53,18 @@ def main() -> int:
 
     # Every label named in a workflow or in the triage module must exist too.
     sources = sorted((GITHUB / "workflows").glob("*.yml"))
-    sources += [p for p in sorted((GITHUB / "scripts").glob("*.js")) if not p.name.endswith(".test.js")]
+    sources += [
+        p for p in sorted((GITHUB / "scripts").glob("*.js")) if not p.name.endswith(".test.js")
+    ]
     for source in sources:
         text = source.read_text(encoding="utf-8")
         if source.suffix == ".yml":
             yaml.safe_load(text)  # raises on malformed YAML
-        for quoted in re.findall(r"['\"](needs-triage|size/[A-Z]{1,2}|area: [a-z-]+|translation|bug|enhancement|question|dependencies)['\"]", text):
+        for quoted in re.findall(LABEL_REFERENCE_RE, text):
             if quoted not in names:
-                errors.append(f"{source.name} references label {quoted!r}, missing from labels.json")
+                errors.append(
+                    f"{source.name} references label {quoted!r}, missing from labels.json"
+                )
 
     dependabot = yaml.safe_load((GITHUB / "dependabot.yml").read_text(encoding="utf-8"))
     if dependabot.get("version") != 2:

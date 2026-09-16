@@ -8,8 +8,9 @@ on:
       - "**/*.md"
       - "mkdocs.yml"
       - "pages/**"
-      - "scripts/knowledge_base.py"
-      - "scripts/tests/**"
+      - "scripts/**"
+      - ".github/scripts/**"
+      - "pyproject.toml"
       - ".github/workflows/knowledge-pages.yml"
   push:
     branches: [main]
@@ -18,8 +19,9 @@ on:
       - "**/*.md"
       - "mkdocs.yml"
       - "pages/**"
-      - "scripts/knowledge_base.py"
-      - "scripts/tests/**"
+      - "scripts/**"
+      - ".github/scripts/**"
+      - "pyproject.toml"
       - ".github/workflows/knowledge-pages.yml"
 
 permissions:
@@ -39,6 +41,12 @@ jobs:
           python-version: "3.11"
       - name: Install site dependencies
         run: python -m pip install -r pages/requirements.txt
+      - name: Install tooling checks
+        run: python -m pip install ruff mypy pytest types-PyYAML
+      - name: Lint repository tooling
+        run: ruff check .
+      - name: Type-check repository tooling
+        run: mypy
       - name: Validate public content
         run: python scripts/knowledge_base.py validate
       - name: Stage public content

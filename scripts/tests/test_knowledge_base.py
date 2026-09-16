@@ -14,9 +14,9 @@ from scripts.knowledge_base import (
     _excerpt,
     _home_areas,
     _latest_documents,
-    _summary_markdown,
     _reading_label,
     _reading_minutes,
+    _summary_markdown,
     discover_documents,
     stage,
 )

@@ -1,11 +1,10 @@
 """Run with: python3 -m unittest discover -s Python -p 'test_*.py'."""
 
-from pathlib import Path
 import subprocess
 import sys
 import tempfile
 import unittest
-
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 

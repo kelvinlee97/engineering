@@ -74,9 +74,7 @@ def main() -> int:
     total = 0
     for path in files:
         text = path.read_text(encoding="utf-8")
-        per_file_index = 0
-        for match in MERMAID_RE.finditer(text):
-            per_file_index += 1
+        for per_file_index, match in enumerate(MERMAID_RE.finditer(text), start=1):
             total += 1
             lines.append("```mermaid")
             lines.extend(match.group("body").splitlines())

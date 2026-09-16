@@ -30,10 +30,11 @@ def repo(tmp_path: pathlib.Path) -> pathlib.Path:
     """A copy of the real .github tree, plus the directories dependabot expects."""
     shutil.copytree(REPO / ".github", tmp_path / ".github")
     (tmp_path / "youtube-transcript").mkdir()
+    (tmp_path / "pages").mkdir()
     return tmp_path
 
 
-def write_labels(repo: pathlib.Path, labels: list[dict]) -> None:
+def write_labels(repo: pathlib.Path, labels: list[dict[str, str]]) -> None:
     (repo / ".github/labels.json").write_text(json.dumps(labels), encoding="utf-8")
 
 
