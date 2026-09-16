@@ -158,6 +158,9 @@ class KnowledgeBaseTests(unittest.TestCase):
             self.assertIn("kb_language: en", repository)
             dashboard = (output / "index.md").read_text(encoding="utf-8")
             self.assertIn(">Start from a symptom, or pick a topic.</h1>", dashboard)
+            # The deploy smoke test greps the live page for the site owner's
+            # name, and a reader should see whose notes these are.
+            self.assertIn("Kelvin", dashboard)
             self.assertIn('class="kb-hero"', dashboard)
             self.assertIn('class="kb-stats"', dashboard)
             self.assertIn('class="kb-topic-card__blurb"', dashboard)
