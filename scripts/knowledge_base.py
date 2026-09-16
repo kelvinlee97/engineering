@@ -1378,7 +1378,9 @@ def _dashboard(
     archive_page = "archive/index.md" if language == "en" else "archive/index_zh.md"
     is_english = language == "en"
 
-    eyebrow = "ENGINEERING NOTES" if is_english else "工程笔记"
+    # The eyebrow carries the site's identity: the headline is a call to
+    # action, so without this the home page never names whose notes these are.
+    eyebrow = "Kelvin’s Engineering Notes" if is_english else "Kelvin 的工程笔记"
     heading = (
         "Start from a symptom, or pick a topic."
         if is_english

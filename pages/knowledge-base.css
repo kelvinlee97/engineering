@@ -447,6 +447,9 @@ kbd,
   font-size: var(--kb-text-xs);
   font-weight: 600;
   letter-spacing: 0.1em;
+  /* Caps are a visual treatment, so the markup keeps the real casing —
+     screen readers and the deploy smoke test both read the name, not KELVIN. */
+  text-transform: uppercase;
 }
 
 .md-typeset .kb-home__eyebrow::before {
