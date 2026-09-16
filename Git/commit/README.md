@@ -1,4 +1,4 @@
-← [返回目录](../README.md) ｜ 上一站：[Git/status](../status/README.md)
+← [返回目录](../basics/README.md) ｜ 上一站：[Git/status](../status/README.md)
 
 # `git commit` —— 把暂存区打包成一次历史快照
 

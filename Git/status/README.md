@@ -1,4 +1,4 @@
-← [返回目录](../README.md) ｜ 上一站：[Git/add](../add/README.md)
+← [返回目录](../basics/README.md) ｜ 上一站：[Git/add](../add/README.md)
 
 # `git status` —— 查看当前状态
 

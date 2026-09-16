@@ -1,4 +1,4 @@
-← [返回目录](../README.md) ｜ 上一站：[Git/clone](../clone/README.md)
+← [返回目录](../basics/README.md) ｜ 上一站：[Git/clone](../clone/README.md)
 
 # `git add` —— 把改动放进暂存区
 

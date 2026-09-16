@@ -1,4 +1,4 @@
-← [返回目录](../README.md) ｜ 上一站：[Git/init](../init/README.md)
+← [返回目录](../basics/README.md) ｜ 上一站：[Git/init](../init/README.md)
 
 # `git clone` —— 拷贝一个已存在的远程仓库
 

@@ -1,4 +1,4 @@
-← [返回目录](../README.md)
+← [返回目录](../basics/README.md)
 
 # `git init` —— 创建你的第一个仓库
 

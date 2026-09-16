@@ -1,4 +1,4 @@
-← [返回目录](../README.md) ｜ 上一站：[Git/commit](../commit/README.md)
+← [返回目录](../basics/README.md) ｜ 上一站：[Git/commit](../commit/README.md)
 
 # `git log` —— 查看提交历史
 
