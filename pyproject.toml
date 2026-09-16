@@ -11,5 +11,5 @@ select = ["E", "F", "I", "UP", "B", "SIM"]
 
 [tool.mypy]
 python_version = "3.11"
-files = ["scripts"]
+files = ["scripts", ".github/scripts"]
 strict = true

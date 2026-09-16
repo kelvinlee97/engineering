@@ -1,0 +1,49 @@
+name: Automation checks
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/**"
+      - ".github/labeler.yml"
+      - ".github/labels.json"
+      - ".github/dependabot.yml"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/**"
+      - ".github/labeler.yml"
+      - ".github/labels.json"
+      - ".github/dependabot.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: automation-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint workflows and automation config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install actionlint
+        run: |
+          set -euo pipefail
+          bash <(curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) latest "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP" >>"$GITHUB_PATH"
+
+      - name: actionlint
+        run: actionlint -color
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Validate automation config
+        run: |
+          python -m pip install --quiet pyyaml
+          python .github/scripts/validate_automation_config.py

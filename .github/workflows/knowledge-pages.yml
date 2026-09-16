@@ -9,6 +9,7 @@ on:
       - "mkdocs.yml"
       - "pages/**"
       - "scripts/**"
+      - ".github/scripts/**"
       - "pyproject.toml"
       - ".github/workflows/knowledge-pages.yml"
   push:
@@ -19,6 +20,7 @@ on:
       - "mkdocs.yml"
       - "pages/**"
       - "scripts/**"
+      - ".github/scripts/**"
       - "pyproject.toml"
       - ".github/workflows/knowledge-pages.yml"
 
@@ -40,7 +42,7 @@ jobs:
       - name: Install site dependencies
         run: python -m pip install -r pages/requirements.txt
       - name: Install tooling checks
-        run: python -m pip install ruff mypy
+        run: python -m pip install ruff mypy types-PyYAML
       - name: Lint repository tooling
         run: ruff check .
       - name: Type-check repository tooling
