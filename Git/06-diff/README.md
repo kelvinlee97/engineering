@@ -17,7 +17,7 @@ flowchart LR
     REPO["Most recent commit<br/>(HEAD)"]
 
     WD -- "git diff<br/>(no arguments)" --> SA
-    SA -- "git diff --staged<br/>or --cached" --> REPO
+    SA -- "git diff, staged<br/>or cached" --> REPO
     WD -- "git diff HEAD" --> REPO
 
     style WD fill:#c9910e,color:#fff
