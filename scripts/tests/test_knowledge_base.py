@@ -5,8 +5,10 @@ import unittest
 from pathlib import Path
 
 from scripts.knowledge_base import (
+    AWS_GROUPS,
     KnowledgeBaseError,
     _excerpt,
+    _summary_markdown,
     _reading_label,
     _reading_minutes,
     discover_documents,
@@ -183,6 +185,60 @@ class KnowledgeBaseTests(unittest.TestCase):
             )
             self.assertTrue((output / "index.md").exists())
             self.assertFalse((output / "AGENTS.md").exists())
+
+    def test_aws_nav_groups_are_unique_and_cover_every_service(self) -> None:
+        """Every AWS page belongs to exactly one service family."""
+
+        slugs = [slug for _, group in AWS_GROUPS for slug in group]
+        self.assertEqual(len(slugs), len(set(slugs)), "duplicate AWS nav slug")
+
+        root = Path(__file__).resolve().parents[2]
+        documents = discover_documents(root)
+        pages = {
+            document.page
+            for document in documents
+            if document.language == "en"
+            and document.page.startswith("AWS/")
+            and document.page != "AWS/index.md"
+        }
+        mapped = {f"AWS/{slug}/index.md" for slug in slugs}
+        self.assertEqual(
+            pages - mapped,
+            set(),
+            "new AWS pages need a home in AWS_GROUPS",
+        )
+        self.assertEqual(mapped - pages, set(), "AWS_GROUPS names a missing page")
+        self.assertNotIn("- More", _summary_markdown(documents))
+
+    def test_summary_nests_sections_and_omits_chinese_pages(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self._write(root, "Git/README.md", "# Git\n")
+            self._write(root, "Git/README_ZH.md", "# Git 中文\n")
+            self._write(root, "AWS/README.md", "# AWS\n")
+            self._write(root, "AWS/README_ZH.md", "# AWS 中文\n")
+            self._write(root, "AWS/s3/README.md", "# Amazon S3 - Runbook & Reference\n")
+            self._write(root, "AWS/s3/README_ZH.md", "# Amazon S3 中文\n")
+            documents = discover_documents(
+                root,
+                [
+                    "Git/README.md",
+                    "Git/README_ZH.md",
+                    "AWS/README.md",
+                    "AWS/README_ZH.md",
+                    "AWS/s3/README.md",
+                    "AWS/s3/README_ZH.md",
+                ],
+            )
+
+            summary = _summary_markdown(documents)
+
+            self.assertIn("- AWS\n", summary)
+            self.assertIn("    - Storage & migration\n", summary)
+            # The shared article-title suffix is trimmed for the sidebar.
+            self.assertIn("        - [Amazon S3](AWS/s3/index.md)\n", summary)
+            # Chinese pages reach readers through each article's language link.
+            self.assertNotIn("index_zh.md", summary.replace("[中文 / Chinese](index_zh.md)", ""))
 
     def test_reading_time_ignores_markdown_syntax(self) -> None:
         prose = " ".join(["word"] * 440)

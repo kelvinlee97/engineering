@@ -767,6 +767,337 @@ def _stats_html(documents: list[Document], language: str) -> str:
     return f'<ul class="kb-stats" aria-label="{aria}">{cells}</ul>'
 
 
+
+# --------------------------------------------------------------------------
+# Navigation
+#
+# MkDocs builds its navigation from the staged tree, which is flat and
+# alphabetical: AWS alone contributes 123 pages, so an auto-generated nav
+# buries every other topic. The constants below group the tree into eight
+# top-level sections (rendered as tabs) and split AWS into service families,
+# and `_summary_markdown` emits them as the literate-nav SUMMARY.md.
+#
+# Chinese pages are deliberately left out of the nav: they double every entry
+# and are reached through the language link each article carries.
+# --------------------------------------------------------------------------
+
+NAV_LABEL_SUFFIXES = (" - Runbook & Reference",)
+
+AWS_GROUPS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    (
+        "Foundations, cost & certification",
+        (
+            "aws-ecosystem",
+            "foundations-cloud-computing",
+            "shared-responsibility-model",
+            "well-architected",
+            "pricing-models",
+            "billing-cost-management",
+            "certifications/cloud-practitioner",
+            "certifications/solutions-architect",
+            "certifications/developer-associate",
+            "certifications/competencies",
+            "solutions-implementations",
+            "solutions-consulting-offers",
+        ),
+    ),
+    (
+        "Compute & containers",
+        (
+            "ec2",
+            "auto-scaling-groups",
+            "application-auto-scaling",
+            "lambda",
+            "batch",
+            "ecs",
+            "eks",
+            "ecr",
+            "lightsail",
+            "outposts",
+            "elastic-beanstalk",
+            "opsworks",
+        ),
+    ),
+    (
+        "Networking & content delivery",
+        (
+            "vpc",
+            "route53",
+            "cloudfront",
+            "elb",
+            "global-accelerator",
+            "direct-connect",
+            "api-gateway",
+            "appsync",
+        ),
+    ),
+    (
+        "Storage & migration",
+        (
+            "s3",
+            "fsx",
+            "storage-gateway",
+            "backup",
+            "snow-family",
+            "datasync",
+            "transfer-family",
+            "mgn",
+        ),
+    ),
+    (
+        "Databases",
+        (
+            "rds",
+            "dynamodb",
+            "elasticache",
+            "documentdb",
+            "neptune",
+            "qldb",
+            "dms",
+            "managed-blockchain",
+        ),
+    ),
+    (
+        "Data & analytics",
+        (
+            "athena",
+            "glue",
+            "emr",
+            "kinesis",
+            "msk",
+            "redshift",
+            "quicksight",
+            "data-pipeline",
+            "opensearch",
+            "cloudsearch",
+            "appflow",
+        ),
+    ),
+    (
+        "Machine learning",
+        (
+            "sagemaker",
+            "comprehend",
+            "forecast",
+            "kendra",
+            "lex",
+            "personalize",
+            "polly",
+            "rekognition",
+            "transcribe",
+            "translate",
+        ),
+    ),
+    (
+        "Application integration",
+        (
+            "sns",
+            "sqs",
+            "mq",
+            "eventbridge",
+            "step-functions",
+            "ses",
+            "connect",
+        ),
+    ),
+    (
+        "Security, identity & compliance",
+        (
+            "iam",
+            "iam-identity-center",
+            "cognito",
+            "directory-service",
+            "acm",
+            "kms",
+            "cloudhsm",
+            "secrets-manager",
+            "guardduty",
+            "inspector",
+            "detective",
+            "macie",
+            "security-hub",
+            "shield",
+            "waf",
+            "artifact",
+        ),
+    ),
+    (
+        "Governance & operations",
+        (
+            "cloudwatch",
+            "cloudtrail",
+            "config",
+            "systems-manager",
+            "x-ray",
+            "trusted-advisor",
+            "health",
+            "service-catalog",
+            "service-quotas",
+            "license-manager",
+            "resource-groups-tag-editor",
+            "organizations",
+            "control-tower",
+            "ram",
+            "managed-services",
+        ),
+    ),
+    (
+        "Developer tools & IaC",
+        (
+            "cloudformation",
+            "cdk",
+            "sam",
+            "solutions-constructs",
+            "codebuild",
+            "codecommit",
+            "codedeploy",
+            "codepipeline",
+            "codeartifact",
+            "codeguru",
+            "codestar",
+            "cloud9",
+            "cli",
+            "sdk",
+            "boto3",
+            "amplify",
+        ),
+    ),
+)
+
+# A topic directory's H1 is an article title ("Essential Git Commands for
+# Operations"), which is too long to read as a sidebar group. These override it.
+AREA_NAV_LABELS = {
+    "Bash": "Bash",
+    "Ghostty": "Ghostty",
+    "Git": "Git",
+    "Nginx": "Nginx & OpenResty",
+    "Nodejs": "Node.js & Express BFF",
+    "Python": "Python",
+    "youtube-transcript": "Transcript tooling",
+}
+
+NAV_SECTIONS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("Troubleshooting", ("Git", "Kubernetes", "Nginx", "Nodejs", "ZooKeeper")),
+    ("AWS", ("AWS",)),
+    ("AI coding tools", ("Claude",)),
+    ("Languages & practice", ("Python", "Bash")),
+    ("Setup", ("Ghostty", "Ubuntu", "apple", "youtube-transcript")),
+    ("Video notes", ("YouTube",)),
+)
+
+
+def _nav_label(title: str) -> str:
+    """Trim the shared article-title suffix so sidebar entries stay scannable."""
+
+    for suffix in NAV_LABEL_SUFFIXES:
+        if title.endswith(suffix):
+            return title[: -len(suffix)].strip()
+    return title
+
+
+def _nav_entry(document: Document, indent: str) -> str:
+    return f"{indent}- [{_escape_markdown_label(_nav_label(document.title))}]({document.page})"
+
+
+def _escape_markdown_label(label: str) -> str:
+    return label.replace("[", r"\[").replace("]", r"\]")
+
+
+def _aws_nav_lines(by_page: dict[str, Document], indent: str) -> list[str]:
+    """Split AWS into service families; anything unmapped lands in `More`."""
+
+    lines: list[str] = []
+    claimed: set[str] = set()
+    for group_name, slugs in AWS_GROUPS:
+        entries = []
+        for slug in slugs:
+            page = f"AWS/{slug}/index.md"
+            document = by_page.get(page)
+            if document is None:
+                continue
+            claimed.add(page)
+            entries.append(_nav_entry(document, indent + "    "))
+        if entries:
+            lines.append(f"{indent}- {group_name}")
+            lines.extend(entries)
+    leftovers = [
+        document
+        for page, document in sorted(by_page.items())
+        if page.startswith("AWS/") and page != "AWS/index.md" and page not in claimed
+    ]
+    if leftovers:
+        lines.append(f"{indent}- More")
+        lines.extend(_nav_entry(document, indent + "    ") for document in leftovers)
+    return lines
+
+
+def _summary_markdown(documents: list[Document]) -> str:
+    """Render the literate-nav SUMMARY.md for the English tree."""
+
+    by_page = {
+        document.page: document
+        for document in documents
+        if document.language == "en"
+    }
+    lines = [
+        "- [Home](index.md)",
+    ]
+    for section_name, areas in NAV_SECTIONS:
+        section_lines: list[str] = []
+        for area in areas:
+            root_page = f"{area}/index.md"
+            root = by_page.get(root_page)
+            children = sorted(
+                (
+                    document
+                    for page, document in by_page.items()
+                    if page.startswith(f"{area}/") and page != root_page
+                ),
+                key=lambda document: document.page,
+            )
+            if area == "AWS":
+                if root is not None:
+                    section_lines.append(_nav_entry(root, "    "))
+                section_lines.extend(_aws_nav_lines(by_page, "    "))
+                continue
+            if root is None and not children:
+                continue
+            if len(areas) == 1:
+                if root is not None:
+                    section_lines.append(_nav_entry(root, "    "))
+                section_lines.extend(_nav_entry(child, "    ") for child in children)
+                continue
+            if root is not None and not children:
+                # A topic with no sub-articles is a link, not a one-item group.
+                section_lines.append(_nav_entry(root, "    "))
+                continue
+            if root is None and len(children) == 1:
+                # A container directory with a single article (apple/container)
+                # reads better as that article than as a one-item group.
+                section_lines.append(_nav_entry(children[0], "    "))
+                continue
+            label = AREA_NAV_LABELS.get(area) or (
+                _nav_label(root.title) if root is not None else area
+            )
+            section_lines.append(f"    - {_escape_markdown_label(label)}")
+            if root is not None:
+                section_lines.append(_nav_entry(root, "        "))
+            section_lines.extend(_nav_entry(child, "        ") for child in children)
+        if section_lines:
+            lines.append(f"- {section_name}")
+            lines.extend(section_lines)
+    lines.extend(
+        [
+            "- Browse",
+            "    - [Topics](topics/index.md)",
+            "    - [Repository overview](repository/index.md)",
+            "    - [Archive](archive/index.md)",
+            "    - [中文 / Chinese](index_zh.md)",
+        ]
+    )
+    return "\n".join(lines) + "\n"
+
+
 def _dashboard(
     documents: list[Document],
     language: str,
@@ -859,7 +1190,6 @@ def _dashboard(
     return _generated_front_matter(
         language,
         title="Home" if is_english else "中文首页",
-        hide_navigation=True,
         hide_toc=True,
         hide_footer=True,
         search_exclude=True,
@@ -943,7 +1273,6 @@ def _topics_page(documents: list[Document], language: str) -> str:
     return _generated_front_matter(
         language,
         title=title,
-        hide_navigation=True,
         hide_toc=True,
         hide_footer=True,
         search_exclude=True,
@@ -992,7 +1321,6 @@ def _archive_page(documents: list[Document], language: str) -> str:
     return _generated_front_matter(
         language,
         title=title,
-        hide_navigation=True,
         hide_toc=True,
         hide_footer=True,
         search_exclude=True,
@@ -1041,6 +1369,7 @@ def stage(root: Path, output: Path, paths: list[str] | None = None) -> list[Docu
         "topics/index_zh.md": _topics_page(documents, "zh"),
         "archive/index.md": _archive_page(documents, "en"),
         "archive/index_zh.md": _archive_page(documents, "zh"),
+        "SUMMARY.md": _summary_markdown(documents),
     }
     existing_pages = set(page_map.values())
     conflicts = sorted(existing_pages.intersection(generated_pages))
