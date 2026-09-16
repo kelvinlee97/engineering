@@ -6,9 +6,9 @@ English version: [README.md](README.md)
 
 > 一条 YouTube 链接在生成任何总结之前，必须先产出一份经过验证的本地 transcript；捕获、验证、总结是三道独立关卡，任一关卡失败都会直接停止流程，而不是重试或切换到第三方来源。
 
-这是一个本地优先的 Codex Skill：优先通过一次 Chrome `evaluateAll` 调用读取 YouTube 页面已挂载的 Transcript segments；如果 YouTube 始终让该面板保持空白，则改用一次 Chrome 内置的 YouTube transcript 导出。两条路径互斥；失败时不重试，也不切换到第三方来源。它不下载媒体、不调用 `yt-dlp` 或字幕 API、不使用 Whisper，也不从标题或简介补全缺失内容。
+这是一个本地优先的字幕技能：优先通过一次 Chrome `evaluateAll` 调用读取 YouTube 页面已挂载的 Transcript segments；如果 YouTube 始终让该面板保持空白，则改用一次 Chrome 内置的 YouTube transcript 导出。两条路径互斥；失败时不重试，也不切换到第三方来源。它不下载媒体、不调用 `yt-dlp` 或字幕 API、不使用 Whisper，也不从标题或简介补全缺失内容。
 
-用户只需提供 YouTube 链接。Codex 会导出一份完整 Transcript、验证覆盖范围、保存本地 `transcript.md`，最后才生成面向读者的英文与中文总结。第一次获取失败就停止流程。
+用户只需提供 YouTube 链接。该工具会导出一份完整 Transcript、验证覆盖范围、保存本地 `transcript.md`，最后才生成面向读者的英文与中文总结。第一次获取失败就停止流程。
 
 ```mermaid
 flowchart TD
@@ -68,7 +68,7 @@ Chrome 捕获保留一份完整、有序的 Transcript。Skill 会打开 YouTube
 验证器只使用 Python 标准库。它接收由浏览器导出的一次完整读取 JSON，并作为 Skill 的内部步骤运行：
 
 ```bash
-cd Codex/youtube-transcript
+cd youtube-transcript
 uv sync --group dev
 uv run yt-transcript capture browser-export.json \
   --output ../../.local/youtube/<title-slug>--<video-id>

@@ -6,9 +6,9 @@
 
 > One YouTube link produces one validated local transcript before any summary is written; capture, validation, and summarization are separate gates, and a failure at any gate stops the workflow instead of retrying or falling back to a third-party source.
 
-This local-first Codex Skill first reads the mounted Transcript segments through one Chrome `evaluateAll` call. If YouTube leaves that panel empty, it uses Chrome's YouTube transcript export once instead. The paths are mutually exclusive; failure is reported without retrying or switching to a third-party source. It does not download media, call `yt-dlp` or a transcript API, use Whisper, or infer missing content from a title or description.
+This local-first transcript skill first reads the mounted Transcript segments through one Chrome `evaluateAll` call. If YouTube leaves that panel empty, it uses Chrome's YouTube transcript export once instead. The paths are mutually exclusive; failure is reported without retrying or switching to a third-party source. It does not download media, call `yt-dlp` or a transcript API, use Whisper, or infer missing content from a title or description.
 
-The user gives Codex a YouTube link. Codex exports one complete transcript, validates its coverage, saves a local `transcript.md`, and only then writes reader-facing English and Chinese summaries. A failed first attempt stops the workflow.
+The user gives the agent a YouTube link. It exports one complete transcript, validates its coverage, saves a local `transcript.md`, and only then writes reader-facing English and Chinese summaries. A failed first attempt stops the workflow.
 
 ```mermaid
 flowchart TD
@@ -83,7 +83,7 @@ The validator uses only the Python standard library. It accepts a temporary brow
 ```
 
 ```bash
-cd Codex/youtube-transcript
+cd youtube-transcript
 uv sync --group dev
 uv run yt-transcript capture browser-export.json \
   --output ../../.local/youtube/<title-slug>--<video-id>

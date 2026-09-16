@@ -11,7 +11,6 @@ I collect explanations, commands, and references worth revisiting, from SRE runb
 - **[Git branches have diverged. What next?](Git/README.md)** Inspect the state, choose a sync strategy, and recover safely.
 - **[How should I publish changes to GitHub?](Git/publish-to-github/README.md)** Follow a beginner-safe branch, commit, push, pull request, and squash-merge workflow.
 - **[A Pod is stuck Pending. Could it be IP capacity?](Kubernetes/runbooks/insufficient-ip-or-eni/README.md)** Distinguish subnet capacity, node limits, and other causes.
-- **[How do I work with Codex CLI?](Codex/cli/README.md)** Start with session control, slash commands, and a review workflow.
 
 ## Explore by what you want to do
 
@@ -26,15 +25,10 @@ I collect explanations, commands, and references worth revisiting, from SRE runb
 
 ### Work with AI coding tools
 
-- [Codex CLI](Codex/cli/README.md) — Commands, sessions, and review.
-- [Codex in VS Code](Codex/ide/README.md) — Connect the IDE and provide relevant context.
-- [Branch a Codex conversation](Codex/fork/README.md) — Separate investigations and isolate worktrees.
-- [Set a Codex goal](Codex/goal/README.md) — Define long-running work with a verifiable stopping condition.
 - [Claude subagents](Claude/subagents/README.md) — Study guide for Anthropic Academy’s introductory course.
 - [Claude Code GitHub Actions](Claude/github-actions/README.md) — Run interactive and automated Claude workflows with explicit permissions and security boundaries.
 - [Claude Managed Agents](Claude/managed-agents/README.md) — Hosted agent harness for long-running, asynchronous tasks, as an alternative to the Messages API.
 - [AI-native SDLC playbook](Claude/ai-native-sdlc-playbook/README.md) — Redesign delivery around versioned artifacts, feedback loops, and explicit governance gates.
-- [OpenAI latest model guidance](OpenAI/model-guidance/README.md) — Adopt and migrate to the current recommended API model with explicit prompts and evaluations.
 
 ### Prepare for SRE interviews
 
@@ -64,4 +58,4 @@ Keep contributions focused, reusable, and suitable for a public repository. Do n
 - [Repository guidelines](AGENTS.md) — Scope, checks, and delivery conventions.
 - [Visual-first notes workflow](.agents/skills/visual-first-notes/SKILL.md) — Turn source material into mental models, appropriate diagrams, and concise supporting text.
 - [YouTube transcript workflow](.agents/skills/youtube-transcript/SKILL.md) — How video summaries are prepared and checked.
-- [Transcript tool module](Codex/youtube-transcript/) — Supporting tooling.
+- [Transcript tool module](youtube-transcript/) — Supporting tooling.

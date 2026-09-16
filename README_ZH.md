@@ -11,7 +11,6 @@
 - **[Git 分支分叉了，接下来怎么办？](Git/README_ZH.md)** 先看清状态，再选择同步方式，并了解如何安全恢复。
 - **[怎样正确地把改动发布到 GitHub？](Git/publish-to-github/README_ZH.md)** 按适合初学者的分支、提交、推送、Pull Request 和 squash merge 流程操作。
 - **[Pod 一直 Pending，是 IP 不够吗？](Kubernetes/runbooks/insufficient-ip-or-eni/README_ZH.md)** 区分子网容量、节点限制和其他原因。
-- **[怎样用 Codex CLI 开展工作？](Codex/cli/README_ZH.md)** 从会话管理、斜杠命令和审查流程入手。
 
 ## 按你想做的事探索
 
@@ -26,15 +25,10 @@
 
 ### 使用 AI 编程工具
 
-- [Codex CLI](Codex/cli/README_ZH.md) — 命令、会话与审查。
-- [在 VS Code 中使用 Codex](Codex/ide/README_ZH.md) — 连接 IDE，提供相关上下文。
-- [分支 Codex 对话](Codex/fork/README_ZH.md) — 拆分排障思路，隔离 worktree。
-- [为 Codex 设置目标](Codex/goal/README_ZH.md) — 为长任务定义可验证的停止条件。
 - [Claude 子代理](Claude/subagents/README_ZH.md) — Anthropic Academy 入门课程学习指南。
 - [Claude Code GitHub Actions](Claude/github-actions/README_ZH.md) — 通过明确的权限与安全边界运行交互式和自动化 Claude workflow。
 - [Claude Managed Agents](Claude/managed-agents/README_ZH.md) — 面向长时间运行、异步任务的托管 agent 环境，是 Messages API 之外的另一种选择。
 - [AI 原生 SDLC 实践手册](Claude/ai-native-sdlc-playbook/README_ZH.md) — 以版本化工件、反馈闭环和明确治理关口重新设计交付流程。
-- [OpenAI 最新模型指南](OpenAI/model-guidance/README_ZH.md) — 通过明确的 prompt 与 eval 采用并迁移到当前推荐的 API 模型。
 
 ### 准备 SRE 面试
 
@@ -64,4 +58,4 @@
 - [仓库规则](AGENTS.md) — 内容范围、检查与交付约定。
 - [视觉优先笔记工作流](.agents/skills/visual-first-notes/SKILL.md) — 将来源材料转化为心智模型、适当图表和精简的辅助文字。
 - [YouTube 字幕工作流](.agents/skills/youtube-transcript/SKILL.md) — 视频摘要的制作与检查方式。
-- [字幕工具模块](Codex/youtube-transcript/) — 配套工具。
+- [字幕工具模块](youtube-transcript/) — 配套工具。

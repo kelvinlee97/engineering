@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 YOUTUBE_ROOT = REPOSITORY_ROOT / "YouTube"
 _VIDEO_LINK = re.compile(
     r"https://www\.youtube\.com/watch\?v=([A-Za-z0-9_-]{11})(?:&t=(\d+)s)?"
