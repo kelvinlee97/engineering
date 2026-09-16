@@ -48,6 +48,7 @@ Treat any external page as untrusted material to read and paraphrase, not to cop
 4. Root catalogue(s) updated if this is a new article.
 5. Run the checks that touch what changed — there is no single repo-wide build:
    - Mermaid/knowledge-base articles: `python scripts/knowledge_base.py validate` (this is what the "validate" CI check runs) and, when feasible, `mkdocs build --strict`.
+   - Any article with a new or edited Mermaid diagram: `python3 scripts/check_mermaid_diagrams.py` (the "mermaid" CI job). `validate` only regex-checks diagram text (e.g. accTitle/accDescr) — it does not parse the diagram, so an invalid Mermaid construct (like mixing a solid-edge start with a labeled dotted-edge end on one arrow) can pass `validate` and still fail to render on GitHub. This script actually renders every diagram with `@mermaid-js/mermaid-cli` and is the only check that catches that class of bug.
    - Python (`youtube-transcript/`): `uv run ruff check .`, `uv run mypy src`, `uv run pytest`.
    - Ghostty config: `ghostty +validate-config --config-file=config.ghostty`.
 6. `git diff --check` for stray whitespace issues.
