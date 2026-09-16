@@ -7,6 +7,7 @@ on:
       - ".github/labeler.yml"
       - ".github/labels.json"
       - ".github/dependabot.yml"
+      - ".github/scripts/**"
   push:
     branches: [main]
     paths:
@@ -14,6 +15,7 @@ on:
       - ".github/labeler.yml"
       - ".github/labels.json"
       - ".github/dependabot.yml"
+      - ".github/scripts/**"
   workflow_dispatch:
 
 permissions:
@@ -45,5 +47,14 @@ jobs:
 
       - name: Validate automation config
         run: |
-          python -m pip install --quiet pyyaml
+          python -m pip install --quiet pyyaml pytest
           python .github/scripts/validate_automation_config.py
+
+      - name: Test the config validator
+        run: python -m pytest .github/scripts/test_validate_automation_config.py -q
+
+      - name: Test the triage rules
+        run: node --test .github/scripts/triage.test.js
+
+      - name: Test the changelog generator
+        run: .github/scripts/changelog.test.sh
