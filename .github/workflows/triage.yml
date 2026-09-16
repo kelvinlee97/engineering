@@ -28,7 +28,7 @@ jobs:
       issues: write
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/github-script@v8
+      - uses: actions/github-script@v9
         with:
           script: |
             const fs = require('fs');
@@ -63,7 +63,7 @@ jobs:
       issues: write
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/github-script@v8
+      - uses: actions/github-script@v9
         with:
           script: |
             const { issueLabels } = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/triage.js`);
@@ -103,7 +103,7 @@ jobs:
           configuration-path: .github/labeler.yml
           sync-labels: true
       - name: Apply a size label
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const { sizeLabel, staleSizeLabels } = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/triage.js`);
