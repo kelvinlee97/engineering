@@ -4,10 +4,13 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from mkdocs.config import load_config
+
 from scripts.knowledge_base import (
     AWS_GROUPS,
     HOME_TOPIC_EXCLUDE,
     LATEST_PER_AREA,
+    NAV_SECTIONS,
     SYMPTOM_ENTRIES,
     TOPIC_META,
     KnowledgeBaseError,
@@ -295,6 +298,38 @@ class KnowledgeBaseTests(unittest.TestCase):
         )
 
         self.assertTrue(_excerpt(text, "en").startswith("Athena reads data"))
+
+    def test_chinese_tab_bar_points_at_pages_that_exist(self) -> None:
+        """Every Chinese tab resolves, and covers the same areas as the nav."""
+
+        root = Path(__file__).resolve().parents[2]
+
+        # MkDocs' own loader handles the `!!python/name:` tags in mkdocs.yml.
+        tabs = load_config(str(root / "mkdocs.yml"))["extra"]["kb_tabs_zh"]
+
+        # Check against a real staging run: some tabs point at generated hub
+        # pages, which never appear as discovered documents.
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "build"
+            stage(root, output)
+            for tab in tabs:
+                if not tab["url"]:
+                    continue
+                page = output / (tab["url"].rstrip("/") + ".md")
+                self.assertTrue(
+                    page.is_file(), f"{tab['label']} points at a missing page"
+                )
+
+        # Every area the English nav groups into a tab needs a Chinese tab too,
+        # or Chinese readers lose a section of the site.
+        matched = {
+            area
+            for tab in tabs
+            for area in tab["match"].split()
+        }
+        for _, areas in NAV_SECTIONS:
+            for area in areas:
+                self.assertIn(area, matched, f"{area} has no Chinese tab")
 
     def test_reading_time_ignores_markdown_syntax(self) -> None:
         prose = " ".join(["word"] * 440)

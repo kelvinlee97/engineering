@@ -1,0 +1,35 @@
+{#-
+  Overrides the Material tab bar so Chinese pages get Chinese tabs.
+
+  The generated nav is English-only on purpose: listing both languages doubles
+  every entry. That left Chinese readers with an English tab bar linking to
+  English pages. Rather than restructure the site for mkdocs-static-i18n —
+  which would change the URL of all 188 bilingual pairs — Chinese pages render
+  their own tab bar from `extra.kb_tabs_zh`, pointing at the Chinese pages.
+
+  English pages fall through to Material's stock rendering, unchanged.
+-#}
+{% import "partials/tabs-item.html" as item with context %}
+{% set kb_zh = page and page.meta and page.meta.kb_language == "zh" and config.extra.kb_tabs_zh %}
+<nav class="md-tabs" aria-label="{{ lang.t('tabs') }}" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      {% if kb_zh %}
+        {% set kb_area = (page.url ~ "/").split("/") | first %}
+        {% for tab in config.extra.kb_tabs_zh %}
+          {% set kb_class = "md-tabs__item" %}
+          {% if kb_area and tab.match and kb_area in tab.match.split(" ") %}
+            {% set kb_class = kb_class ~ " md-tabs__item--active" %}
+          {% endif %}
+          <li class="{{ kb_class }}">
+            <a href="{{ tab.url | url }}" class="md-tabs__link">{{ tab.label }}</a>
+          </li>
+        {% endfor %}
+      {% else %}
+        {% for nav_item in nav.items %}
+          {{ item.render(nav_item) }}
+        {% endfor %}
+      {% endif %}
+    </ul>
+  </div>
+</nav>

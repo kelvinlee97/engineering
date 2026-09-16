@@ -46,6 +46,41 @@ theme:
         icon: material/weather-night
         name: Switch to system preference
 
+# Chinese tab bar, consumed by pages/overrides/partials/tabs.html. The generated
+# nav is English-only (listing both languages doubles every entry), so Chinese
+# pages render these instead. `match` lists the top-level directories that make
+# a tab the active one. Keep in step with NAV_SECTIONS in
+# scripts/knowledge_base.py; a test asserts every url resolves to a staged page.
+extra:
+  kb_tabs_zh:
+    - label: 首页
+      url: index_zh/
+      match: index_zh
+    - label: 故障排查
+      url: Git/index_zh/
+      match: Git Kubernetes Nginx Nodejs ZooKeeper
+    - label: AWS
+      url: AWS/index_zh/
+      match: AWS
+    - label: AI 编程工具
+      url: Claude/index_zh/
+      match: Claude
+    - label: 语言与练习
+      url: Python/index_zh/
+      match: Python Bash
+    - label: 环境配置
+      url: Ghostty/index_zh/
+      match: Ghostty Ubuntu apple youtube-transcript
+    - label: 视频笔记
+      url: YouTube/index_zh/
+      match: YouTube
+    - label: 浏览
+      url: topics/index_zh/
+      match: topics archive repository
+    - label: English
+      url: ''
+      match: ''
+
 extra_css:
   - stylesheets/knowledge-base.css
 
