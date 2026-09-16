@@ -247,7 +247,9 @@ class KnowledgeBaseTests(unittest.TestCase):
             # The shared article-title suffix is trimmed for the sidebar.
             self.assertIn("        - [Amazon S3](AWS/s3/index.md)\n", summary)
             # Chinese pages reach readers through each article's language link.
-            self.assertNotIn("index_zh.md", summary.replace("[中文 / Chinese](index_zh.md)", ""))
+            # The Chinese home page is a top-level tab, not a Browse child.
+            self.assertIn("\n- [中文](index_zh.md)\n", summary)
+            self.assertNotIn("index_zh.md", summary.replace("- [中文](index_zh.md)", ""))
 
     def test_home_topics_all_have_a_name_and_blurb(self) -> None:
         """A tile with no curated name falls back to an article title."""
