@@ -17,7 +17,7 @@ flowchart LR
     REPO["最近一次提交<br/>（HEAD）"]
 
     WD -- "git diff<br/>（不带参数）" --> SA
-    SA -- "git diff --staged<br/>或 --cached" --> REPO
+    SA -- "git diff, staged<br/>或 cached" --> REPO
     WD -- "git diff HEAD" --> REPO
 
     style WD fill:#c9910e,color:#fff

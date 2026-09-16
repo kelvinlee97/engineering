@@ -69,9 +69,9 @@ flowchart LR
     SA -- "git commit" --> REPO
     REPO -- "git push" --> REMOTE
     REMOTE -- "git clone / git pull" --> WD
-    REPO -- "git diff" -.compares.-> SA
-    SA -- "git diff --staged" -.compares.-> REPO
-    REPO -- "git log" -.inspects history.-> REPO
+    REPO -. "git diff — compares" .-> SA
+    SA -. "git diff, staged — compares" .-> REPO
+    REPO -. "git log — inspects history" .-> REPO
 ```
 
 - **`git status`** is a "health check": it always tells you where the three areas currently differ.

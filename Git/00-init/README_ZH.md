@@ -69,9 +69,9 @@ flowchart LR
     SA -- "git commit" --> REPO
     REPO -- "git push" --> REMOTE
     REMOTE -- "git clone / git pull" --> WD
-    REPO -- "git diff" -.对比.-> SA
-    SA -- "git diff --staged" -.对比.-> REPO
-    REPO -- "git log" -.查看历史.-> REPO
+    REPO -. "git diff — 对比" .-> SA
+    SA -. "git diff, staged — 对比" .-> REPO
+    REPO -. "git log — 查看历史" .-> REPO
 ```
 
 - **`git status`** 是"体检报告"：随时告诉你三个区域现在的差异在哪。
