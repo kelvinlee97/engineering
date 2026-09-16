@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Guidance for Claude Code working in this repository. Distilled from `AGENTS.md` and `.agents/skills/visual-first-notes/SKILL.md` — read those directly for the full rules; this is the quick-reference summary plus a few working notes.
+Guidance for Claude Code working in this repository. Distilled from this repo's authoring conventions and `.agents/skills/visual-first-notes/SKILL.md` — read the latter directly for the full diagram-selection rules; this is the quick-reference summary plus a few working notes.
 
 ## What this repo is
 

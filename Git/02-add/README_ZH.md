@@ -1,4 +1,4 @@
-← [返回目录](../basics/README_ZH.md) ｜ 上一站：[Git/clone](../clone/README_ZH.md)
+← [返回目录](../00-init/README_ZH.md) ｜ 上一站：[Git/clone](../01-clone/README_ZH.md)
 
 English version: [README.md](README.md)
 
@@ -84,7 +84,7 @@ git status
 
 暂存了改动之后，在真正提交之前，你一定想先确认："我到底暂存了什么？还有什么漏了？" ——这正是下一节 **`git status`** 要回答的问题。
 
-👉 下一站：[Git/status —— 查看当前状态](../status/README_ZH.md)
+👉 下一站：[Git/status —— 查看当前状态](../03-status/README_ZH.md)
 
 ---
 参考：[Pro Git 2.2 - 记录每次更新到仓库](https://git-scm.com/book/zh/v2/Git-基础-记录每次更新到仓库) ｜ [git-add 官方手册](https://git-scm.com/docs/git-add)

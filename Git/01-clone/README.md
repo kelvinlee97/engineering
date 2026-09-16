@@ -1,4 +1,4 @@
-← [Back to index](../basics/README.md) ｜ Previous: [Git/init](../init/README.md)
+← [Back to index](../00-init/README.md) ｜ Previous: [Git/init](../00-init/README.md)
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
@@ -66,7 +66,7 @@ git log --oneline -5   # should show recent commit history
 
 Once cloned, you have a working tree identical to the remote. As soon as you start editing files, Git will notice a difference between your "working tree" and the "staging area/repository" — and the first command you'll reach for is **`git add`**, to put your intended changes into the staging area.
 
-👉 Next: [Git/add — stage changes for the next commit](../add/README.md)
+👉 Next: [Git/add — stage changes for the next commit](../02-add/README.md)
 
 ---
 References: [Pro Git 2.1 — Getting a Git Repository](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository) | [git-clone manual](https://git-scm.com/docs/git-clone)

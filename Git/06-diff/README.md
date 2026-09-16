@@ -1,4 +1,4 @@
-← [Back to index](../basics/README.md) ｜ Previous: [Git/log](../log/README.md)
+← [Back to index](../00-init/README.md) ｜ Previous: [Git/log](../05-log/README.md)
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
@@ -111,7 +111,7 @@ flowchart LR
 
 At this point you can complete the full loop: "create/copy a repo → change files → stage → check → commit → view history → compare differences". Next, move on to branching and merging (`branch` / `merge` / `rebase`) — [Learn Git Branching](https://learngitbranching.js.org/) is a great interactive way to solidify it.
 
-👈 Back to: [Git tutorial home](../basics/README.md)
+👈 Back to: [Git tutorial home](../00-init/README.md)
 
 ---
 References: [Pro Git 2.2 — Viewing Your Staged and Unstaged Changes](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_git_diff) | [git-diff manual](https://git-scm.com/docs/git-diff)

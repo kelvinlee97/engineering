@@ -1,4 +1,4 @@
-← [返回目录](../basics/README_ZH.md) ｜ 上一站：[Git/log](../log/README_ZH.md)
+← [返回目录](../00-init/README_ZH.md) ｜ 上一站：[Git/log](../05-log/README_ZH.md)
 
 English version: [README.md](README.md)
 
@@ -111,7 +111,7 @@ flowchart LR
 
 至此，你已经能完成"创建/拷贝仓库 → 改动 → 暂存 → 检查 → 提交 → 查历史 → 看差异"的完整闭环。下一阶段可以进入分支与合并（`branch` / `merge` / `rebase`），推荐直接上手 [Learn Git Branching](https://learngitbranching.js.org/) 交互式练习巩固。
 
-👈 返回：[Git 教程首页](../basics/README_ZH.md)
+👈 返回：[Git 教程首页](../00-init/README_ZH.md)
 
 ---
 参考：[Pro Git 2.2 - 查看已暂存和未暂存的修改](https://git-scm.com/book/zh/v2/Git-基础-记录每次更新到仓库#_git_diff) ｜ [git-diff 官方手册](https://git-scm.com/docs/git-diff)

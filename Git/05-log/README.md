@@ -1,4 +1,4 @@
-← [Back to index](../basics/README.md) ｜ Previous: [Git/commit](../commit/README.md)
+← [Back to index](../00-init/README.md) ｜ Previous: [Git/commit](../04-commit/README.md)
 
 Chinese version: [README_ZH.md](README_ZH.md)
 
@@ -83,7 +83,7 @@ git log --oneline
 
 `git log` tells you **what happened in history**, but if you want to know exactly which lines differ **right now** vs. a given commit, or **between two commits**, you need the final section: **`git diff`**.
 
-👉 Next: [Git/diff — compare the exact differences](../diff/README.md)
+👉 Next: [Git/diff — compare the exact differences](../06-diff/README.md)
 
 ---
 References: [Pro Git 2.3 — Viewing the Commit History](https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History) | [git-log manual](https://git-scm.com/docs/git-log)

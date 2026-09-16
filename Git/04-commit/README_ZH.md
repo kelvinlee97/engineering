@@ -1,4 +1,4 @@
-← [返回目录](../basics/README_ZH.md) ｜ 上一站：[Git/status](../status/README_ZH.md)
+← [返回目录](../00-init/README_ZH.md) ｜ 上一站：[Git/status](../03-status/README_ZH.md)
 
 English version: [README.md](README.md)
 
@@ -85,7 +85,7 @@ git status          # 应显示 "nothing to commit, working tree clean"
 
 有了第一次提交，你就正式拥有了"历史"。接下来自然要问：**这个仓库到底提交过什么？** 答案在下一节 **`git log`**。
 
-👉 下一站：[Git/log —— 查看提交历史](../log/README_ZH.md)
+👉 下一站：[Git/log —— 查看提交历史](../05-log/README_ZH.md)
 
 ---
 参考：[Pro Git 2.2 - 提交更新](https://git-scm.com/book/zh/v2/Git-基础-记录每次更新到仓库#r_committing_changes) ｜ [git-commit 官方手册](https://git-scm.com/docs/git-commit)
