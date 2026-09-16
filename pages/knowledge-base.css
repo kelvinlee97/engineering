@@ -8,22 +8,33 @@
    -------------------------------------------------------------------------- */
 
 @font-face {
-  font-family: "Inter Variable";
+  font-family: "Fraunces Variable";
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
-  src: url("../assets/fonts/inter-latin-wght-normal.woff2") format("woff2");
+  src: url("../assets/fonts/fraunces-latin-wght-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
     U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
     U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
-  font-family: "JetBrains Mono Variable";
+  font-family: "IBM Plex Sans Variable";
   font-style: normal;
-  font-weight: 100 800;
+  font-weight: 100 700;
   font-display: swap;
-  src: url("../assets/fonts/jetbrains-mono-latin-wght-normal.woff2") format("woff2");
+  src: url("../assets/fonts/ibm-plex-sans-latin-wght-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
     U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
     U+2215, U+FEFF, U+FFFD;
@@ -34,11 +45,12 @@
    -------------------------------------------------------------------------- */
 
 :root {
-  --md-text-font: "Inter Variable", ui-sans-serif, system-ui, -apple-system,
+  --md-text-font: "IBM Plex Sans Variable", ui-sans-serif, system-ui, -apple-system,
     BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei",
     sans-serif;
-  --md-code-font: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", Consolas,
+  --md-code-font: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas,
     "Liberation Mono", monospace;
+  --kb-display-font: "Fraunces Variable", Georgia, "Noto Serif SC", "Songti SC", serif;
 
   /* Type scale */
   --kb-text-xs: 0.75rem;
@@ -58,76 +70,76 @@
 }
 
 body[data-md-color-scheme="default"] {
-  --md-primary-fg-color: #1e1b3a;
-  --md-primary-fg-color--light: #4c4a6a;
-  --md-primary-fg-color--dark: #14122a;
-  --md-primary-bg-color: #ffffff;
-  --md-accent-fg-color: #4f46e5;
-  --md-default-bg-color: #fbfbfd;
-  --md-default-fg-color: #1c1b22;
-  --md-default-fg-color--light: #5b5a68;
-  --md-default-fg-color--lighter: #8e8d9b;
-  --md-default-fg-color--lightest: #e3e2ea;
-  --md-code-bg-color: #f3f3f8;
-  --md-code-fg-color: #2c2b36;
-  --md-typeset-a-color: #4f46e5;
+  --md-primary-fg-color: #1b2422;
+  --md-primary-fg-color--light: #33413d;
+  --md-primary-fg-color--dark: #101513;
+  --md-primary-bg-color: #faf8f3;
+  --md-accent-fg-color: #3a6b63;
+  --md-default-bg-color: #faf8f3;
+  --md-default-fg-color: #1d1b19;
+  --md-default-fg-color--light: #5c574f;
+  --md-default-fg-color--lighter: #8f897c;
+  --md-default-fg-color--lightest: #e4ded2;
+  --md-code-bg-color: #efe9dc;
+  --md-code-fg-color: #241f1a;
+  --md-typeset-a-color: #3a6b63;
 
-  --kb-accent: #4f46e5;
-  --kb-accent-strong: #4338ca;
-  --kb-accent-soft: #eeecfd;
+  --kb-accent: #3a6b63;
+  --kb-accent-strong: #2c534c;
+  --kb-accent-soft: #e4efec;
   --kb-accent-contrast: #ffffff;
   --kb-surface: #ffffff;
-  --kb-surface-sunken: #f4f4f8;
-  --kb-border: #e3e2ea;
-  --kb-border-strong: #cfced9;
-  --kb-muted: #5b5a68;
-  --kb-muted-soft: #63626f;
-  --kb-shadow-sm: 0 1px 2px rgba(23, 21, 45, 0.05), 0 1px 3px rgba(23, 21, 45, 0.04);
-  --kb-shadow: 0 4px 12px rgba(23, 21, 45, 0.07), 0 2px 4px rgba(23, 21, 45, 0.04);
-  --kb-shadow-lg: 0 14px 32px rgba(23, 21, 45, 0.1), 0 4px 10px rgba(23, 21, 45, 0.05);
+  --kb-surface-sunken: #f3efe6;
+  --kb-border: #e4ded2;
+  --kb-border-strong: #d6cdb9;
+  --kb-muted: #5c574f;
+  --kb-muted-soft: #6b6558;
+  --kb-shadow-sm: 0 1px 2px rgba(40, 34, 20, 0.05), 0 1px 3px rgba(40, 34, 20, 0.04);
+  --kb-shadow: 0 4px 12px rgba(40, 34, 20, 0.07), 0 2px 4px rgba(40, 34, 20, 0.04);
+  --kb-shadow-lg: 0 14px 32px rgba(40, 34, 20, 0.1), 0 4px 10px rgba(40, 34, 20, 0.05);
   --kb-hero-wash: radial-gradient(
       ellipse 80% 120% at 12% -20%,
-      rgba(79, 70, 229, 0.14),
+      rgba(58, 107, 99, 0.14),
       transparent 60%
     ),
-    radial-gradient(ellipse 60% 100% at 92% -10%, rgba(14, 165, 233, 0.1), transparent 60%);
+    radial-gradient(ellipse 60% 100% at 92% -10%, rgba(198, 93, 46, 0.1), transparent 60%);
 }
 
 body[data-md-color-scheme="slate"] {
-  --md-hue: 255;
-  --md-primary-fg-color: #16162a;
-  --md-primary-fg-color--light: #2b2b46;
-  --md-primary-fg-color--dark: #0c0c18;
-  --md-primary-bg-color: #f5f5fa;
-  --md-accent-fg-color: #a5b4fc;
-  --md-default-bg-color: #0d0d18;
-  --md-default-fg-color: #ecedf5;
-  --md-default-fg-color--light: #a9aabd;
-  --md-default-fg-color--lighter: #7c7d93;
-  --md-default-fg-color--lightest: #2a2a3e;
-  --md-code-bg-color: #171728;
-  --md-code-fg-color: #dcdcea;
-  --md-typeset-a-color: #a5b4fc;
+  --md-hue: 165;
+  --md-primary-fg-color: #101512;
+  --md-primary-fg-color--light: #1d2622;
+  --md-primary-fg-color--dark: #080b09;
+  --md-primary-bg-color: #ece8df;
+  --md-accent-fg-color: #7fb8ac;
+  --md-default-bg-color: #16151a;
+  --md-default-fg-color: #ece8df;
+  --md-default-fg-color--light: #a39d8f;
+  --md-default-fg-color--lighter: #7d7869;
+  --md-default-fg-color--lightest: #332f2a;
+  --md-code-bg-color: #2a2823;
+  --md-code-fg-color: #ece8df;
+  --md-typeset-a-color: #7fb8ac;
 
-  --kb-accent: #a5b4fc;
-  --kb-accent-strong: #c7d2fe;
-  --kb-accent-soft: rgba(129, 140, 248, 0.16);
-  --kb-accent-contrast: #12122a;
-  --kb-surface: #15152a;
-  --kb-surface-sunken: #101020;
-  --kb-border: #272740;
-  --kb-border-strong: #3a3a58;
-  --kb-muted: #a9aabd;
-  --kb-muted-soft: #9a9bb0;
+  --kb-accent: #7fb8ac;
+  --kb-accent-strong: #9fcac0;
+  --kb-accent-soft: rgba(127, 184, 172, 0.16);
+  --kb-accent-contrast: #12160f;
+  --kb-surface: #1f1e23;
+  --kb-surface-sunken: #19181d;
+  --kb-border: #332f2a;
+  --kb-border-strong: #45403a;
+  --kb-muted: #a39d8f;
+  --kb-muted-soft: #948e80;
   --kb-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
   --kb-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
   --kb-shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.55);
   --kb-hero-wash: radial-gradient(
       ellipse 80% 120% at 12% -20%,
-      rgba(129, 140, 248, 0.18),
+      rgba(127, 184, 172, 0.18),
       transparent 62%
     ),
-    radial-gradient(ellipse 60% 100% at 92% -10%, rgba(56, 189, 248, 0.12), transparent 60%);
+    radial-gradient(ellipse 60% 100% at 92% -10%, rgba(226, 137, 90, 0.12), transparent 60%);
 }
 
 /* --------------------------------------------------------------------------
@@ -169,16 +181,17 @@ kbd,
 .md-typeset h3,
 .md-typeset h4 {
   color: var(--md-default-fg-color);
-  font-weight: 650;
-  letter-spacing: -0.021em;
+  font-family: var(--kb-display-font);
+  font-weight: 600;
+  letter-spacing: -0.006em;
 }
 
 .md-typeset h1 {
   margin-bottom: 0.6rem;
   font-size: clamp(2.1rem, 4.4vw, 3rem);
-  font-weight: 700;
-  letter-spacing: -0.032em;
-  line-height: 1.12;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
 }
 
 .md-typeset h2 {
@@ -383,7 +396,7 @@ kbd,
   z-index: 10;
   height: 2px;
   width: 100%;
-  background: linear-gradient(90deg, var(--kb-accent), #38bdf8);
+  background: linear-gradient(90deg, var(--kb-accent), var(--kb-accent-strong));
   transform: scaleX(0);
   transform-origin: 0 50%;
   opacity: 0;
