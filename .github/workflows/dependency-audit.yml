@@ -2,12 +2,11 @@ name: Dependency audit
 
 on:
   workflow_dispatch:
+  # No path filter on pull_request: this job is a required status check
+  # on main, and a required check that never reports leaves unrelated
+  # pull requests pending forever. The `filter` step below skips the
+  # real work instead, so unrelated pull requests stay cheap.
   pull_request:
-    paths:
-      - "pages/requirements.txt"
-      - "youtube-transcript/pyproject.toml"
-      - "youtube-transcript/uv.lock"
-      - ".github/workflows/dependency-audit.yml"
   push:
     branches: [main]
     paths:
@@ -31,15 +30,43 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Decide whether the checks below need to run
+        id: filter
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          if [ -z "${BASE_SHA:-}" ]; then
+            # Not a pull request. The other triggers keep their path filter,
+            # so reaching here already means the run is relevant.
+            echo "run=true" >>"$GITHUB_OUTPUT"
+            exit 0
+          fi
+          changed="$(git diff --name-only "$BASE_SHA...$HEAD_SHA")"
+          echo "--- changed files ---"
+          echo "$changed"
+          # Keep this pattern in step with the push path filter above.
+          if printf '%s\n' "$changed" | grep -qE '^pages/requirements\.txt$|^youtube-transcript/pyproject\.toml$|^youtube-transcript/uv\.lock$|^\.github/workflows/dependency-audit\.yml$'; then
+            echo "run=true" >>"$GITHUB_OUTPUT"
+          else
+            echo "run=false" >>"$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
       - name: Install audit tooling
+        if: steps.filter.outputs.run == 'true'
         run: python -m pip install pip-audit uv
       - name: Audit the site toolchain
+        if: steps.filter.outputs.run == 'true'
         run: pip-audit --strict --requirement pages/requirements.txt
       - name: Export the YouTube transcript lockfile
+        if: steps.filter.outputs.run == 'true'
         working-directory: youtube-transcript
         run: uv export --frozen --all-groups --no-emit-project --format requirements-txt --output-file /tmp/yt-requirements.txt
       - name: Audit the YouTube transcript module
+        if: steps.filter.outputs.run == 'true'
         run: pip-audit --strict --requirement /tmp/yt-requirements.txt
