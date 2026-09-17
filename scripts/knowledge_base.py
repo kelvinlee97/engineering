@@ -93,6 +93,10 @@ class Document:
     area: str
     kind: str
     updated: str
+    # Full commit timestamp behind `updated`. `updated` is a date, so two notes
+    # touched on the same day tie; ordering by the timestamp keeps the most
+    # recent edit first.
+    updated_at: str
     video_id: str | None
 
 
@@ -224,7 +228,11 @@ def _blog_documents(documents: list[Document], language: str) -> list[Document]:
 
 def _sorted_documents(documents: list[Document]) -> list[Document]:
     by_source = sorted(documents, key=lambda document: document.source)
-    return sorted(by_source, key=lambda document: document.updated or "", reverse=True)
+    return sorted(
+        by_source,
+        key=lambda document: (document.updated or "", document.updated_at or ""),
+        reverse=True,
+    )
 
 
 def _site_directory(page: str) -> str:
@@ -349,16 +357,21 @@ def _area(source: str) -> str:
     return path.parts[0] if len(path.parts) > 1 else "engineering"
 
 
-def _last_modified(root: Path, source: str) -> str:
+def _last_modified(root: Path, source: str) -> tuple[str, str]:
+    """Commit date (for display) and full commit timestamp (for ordering)."""
+
     if not (root / ".git").exists():
-        return ""
+        return "", ""
     result = subprocess.run(
-        ["git", "-C", str(root), "log", "-1", "--format=%cs", "--", source],
+        ["git", "-C", str(root), "log", "-1", "--format=%cs%n%cI", "--", source],
         capture_output=True,
         text=True,
         check=False,
     )
-    return result.stdout.strip()
+    lines = result.stdout.strip().splitlines()
+    if len(lines) < 2:
+        return (lines[0].strip() if lines else ""), ""
+    return lines[0].strip(), lines[1].strip()
 
 
 def _git_tracked_paths(root: Path) -> list[str]:
@@ -493,6 +506,7 @@ def discover_documents(
     publishable = set(candidates)
     for source in candidates:
         pair = _pair_path(source)
+        modified = _last_modified(root, source)
         documents.append(
             Document(
                 source=source,
@@ -504,7 +518,8 @@ def discover_documents(
                 language=_language(source),
                 area=_area(source),
                 kind=_kind(source),
-                updated=_last_modified(root, source),
+                updated=modified[0],
+                updated_at=modified[1],
                 video_id=video_ids[source],
             )
         )

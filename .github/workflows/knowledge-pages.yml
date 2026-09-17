@@ -36,6 +36,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          # The site dates and orders notes by each file's last commit. A
+          # shallow clone gives every file the same commit, which collapses
+          # "Recently updated" into an arbitrary order.
+          fetch-depth: 0
       - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
