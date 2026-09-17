@@ -29,6 +29,7 @@
 - [Claude Code GitHub Actions](Claude/github-actions/README_ZH.md) — 通过明确的权限与安全边界运行交互式和自动化 Claude workflow。
 - [Claude Managed Agents](Claude/managed-agents/README_ZH.md) — 面向长时间运行、异步任务的托管 agent 环境，是 Messages API 之外的另一种选择。
 - [AI 原生 SDLC 实践手册](Claude/ai-native-sdlc-playbook/README_ZH.md) — 以版本化工件、反馈闭环和明确治理关口重新设计交付流程。
+- [Warp 的自我改进 agent](Claude/self-improving-agents/README_ZH.md) — 把人类对 agent 输出的反馈，变成针对 agent 自身 skill 文件的、经过评审的 pull request。
 
 ### 准备 SRE 面试
 

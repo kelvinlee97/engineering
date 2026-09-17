@@ -29,6 +29,7 @@ I collect explanations, commands, and references worth revisiting, from SRE runb
 - [Claude Code GitHub Actions](Claude/github-actions/README.md) — Run interactive and automated Claude workflows with explicit permissions and security boundaries.
 - [Claude Managed Agents](Claude/managed-agents/README.md) — Hosted agent harness for long-running, asynchronous tasks, as an alternative to the Messages API.
 - [AI-native SDLC playbook](Claude/ai-native-sdlc-playbook/README.md) — Redesign delivery around versioned artifacts, feedback loops, and explicit governance gates.
+- [Warp’s self-improving agents](Claude/self-improving-agents/README.md) — Turn human feedback on agent output into reviewed pull requests against the agent’s own skill file.
 
 ### Prepare for SRE interviews
 
