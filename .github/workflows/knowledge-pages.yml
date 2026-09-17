@@ -2,16 +2,11 @@ name: Knowledge base site
 
 on:
   workflow_dispatch:
+  # No path filter on pull_request: the `gate` job below is a required
+  # status check on main, and a required check that never reports leaves
+  # unrelated pull requests pending forever. The `changes` job does the
+  # filtering instead, so unrelated pull requests still skip the heavy jobs.
   pull_request:
-    paths:
-      - "*.md"
-      - "**/*.md"
-      - "mkdocs.yml"
-      - "pages/**"
-      - "scripts/**"
-      - ".github/scripts/**"
-      - "pyproject.toml"
-      - ".github/workflows/knowledge-pages.yml"
   push:
     branches: [main]
     paths:
@@ -32,7 +27,40 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      site: ${{ steps.filter.outputs.site }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Decide whether the site jobs need to run
+        id: filter
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          if [ -z "${BASE_SHA:-}" ]; then
+            # Not a pull request. push and workflow_dispatch keep their own
+            # path filter, so reaching here already means the run is relevant.
+            echo "site=true" >>"$GITHUB_OUTPUT"
+            exit 0
+          fi
+          changed="$(git diff --name-only "$BASE_SHA...$HEAD_SHA")"
+          echo "--- changed files ---"
+          echo "$changed"
+          # Keep this pattern in step with the push path filter above.
+          if printf '%s\n' "$changed" | grep -qE '\.md$|^mkdocs\.yml$|^pages/|^scripts/|^\.github/scripts/|^pyproject\.toml$|^\.github/workflows/knowledge-pages\.yml$'; then
+            echo "site=true" >>"$GITHUB_OUTPUT"
+          else
+            echo "site=false" >>"$GITHUB_OUTPUT"
+          fi
+
   validate:
+    needs: changes
+    if: needs.changes.outputs.site == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -67,6 +95,8 @@ jobs:
           path: .pages-site
 
   mermaid:
+    needs: changes
+    if: needs.changes.outputs.site == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -125,3 +155,31 @@ jobs:
           head -n 40 /tmp/index.html
           echo "::error::Deployed page never served the expected site name ($expected) and font assets"
           exit 1
+
+  gate:
+    # The single required status check for this workflow. It always reports,
+    # whatever the jobs above did, so it is safe to mark as required on main:
+    # a skipped job is a pass, only a real failure or a cancellation fails.
+    name: Knowledge base site gate
+    if: always()
+    needs: [changes, validate, mermaid]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the results of the jobs above
+        env:
+          NEEDS_JSON: ${{ toJSON(needs) }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import sys
+
+          needs = json.loads(os.environ["NEEDS_JSON"])
+          for name in sorted(needs):
+              print(f"{name}: {needs[name]['result']}")
+          bad = sorted(n for n, v in needs.items() if v["result"] not in ("success", "skipped"))
+          if bad:
+              print(f"::error::upstream jobs did not pass: {', '.join(bad)}")
+              sys.exit(1)
+          print("All upstream jobs passed or were skipped.")
+          PY
