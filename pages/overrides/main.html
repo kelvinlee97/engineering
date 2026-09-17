@@ -46,6 +46,48 @@
         });
       });
 
+      // Search results are language-scoped: the index holds both the English and
+      // the Chinese page of every pair, so an unfiltered query returns each
+      // article twice. Chinese pages live at URLs whose last segment ends in
+      // `_zh` (index_zh, summary_zh), which is enough to tell the two apart.
+      const kbLanguageOf = (pathname) => {
+        const segments = pathname.split('/').filter(Boolean);
+        const last = segments[segments.length - 1] || '';
+        return last.endsWith('_zh') ? 'zh' : 'en';
+      };
+
+      const kbCountLabel = (language, count) =>
+        language === 'zh'
+          ? (count === 0 ? '没有找到匹配的文档' : `${count} 个匹配的文档`)
+          : (count === 0 ? 'No matching documents' : `${count} matching document${count === 1 ? '' : 's'}`);
+
+      let kbSearchObserver = null;
+      onPage(() => {
+        const list = document.querySelector('[data-md-component="search-result"] .md-search-result__list');
+        const meta = document.querySelector('[data-md-component="search-result"] .md-search-result__meta');
+        if (!list) return;
+
+        const language = kbLanguageOf(window.location.pathname);
+
+        const filter = () => {
+          let kept = 0;
+          for (const item of list.querySelectorAll(':scope > .md-search-result__item')) {
+            const link = item.querySelector('a.md-search-result__link');
+            const match = link && kbLanguageOf(new URL(link.href, window.location.href).pathname) === language;
+            item.style.display = match ? '' : 'none';
+            if (match) kept += 1;
+          }
+          if (meta) meta.textContent = kbCountLabel(language, kept);
+        };
+
+        // Instant navigation keeps the search DOM across page swaps, so drop the
+        // previous observer rather than stacking one per visited page.
+        if (kbSearchObserver) kbSearchObserver.disconnect();
+        kbSearchObserver = new MutationObserver(filter);
+        kbSearchObserver.observe(list, { childList: true });
+        filter();
+      });
+
       // Reading progress bar. Article pages only, and never when the reader has
       // asked for reduced motion.
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
