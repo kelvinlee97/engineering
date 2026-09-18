@@ -70,7 +70,7 @@ extra:
       match: Python Bash
     - label: 环境配置
       url: Ghostty/index_zh/
-      match: Ghostty Ubuntu apple youtube-transcript
+      match: Ghostty Ubuntu apple rss-digest youtube-transcript
     - label: 视频笔记
       url: YouTube/index_zh/
       match: YouTube

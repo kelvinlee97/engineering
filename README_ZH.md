@@ -60,3 +60,4 @@
 - [视觉优先笔记工作流](.agents/skills/visual-first-notes/SKILL.md) — 将来源材料转化为心智模型、适当图表和精简的辅助文字。
 - [YouTube 字幕工作流](.agents/skills/youtube-transcript/SKILL.md) — 视频摘要的制作与检查方式。
 - [字幕工具模块](youtube-transcript/) — 配套工具。
+- [RSS 聚合工具](rss-digest/) — 把配置好的信息源聚合成一份去重摘要。

@@ -1,0 +1,20 @@
+# Copy to feeds.toml and edit. `limit` at the top level is the per-source default.
+limit = 8
+
+[[feeds]]
+name = "Kubernetes blog"
+url = "https://kubernetes.io/feed.xml"
+topic = "infrastructure"
+
+[[feeds]]
+name = "AWS what's new"
+url = "https://aws.amazon.com/about-aws/whats-new/recent/feed/"
+topic = "infrastructure"
+limit = 15
+include = ["eks", "vpc", "networking"]
+
+[[feeds]]
+name = "Hacker News front page"
+url = "https://hnrss.org/frontpage"
+topic = "industry"
+exclude = ["crypto", "nft"]

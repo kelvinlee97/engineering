@@ -339,7 +339,7 @@ def _kind(source: str) -> str:
     lower_parts = {part.lower() for part in path.parts}
     if path.name.startswith("summary"):
         return "video-summary"
-    if "youtube-transcript" in lower_parts:
+    if "youtube-transcript" in lower_parts or "rss-digest" in lower_parts:
         return "tooling"
     if "runbooks" in lower_parts:
         return "runbook"
@@ -963,6 +963,7 @@ AREA_NAV_LABELS = {
     "Nginx": "Nginx & OpenResty",
     "Nodejs": "Node.js & Express BFF",
     "Python": "Python",
+    "rss-digest": "RSS digest tooling",
     "youtube-transcript": "Transcript tooling",
 }
 
@@ -971,7 +972,7 @@ NAV_SECTIONS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("AWS", ("AWS",)),
     ("AI coding tools", ("Claude",)),
     ("Languages & practice", ("Python", "Bash")),
-    ("Setup", ("Ghostty", "Ubuntu", "apple", "youtube-transcript")),
+    ("Setup", ("Ghostty", "Ubuntu", "apple", "rss-digest", "youtube-transcript")),
     ("Video notes", ("YouTube",)),
 )
 
@@ -1184,7 +1185,7 @@ TOPIC_META: dict[str, tuple[str, str, str, str]] = {
 
 # Repository tooling is not something a reader browses for, so it stays in the
 # nav under Setup but off the home page.
-HOME_TOPIC_EXCLUDE = {"youtube-transcript"}
+HOME_TOPIC_EXCLUDE = {"rss-digest", "youtube-transcript"}
 
 # (page, English question, Chinese question, English answer, Chinese answer)
 SYMPTOM_ENTRIES: tuple[tuple[str, str, str, str, str], ...] = (

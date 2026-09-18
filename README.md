@@ -60,3 +60,4 @@ Keep contributions focused, reusable, and suitable for a public repository. Do n
 - [Visual-first notes workflow](.agents/skills/visual-first-notes/SKILL.md) — Turn source material into mental models, appropriate diagrams, and concise supporting text.
 - [YouTube transcript workflow](.agents/skills/youtube-transcript/SKILL.md) — How video summaries are prepared and checked.
 - [Transcript tool module](youtube-transcript/) — Supporting tooling.
+- [RSS digest tool](rss-digest/) — Aggregate configured feeds into one deduplicated digest.
