@@ -16,3 +16,4 @@ English version: [README.md](README.md)
 | [AI 原生 SDLC 实践手册](ai-native-sdlc-playbook/README_ZH.md) | 围绕版本化产物、反馈回路和明确的治理关卡重新设计交付流程。 |
 | [Warp 如何在 Claude 上构建自我改进的 agent](self-improving-agents/README_ZH.md) | inner skill 负责干活，定时运行的 outer skill 把人类反馈变成针对它的 pull request。 |
 | [Claude Code 云端会话](cloud-sessions/README_ZH.md) | 运行在 Anthropic 托管虚拟机中的会话：环境、GitHub 访问、终端交接与 PR 自动修复。 |
+| [Claude Projects 改版](projects/README_ZH.md) | Project 变成一场对话：coordinator 把工作拆成并行的云端会话 thread，共享 memory 与 library。 |
