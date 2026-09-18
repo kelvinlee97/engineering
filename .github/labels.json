@@ -40,6 +40,11 @@
     "description": "Scripts, CI, repository automation"
   },
   {
+    "name": "area: ingest",
+    "color": "1d76db",
+    "description": "Article ingested from a link; auto-merges when checks pass"
+  },
+  {
     "name": "documentation",
     "color": "0075ca",
     "description": "Markdown content changes"
