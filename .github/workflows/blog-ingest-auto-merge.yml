@@ -1,0 +1,107 @@
+name: Blog ingest auto-merge
+
+# Publishes an ingested article without a human review step. A pull request
+# qualifies only when all three hold: it was opened from a `blog/*` branch by
+# the repository owner, it carries the `area: ingest` label, and every check
+# on its head commit has finished successfully.
+#
+# `workflow_run` (rather than `pull_request`) is what makes the check-status
+# read meaningful: by the time this runs, the content checks have a verdict.
+# Both content workflows are listed so whichever finishes last re-evaluates
+# the rollup and merges.
+on:
+  workflow_run:
+    workflows: ["Knowledge base site", "Automation checks"]
+    types: [completed]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: blog-ingest-auto-merge-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: false
+
+jobs:
+  merge:
+    if: >-
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      startsWith(github.event.workflow_run.head_branch, 'blog/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Merge the article if it is ready
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set -euo pipefail
+
+          number="$(gh pr list --repo "$REPO" --head "$BRANCH" --state open \
+            --json number --jq '.[0].number // empty')"
+          if [ -z "$number" ]; then
+            echo "No open pull request for $BRANCH; nothing to merge."
+            exit 0
+          fi
+
+          gh pr view "$number" --repo "$REPO" \
+            --json headRefOid,author,labels,isDraft,mergeable,statusCheckRollup >pr.json
+
+          # Prints `merge`, or `skip: <reason>`. A reason is not a failure:
+          # a later workflow_run re-evaluates once the other checks land.
+          decision="$(python3 - <<'PY'
+          import json, os
+
+          pr = json.load(open("pr.json"))
+          labels = {label["name"] for label in pr["labels"]}
+
+
+          def decide() -> str:
+              if pr["headRefOid"] != os.environ["HEAD_SHA"]:
+                  return "PR head moved since this run started"
+              if pr["isDraft"]:
+                  return "PR is a draft"
+              if pr["author"]["login"] != os.environ["OWNER"]:
+                  return f"author {pr['author']['login']} is not the repository owner"
+              if "area: ingest" not in labels:
+                  return "not labelled 'area: ingest'"
+              if pr["mergeable"] != "MERGEABLE":
+                  return f"not mergeable ({pr['mergeable']})"
+
+              # Treat the rollup as authoritative: anything still running means
+              # a later workflow_run re-evaluates, anything failed blocks.
+              pending, failed = [], []
+              for check in pr["statusCheckRollup"] or []:
+                  name = check.get("name") or check.get("context") or "?"
+                  # This job is itself a check on the commit and cannot wait
+                  # on its own completion.
+                  if check.get("workflowName") == "Blog ingest auto-merge":
+                      continue
+                  state = check.get("conclusion") or check.get("state") or ""
+                  if state in ("", "PENDING", "IN_PROGRESS", "QUEUED", "WAITING", "EXPECTED"):
+                      pending.append(name)
+                  elif state not in ("SUCCESS", "NEUTRAL", "SKIPPED"):
+                      failed.append(f"{name}={state}")
+              if failed:
+                  return "checks failed: " + ", ".join(failed)
+              if pending:
+                  return "checks still running: " + ", ".join(pending)
+              return ""
+
+
+          reason = decide()
+          print("merge" if not reason else f"skip: {reason}")
+          PY
+          )"
+
+          echo "$decision"
+          if [ "$decision" != "merge" ]; then
+            exit 0
+          fi
+
+          gh pr merge "$number" --repo "$REPO" --squash --delete-branch
