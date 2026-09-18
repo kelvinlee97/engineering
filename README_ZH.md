@@ -32,6 +32,7 @@
 - [Warp 的自我改进 agent](Claude/self-improving-agents/README_ZH.md) — 把人类对 agent 输出的反馈，变成针对 agent 自身 skill 文件的、经过评审的 pull request。
 - [Claude Code 云端会话](Claude/cloud-sessions/README_ZH.md) — 在 Anthropic 托管虚拟机中运行会话，在终端与云端之间交接工作，并自动修复 pull request。
 - [构建 AI 原生的收入组织](Claude/ai-native-revenue-org/README_ZH.md) — 在销售组织推广 Claude：成熟度阶梯、三阶段计划、ROI 度量与常见陷阱。
+- [Claude Projects 改版](Claude/projects/README_ZH.md) — 一场对话协调多个并行的云端会话 thread，共享 memory 与 library。
 
 ### 准备 SRE 面试
 
