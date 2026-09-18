@@ -31,6 +31,7 @@ I collect explanations, commands, and references worth revisiting, from SRE runb
 - [AI-native SDLC playbook](Claude/ai-native-sdlc-playbook/README.md) — Redesign delivery around versioned artifacts, feedback loops, and explicit governance gates.
 - [Warp’s self-improving agents](Claude/self-improving-agents/README.md) — Turn human feedback on agent output into reviewed pull requests against the agent’s own skill file.
 - [Claude Code cloud sessions](Claude/cloud-sessions/README.md) — Run sessions in an Anthropic-managed VM, hand work between terminal and cloud, and auto-fix pull requests.
+- [Building an AI-native revenue organization](Claude/ai-native-revenue-org/README.md) — Roll Claude out across a sales org: maturity ladder, three-phase plan, ROI measurement, and common pitfalls.
 - [Claude Projects, redesigned](Claude/projects/README.md) — One conversation coordinates parallel cloud-session threads over shared memory and a shared library.
 
 ### Prepare for SRE interviews
