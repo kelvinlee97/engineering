@@ -30,6 +30,7 @@
 - [Claude Managed Agents](Claude/managed-agents/README_ZH.md) — 面向长时间运行、异步任务的托管 agent 环境，是 Messages API 之外的另一种选择。
 - [AI 原生 SDLC 实践手册](Claude/ai-native-sdlc-playbook/README_ZH.md) — 以版本化工件、反馈闭环和明确治理关口重新设计交付流程。
 - [Warp 的自我改进 agent](Claude/self-improving-agents/README_ZH.md) — 把人类对 agent 输出的反馈，变成针对 agent 自身 skill 文件的、经过评审的 pull request。
+- [GitHub Certified: Agentic AI Developer](Claude/github-agentic-ai-developer/README_ZH.md) — 考试知识域、课程结构，以及 agent 架构与 SDLC 集成的深度解析。
 
 ### 准备 SRE 面试
 

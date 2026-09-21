@@ -30,6 +30,7 @@ I collect explanations, commands, and references worth revisiting, from SRE runb
 - [Claude Managed Agents](Claude/managed-agents/README.md) — Hosted agent harness for long-running, asynchronous tasks, as an alternative to the Messages API.
 - [AI-native SDLC playbook](Claude/ai-native-sdlc-playbook/README.md) — Redesign delivery around versioned artifacts, feedback loops, and explicit governance gates.
 - [Warp’s self-improving agents](Claude/self-improving-agents/README.md) — Turn human feedback on agent output into reviewed pull requests against the agent’s own skill file.
+- [GitHub Certified: Agentic AI Developer](Claude/github-agentic-ai-developer/README.md) — Exam domains, course structure, and a deep dive into agent architecture and SDLC integration.
 
 ### Prepare for SRE interviews
 
