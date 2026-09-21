@@ -4,20 +4,25 @@ import re
 import tempfile
 import unittest
 from pathlib import Path
+from xml.etree import ElementTree
 
 from scripts.knowledge_base import (
     AWS_GROUPS,
     EXCERPT_LENGTH,
+    FEED_LIMIT,
     HOME_DENSE_LIMIT,
     HOME_RICH_LIMIT,
     HOME_TOPIC_EXCLUDE,
     KIND_SLUGS,
     RICH_PER_AREA,
+    SITE_URL,
     TOPIC_META,
     KnowledgeBaseError,
+    _archive_years,
     _blog_documents,
     _dense_feed_html,
     _excerpt,
+    _feed_xml,
     _home_areas,
     _lead_selection,
     _reading_label,
@@ -255,10 +260,9 @@ class KnowledgeBaseTests(unittest.TestCase):
             self.assertIn("    - Storage & migration\n", summary)
             # The shared article-title suffix is trimmed for the sidebar.
             self.assertIn("        - [Amazon S3](AWS/s3/index.md)\n", summary)
-            # Chinese pages reach readers through each article's language link.
-            # The Chinese home page is a top-level tab, not a Browse child.
-            self.assertIn("\n- [中文](index_zh.md)\n", summary)
-            self.assertNotIn("index_zh.md", summary.replace("- [中文](index_zh.md)", ""))
+            # Chinese pages are reached through the menu bar's language
+            # switch, so the nav lists one language only.
+            self.assertNotIn("index_zh.md", summary)
 
     def test_home_topics_all_have_a_name_and_blurb(self) -> None:
         """A tile with no curated name falls back to an article title."""
@@ -338,6 +342,54 @@ class KnowledgeBaseTests(unittest.TestCase):
                     if present:
                         body = page.read_text(encoding="utf-8")
                         self.assertIn('aria-current="page"', body)
+
+    def test_language_line_is_stripped_wherever_it_sits(self) -> None:
+        """Articles announce their counterpart above or below the title."""
+
+        root = Path(__file__).resolve().parents[2]
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "build"
+            stage(root, output)
+            openings: list[str] = []
+            for page in list(output.rglob("index*.md")) + list(output.rglob("summary*.md")):
+                openings.extend(
+                    block.strip()
+                    for block in page.read_text(encoding="utf-8").split("\n\n")[:8]
+                )
+            for block in openings:
+                self.assertIsNone(
+                    re.match(r"^(\[?简体中文|\[?English\b|Chinese version|中文版本)", block),
+                    f"a language line survived staging: {block[:60]}",
+                )
+
+    def test_feeds_carry_the_newest_notes(self) -> None:
+        root = Path(__file__).resolve().parents[2]
+        documents = discover_documents(root)
+        for language, expected in (("en", "feed.xml"), ("zh", "feed_zh.xml")):
+            notes = _blog_documents(documents, language)
+            feed = _feed_xml(documents, language, {})
+            root_element = ElementTree.fromstring(feed)
+            items = root_element.findall(".//item")
+            self.assertEqual(len(items), min(FEED_LIMIT, len(notes)))
+            self.assertEqual(items[0].findtext("title"), notes[0].title)
+            self.assertIn(expected, feed)
+            # Links are absolute, as a feed reader needs them.
+            for item in items:
+                self.assertTrue((item.findtext("link") or "").startswith(SITE_URL))
+
+    def test_archive_splits_by_year(self) -> None:
+        root = Path(__file__).resolve().parents[2]
+        documents = discover_documents(root)
+        years = [label for label, _ in _archive_years(documents, "en")]
+        self.assertEqual(years, sorted(years, reverse=True))
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "build"
+            stage(root, output)
+            # The newest year is the archive's front page; the others get one
+            # page each.
+            self.assertTrue((output / "archive/index.md").is_file())
+            for year in years[1:]:
+                self.assertTrue((output / "archive" / year / "index.md").is_file())
 
     def test_excerpt_skips_a_bare_lead_in_line(self) -> None:
         """Many articles open with the same colon-terminated lead-in."""

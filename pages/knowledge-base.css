@@ -251,50 +251,6 @@ kbd,
   color: var(--kb-accent);
 }
 
-.kb-header__search {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  height: 34px;
-  padding: 0 0.6rem;
-  border: 1px solid var(--kb-border-strong);
-  border-radius: var(--kb-radius-sm);
-  background: var(--kb-surface);
-  color: var(--kb-muted);
-  cursor: pointer;
-  font-size: 0.68rem;
-  transition: border-color var(--kb-transition), color var(--kb-transition);
-}
-
-.kb-header__search:hover {
-  border-color: var(--kb-accent);
-  color: var(--kb-accent);
-}
-
-.kb-header__key {
-  padding: 1px 5px;
-  border: 1px solid var(--kb-border);
-  border-radius: 4px;
-  color: var(--kb-muted-soft);
-  font-family: var(--md-code-font);
-  font-size: 0.58rem;
-}
-
-.kb-header .kb-header__search-toggle {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--kb-radius-sm);
-  color: var(--kb-muted);
-  cursor: pointer;
-}
-
-.kb-header .kb-header__search-toggle:hover {
-  color: var(--kb-accent);
-}
-
 /* Language switch ---------------------------------------------------------- */
 
 /* The lit half is the page you are on, so it is a span, not a link; the other
@@ -350,8 +306,20 @@ a.kb-switch__option:hover {
   background: var(--kb-surface);
 }
 
-.kb-header .md-search__input {
+.kb-header .md-search__input,
+.kb-header .md-search__suggest {
+  height: 100%;
+  padding-top: 0;
+  padding-bottom: 0;
   font-size: 0.68rem;
+  line-height: 32px;
+}
+
+/* Material lays the suggestion under the input; both must use the same box,
+   or the typed text and the suggestion sit a few pixels apart and read as a
+   ghost image. */
+.kb-header .md-search__suggest {
+  align-items: center;
 }
 
 .kb-header .md-search__icon svg {
@@ -451,6 +419,16 @@ a.kb-switch__option:hover {
   border-radius: 5px;
   padding: 0.1em 0.38em;
   font-size: 0.86em;
+  /* Material breaks code anywhere, which splits `@classmethod` in two down a
+     narrow table column. Break between tokens, not inside one. */
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+/* A table column sized by its content keeps short code spans on one line. */
+.md-typeset table:not([class]) td code,
+.md-typeset table:not([class]) th code {
+  white-space: nowrap;
 }
 
 .md-typeset blockquote {
@@ -522,6 +500,13 @@ a.kb-switch__option:hover {
    full width of a desktop window. This measure keeps a lead note's sentence
    readable in one sweep of the eye. */
 .kb-home,
+.kb-hub__lede {
+  max-width: 60ch;
+  color: var(--md-default-fg-color--light);
+  font-size: var(--kb-text-lg);
+  line-height: 1.6;
+}
+
 .kb-hub {
   max-width: 43rem;
   margin-inline: auto;
@@ -721,6 +706,94 @@ a.kb-switch__option:hover {
   transform: translateX(3px);
 }
 
+/* Chips -------------------------------------------------------------------- */
+
+/* The kind label, on an article's "Keep reading" cards. */
+.md-typeset .kb-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.16rem 0.55rem;
+  border-radius: var(--kb-radius-pill);
+  background: var(--kb-accent-soft);
+  color: var(--kb-accent-strong);
+  font-family: var(--md-code-font);
+  font-size: var(--kb-text-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Topic cards -------------------------------------------------------------- */
+
+.md-typeset .kb-topic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.md-typeset .kb-topic-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--kb-border);
+  border-radius: var(--kb-radius);
+  background: var(--kb-surface);
+  color: var(--md-default-fg-color);
+  text-decoration: none;
+  transition: border-color var(--kb-transition), box-shadow var(--kb-transition);
+}
+
+.md-typeset .kb-topic-card:hover {
+  border-color: color-mix(in srgb, var(--kb-accent) 45%, var(--kb-border));
+  box-shadow: var(--kb-shadow-sm);
+}
+
+.kb-topic-card__monogram {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--kb-radius-sm);
+  background: var(--kb-accent-soft);
+  color: var(--kb-accent-strong);
+  font-family: var(--md-code-font);
+  font-size: var(--kb-text-xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.kb-topic-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.kb-topic-card__name {
+  font-size: var(--kb-text-sm);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.md-typeset .kb-topic-card:hover .kb-topic-card__name {
+  color: var(--kb-accent);
+}
+
+.kb-topic-card__blurb {
+  color: var(--kb-muted);
+  font-size: var(--kb-text-xs);
+  line-height: 1.5;
+}
+
+.kb-topic-card__count {
+  color: var(--kb-muted-soft);
+  font-family: var(--md-code-font);
+  font-size: var(--kb-text-xs);
+}
+
 /* Hubs --------------------------------------------------------------------- */
 
 .kb-empty {
@@ -758,35 +831,6 @@ a.kb-switch__option:hover {
 .kb-meta__reading {
   font-family: var(--md-code-font);
   font-size: var(--kb-text-xs);
-}
-
-.kb-meta__language,
-.kb-meta__source {
-  white-space: nowrap;
-}
-
-.md-typeset .kb-meta__language,
-.md-typeset .kb-meta__source {
-  display: inline-flex;
-  align-items: center;
-  min-height: 30px;
-  padding: 0 0.6rem;
-  border: 1px solid var(--kb-border);
-  border-radius: var(--kb-radius-pill);
-  color: var(--kb-muted);
-  font-size: var(--kb-text-xs);
-  text-decoration: none;
-  transition: border-color var(--kb-transition), color var(--kb-transition);
-}
-
-.md-typeset .kb-meta__language:hover,
-.md-typeset .kb-meta__source:hover {
-  border-color: var(--kb-accent);
-  color: var(--kb-accent);
-}
-
-.kb-meta__language {
-  margin-left: auto;
 }
 
 /* Keep reading ------------------------------------------------------------- */
