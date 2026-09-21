@@ -14,6 +14,9 @@
   {% if page_language == 'zh' %}
     <script>document.documentElement.lang = 'zh-CN';</script>
   {% endif %}
+  <link rel="alternate" type="application/rss+xml"
+        title="{{ 'Kelvin 的工程笔记' if page_language == 'zh' else 'Kelvin’s Engineering Notes' }}"
+        href="{{ ('feed_zh.xml' if page_language == 'zh' else 'feed.xml') | url }}">
   {% if page and page.meta and page.meta.kb_pair %}
     <link rel="alternate"
           hreflang="{{ 'en' if page_language == 'zh' else 'zh-Hans' }}"
@@ -51,15 +54,48 @@
         });
       });
 
-      // Search results are language-scoped: the index holds both the English and
-      // the Chinese page of every pair, so an unfiltered query returns each
-      // article twice. Chinese pages live at URLs whose last segment ends in
-      // `_zh` (index_zh, summary_zh), which is enough to tell the two apart.
       const kbLanguageOf = (pathname) => {
         const segments = pathname.split('/').filter(Boolean);
         const last = segments[segments.length - 1] || '';
         return last.endsWith('_zh') ? 'zh' : 'en';
       };
+
+      // Material builds one interface language per site, so the Chinese pages
+      // translate the search chrome themselves.
+      const KB_SEARCH_ZH = {
+        placeholder: '搜索',
+        reset: '清空',
+        share: '分享搜索结果',
+        close: '关闭搜索',
+        ready: '输入以开始搜索',
+        toc: '本页目录',
+      };
+
+      onPage(() => {
+        if (kbLanguageOf(window.location.pathname) !== 'zh') return;
+        const input = document.querySelector('.md-search__input');
+        if (input) {
+          input.placeholder = KB_SEARCH_ZH.placeholder;
+          input.setAttribute('aria-label', KB_SEARCH_ZH.placeholder);
+        }
+        const label = (selector, text) => {
+          const node = document.querySelector(selector);
+          if (node) node.setAttribute('title', text);
+        };
+        label('.md-search__icon[for="__search"]', KB_SEARCH_ZH.close);
+        const toc = document.querySelector('.md-sidebar--secondary .md-nav__title');
+        if (toc) toc.textContent = KB_SEARCH_ZH.toc;
+        label('[data-md-component="search-share"]', KB_SEARCH_ZH.share);
+        const meta = document.querySelector('[data-md-component="search-result"] .md-search-result__meta');
+        if (meta && !document.querySelector('.md-search__input').value) {
+          meta.textContent = KB_SEARCH_ZH.ready;
+        }
+      });
+
+      // Search results are language-scoped: the index holds both the English and
+      // the Chinese page of every pair, so an unfiltered query returns each
+      // article twice. Chinese pages live at URLs whose last segment ends in
+      // `_zh` (index_zh, summary_zh), which is enough to tell the two apart.
 
       const kbCountLabel = (language, count) =>
         language === 'zh'
@@ -83,6 +119,13 @@
             if (match) kept += 1;
           }
           if (meta) meta.textContent = kbCountLabel(language, kept);
+          if (language === 'zh') {
+            // Material renders this per result in the build language.
+            for (const more of list.querySelectorAll('.md-search-result__more div')) {
+              const count = (more.textContent.match(/^(\d+) more on this page$/) || [])[1];
+              if (count) more.textContent = `本页还有 ${count} 处匹配`;
+            }
+          }
         };
 
         // Instant navigation keeps the search DOM across page swaps, so drop the

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import datetime
 import html
 import posixpath
 import re
@@ -335,23 +336,31 @@ def _generated_front_matter(
     return "\n".join(lines)
 
 
+# Articles announce their counterpart in a few shapes: a "Chinese version:"
+# sentence, an "English | 简体中文" pair, or a bare link. All of them are for
+# people reading the files on GitHub.
+LANGUAGE_LINE_WINDOW = 1200
 LANGUAGE_LINE_RE = re.compile(
-    r"(?m)^(?:English|Chinese version|中文版本|English version)[^\n]*\n(?:\s*\n)?",
+    r"(?m)^(?:"
+    r"(?:English|Chinese|中文)[^\n]*version[^\n]*"
+    r"|English[^\n]*(?:简体中文|README_ZH|summary_zh)[^\n]*"
+    r"|\[?(?:简体中文|English)\]?[^\n]*"
+    r")\n(?:\s*\n)?"
 )
 
 
 def _strip_language_line(text: str) -> str:
     """Drop the reciprocal language link an article carries for GitHub readers.
 
-    On the site the menu bar's switch does that job, and the line would sit
-    between the title and the first paragraph saying it twice.
+    It sits either just under the title or just above it, depending on the
+    article. On the site the menu bar's switch does that job, and the line
+    would sit in the middle of the opening saying it twice. Only the document's
+    opening is searched, so a sentence further down that happens to start with
+    "English" survives.
     """
 
-    match = H1_RE.search(text)
-    if not match:
-        return text
-    head, tail = text[: match.end()], text[match.end() :]
-    return head + LANGUAGE_LINE_RE.sub("", tail, count=1)
+    head, tail = text[:LANGUAGE_LINE_WINDOW], text[LANGUAGE_LINE_WINDOW:]
+    return LANGUAGE_LINE_RE.sub("", head, count=1) + tail
 
 
 def _with_generated_metadata(text: str, document: Document) -> str:
@@ -362,6 +371,11 @@ def _with_generated_metadata(text: str, document: Document) -> str:
         f"kb_pair: {pair}\n"
         f"kb_source: {source}"
     )
+    if document.language != "en":
+        # The nav is generated from the English pages — listing both languages
+        # doubles every entry — so a Chinese page would otherwise read beside
+        # an English rail. The menu bar navigates both languages.
+        metadata += "\nhide:\n  - navigation"
     if text.startswith("---\n"):
         closing = text.find("\n---\n", 4)
         if closing != -1:
@@ -696,7 +710,7 @@ def _with_generated_context(text: str, document: Document, reading: str = '') ->
         reading_html = f'  <span class="kb-meta__reading">{_escape(reading)}</span>\n'
     context = (
         "\n\n"
-        f'<div class="kb-meta" role="group" aria-label="{metadata_aria}">\n'
+        f'<div class="kb-meta" role="group" aria-label="{metadata_aria}" data-search-exclude>\n'
         f'  <span class="kb-meta__kind">{_escape(kind_label)}</span>\n'
         f"{dates}"
         f"{reading_html}"
@@ -1103,7 +1117,7 @@ def _related_html(
         )
     return (
         "\n\n"
-        f'<section class="kb-related" aria-label="{aria}">\n'
+        f'<section class="kb-related" aria-label="{aria}" data-search-exclude>\n'
         f'<h2 class="kb-related__title">{heading}</h2>\n'
         f'<div class="kb-related__grid">{"".join(cards)}</div>\n'
         "</section>\n"
@@ -1434,10 +1448,9 @@ def _summary_markdown(documents: list[Document]) -> str:
             "    - [Topics](topics/index.md)",
             "    - [Repository overview](repository/index.md)",
             "    - [Archive](archive/index.md)",
-            # A top-level entry, so the Chinese home page gets its own tab
-            # rather than sitting under Browse — which made every Chinese
-            # page render the breadcrumb "Home > Browse".
-            "- [中文](index_zh.md)",
+            # The Chinese pages are reached through the menu bar's language
+            # switch, which every page carries; listing them here as well
+            # doubled the nav and gave Chinese pages an English breadcrumb.
         ]
     )
     return "\n".join(lines) + "\n"
@@ -1653,18 +1666,77 @@ def _topics_page(documents: list[Document], language: str) -> str:
     )
 
 
-def _archive_page(documents: list[Document], language: str) -> str:
-    """Every note, one line each, in the same order the home page uses."""
+def _archive_years(
+    documents: list[Document], language: str
+) -> list[tuple[str, list[Document]]]:
+    """Notes grouped by publication year, newest year first."""
 
-    page = "archive/index.md" if language == "en" else "archive/index_zh.md"
+    grouped: dict[str, list[Document]] = {}
+    for document in _blog_documents(documents, language):
+        year = document.published[:4] if document.published else "undated"
+        grouped.setdefault(year, []).append(document)
+    years = sorted((year for year in grouped if year != "undated"), reverse=True)
+    if "undated" in grouped:
+        years.append("undated")
+    return [(year, grouped[year]) for year in years]
+
+
+def _archive_page_path(year: str | None, language: str) -> str:
+    name = "index.md" if language == "en" else "index_zh.md"
+    if year is None:
+        return f"archive/{name}"
+    return f"archive/{year}/{name}"
+
+
+def _year_nav_html(
+    years: list[str], language: str, source_page: str, active: str
+) -> str:
+    """One link per year, so the archive never grows into a single long page."""
+
+    if len(years) < 2:
+        return ""
+    newest = years[0]
+    rendered = []
+    for year in years:
+        label = year if year != "undated" else ("Undated" if language == "en" else "未标注日期")
+        target = _archive_page_path(None if year == newest else year, language)
+        is_active = year == active
+        classes = "kb-tab kb-tab--active" if is_active else "kb-tab"
+        current = ' aria-current="page"' if is_active else ""
+        rendered.append(
+            f'<a class="{classes}" '
+            f'href="{_escape(_relative_site_url(source_page, target))}"{current}>'
+            f"{_escape(label)}</a>"
+        )
+    aria = "Archive by year" if language == "en" else "按年份浏览归档"
+    return f'<nav class="kb-tabs" aria-label="{aria}">{"".join(rendered)}</nav>'
+
+
+def _archive_page(
+    documents: list[Document], language: str, year: str | None = None
+) -> str:
+    """Every note of one year, one line each, newest first."""
+
     is_english = language == "en"
+    years = _archive_years(documents, language)
+    labels = [label for label, _ in years]
+    active = year or (labels[0] if labels else "")
+    notes = next((entries for label, entries in years if label == active), [])
+    page = _archive_page_path(None if year is None else year, language)
     title = "Archive" if is_english else "归档"
-    notes = _blog_documents(documents, language)
+    if len(labels) > 1:
+        title = f"{title} · {active}" if active else title
     description = (
-        f"All {len(notes)} notes, newest first."
+        f"{len(notes)} notes published in {active}, newest first."
         if is_english
-        else f"全部 {len(notes)} 篇笔记，按时间倒序。"
+        else f"{active} 年发布的 {len(notes)} 篇笔记，按时间倒序。"
     )
+    if len(labels) <= 1:
+        description = (
+            f"All {len(notes)} notes, newest first."
+            if is_english
+            else f"全部 {len(notes)} 篇笔记，按时间倒序。"
+        )
     feed = _dense_feed_html(notes, language, page)
     empty = (
         '<p class="kb-empty">No published notes yet.</p>'
@@ -1685,10 +1757,84 @@ def _archive_page(documents: list[Document], language: str) -> str:
             "",
             '<div class="kb-hub kb-archive">',
             f'<p class="kb-hub__lede">{_escape(description)}</p>',
+            _year_nav_html(labels, language, page, active),
             feed if feed else empty,
             "</div>",
             "",
         ]
+    )
+
+
+# --------------------------------------------------------------------------
+# Feeds
+#
+# A timeline blog is something a reader may want to follow rather than
+# revisit, so each language publishes an RSS feed of its newest notes.
+# --------------------------------------------------------------------------
+
+SITE_URL = "https://blog.kelvin.ink/"
+FEED_LIMIT = 20
+RFC822_DAYS = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
+
+
+def _page_url(page: str) -> str:
+    """`AWS/acm/index.md` -> `https://blog.kelvin.ink/AWS/acm/`."""
+
+    path = page[: -len("index.md")] if page.endswith("index.md") else page
+    if page.endswith("index_zh.md"):
+        path = page[: -len(".md")] + "/"
+    return SITE_URL + quote(path.lstrip("/"), safe="/")
+
+
+def _rfc822(date: str) -> str:
+    if not date:
+        return ""
+    stamp = datetime.date.fromisoformat(date)
+    day = RFC822_DAYS[stamp.weekday()]
+    month = MONTH_NAMES_EN[stamp.month - 1][:3]
+    return f"{day}, {stamp.day:02d} {month} {stamp.year} 00:00:00 +0000"
+
+
+def _feed_xml(documents: list[Document], language: str, excerpts: dict[str, str]) -> str:
+    is_english = language == "en"
+    notes = _blog_documents(documents, language)[:FEED_LIMIT]
+    title = "Kelvin’s Engineering Notes" if is_english else "Kelvin 的工程笔记"
+    description = (
+        "Runbooks, references and distilled study notes, newest first."
+        if is_english
+        else "运维手册、参考与提炼后的学习笔记，按时间倒序。"
+    )
+    home = _page_url("index.md" if is_english else "index_zh.md")
+    feed_path = "feed.xml" if is_english else "feed_zh.xml"
+    items = []
+    for document in notes:
+        published = _rfc822(document.published)
+        date = f"    <pubDate>{published}</pubDate>\n" if published else ""
+        excerpt = excerpts.get(document.source, "")
+        summary = f"    <description>{_escape(excerpt)}</description>\n" if excerpt else ""
+        url = _page_url(document.page)
+        items.append(
+            "  <item>\n"
+            f"    <title>{_escape(document.title)}</title>\n"
+            f"    <link>{_escape(url)}</link>\n"
+            f"    <guid isPermaLink=\"true\">{_escape(url)}</guid>\n"
+            f"{date}"
+            f"{summary}"
+            f"    <category>{_escape(_kind_label(document.kind, language))}</category>\n"
+            "  </item>"
+        )
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n'
+        "<channel>\n"
+        f"  <title>{_escape(title)}</title>\n"
+        f"  <link>{_escape(home)}</link>\n"
+        f"  <description>{_escape(description)}</description>\n"
+        f"  <language>{'en' if is_english else 'zh-CN'}</language>\n"
+        f'  <atom:link href="{_escape(SITE_URL + feed_path)}" rel="self" '
+        'type="application/rss+xml"/>\n'
+        + "\n".join(items)
+        + "\n</channel>\n</rss>\n"
     )
 
 
@@ -1721,10 +1867,21 @@ def stage(root: Path, output: Path, paths: list[str] | None = None) -> list[Docu
     generated_pages = {
         "topics/index.md": _topics_page(documents, "en"),
         "topics/index_zh.md": _topics_page(documents, "zh"),
-        "archive/index.md": _archive_page(documents, "en"),
-        "archive/index_zh.md": _archive_page(documents, "zh"),
         "SUMMARY.md": _summary_markdown(documents),
+        "feed.xml": _feed_xml(documents, "en", excerpts),
+        "feed_zh.xml": _feed_xml(documents, "zh", excerpts),
     }
+    for language in ("en", "zh"):
+        years = [label for label, _ in _archive_years(documents, language)]
+        # The newest year is the archive's front page; older years get one
+        # page each, so the list never grows without bound.
+        generated_pages[_archive_page_path(None, language)] = _archive_page(
+            documents, language
+        )
+        for year in years[1:]:
+            generated_pages[_archive_page_path(year, language)] = _archive_page(
+                documents, language, year
+            )
     for language in ("en", "zh"):
         home = _home_page(language)
         generated_pages[home] = _timeline_page(
