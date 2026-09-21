@@ -15,6 +15,7 @@ English version: [README.md](README.md)
 | [Claude Managed Agents](managed-agents/README_ZH.md) | 面向长时间异步任务的托管 agent harness，作为 Messages API 之外的另一种选择。 |
 | [AI 原生 SDLC 实践手册](ai-native-sdlc-playbook/README_ZH.md) | 围绕版本化产物、反馈回路和明确的治理关卡重新设计交付流程。 |
 | [Warp 如何在 Claude 上构建自我改进的 agent](self-improving-agents/README_ZH.md) | inner skill 负责干活，定时运行的 outer skill 把人类反馈变成针对它的 pull request。 |
+| [GitHub Certified: Agentic AI Developer 认证学习笔记](github-agentic-ai-developer/README_ZH.md) | 考试知识域、课程结构，以及"设计 agent 架构与 SDLC 集成"模块的深度解析。 |
 | [Claude Code 云端会话](cloud-sessions/README_ZH.md) | 运行在 Anthropic 托管虚拟机中的会话：环境、GitHub 访问、终端交接与 PR 自动修复。 |
 | [构建 AI 原生的收入组织](ai-native-revenue-org/README_ZH.md) | Anthropic 面向销售组织推广 Claude 的指南：成熟度阶梯、三阶段推广、ROI 度量，以及会让推广卡住的陷阱。 |
 | [Claude Projects 改版](projects/README_ZH.md) | Project 变成一场对话：coordinator 把工作拆成并行的云端会话 thread，共享 memory 与 library。 |

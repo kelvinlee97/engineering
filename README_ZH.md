@@ -30,6 +30,7 @@
 - [Claude Managed Agents](Claude/managed-agents/README_ZH.md) — 面向长时间运行、异步任务的托管 agent 环境，是 Messages API 之外的另一种选择。
 - [AI 原生 SDLC 实践手册](Claude/ai-native-sdlc-playbook/README_ZH.md) — 以版本化工件、反馈闭环和明确治理关口重新设计交付流程。
 - [Warp 的自我改进 agent](Claude/self-improving-agents/README_ZH.md) — 把人类对 agent 输出的反馈，变成针对 agent 自身 skill 文件的、经过评审的 pull request。
+- [GitHub Certified: Agentic AI Developer](Claude/github-agentic-ai-developer/README_ZH.md) — 考试知识域、课程结构，以及 agent 架构与 SDLC 集成的深度解析。
 - [Claude Code 云端会话](Claude/cloud-sessions/README_ZH.md) — 在 Anthropic 托管虚拟机中运行会话，在终端与云端之间交接工作，并自动修复 pull request。
 - [构建 AI 原生的收入组织](Claude/ai-native-revenue-org/README_ZH.md) — 在销售组织推广 Claude：成熟度阶梯、三阶段计划、ROI 度量与常见陷阱。
 - [Claude Projects 改版](Claude/projects/README_ZH.md) — 一场对话协调多个并行的云端会话 thread，共享 memory 与 library。
