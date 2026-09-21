@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import tempfile
 import unittest
 from pathlib import Path
@@ -8,15 +9,15 @@ from mkdocs.config import load_config
 
 from scripts.knowledge_base import (
     AWS_GROUPS,
+    HOME_FEED_LIMIT,
     HOME_TOPIC_EXCLUDE,
-    LATEST_PER_AREA,
     NAV_SECTIONS,
-    SYMPTOM_ENTRIES,
     TOPIC_META,
     KnowledgeBaseError,
+    _blog_documents,
     _excerpt,
+    _feed_html,
     _home_areas,
-    _latest_documents,
     _reading_label,
     _reading_minutes,
     _summary_markdown,
@@ -160,21 +161,21 @@ class KnowledgeBaseTests(unittest.TestCase):
             self.assertIn('class="kb-meta"', repository)
             self.assertIn("kb_language: en", repository)
             dashboard = (output / "index.md").read_text(encoding="utf-8")
-            self.assertIn(">Start from a symptom, or pick a topic.</h1>", dashboard)
+            self.assertIn(">Notes on how things work, newest first.</h1>", dashboard)
             # The deploy smoke test greps the live page for the site owner's
             # name, and a reader should see whose notes these are.
             self.assertIn("Kelvin", dashboard)
             self.assertIn('class="kb-hero"', dashboard)
-            self.assertIn('class="kb-stats"', dashboard)
-            self.assertIn('class="kb-topic-card__blurb"', dashboard)
-            self.assertIn('class="kb-symptom"', dashboard)
-            self.assertIn('class="kb-coverage__fill"', dashboard)
+            self.assertIn('class="kb-feed"', dashboard)
+            self.assertIn('class="kb-post__title"', dashboard)
+            # The home page ranks by publication date alone: no topic tiles,
+            # no curated shortcuts, no per-topic caps competing with the feed.
+            self.assertNotIn('class="kb-topic-card"', dashboard)
             chinese_dashboard = (output / "index_zh.md").read_text(encoding="utf-8")
             self.assertIn(
-                ">从一个故障现象开始，或者直接挑一个主题。</h1>", chinese_dashboard
+                ">关于「它到底怎么工作」的笔记，最新的在最前面。</h1>", chinese_dashboard
             )
-            self.assertIn('class="kb-stats"', chinese_dashboard)
-            self.assertIn('class="kb-symptom"', chinese_dashboard)
+            self.assertIn('class="kb-feed"', chinese_dashboard)
             self.assertIn('href="apple/container/"', dashboard)
             self.assertIn('href="archive/"', dashboard)
             self.assertIn('href="index_zh/"', dashboard)
@@ -186,6 +187,8 @@ class KnowledgeBaseTests(unittest.TestCase):
             topics = (output / "topics/index.md").read_text(encoding="utf-8")
             self.assertIn('href="../apple/container/"', topics)
             self.assertIn('class="kb-topic-card__count">1 note</span>', topics)
+            archive = (output / "archive/index.md").read_text(encoding="utf-8")
+            self.assertIn('class="kb-feed__month"', archive)
             self.assertIn('class="kb-topic-card__monogram"', topics)
             self.assertTrue((output / "topics/index_zh.md").exists())
             self.assertTrue((output / "archive/index.md").exists())
@@ -268,24 +271,31 @@ class KnowledgeBaseTests(unittest.TestCase):
         for area in HOME_TOPIC_EXCLUDE:
             self.assertNotIn(area, _home_areas(documents, "en"))
 
-    def test_symptom_entries_resolve_in_both_languages(self) -> None:
-        root = Path(__file__).resolve().parents[2]
-        pages = {document.page for document in discover_documents(root)}
-        for entry in SYMPTOM_ENTRIES:
-            page = entry[0]
-            self.assertIn(page, pages)
-            self.assertIn(page.replace("index.md", "index_zh.md"), pages)
+    def test_feed_is_reverse_chronological_and_grouped_by_month(self) -> None:
+        """Publication order is the site's only ranking."""
 
-    def test_latest_notes_are_capped_per_topic(self) -> None:
         root = Path(__file__).resolve().parents[2]
         documents = discover_documents(root)
-        latest = _latest_documents(documents, "en")
+        notes = _blog_documents(documents, "en")
 
-        self.assertTrue(latest)
-        counts: dict[str, int] = {}
-        for document in latest:
-            counts[document.area] = counts.get(document.area, 0) + 1
-        self.assertLessEqual(max(counts.values()), LATEST_PER_AREA)
+        dates = [document.updated for document in notes if document.updated]
+        self.assertEqual(dates, sorted(dates, reverse=True))
+
+        feed = _feed_html(documents, "en", "index.md", limit=HOME_FEED_LIMIT)
+        self.assertEqual(feed.count('class="kb-post"'), min(HOME_FEED_LIMIT, len(notes)))
+        # Months appear once each, newest first.
+        months = re.findall(r'id="feed-([0-9]{4}-[0-9]{2})"', feed)
+        self.assertEqual(months, sorted(set(months), reverse=True))
+
+    def test_archive_feed_holds_every_note(self) -> None:
+        root = Path(__file__).resolve().parents[2]
+        documents = discover_documents(root)
+        for language in ("en", "zh"):
+            feed = _feed_html(documents, language, "archive/index.md")
+            self.assertEqual(
+                feed.count('class="kb-post"'),
+                len(_blog_documents(documents, language)),
+            )
 
     def test_excerpt_skips_a_bare_lead_in_line(self) -> None:
         """Many articles open with the same colon-terminated lead-in."""

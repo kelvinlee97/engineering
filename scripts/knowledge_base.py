@@ -180,8 +180,17 @@ def _reading_label(text: str, language: str) -> str:
     return f"约 {minutes} 分钟"
 
 
+# Articles here open with a mental model in a blockquote, which is the best
+# one-line description of the note the repository already contains.
+MENTAL_MODEL_HEADINGS = ("mental model", "心智模型")
+
+
 def _excerpt(text: str, language: str) -> str:
-    """First real paragraph of a document, trimmed for use on a card."""
+    """One line describing a note, for the timeline.
+
+    Preferred source is the article's mental-model blockquote; otherwise the
+    first real paragraph.
+    """
 
     body = text
     if body.startswith("---\n"):
@@ -191,9 +200,27 @@ def _excerpt(text: str, language: str) -> str:
     match = H1_RE.search(body)
     if match:
         body = body[match.end() :]
+    # Fenced blocks split on blank lines like prose, so a Mermaid diagram's
+    # edge list can otherwise surface as an excerpt.
+    body = re.sub(r"(?ms)^```.*?^```\s*$", "\n\n", body)
+    in_mental_model = False
     for block in re.split(r"\n\s*\n", body):
         block = block.strip()
-        if not block or block.startswith((">", "#", "|", "-", "*", "<", "```", "!")):
+        if not block:
+            continue
+        if block.startswith("#"):
+            heading = block.lstrip("#").strip().lower()
+            in_mental_model = any(
+                marker in heading for marker in MENTAL_MODEL_HEADINGS
+            )
+            continue
+        if block.startswith(">"):
+            if not in_mental_model:
+                continue
+            block = "\n".join(
+                line.lstrip(">").strip() for line in block.splitlines()
+            )
+        elif block.startswith(("|", "-", "*", "<", "```", "!")):
             continue
         candidate = " ".join(_strip_markdown(block).split())
         # Skip the reciprocal language-switch line that opens most documents, plus
@@ -609,24 +636,113 @@ def _with_generated_context(text: str, document: Document, reading: str = '') ->
     return text[: match.end()] + context + text[match.end() :]
 
 
-def _entry_html(document: Document, source_page: str) -> str:
-    date = ""
+MONTH_NAMES_EN = (
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+)
+
+
+def _month_label(month: str, language: str) -> str:
+    """`2026-09` rendered as a group heading: `September 2026` / `2026 年 9 月`."""
+
+    if not month:
+        return "Undated" if language == "en" else "未标注日期"
+    year, _, number = month.partition("-")
+    index = int(number)
+    if language == "en":
+        return f"{MONTH_NAMES_EN[index - 1]} {year}"
+    return f"{year} 年 {index} 月"
+
+
+def _post_html(
+    document: Document,
+    source_page: str,
+    excerpt: str = "",
+    topic: str = "",
+) -> str:
+    """One row of the timeline: when it was published, what it is, what it covers."""
+
     if document.updated:
+        day = document.updated[5:].replace("-", "/")
         date = (
-            f' <time datetime="{_escape(document.updated)}">'
-            f"{_escape(document.updated)}</time>"
+            f'<time class="kb-post__date" datetime="{_escape(document.updated)}">'
+            f"{_escape(day)}</time>"
+        )
+    else:
+        date = '<span class="kb-post__date" aria-hidden="true">--</span>'
+    excerpt_html = (
+        f'<span class="kb-post__excerpt">{_escape(excerpt)}</span>' if excerpt else ""
+    )
+    topic_html = (
+        f'<span class="kb-post__topic">{_escape(topic)}</span>' if topic else ""
     )
     return (
-        '<li class="kb-entry">'
-        f'<a class="kb-entry__link" '
+        '<li class="kb-post">'
+        f'<a class="kb-post__link" '
         f'href="{_escape(_relative_site_url(source_page, document.page))}">'
-        f'<span class="kb-entry__title">{_escape(document.title)}</span>'
-        f'<span class="kb-entry__meta">'
-        f'<span class="kb-chip">{_escape(_kind_label(document.kind, document.language))}</span>'
-        f"{date}</span>"
+        f"{date}"
+        '<span class="kb-post__body">'
+        f'<span class="kb-post__title">{_escape(document.title)}</span>'
+        f"{excerpt_html}"
+        '<span class="kb-post__meta">'
+        f'<span class="kb-chip">'
+        f"{_escape(_kind_label(document.kind, document.language))}</span>"
+        f"{topic_html}"
+        "</span>"
+        "</span>"
         "</a>"
         "</li>"
     )
+
+
+def _feed_html(
+    documents: list[Document],
+    language: str,
+    source_page: str,
+    excerpts: dict[str, str] | None = None,
+    limit: int | None = None,
+) -> str:
+    """The whole site in one reading order: newest first, grouped by month.
+
+    Publication order is the only ranking the site applies. Nothing is
+    promoted, pinned or capped per topic, so what a reader sees at the top is
+    simply the note written most recently.
+    """
+
+    excerpts = excerpts or {}
+    notes = _blog_documents(documents, language)
+    if limit is not None:
+        notes = notes[:limit]
+    if not notes:
+        return ""
+    groups: list[tuple[str, list[Document]]] = []
+    for document in notes:
+        month = document.updated[:7] if document.updated else ""
+        if not groups or groups[-1][0] != month:
+            groups.append((month, []))
+        groups[-1][1].append(document)
+    sections = []
+    for month, entries in groups:
+        label = _month_label(month, language)
+        anchor = f"feed-{month or 'undated'}"
+        if language != "en":
+            anchor = f"{anchor}-zh"
+        rows = "".join(
+            _post_html(
+                document,
+                source_page,
+                excerpts.get(document.source, ""),
+                _topic_name(document.area, language, document.area),
+            )
+            for document in entries
+        )
+        sections.append(
+            f'<section class="kb-feed__group" aria-labelledby="{_escape(anchor)}">'
+            f'<h2 class="kb-feed__month" id="{_escape(anchor)}">{_escape(label)}</h2>'
+            f'<ol class="kb-feed__list">{rows}</ol>'
+            "</section>"
+        )
+    return f'<div class="kb-feed">{"".join(sections)}</div>'
 
 
 def _topic_catalog(documents: list[Document], area: str, language: str) -> Document | None:
@@ -638,32 +754,6 @@ def _topic_catalog(documents: list[Document], area: str, language: str) -> Docum
     return next(
         (document for document in area_documents if document.kind == "catalog"),
         area_documents[0] if area_documents else None,
-    )
-
-
-def _topic_card_html(documents: list[Document], area: str, language: str, source_page: str) -> str:
-    catalog = _topic_catalog(documents, area, language)
-    if catalog is None:
-        return ""
-    count = sum(
-        document.language == language
-        and document.area == area
-        and document.kind in BLOG_KINDS
-        for document in documents
-    )
-    if language == "en":
-        count_label = f"{count} note" if count == 1 else f"{count} notes"
-    else:
-        count_label = f"{count} 篇笔记"
-    monogram = _monogram(area)
-    return (
-        f'<a class="kb-topic-card" href="{_escape(_relative_site_url(source_page, catalog.page))}">'
-        f'<span class="kb-topic-card__monogram" aria-hidden="true">{_escape(monogram)}</span>'
-        '<span class="kb-topic-card__body">'
-        f'<span class="kb-topic-card__name">{_escape(catalog.title)}</span>'
-        f'<span class="kb-topic-card__count">{count_label}</span>'
-        "</span>"
-        "</a>"
     )
 
 
@@ -733,29 +823,6 @@ def _related_html(
         f'<div class="kb-related__grid">{"".join(cards)}</div>\n'
         "</section>\n"
     )
-
-
-def _stats_html(documents: list[Document], language: str) -> str:
-    notes = _blog_documents(documents, language)
-    # Count the topics the home page actually offers, so the stat and the
-    # tile grid can never disagree.
-    areas = _home_areas(documents, language)
-    updated = next((document.updated for document in notes if document.updated), "")
-    is_english = language == "en"
-    items = [
-        (str(len(notes)), "notes" if is_english else "篇笔记"),
-        (str(len(areas)), "topics" if is_english else "个主题"),
-    ]
-    if updated:
-        items.append((updated, "last updated" if is_english else "最近更新"))
-    cells = "".join(
-        f'<li class="kb-stat"><span class="kb-stat__value">{_escape(value)}</span>'
-        f'<span class="kb-stat__label">{_escape(label)}</span></li>'
-        for value, label in items
-    )
-    aria = "Knowledge base statistics" if is_english else "知识库统计"
-    return f'<ul class="kb-stats" aria-label="{aria}">{cells}</ul>'
-
 
 
 # --------------------------------------------------------------------------
@@ -1186,34 +1253,8 @@ TOPIC_META: dict[str, tuple[str, str, str, str]] = {
 # nav under Setup but off the home page.
 HOME_TOPIC_EXCLUDE = {"youtube-transcript"}
 
-# (page, English question, Chinese question, English answer, Chinese answer)
-SYMPTOM_ENTRIES: tuple[tuple[str, str, str, str, str], ...] = (
-    (
-        "Kubernetes/runbooks/insufficient-ip-or-eni/index.md",
-        "A Pod is stuck Pending",
-        "Pod 一直是 Pending",
-        "Is it IP capacity, or something else?",
-        "是 IP 容量不够，还是别的原因？",
-    ),
-    (
-        "Git/index.md",
-        "Branches have diverged",
-        "分支分叉了",
-        "Read the state before picking a sync strategy.",
-        "先看清状态，再选同步策略。",
-    ),
-    (
-        "Nodejs/runbooks/common-express-bff-incidents/index.md",
-        "The BFF started timing out",
-        "BFF 开始超时",
-        "Ten common Express incidents and their checks.",
-        "十种常见 Express 故障及排查步骤。",
-    ),
-)
-
-# At most two notes per topic, so a topic with 123 pages cannot fill the list.
-LATEST_PER_AREA = 2
-LATEST_LIMIT = 8
+# The home page shows this many notes before handing over to the archive.
+HOME_FEED_LIMIT = 20
 
 
 def _topic_name(area: str, language: str, fallback: str) -> str:
@@ -1291,162 +1332,59 @@ def _topic_tile_html(
     )
 
 
-def _symptoms_html(documents: list[Document], language: str, source_page: str) -> str:
-    pages = {
-        document.page for document in documents if document.language == language
-    }
-    is_english = language == "en"
-    cards = []
-    for page, question_en, question_zh, answer_en, answer_zh in SYMPTOM_ENTRIES:
-        target = page if is_english else page.replace("index.md", "index_zh.md")
-        if target not in pages:
-            continue
-        question = question_en if is_english else question_zh
-        answer = answer_en if is_english else answer_zh
-        cards.append(
-            f'<a class="kb-symptom" href="{_escape(_relative_site_url(source_page, target))}">'
-            f'<span class="kb-symptom__question">{_escape(question)}</span>'
-            f'<span class="kb-symptom__answer">{_escape(answer)}</span>'
-            "</a>"
-        )
-    return "".join(cards)
-
-
-def _latest_documents(documents: list[Document], language: str) -> list[Document]:
-    """Most recent notes, capped per topic so one large area cannot fill the list."""
-
-    seen: dict[str, int] = {}
-    latest: list[Document] = []
-    for document in _blog_documents(documents, language):
-        if seen.get(document.area, 0) >= LATEST_PER_AREA:
-            continue
-        seen[document.area] = seen.get(document.area, 0) + 1
-        latest.append(document)
-        if len(latest) == LATEST_LIMIT:
-            break
-    return latest
-
-
-def _coverage_html(documents: list[Document], language: str, source_page: str) -> str:
-    """Notes per topic as a bar chart, so relative depth is visible at a glance."""
-
-    rows = [
-        (area, _area_note_count(documents, area, language))
-        for area in _home_areas(documents, language)
-    ]
-    rows = [(area, count) for area, count in rows if count]
-    if not rows:
-        return ""
-    largest = max(count for _, count in rows)
-    cells = []
-    for area, count in rows:
-        catalog = _topic_catalog(documents, area, language)
-        if catalog is None:
-            continue
-        name = _topic_name(area, language, catalog.title)
-        share = max(3, round(count / largest * 100))
-        unit = ("note" if count == 1 else "notes") if language == "en" else "篇笔记"
-        cells.append(
-            f'<a class="kb-coverage__row" '
-            f'href="{_escape(_relative_site_url(source_page, catalog.page))}">'
-            f'<span class="kb-coverage__name">{_escape(name)}</span>'
-            f'<span class="kb-coverage__track" aria-hidden="true">'
-            f'<span class="kb-coverage__fill" style="width:{share}%"></span></span>'
-            f'<span class="kb-coverage__count">{count}'
-            f'<span class="kb-visually-hidden"> {_escape(unit)}</span></span>'
-            "</a>"
-        )
-    return "".join(cells)
-
-
-def _latest_entry_html(document: Document, source_page: str, excerpt: str) -> str:
-    excerpt_html = (
-        f'<span class="kb-entry__excerpt">{_escape(excerpt)}</span>' if excerpt else ""
-    )
-    date = ""
-    if document.updated:
-        date = (
-            f' <time datetime="{_escape(document.updated)}">'
-            f"{_escape(document.updated)}</time>"
-        )
-    return (
-        '<li class="kb-entry">'
-        f'<a class="kb-entry__link kb-entry__link--rich" '
-        f'href="{_escape(_relative_site_url(source_page, document.page))}">'
-        f'<span class="kb-entry__title">{_escape(document.title)}</span>'
-        f'<span class="kb-entry__meta">'
-        f'<span class="kb-chip">{_escape(_kind_label(document.kind, document.language))}</span>'
-        f"{date}</span>"
-        f"{excerpt_html}"
-        "</a>"
-        "</li>"
-    )
-
-
 def _dashboard(
     documents: list[Document],
     language: str,
     excerpts: dict[str, str] | None = None,
 ) -> str:
-    excerpts = excerpts or {}
+    """The home page: a masthead, then the notes in publication order.
+
+    A reader landing here should not have to choose between five entry points
+    before reading anything. The page therefore carries one list — newest
+    note first — and pushes browsing by topic and the full archive into a
+    single quiet line of links.
+    """
+
     page = "index.md" if language == "en" else "index_zh.md"
     archive_page = "archive/index.md" if language == "en" else "archive/index_zh.md"
+    topics_page = "topics/index.md" if language == "en" else "topics/index_zh.md"
     is_english = language == "en"
+    total = len(_blog_documents(documents, language))
 
-    # The eyebrow carries the site's identity: the headline is a call to
-    # action, so without this the home page never names whose notes these are.
+    # The eyebrow carries the site's identity: the headline describes the
+    # reading order, so without this the home page never names whose notes
+    # these are.
     eyebrow = "Kelvin’s Engineering Notes" if is_english else "Kelvin 的工程笔记"
     heading = (
-        "Start from a symptom, or pick a topic."
+        "Notes on how things work, newest first."
         if is_english
-        else "从一个故障现象开始，或者直接挑一个主题。"
+        else "关于「它到底怎么工作」的笔记，最新的在最前面。"
     )
     lede = (
-        "Runbooks, references and study notes from real incidents and real "
-        "setups. Every article ships in English and 简体中文."
+        "Runbooks, references and distilled study notes from real incidents "
+        "and real setups. Start at the top — every note ships in English and "
+        "简体中文."
         if is_english
-        else "来自真实故障和真实配置的运维手册、参考与学习笔记。每篇文章都有中英文两个版本。"
+        else (
+            "来自真实故障与真实配置的运维手册、参考与提炼后的学习笔记。"
+            "从最上面读起即可，每篇都有中英文两个版本。"
+        )
     )
     search_label = "Search the knowledge base" if is_english else "搜索工程知识库"
-    topics_title = "Pick a topic" if is_english else "挑一个主题"
-    symptom_title = "Or start from a symptom" if is_english else "或者从一个故障现象开始"
-    latest_title = "Recently updated" if is_english else "最近更新"
-    depth_title = "Depth per topic" if is_english else "各主题的篇数"
-    archive_label = "Full archive" if is_english else "完整归档"
+    archive_label = (
+        f"All {total} notes" if is_english else f"全部 {total} 篇"
+    )
+    topics_label = "By topic" if is_english else "按主题浏览"
     language_target = "index_zh.md" if is_english else "index.md"
     language_label = "中文" if is_english else "English"
     site_links_label = "Site links" if is_english else "站点链接"
-    latest_note = (
-        f"At most {LATEST_PER_AREA} notes per topic, so one large topic "
-        "cannot fill the list."
-        if is_english
-        else f"每个主题最多取 {LATEST_PER_AREA} 篇，避免某个大主题占满整个列表。"
-    )
-    depth_note = (
-        "AWS is written as a service-by-service reference, so it leads by "
-        "count. The other topics are narrower and go deeper."
-        if is_english
-        else "AWS 是按服务逐个整理的参考，所以篇数最多；其它主题更窄也更深。"
-    )
+    older_label = "Older notes" if is_english else "更早的笔记"
 
-    topic_tiles = "\n".join(
-        _topic_tile_html(documents, area, language, page)
-        for area in _home_areas(documents, language)
-    )
-    symptoms = _symptoms_html(documents, language, page)
-    latest_entries = "\n".join(
-        _latest_entry_html(document, page, excerpts.get(document.source, ""))
-        for document in _latest_documents(documents, language)
-    )
-    coverage = _coverage_html(documents, language, page)
-    empty_latest = (
-        ""
-        if latest_entries
-        else (
-            '<p class="kb-empty">No published notes yet.</p>'
-            if is_english
-            else '<p class="kb-empty">暂时没有已发布笔记。</p>'
-        )
+    feed = _feed_html(documents, language, page, excerpts, limit=HOME_FEED_LIMIT)
+    empty = (
+        '<p class="kb-empty">No published notes yet.</p>'
+        if is_english
+        else '<p class="kb-empty">暂时没有已发布笔记。</p>'
     )
 
     sections = [
@@ -1464,59 +1402,20 @@ def _dashboard(
             f'<kbd class="kb-search-trigger__hint">/</kbd></button>'
         ),
         f'<nav class="kb-home__links" aria-label="{site_links_label}">',
-        f'<a href="{_escape(_relative_site_url(page, archive_page))}">{archive_label}</a>',
+        f'<a href="{_escape(_relative_site_url(page, archive_page))}">{_escape(archive_label)}</a>',
+        f'<a href="{_escape(_relative_site_url(page, topics_page))}">{_escape(topics_label)}</a>',
         f'<a href="{_escape(_relative_site_url(page, language_target))}">{language_label}</a>',
         "</nav>",
-        _stats_html(documents, language),
         "</header>",
+        feed if feed else empty,
     ]
-
-    if topic_tiles:
-        sections.extend(
-            [
-                '<section class="kb-home__section" aria-labelledby="kb-topics-title">',
-                f'<h2 class="kb-home__block-title" id="kb-topics-title">{topics_title}</h2>',
-                f'<div class="kb-topic-grid">{topic_tiles}</div>',
-                "</section>",
-            ]
+    if feed and total > HOME_FEED_LIMIT:
+        sections.append(
+            f'<a class="kb-more" '
+            f'href="{_escape(_relative_site_url(page, archive_page))}">'
+            f"{_escape(older_label)}</a>"
         )
-    if symptoms:
-        sections.extend(
-            [
-                '<section class="kb-home__section" aria-labelledby="kb-symptom-title">',
-                f'<h2 class="kb-home__block-title" id="kb-symptom-title">{symptom_title}</h2>',
-                f'<div class="kb-symptoms">{symptoms}</div>',
-                "</section>",
-            ]
-        )
-
-    sections.extend(
-        [
-            '<div class="kb-home__split">',
-            '<section class="kb-home__section" aria-labelledby="kb-latest-title">',
-            (
-                f'<div class="kb-section-heading">'
-                f'<h2 class="kb-home__block-title" id="kb-latest-title">{latest_title}</h2>'
-                f'<a href="{_escape(_relative_site_url(page, archive_page))}">'
-                f"{archive_label}</a></div>"
-            ),
-            f'<ul class="kb-entry-list">{latest_entries}</ul>',
-            empty_latest,
-            f'<p class="kb-home__note">{_escape(latest_note)}</p>',
-            "</section>",
-        ]
-    )
-    if coverage:
-        sections.extend(
-            [
-                '<section class="kb-home__section" aria-labelledby="kb-depth-title">',
-                f'<h2 class="kb-home__block-title" id="kb-depth-title">{depth_title}</h2>',
-                f'<div class="kb-coverage">{coverage}</div>',
-                f'<p class="kb-home__note">{_escape(depth_note)}</p>',
-                "</section>",
-            ]
-        )
-    sections.extend(["</div>", "</div>", ""])
+    sections.extend(["</div>", ""])
 
     return _generated_front_matter(
         language,
@@ -1530,22 +1429,19 @@ def _dashboard(
 
 
 def _topics_page(documents: list[Document], language: str) -> str:
+    """The secondary entry point: the same notes, reachable by subject."""
+
     page = "topics/index.md" if language == "en" else "topics/index_zh.md"
     title = "Topics" if language == "en" else "主题"
     description = (
-        "Browse the knowledge base by engineering area."
+        "The timeline is the main way in. Use this when you already know the "
+        "subject you need."
         if language == "en"
-        else "按工程领域浏览知识库。"
-    )
-    areas = sorted(
-        {
-            document.area
-            for document in documents
-            if document.language == language and document.area != "engineering"
-        }
+        else "时间线是主要入口；已经知道要找哪个主题时，用这一页。"
     )
     cards = "\n".join(
-        _topic_card_html(documents, area, language, page) for area in areas
+        _topic_tile_html(documents, area, language, page)
+        for area in _home_areas(documents, language)
     )
     return _generated_front_matter(
         language,
@@ -1558,7 +1454,7 @@ def _topics_page(documents: list[Document], language: str) -> str:
             f"# {title}",
             "",
             '<div class="kb-hub">',
-            f'<p class="kb-hub__lede">{description}</p>',
+            f'<p class="kb-hub__lede">{_escape(description)}</p>',
             f'<div class="kb-topic-grid">{cards}</div>',
             "</div>",
             "",
@@ -1567,33 +1463,21 @@ def _topics_page(documents: list[Document], language: str) -> str:
 
 
 def _archive_page(documents: list[Document], language: str) -> str:
+    """Every note, in the same order the home page uses."""
+
     page = "archive/index.md" if language == "en" else "archive/index_zh.md"
     title = "Archive" if language == "en" else "归档"
+    total = len(_blog_documents(documents, language))
     description = (
-        "All guides, runbooks, references, tooling notes, and video summaries."
+        f"All {total} notes, newest first."
         if language == "en"
-        else "全部指南、运维手册、参考资料、工具笔记和视频摘要。"
+        else f"全部 {total} 篇笔记，按时间倒序。"
     )
-    grouped: dict[str, list[Document]] = {}
-    for document in _blog_documents(documents, language):
-        year = document.updated[:4] if document.updated else "Undated"
-        grouped.setdefault(year, []).append(document)
-    years = sorted((year for year in grouped if year != "Undated"), reverse=True)
-    if "Undated" in grouped:
-        years.append("Undated")
-    year_sections = []
-    for year in years:
-        entries = "\n".join(_entry_html(document, page) for document in grouped[year])
-        year_sections.append(
-            f'<section class="kb-archive__year" aria-labelledby="archive-{_escape(year)}">'
-            f'<h2 id="archive-{_escape(year)}">{_escape(year)}</h2>'
-            f'<ul class="kb-entry-list">{entries}</ul>'
-            "</section>"
-        )
+    feed = _feed_html(documents, language, page)
     empty = (
-        "<p class=\"kb-empty\">No published notes yet.</p>"
+        '<p class="kb-empty">No published notes yet.</p>'
         if language == "en"
-        else "<p class=\"kb-empty\">暂时没有已发布笔记。</p>"
+        else '<p class="kb-empty">暂时没有已发布笔记。</p>'
     )
     return _generated_front_matter(
         language,
@@ -1606,8 +1490,8 @@ def _archive_page(documents: list[Document], language: str) -> str:
             f"# {title}",
             "",
             '<div class="kb-hub kb-archive">',
-            f'<p class="kb-hub__lede">{description}</p>',
-            "".join(year_sections) if year_sections else empty,
+            f'<p class="kb-hub__lede">{_escape(description)}</p>',
+            feed if feed else empty,
             "</div>",
             "",
         ]
