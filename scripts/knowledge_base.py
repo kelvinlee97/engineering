@@ -1471,25 +1471,8 @@ def _dashboard(
         "</header>",
     ]
 
-    if topic_tiles:
-        sections.extend(
-            [
-                '<section class="kb-home__section" aria-labelledby="kb-topics-title">',
-                f'<h2 class="kb-home__block-title" id="kb-topics-title">{topics_title}</h2>',
-                f'<div class="kb-topic-grid">{topic_tiles}</div>',
-                "</section>",
-            ]
-        )
-    if symptoms:
-        sections.extend(
-            [
-                '<section class="kb-home__section" aria-labelledby="kb-symptom-title">',
-                f'<h2 class="kb-home__block-title" id="kb-symptom-title">{symptom_title}</h2>',
-                f'<div class="kb-symptoms">{symptoms}</div>',
-                "</section>",
-            ]
-        )
-
+    # Recently updated leads the page: a returning reader is here for what is
+    # new, and only then browses by topic.
     sections.extend(
         [
             '<div class="kb-home__split">',
@@ -1516,7 +1499,28 @@ def _dashboard(
                 "</section>",
             ]
         )
-    sections.extend(["</div>", "</div>", ""])
+    sections.append("</div>")
+
+    if topic_tiles:
+        sections.extend(
+            [
+                '<section class="kb-home__section" aria-labelledby="kb-topics-title">',
+                f'<h2 class="kb-home__block-title" id="kb-topics-title">{topics_title}</h2>',
+                f'<div class="kb-topic-grid">{topic_tiles}</div>',
+                "</section>",
+            ]
+        )
+    if symptoms:
+        sections.extend(
+            [
+                '<section class="kb-home__section" aria-labelledby="kb-symptom-title">',
+                f'<h2 class="kb-home__block-title" id="kb-symptom-title">{symptom_title}</h2>',
+                f'<div class="kb-symptoms">{symptoms}</div>',
+                "</section>",
+            ]
+        )
+
+    sections.extend(["</div>", ""])
 
     return _generated_front_matter(
         language,
