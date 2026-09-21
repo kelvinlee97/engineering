@@ -63,9 +63,9 @@ BLOG_KINDS = set(KIND_LABELS["en"]) - {"catalog"}
 # consumed at different rates, so each is counted against its own budget.
 LATIN_WORDS_PER_MINUTE = 220
 CJK_CHARS_PER_MINUTE = 400
-EXCERPT_LENGTH = 150
+EXCERPT_LENGTH = 190
 # CJK packs far more meaning per character, so its cards get a shorter budget.
-CJK_EXCERPT_LENGTH = 72
+CJK_EXCERPT_LENGTH = 90
 RELATED_LIMIT = 4
 LANGUAGE_LINE_MARKERS = (
     "Chinese version",
@@ -74,6 +74,7 @@ LANGUAGE_LINE_MARKERS = (
     "简体中文",
 )
 CJK_RE = re.compile(r"[\u3400-\u9fff\u3040-\u30ff]")
+PICTOGRAPH_RE = re.compile("[\U0001F000-\U0001FAFF\u2190-\u27bf\u2b00-\u2bff]")
 LATIN_WORD_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9'\u2019./_-]*")
 
 
@@ -92,10 +93,16 @@ class Document:
     language: str
     area: str
     kind: str
+    # Date of the commit that ADDED the file: when the note was published. The
+    # timeline orders by this, so fixing a typo in an old note does not shove
+    # it back to the top of the site.
+    published: str
+    # Full commit timestamp behind `published`, to break same-day ties.
+    published_at: str
+    # Date of the most recent commit that touched the file. Shown on the
+    # article itself when it differs from the publication date; never used for
+    # ordering.
     updated: str
-    # Full commit timestamp behind `updated`. `updated` is a date, so two notes
-    # touched on the same day tie; ordering by the timestamp keeps the most
-    # recent edit first.
     updated_at: str
     video_id: str | None
 
@@ -229,6 +236,10 @@ def _excerpt(text: str, language: str) -> str:
             continue
         if any(marker in candidate for marker in LANGUAGE_LINE_MARKERS):
             continue
+        # A line opening with a pictograph is a callout ("🎮 Try the
+        # interactive version"), not a description of the note.
+        if PICTOGRAPH_RE.match(candidate):
+            continue
         # A colon-terminated line introduces the list that follows; on its own
         # it describes nothing, and many articles open with the same one.
         if candidate.endswith((":", "\uff1a")):
@@ -257,7 +268,7 @@ def _sorted_documents(documents: list[Document]) -> list[Document]:
     by_source = sorted(documents, key=lambda document: document.source)
     return sorted(
         by_source,
-        key=lambda document: (document.updated or "", document.updated_at or ""),
+        key=lambda document: (document.published or "", document.published_at or ""),
         reverse=True,
     )
 
@@ -282,10 +293,20 @@ def _escape(value: str) -> str:
     return html.escape(value, quote=True)
 
 
+def _pair_generated_page(page: str) -> str:
+    """The other language's copy of a generated page."""
+
+    if page.endswith("index_zh.md"):
+        return page[: -len("index_zh.md")] + "index.md"
+    return page[: -len("index.md")] + "index_zh.md"
+
+
 def _generated_front_matter(
     language: str,
     *,
     title: str | None = None,
+    pair_page: str | None = None,
+    page: str | None = None,
     hide_navigation: bool = False,
     hide_toc: bool = False,
     hide_footer: bool = False,
@@ -294,6 +315,10 @@ def _generated_front_matter(
     lines = ["---", f"kb_language: {language}"]
     if title:
         lines.append(f"title: {title}")
+    if pair_page is not None and page is not None:
+        # The header renders the language switch, so every page states where
+        # its counterpart lives, relative to itself.
+        lines.append(f"kb_pair: {_relative_site_url(page, pair_page)}")
     hidden = []
     if hide_navigation:
         hidden.append("navigation")
@@ -310,8 +335,33 @@ def _generated_front_matter(
     return "\n".join(lines)
 
 
+LANGUAGE_LINE_RE = re.compile(
+    r"(?m)^(?:English|Chinese version|中文版本|English version)[^\n]*\n(?:\s*\n)?",
+)
+
+
+def _strip_language_line(text: str) -> str:
+    """Drop the reciprocal language link an article carries for GitHub readers.
+
+    On the site the menu bar's switch does that job, and the line would sit
+    between the title and the first paragraph saying it twice.
+    """
+
+    match = H1_RE.search(text)
+    if not match:
+        return text
+    head, tail = text[: match.end()], text[match.end() :]
+    return head + LANGUAGE_LINE_RE.sub("", tail, count=1)
+
+
 def _with_generated_metadata(text: str, document: Document) -> str:
-    metadata = f"kb_language: {document.language}"
+    pair = _relative_site_url(document.page, document.pair_page)
+    source = f"{GITHUB_BLOB_URL}/{quote(document.source, safe='/')}"
+    metadata = (
+        f"kb_language: {document.language}\n"
+        f"kb_pair: {pair}\n"
+        f"kb_source: {source}"
+    )
     if text.startswith("---\n"):
         closing = text.find("\n---\n", 4)
         if closing != -1:
@@ -384,21 +434,32 @@ def _area(source: str) -> str:
     return path.parts[0] if len(path.parts) > 1 else "engineering"
 
 
-def _last_modified(root: Path, source: str) -> tuple[str, str]:
-    """Commit date (for display) and full commit timestamp (for ordering)."""
+def _commit_dates(root: Path, source: str) -> tuple[str, str, str, str]:
+    """Publication and last-touched dates: (published, published_at, updated, updated_at).
+
+    `git log` lists newest first, so the last line is the commit that added
+    the file and the first is the most recent one to touch it.
+    """
 
     if not (root / ".git").exists():
-        return "", ""
+        return "", "", "", ""
     result = subprocess.run(
-        ["git", "-C", str(root), "log", "-1", "--format=%cs%n%cI", "--", source],
+        ["git", "-C", str(root), "log", "--format=%cs%x09%cI", "--", source],
         capture_output=True,
         text=True,
         check=False,
     )
-    lines = result.stdout.strip().splitlines()
-    if len(lines) < 2:
-        return (lines[0].strip() if lines else ""), ""
-    return lines[0].strip(), lines[1].strip()
+    lines = [line.strip() for line in result.stdout.strip().splitlines() if line.strip()]
+    if not lines:
+        return "", "", "", ""
+
+    def split(line: str) -> tuple[str, str]:
+        date, _, stamp = line.partition("\t")
+        return date.strip(), stamp.strip()
+
+    updated, updated_at = split(lines[0])
+    published, published_at = split(lines[-1])
+    return published, published_at, updated, updated_at
 
 
 def _git_tracked_paths(root: Path) -> list[str]:
@@ -533,7 +594,7 @@ def discover_documents(
     publishable = set(candidates)
     for source in candidates:
         pair = _pair_path(source)
-        modified = _last_modified(root, source)
+        dates = _commit_dates(root, source)
         documents.append(
             Document(
                 source=source,
@@ -545,8 +606,10 @@ def discover_documents(
                 language=_language(source),
                 area=_area(source),
                 kind=_kind(source),
-                updated=modified[0],
-                updated_at=modified[1],
+                published=dates[0],
+                published_at=dates[1],
+                updated=dates[2],
+                updated_at=dates[3],
                 video_id=video_ids[source],
             )
         )
@@ -603,22 +666,31 @@ def rewrite_links(
 
 
 def _with_generated_context(text: str, document: Document, reading: str = '') -> str:
+    """The line under an article's title: what it is, when it was written, how long.
+
+    The language switch lives in the header and the repository link in the
+    footer, so neither repeats here.
+    """
+
     match = H1_RE.search(text)
     if not match:
         return text
-    pair_label = "中文" if document.language == "en" else "English"
-    pair_link = _relative_site_url(document.page, document.pair_page)
-    source_link = f"{GITHUB_BLOB_URL}/{quote(document.source, safe='/')}"
-    language_aria = "Switch to Chinese" if document.language == "en" else "切换到 English"
-    metadata_aria = "Page metadata" if document.language == "en" else "页面信息"
+    is_english = document.language == "en"
+    metadata_aria = "Page metadata" if is_english else "页面信息"
     kind_label = _kind_label(document.kind, document.language)
-    updated = ""
-    if document.updated:
-        updated_label = "Updated" if document.language == "en" else "更新于"
-        updated = (
-            f'  <time datetime="{_escape(document.updated)}">'
-            f"{updated_label} {_escape(document.updated)}</time>\n"
+    dates = ""
+    if document.published:
+        published_label = "Published" if is_english else "发布于"
+        dates = (
+            f'  <time datetime="{_escape(document.published)}">'
+            f"{published_label} {_escape(document.published)}</time>\n"
         )
+        if document.updated and document.updated != document.published:
+            updated_label = "updated" if is_english else "更新于"
+            dates += (
+                f'  <time datetime="{_escape(document.updated)}">'
+                f"{updated_label} {_escape(document.updated)}</time>\n"
+            )
     reading_html = ""
     if reading:
         reading_html = f'  <span class="kb-meta__reading">{_escape(reading)}</span>\n'
@@ -626,11 +698,8 @@ def _with_generated_context(text: str, document: Document, reading: str = '') ->
         "\n\n"
         f'<div class="kb-meta" role="group" aria-label="{metadata_aria}">\n'
         f'  <span class="kb-meta__kind">{_escape(kind_label)}</span>\n'
-        f"{updated}"
+        f"{dates}"
         f"{reading_html}"
-        f'  <a class="kb-meta__language" href="{_escape(pair_link)}" '
-        f'aria-label="{language_aria}">{pair_label}</a>\n'
-        f'  <a class="kb-meta__source" href="{_escape(source_link)}">GitHub source</a>\n'
         "</div>"
     )
     return text[: match.end()] + context + text[match.end() :]
@@ -640,6 +709,46 @@ MONTH_NAMES_EN = (
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December",
 )
+
+# Each kind gets its own filtered timeline at the site root. The slugs are the
+# URLs, so they stay plural and lowercase.
+KIND_SLUGS = {
+    "runbook": "runbooks",
+    "reference": "references",
+    "guide": "guides",
+    "video-summary": "video-notes",
+    "tooling": "tooling",
+}
+KIND_TAB_LABELS = {
+    "en": {
+        "runbook": "Runbooks",
+        "reference": "References",
+        "guide": "Guides",
+        "video-summary": "Video notes",
+        "tooling": "Tooling",
+    },
+    "zh": {
+        "runbook": "运维手册",
+        "reference": "参考",
+        "guide": "指南",
+        "video-summary": "视频笔记",
+        "tooling": "工具",
+    },
+}
+# The home page gives this many notes the full treatment before the list
+# tightens, and no topic may take more than its share of them.
+HOME_RICH_LIMIT = 3
+RICH_PER_AREA = 2
+HOME_DENSE_LIMIT = 17
+
+
+def _kind_page(kind: str, language: str) -> str:
+    name = "index.md" if language == "en" else "index_zh.md"
+    return f"{KIND_SLUGS[kind]}/{name}"
+
+
+def _home_page(language: str) -> str:
+    return "index.md" if language == "en" else "index_zh.md"
 
 
 def _month_label(month: str, language: str) -> str:
@@ -654,86 +763,100 @@ def _month_label(month: str, language: str) -> str:
     return f"{year} 年 {index} 月"
 
 
-def _post_html(
+def _long_date(value: str, language: str) -> str:
+    """`2026-09-18` as `Sep 18, 2026` / `2026-09-18`."""
+
+    if not value:
+        return ""
+    if language != "en":
+        return value
+    year, month, day = value.split("-")
+    return f"{MONTH_NAMES_EN[int(month) - 1][:3]} {int(day)}, {year}"
+
+
+def _short_date(value: str, language: str) -> str:
+    """The dense list's date column: `Sep 16` / `09-16`."""
+
+    if not value:
+        return "--"
+    _, month, day = value.split("-")
+    if language != "en":
+        return f"{month}-{day}"
+    return f"{MONTH_NAMES_EN[int(month) - 1][:3]} {int(day)}"
+
+
+def _rich_html(
     document: Document,
     source_page: str,
-    excerpt: str = "",
-    topic: str = "",
+    topic: str,
+    excerpt: str,
+    show_kind: bool = True,
 ) -> str:
-    """One row of the timeline: when it was published, what it is, what it covers."""
+    """A recent note, given room: what it is, what it is called, what it says."""
 
-    if document.updated:
-        day = document.updated[5:].replace("-", "/")
-        date = (
-            f'<time class="kb-post__date" datetime="{_escape(document.updated)}">'
-            f"{_escape(day)}</time>"
+    meta = " · ".join(
+        part
+        for part in (
+            _long_date(document.published, document.language),
+            topic,
+            _kind_label(document.kind, document.language) if show_kind else "",
         )
-    else:
-        date = '<span class="kb-post__date" aria-hidden="true">--</span>'
-    excerpt_html = (
-        f'<span class="kb-post__excerpt">{_escape(excerpt)}</span>' if excerpt else ""
+        if part
     )
-    topic_html = (
-        f'<span class="kb-post__topic">{_escape(topic)}</span>' if topic else ""
+    excerpt_html = (
+        f'<span class="kb-lead__excerpt">{_escape(excerpt)}</span>' if excerpt else ""
     )
     return (
-        '<li class="kb-post">'
-        f'<a class="kb-post__link" '
-        f'href="{_escape(_relative_site_url(source_page, document.page))}">'
-        f"{date}"
-        '<span class="kb-post__body">'
-        f'<span class="kb-post__title">{_escape(document.title)}</span>'
+        f'<a class="kb-lead" href="{_escape(_relative_site_url(source_page, document.page))}">'
+        f'<span class="kb-lead__meta">{_escape(meta)}</span>'
+        f'<span class="kb-lead__title">{_escape(document.title)}</span>'
         f"{excerpt_html}"
-        '<span class="kb-post__meta">'
-        f'<span class="kb-chip">'
-        f"{_escape(_kind_label(document.kind, document.language))}</span>"
-        f"{topic_html}"
-        "</span>"
-        "</span>"
+        "</a>"
+    )
+
+
+def _dense_html(document: Document, source_page: str, topic: str) -> str:
+    """An older note, one line: when, what, where it belongs."""
+
+    return (
+        '<li class="kb-row">'
+        f'<a class="kb-row__link" '
+        f'href="{_escape(_relative_site_url(source_page, document.page))}">'
+        f'<time class="kb-row__date" datetime="{_escape(document.published)}">'
+        f"{_escape(_short_date(document.published, document.language))}</time>"
+        f'<span class="kb-row__title">{_escape(document.title)}</span>'
+        f'<span class="kb-row__topic">{_escape(topic)}</span>'
         "</a>"
         "</li>"
     )
 
 
-def _feed_html(
+def _dense_feed_html(
     documents: list[Document],
     language: str,
     source_page: str,
-    excerpts: dict[str, str] | None = None,
-    limit: int | None = None,
+    first_label: str | None = None,
 ) -> str:
-    """The whole site in one reading order: newest first, grouped by month.
+    """Older notes, newest first, grouped by the month they were published."""
 
-    Publication order is the only ranking the site applies. Nothing is
-    promoted, pinned or capped per topic, so what a reader sees at the top is
-    simply the note written most recently.
-    """
-
-    excerpts = excerpts or {}
-    notes = _blog_documents(documents, language)
-    if limit is not None:
-        notes = notes[:limit]
-    if not notes:
+    if not documents:
         return ""
     groups: list[tuple[str, list[Document]]] = []
-    for document in notes:
-        month = document.updated[:7] if document.updated else ""
+    for document in documents:
+        month = document.published[:7] if document.published else ""
         if not groups or groups[-1][0] != month:
             groups.append((month, []))
         groups[-1][1].append(document)
     sections = []
-    for month, entries in groups:
+    for index, (month, entries) in enumerate(groups):
         label = _month_label(month, language)
+        if index == 0 and first_label:
+            label = first_label
         anchor = f"feed-{month or 'undated'}"
         if language != "en":
             anchor = f"{anchor}-zh"
         rows = "".join(
-            _post_html(
-                document,
-                source_page,
-                excerpts.get(document.source, ""),
-                _topic_name(document.area, language, document.area),
-            )
+            _dense_html(document, source_page, _topic_name(document.area, language, document.area))
             for document in entries
         )
         sections.append(
@@ -743,6 +866,168 @@ def _feed_html(
             "</section>"
         )
     return f'<div class="kb-feed">{"".join(sections)}</div>'
+
+
+def _lead_selection(notes: list[Document]) -> tuple[list[Document], list[Document]]:
+    """Split the timeline into the few notes shown in full and the rest.
+
+    Order never changes; only how much of each note is drawn. A topic may hold
+    at most `RICH_PER_AREA` of the lead slots, so three notes published on the
+    same day about the same thing cannot make the page look single-minded.
+    """
+
+    lead: list[Document] = []
+    taken: dict[str, int] = {}
+    for document in notes:
+        if len(lead) == HOME_RICH_LIMIT:
+            break
+        if taken.get(document.area, 0) >= RICH_PER_AREA:
+            continue
+        taken[document.area] = taken.get(document.area, 0) + 1
+        lead.append(document)
+    chosen = {document.source for document in lead}
+    return lead, [document for document in notes if document.source not in chosen]
+
+
+def _kind_counts(documents: list[Document], language: str) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for document in _blog_documents(documents, language):
+        counts[document.kind] = counts.get(document.kind, 0) + 1
+    return counts
+
+
+def _kind_tabs_html(
+    documents: list[Document],
+    language: str,
+    source_page: str,
+    active: str | None,
+) -> str:
+    """Filter the timeline by kind. It never reorders: it only takes rows away."""
+
+    counts = _kind_counts(documents, language)
+    total = counts.get(active, 0) if active else sum(counts.values())
+    is_english = language == "en"
+    tabs = [
+        (
+            "All" if is_english else "全部",
+            _relative_site_url(source_page, _home_page(language)),
+            active is None,
+        )
+    ]
+    for kind in KIND_SLUGS:
+        if not counts.get(kind):
+            continue
+        tabs.append(
+            (
+                KIND_TAB_LABELS[language][kind],
+                _relative_site_url(source_page, _kind_page(kind, language)),
+                active == kind,
+            )
+        )
+    rendered = []
+    for label, url, is_active in tabs:
+        classes = "kb-tab kb-tab--active" if is_active else "kb-tab"
+        current = ' aria-current="page"' if is_active else ""
+        rendered.append(
+            f'<a class="{classes}" href="{_escape(url)}"{current}>{_escape(label)}</a>'
+        )
+    links = "".join(rendered)
+    count = (
+        f"{total} notes · newest first" if is_english else f"{total} 篇 · 按时间倒序"
+    )
+    aria = "Filter by kind" if is_english else "按类型筛选"
+    return (
+        f'<nav class="kb-tabs" aria-label="{aria}">{links}'
+        f'<span class="kb-tabs__count">{_escape(count)}</span></nav>'
+    )
+
+
+def _timeline_page(
+    documents: list[Document],
+    language: str,
+    page: str,
+    *,
+    kind: str | None,
+    excerpts: dict[str, str] | None = None,
+    dense_limit: int | None = None,
+) -> str:
+    """The home page and every kind page: leads, then the list tightens."""
+
+    excerpts = excerpts or {}
+    is_english = language == "en"
+    notes = _blog_documents(documents, language)
+    if kind is not None:
+        notes = [document for document in notes if document.kind == kind]
+    lead, rest = _lead_selection(notes)
+    remaining = rest[:dense_limit] if dense_limit is not None else rest
+
+    leads = "".join(
+        _rich_html(
+            document,
+            page,
+            _topic_name(document.area, language, document.area),
+            excerpts.get(document.source, ""),
+            show_kind=kind is None,
+        )
+        for document in lead
+    )
+    earlier_label = None
+    if lead and remaining and lead[0].published[:7] == remaining[0].published[:7]:
+        month = _month_label(remaining[0].published[:7], language)
+        earlier_label = (
+            f"Earlier in {month.split(' ')[0]}" if is_english else f"{month} 更早"
+        )
+    feed = _dense_feed_html(documents=remaining, language=language, source_page=page,
+                            first_label=earlier_label)
+    empty = (
+        '<p class="kb-empty">No published notes yet.</p>'
+        if is_english
+        else '<p class="kb-empty">暂时没有已发布笔记。</p>'
+    )
+    archive_page = "archive/index.md" if is_english else "archive/index_zh.md"
+    more_label = "Full archive" if is_english else "完整归档"
+
+    site_name = "Kelvin’s Engineering Notes" if is_english else "Kelvin 的工程笔记"
+    heading = site_name
+    if kind is not None:
+        heading = f"{KIND_TAB_LABELS[language][kind]} — {site_name}"
+    sections = [
+        '<div class="kb-home">',
+        # The wordmark carries the site's name visually; this is the same name
+        # for a screen reader and for search engines, and it stops the theme
+        # from inserting a heading of its own.
+        f'<h1 class="kb-visually-hidden">{_escape(heading)}</h1>',
+        _kind_tabs_html(documents, language, page, kind),
+    ]
+    if leads:
+        sections.append(f'<div class="kb-leads">{leads}</div>')
+    if feed:
+        sections.append(feed)
+    if not leads and not feed:
+        sections.append(empty)
+    if remaining != rest or kind is None:
+        sections.append(
+            f'<a class="kb-more" '
+            f'href="{_escape(_relative_site_url(page, archive_page))}">'
+            f"{_escape(more_label)}</a>"
+        )
+    sections.extend(["</div>", ""])
+
+    if kind is None:
+        title = "Home" if is_english else "中文首页"
+    else:
+        title = KIND_TAB_LABELS[language][kind]
+    return _generated_front_matter(
+        language,
+        title=title,
+        page=page,
+        pair_page=_pair_generated_page(page),
+        # The left rail would only repeat what the tabs already say, and the
+        # timeline wants the full measure.
+        hide_navigation=True,
+        hide_toc=True,
+        search_exclude=True,
+    ) + "\n".join(sections)
 
 
 def _topic_catalog(documents: list[Document], area: str, language: str) -> Document | None:
@@ -1332,102 +1617,6 @@ def _topic_tile_html(
     )
 
 
-def _dashboard(
-    documents: list[Document],
-    language: str,
-    excerpts: dict[str, str] | None = None,
-) -> str:
-    """The home page: a masthead, then the notes in publication order.
-
-    A reader landing here should not have to choose between five entry points
-    before reading anything. The page therefore carries one list — newest
-    note first — and pushes browsing by topic and the full archive into a
-    single quiet line of links.
-    """
-
-    page = "index.md" if language == "en" else "index_zh.md"
-    archive_page = "archive/index.md" if language == "en" else "archive/index_zh.md"
-    topics_page = "topics/index.md" if language == "en" else "topics/index_zh.md"
-    is_english = language == "en"
-    total = len(_blog_documents(documents, language))
-
-    # The eyebrow carries the site's identity: the headline describes the
-    # reading order, so without this the home page never names whose notes
-    # these are.
-    eyebrow = "Kelvin’s Engineering Notes" if is_english else "Kelvin 的工程笔记"
-    heading = (
-        "Notes on how things work, newest first."
-        if is_english
-        else "关于「它到底怎么工作」的笔记，最新的在最前面。"
-    )
-    lede = (
-        "Runbooks, references and distilled study notes from real incidents "
-        "and real setups. Start at the top — every note ships in English and "
-        "简体中文."
-        if is_english
-        else (
-            "来自真实故障与真实配置的运维手册、参考与提炼后的学习笔记。"
-            "从最上面读起即可，每篇都有中英文两个版本。"
-        )
-    )
-    search_label = "Search the knowledge base" if is_english else "搜索工程知识库"
-    archive_label = (
-        f"All {total} notes" if is_english else f"全部 {total} 篇"
-    )
-    topics_label = "By topic" if is_english else "按主题浏览"
-    language_target = "index_zh.md" if is_english else "index.md"
-    language_label = "中文" if is_english else "English"
-    site_links_label = "Site links" if is_english else "站点链接"
-    older_label = "Older notes" if is_english else "更早的笔记"
-
-    feed = _feed_html(documents, language, page, excerpts, limit=HOME_FEED_LIMIT)
-    empty = (
-        '<p class="kb-empty">No published notes yet.</p>'
-        if is_english
-        else '<p class="kb-empty">暂时没有已发布笔记。</p>'
-    )
-
-    sections = [
-        '<div class="kb-home">',
-        '<header class="kb-hero">',
-        f'<p class="kb-home__eyebrow">{eyebrow}</p>',
-        f'<h1 id="{"home" if is_english else "home-zh"}">{_escape(heading)}</h1>',
-        f'<p class="kb-home__lede">{_escape(lede)}</p>',
-        (
-            f'<button class="kb-search-trigger" type="button" '
-            f'aria-label="{search_label}" '
-            f"onclick=\"document.getElementById('__search').click(); "
-            f"document.querySelector('.md-search__input').focus()\">"
-            f"<span>{search_label}</span>"
-            f'<kbd class="kb-search-trigger__hint">/</kbd></button>'
-        ),
-        f'<nav class="kb-home__links" aria-label="{site_links_label}">',
-        f'<a href="{_escape(_relative_site_url(page, archive_page))}">{_escape(archive_label)}</a>',
-        f'<a href="{_escape(_relative_site_url(page, topics_page))}">{_escape(topics_label)}</a>',
-        f'<a href="{_escape(_relative_site_url(page, language_target))}">{language_label}</a>',
-        "</nav>",
-        "</header>",
-        feed if feed else empty,
-    ]
-    if feed and total > HOME_FEED_LIMIT:
-        sections.append(
-            f'<a class="kb-more" '
-            f'href="{_escape(_relative_site_url(page, archive_page))}">'
-            f"{_escape(older_label)}</a>"
-        )
-    sections.extend(["</div>", ""])
-
-    return _generated_front_matter(
-        language,
-        title="Home" if is_english else "中文首页",
-        # The topic tabs live in the header, so they survive this; the left
-        # rail would only repeat "Home" and cost the page a column of width.
-        hide_navigation=True,
-        hide_toc=True,
-        search_exclude=True,
-    ) + "\n".join(sections)
-
-
 def _topics_page(documents: list[Document], language: str) -> str:
     """The secondary entry point: the same notes, reachable by subject."""
 
@@ -1446,6 +1635,8 @@ def _topics_page(documents: list[Document], language: str) -> str:
     return _generated_front_matter(
         language,
         title=title,
+        page=page,
+        pair_page=_pair_generated_page(page),
         hide_toc=True,
         hide_footer=True,
         search_exclude=True,
@@ -1463,25 +1654,28 @@ def _topics_page(documents: list[Document], language: str) -> str:
 
 
 def _archive_page(documents: list[Document], language: str) -> str:
-    """Every note, in the same order the home page uses."""
+    """Every note, one line each, in the same order the home page uses."""
 
     page = "archive/index.md" if language == "en" else "archive/index_zh.md"
-    title = "Archive" if language == "en" else "归档"
-    total = len(_blog_documents(documents, language))
+    is_english = language == "en"
+    title = "Archive" if is_english else "归档"
+    notes = _blog_documents(documents, language)
     description = (
-        f"All {total} notes, newest first."
-        if language == "en"
-        else f"全部 {total} 篇笔记，按时间倒序。"
+        f"All {len(notes)} notes, newest first."
+        if is_english
+        else f"全部 {len(notes)} 篇笔记，按时间倒序。"
     )
-    feed = _feed_html(documents, language, page)
+    feed = _dense_feed_html(notes, language, page)
     empty = (
         '<p class="kb-empty">No published notes yet.</p>'
-        if language == "en"
+        if is_english
         else '<p class="kb-empty">暂时没有已发布笔记。</p>'
     )
     return _generated_front_matter(
         language,
         title=title,
+        page=page,
+        pair_page=_pair_generated_page(page),
         hide_toc=True,
         hide_footer=True,
         search_exclude=True,
@@ -1516,6 +1710,7 @@ def stage(root: Path, output: Path, paths: list[str] | None = None) -> list[Docu
         excerpts[document.source] = _excerpt(raw, document.language)
         reading = _reading_label(raw, document.language)
         text = rewrite_links(raw, document.source, page_map, tracked)
+        text = _strip_language_line(text)
         text = _with_generated_metadata(text, document)
         text = _with_generated_context(text, document, reading)
         text = text.rstrip("\n") + "\n" + _related_html(document, documents)
@@ -1524,14 +1719,38 @@ def stage(root: Path, output: Path, paths: list[str] | None = None) -> list[Docu
         target.write_text(text, encoding="utf-8")
 
     generated_pages = {
-        "index.md": _dashboard(documents, "en", excerpts),
-        "index_zh.md": _dashboard(documents, "zh", excerpts),
         "topics/index.md": _topics_page(documents, "en"),
         "topics/index_zh.md": _topics_page(documents, "zh"),
         "archive/index.md": _archive_page(documents, "en"),
         "archive/index_zh.md": _archive_page(documents, "zh"),
         "SUMMARY.md": _summary_markdown(documents),
     }
+    for language in ("en", "zh"):
+        home = _home_page(language)
+        generated_pages[home] = _timeline_page(
+            documents,
+            language,
+            home,
+            kind=None,
+            excerpts=excerpts,
+            dense_limit=HOME_DENSE_LIMIT,
+        )
+        # A kind page is the same timeline with the other kinds taken out, so
+        # it stays complete rather than capping like the home page.
+        for kind in KIND_SLUGS:
+            if not any(
+                document.kind == kind and document.language == language
+                for document in documents
+            ):
+                continue
+            page = _kind_page(kind, language)
+            generated_pages[page] = _timeline_page(
+                documents,
+                language,
+                page,
+                kind=kind,
+                excerpts=excerpts,
+            )
     existing_pages = set(page_map.values())
     conflicts = sorted(existing_pages.intersection(generated_pages))
     if conflicts:

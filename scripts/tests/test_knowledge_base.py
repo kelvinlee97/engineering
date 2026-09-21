@@ -5,19 +5,21 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from mkdocs.config import load_config
-
 from scripts.knowledge_base import (
     AWS_GROUPS,
-    HOME_FEED_LIMIT,
+    EXCERPT_LENGTH,
+    HOME_DENSE_LIMIT,
+    HOME_RICH_LIMIT,
     HOME_TOPIC_EXCLUDE,
-    NAV_SECTIONS,
+    KIND_SLUGS,
+    RICH_PER_AREA,
     TOPIC_META,
     KnowledgeBaseError,
     _blog_documents,
+    _dense_feed_html,
     _excerpt,
-    _feed_html,
     _home_areas,
+    _lead_selection,
     _reading_label,
     _reading_minutes,
     _summary_markdown,
@@ -161,34 +163,32 @@ class KnowledgeBaseTests(unittest.TestCase):
             self.assertIn('class="kb-meta"', repository)
             self.assertIn("kb_language: en", repository)
             dashboard = (output / "index.md").read_text(encoding="utf-8")
-            self.assertIn(">Notes on how things work, newest first.</h1>", dashboard)
             # The deploy smoke test greps the live page for the site owner's
             # name, and a reader should see whose notes these are.
             self.assertIn("Kelvin", dashboard)
-            self.assertIn('class="kb-hero"', dashboard)
-            self.assertIn('class="kb-feed"', dashboard)
-            self.assertIn('class="kb-post__title"', dashboard)
-            # The home page ranks by publication date alone: no topic tiles,
-            # no curated shortcuts, no per-topic caps competing with the feed.
+            self.assertIn('class="kb-tabs"', dashboard)
+            self.assertIn('class="kb-lead__title"', dashboard)
+            # Publication order is the only ranking: no topic tiles, no
+            # curated shortcuts competing with the timeline.
             self.assertNotIn('class="kb-topic-card"', dashboard)
+            # The language switch lives in the menu bar, which reads this.
+            self.assertIn("kb_pair: index_zh/", dashboard)
             chinese_dashboard = (output / "index_zh.md").read_text(encoding="utf-8")
-            self.assertIn(
-                ">关于「它到底怎么工作」的笔记，最新的在最前面。</h1>", chinese_dashboard
-            )
-            self.assertIn('class="kb-feed"', chinese_dashboard)
+            self.assertIn('class="kb-tabs"', chinese_dashboard)
+            self.assertIn("Kelvin 的工程笔记", chinese_dashboard)
             self.assertIn('href="apple/container/"', dashboard)
             self.assertIn('href="archive/"', dashboard)
-            self.assertIn('href="index_zh/"', dashboard)
-            self.assertIn("document.querySelector('.md-search__input').focus()", dashboard)
-            # The topic tabs render in the header, so the home page keeps its
-            # full width by hiding the left rail that would only say "Home".
+            # The timeline is the navigation, so the left rail stays hidden.
             self.assertIn("  - navigation", dashboard)
-            self.assertIn('href="../"', (output / "index_zh.md").read_text(encoding="utf-8"))
+            # The menu bar renders the language switch from this pointer.
+            self.assertIn("kb_pair: ../", chinese_dashboard)
             topics = (output / "topics/index.md").read_text(encoding="utf-8")
             self.assertIn('href="../apple/container/"', topics)
             self.assertIn('class="kb-topic-card__count">1 note</span>', topics)
             archive = (output / "archive/index.md").read_text(encoding="utf-8")
             self.assertIn('class="kb-feed__month"', archive)
+            # An article names its source file; the footer links to it.
+            self.assertIn("kb_source: https://github.com/", repository)
             self.assertIn('class="kb-topic-card__monogram"', topics)
             self.assertTrue((output / "topics/index_zh.md").exists())
             self.assertTrue((output / "archive/index.md").exists())
@@ -278,11 +278,13 @@ class KnowledgeBaseTests(unittest.TestCase):
         documents = discover_documents(root)
         notes = _blog_documents(documents, "en")
 
-        dates = [document.updated for document in notes if document.updated]
+        dates = [document.published for document in notes if document.published]
         self.assertEqual(dates, sorted(dates, reverse=True))
 
-        feed = _feed_html(documents, "en", "index.md", limit=HOME_FEED_LIMIT)
-        self.assertEqual(feed.count('class="kb-post"'), min(HOME_FEED_LIMIT, len(notes)))
+        feed = _dense_feed_html(notes[:HOME_DENSE_LIMIT], "en", "index.md")
+        self.assertEqual(
+            feed.count('class="kb-row"'), min(HOME_DENSE_LIMIT, len(notes))
+        )
         # Months appear once each, newest first.
         months = re.findall(r'id="feed-([0-9]{4}-[0-9]{2})"', feed)
         self.assertEqual(months, sorted(set(months), reverse=True))
@@ -291,11 +293,51 @@ class KnowledgeBaseTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[2]
         documents = discover_documents(root)
         for language in ("en", "zh"):
-            feed = _feed_html(documents, language, "archive/index.md")
-            self.assertEqual(
-                feed.count('class="kb-post"'),
-                len(_blog_documents(documents, language)),
-            )
+            notes = _blog_documents(documents, language)
+            feed = _dense_feed_html(notes, language, "archive/index.md")
+            self.assertEqual(feed.count('class="kb-row"'), len(notes))
+
+    def test_lead_notes_keep_order_and_spread_topics(self) -> None:
+        """The leads are the newest notes, minus a topic's third in a row."""
+
+        root = Path(__file__).resolve().parents[2]
+        notes = _blog_documents(discover_documents(root), "en")
+
+        lead, rest = _lead_selection(notes)
+
+        self.assertEqual(len(lead), HOME_RICH_LIMIT)
+        self.assertEqual(len(lead) + len(rest), len(notes))
+        # Order is untouched: a lead is never older than what follows it.
+        for chosen in lead:
+            self.assertLessEqual(notes.index(chosen), len(lead) + RICH_PER_AREA)
+        counts: dict[str, int] = {}
+        for document in lead:
+            counts[document.area] = counts.get(document.area, 0) + 1
+        self.assertLessEqual(max(counts.values()), RICH_PER_AREA)
+        dense = [document.source for document in rest]
+        self.assertEqual(dense, sorted(set(dense), key=dense.index))
+
+    def test_every_kind_has_its_own_timeline(self) -> None:
+        """The tabs point at real pages, in both languages."""
+
+        root = Path(__file__).resolve().parents[2]
+        documents = discover_documents(root)
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "build"
+            stage(root, output)
+            for kind, slug in KIND_SLUGS.items():
+                for language, name in (("en", "index.md"), ("zh", "index_zh.md")):
+                    present = any(
+                        document.kind == kind and document.language == language
+                        for document in documents
+                    )
+                    page = output / slug / name
+                    self.assertEqual(
+                        page.is_file(), present, f"{slug}/{name} does not match its notes"
+                    )
+                    if present:
+                        body = page.read_text(encoding="utf-8")
+                        self.assertIn('aria-current="page"', body)
 
     def test_excerpt_skips_a_bare_lead_in_line(self) -> None:
         """Many articles open with the same colon-terminated lead-in."""
@@ -308,38 +350,6 @@ class KnowledgeBaseTests(unittest.TestCase):
         )
 
         self.assertTrue(_excerpt(text, "en").startswith("Athena reads data"))
-
-    def test_chinese_tab_bar_points_at_pages_that_exist(self) -> None:
-        """Every Chinese tab resolves, and covers the same areas as the nav."""
-
-        root = Path(__file__).resolve().parents[2]
-
-        # MkDocs' own loader handles the `!!python/name:` tags in mkdocs.yml.
-        tabs = load_config(str(root / "mkdocs.yml"))["extra"]["kb_tabs_zh"]
-
-        # Check against a real staging run: some tabs point at generated hub
-        # pages, which never appear as discovered documents.
-        with tempfile.TemporaryDirectory() as directory:
-            output = Path(directory) / "build"
-            stage(root, output)
-            for tab in tabs:
-                if not tab["url"]:
-                    continue
-                page = output / (tab["url"].rstrip("/") + ".md")
-                self.assertTrue(
-                    page.is_file(), f"{tab['label']} points at a missing page"
-                )
-
-        # Every area the English nav groups into a tab needs a Chinese tab too,
-        # or Chinese readers lose a section of the site.
-        matched = {
-            area
-            for tab in tabs
-            for area in tab["match"].split()
-        }
-        for _, areas in NAV_SECTIONS:
-            for area in areas:
-                self.assertIn(area, matched, f"{area} has no Chinese tab")
 
     def test_reading_time_ignores_markdown_syntax(self) -> None:
         prose = " ".join(["word"] * 440)
@@ -373,7 +383,7 @@ class KnowledgeBaseTests(unittest.TestCase):
         long_paragraph = "# T\n\n" + " ".join(["alpha"] * 60) + "\n"
         excerpt = _excerpt(long_paragraph, "en")
         self.assertTrue(excerpt.endswith("…"))
-        self.assertLessEqual(len(excerpt), 151)
+        self.assertLessEqual(len(excerpt), EXCERPT_LENGTH + 1)
 
     def test_related_notes_are_appended_to_articles(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

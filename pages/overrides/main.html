@@ -14,6 +14,11 @@
   {% if page_language == 'zh' %}
     <script>document.documentElement.lang = 'zh-CN';</script>
   {% endif %}
+  {% if page and page.meta and page.meta.kb_pair %}
+    <link rel="alternate"
+          hreflang="{{ 'en' if page_language == 'zh' else 'zh-Hans' }}"
+          href="{{ page.meta.kb_pair }}">
+  {% endif %}
 {% endblock %}
 
 {% block content %}
