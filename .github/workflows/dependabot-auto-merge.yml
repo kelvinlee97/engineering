@@ -21,6 +21,9 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
+      # `gh pr merge --auto` requires a branch protection rule on the base
+      # branch; without one GitHub refuses with "Protected branch rules not
+      # configured for this branch" and nothing is queued.
       - name: Enable auto-merge for minor and patch updates
         if: contains(fromJSON('["version-update:semver-minor", "version-update:semver-patch"]'), steps.metadata.outputs.update-type)
         # No `gh pr review --approve` here: GITHUB_TOKEN is not permitted to

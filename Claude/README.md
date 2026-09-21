@@ -16,3 +16,6 @@ This module collects study notes on Anthropic's Claude developer tooling: the co
 | [The AI-Native SDLC Playbook](ai-native-sdlc-playbook/README.md) | Redesign delivery around versioned artifacts, feedback loops, and explicit governance gates. |
 | [How Warp Builds Self-Improving Agents on Claude](self-improving-agents/README.md) | An inner skill does the work, a scheduled outer skill turns human feedback into pull requests against it. |
 | [GitHub Certified: Agentic AI Developer — Study Notes](github-agentic-ai-developer/README.md) | Exam domains, course structure, and a deep dive into designing agent architecture and SDLC integration. |
+| [Claude Code Cloud Sessions](cloud-sessions/README.md) | Sessions that run in an Anthropic-managed VM: environments, GitHub access, terminal handoff, and PR auto-fix. |
+| [Building an AI-Native Revenue Organization](ai-native-revenue-org/README.md) | Anthropic's guide to rolling Claude out across sales: maturity ladder, three-phase rollout, ROI measurement, and the pitfalls that stall it. |
+| [Claude Projects, Redesigned](projects/README.md) | Projects become one conversation: a coordinator splits work into parallel cloud-session threads over shared memory and a library. |

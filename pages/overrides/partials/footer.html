@@ -70,12 +70,18 @@
         <div class="kb-footer-note">
           {% if page_language == 'zh' %}
             双语工程笔记 · <a href="{{ 'index_zh/' | url }}">首页</a> ·
-            <a href="{{ '' | url }}">English</a> ·
-            <a href="{{ config.repo_url }}">GitHub</a>
+            <a href="{{ 'feed_zh.xml' | url }}">RSS</a> ·
+            <a href="{{ config.repo_url }}">GitHub 仓库</a>
+            {% if page and page.meta and page.meta.kb_source %}
+              · <a href="{{ page.meta.kb_source }}">本页源文件</a>
+            {% endif %}
           {% else %}
             Bilingual engineering notes · <a href="{{ '' | url }}">Home</a> ·
-            <a href="{{ 'index_zh/' | url }}">中文</a> ·
-            <a href="{{ config.repo_url }}">GitHub</a>
+            <a href="{{ 'feed.xml' | url }}">RSS</a> ·
+            <a href="{{ config.repo_url }}">GitHub repository</a>
+            {% if page and page.meta and page.meta.kb_source %}
+              · <a href="{{ page.meta.kb_source }}">Source of this page</a>
+            {% endif %}
           {% endif %}
         </div>
       </div>
