@@ -8,13 +8,14 @@ A public, bilingual (English + Chinese) engineering knowledge base. Every substa
 
 ## Core authoring style: "visual-first"
 
-Don't reach for a diagram by default — reach for the **smallest representation that gives the reader a correct mental model first**, then detail. In practice:
+Don't reach for a diagram by default — reach for the **smallest representation that gives the reader a correct understanding first**, then detail. In practice:
 
-1. Start every article with a 1–3 sentence mental model (often as a blockquote), before any deep-dive prose.
+1. Start every article with a 1–3 sentence plain-language framing (often as a blockquote) — describe in everyday words what the article covers and, if useful, what it's like/related to — before any deep-dive prose. Don't label it "mental model" or other jargon; just write the sentence.
 2. Add a diagram only when it answers a specific reader question more clearly than prose or a small table would — never decoratively, never to hit a "diagram quota".
 3. Each diagram: one abstraction level, one reading direction, introduced by the question it answers, followed by a short interpretation in text. Never let a diagram silently replace a fact, warning, command, or caveat — those stay in prose even if a diagram also shows them.
 4. Prefer a table for real comparisons, a list for genuinely sequential/parallel items, prose otherwise.
 5. Keep the two language versions' diagrams topologically identical — same nodes, same edges, same meaning — just translated labels.
+6. Minimize jargon throughout the body, not just the opening. When a technical term is genuinely necessary, define it in plain language on first use (e.g. a parenthetical) rather than assuming the reader already knows it.
 
 ## Mermaid diagrams — non-negotiable technical requirement
 
