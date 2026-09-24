@@ -1,0 +1,41 @@
+name: Wiki check
+
+# Checks the OKF bundle in wiki/ and that raw sources and legacy articles
+# stay frozen. Runs on every pull request; it takes a few seconds.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wiki-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python -m pip install --quiet pyyaml
+
+      - name: Check the wiki against the pull request base
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: python scripts/wiki_check.py --base "origin/$BASE_REF"
+
+      - name: Check the wiki
+        if: github.event_name != 'pull_request'
+        run: python scripts/wiki_check.py --no-frozen

@@ -1,11 +1,10 @@
 ---
-description: Publish a link to blog.kelvin.ink end to end, with no review step
+description: Ingest a link or legacy article into the LLM Wiki
 ---
 
-Run the `blog-ingest` skill (`.claude/skills/blog-ingest/SKILL.md`) for this
-link, all the way through to a pull request with auto-merge enabled:
+Run the ingest procedure in the `wiki` skill (`.claude/skills/wiki/SKILL.md`)
+for:
 
 $ARGUMENTS
 
-Do not ask for confirmation on placement, wording, or merging. Report only the
-article title and its live URL when the pull request is queued to merge.
+Report the pages created and updated, and the pull request link.
