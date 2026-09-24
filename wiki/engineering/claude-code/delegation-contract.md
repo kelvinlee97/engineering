@@ -1,0 +1,41 @@
+---
+type: Pattern
+title: Delegation contract
+description: "What a subagent must be told up front: when it is used, what its output looks like, and which obstacles it must report."
+tags: [claude-code, subagents, prompt-design]
+sources:
+  - id: claude-subagents-course
+    resource: https://github.com/kelvinlee97/engineering/blob/main/Claude/subagents/README.md
+    title: Introduction to Claude Code Subagents (study guide)
+    author: human:kelvinlee97
+    last_modified: 2026-09-24T14:48:10Z
+generated: { by: claude-code/wiki-v1, at: 2026-09-24T15:10:00Z }
+status: draft
+---
+Because the parent sees only the returned summary ([context isolation](context-isolation.md)), everything it needs back has to be agreed before the work starts. The course names four characteristics of an effective subagent: a specific description, structured output, obstacle reporting, and limited tool access.[^claude-subagents-course] The last one has its own page: [Least-privilege tool access](least-privilege-tool-access.md).
+
+## The description does two jobs
+
+The name and description of every available subagent are placed in the main agent's system prompt, and the parent uses them to decide which subagent to launch and when.[^claude-subagents-course] The description also shapes the task prompt the parent writes: a vague reviewer description can produce "find the current changes", while a stronger one can require the parent to name the exact files. Requiring citable sources in a research subagent's description carries that requirement into the delegated prompt.[^claude-subagents-course]
+
+To make automatic use more likely, the course suggests including "proactively" and concrete trigger examples in the description. If delegation does not trigger as expected, improve the description rather than the system prompt.[^claude-subagents-course]
+
+## A defined output is the biggest improvement
+
+The course calls a defined output format the most important improvement: it acts as a checklist and gives a natural stopping point. Without it, a research subagent may not know when it has learned enough.[^claude-subagents-course] A code review output could be: summary, critical issues, major issues, minor issues, recommendations, approval status, obstacles encountered.[^claude-subagents-course]
+
+## Obstacles are part of the result
+
+If a subagent finds a workaround or quirk and leaves it out, the main thread must rediscover it. The output format should ask for:[^claude-subagents-course]
+
+- setup issues and environment quirks;
+- workarounds discovered during the task;
+- commands that needed special flags or configuration;
+- dependencies or imports that caused problems.
+
+## Related
+
+- [Subagent configuration file](subagent-configuration.md): where the description and system prompt live.
+- Source: [Introduction to Claude Code Subagents](../../sources/claude-subagents-course.md)
+
+[^claude-subagents-course]: Introduction to Claude Code Subagents (study guide)
