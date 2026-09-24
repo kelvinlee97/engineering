@@ -114,6 +114,11 @@ class WikiCheckTest(unittest.TestCase):
                    "* [Subagent](subagent.md) - A child agent with its own context.\n")
         self.assertTrue(any("may not carry frontmatter" in e for e in self.run_check().errors))
 
+    def test_directory_link_in_index_fails(self) -> None:
+        with (self.wiki / "index.md").open("a", encoding="utf-8") as fh:
+            fh.write("* [Domains](eng/) - Concept pages.\n")
+        self.assertTrue(any("links a directory" in e for e in self.run_check().errors))
+
     def test_type_outside_vocabulary_fails(self) -> None:
         self.write("eng/subagent.md", PAGE.replace("type: Concept", "type: Thing"))
         self.assertTrue(any("not in the vocabulary" in e for e in self.run_check().errors))

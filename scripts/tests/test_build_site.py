@@ -15,9 +15,9 @@ class StageTest(unittest.TestCase):
         self.out = root / "content"
         files = {
             "index.md": '---\nokf_version: "0.2"\n---\n# Engineering Wiki\n\n'
-            "* [Domains](engineering/) - Pages.\n* [Log](log.md) - History.\n",
+            "* [Domains](engineering/index.md) - Pages.\n* [Log](log.md) - History.\n",
             "log.md": "# Log\n\n## 2026-09-24\n* x\n",
-            "engineering/index.md": "# Domains\n\n* [Claude Code](cc/) - Claude.\n",
+            "engineering/index.md": "# Domains\n\n* [Claude Code](cc/index.md) - Claude.\n",
             "engineering/cc/index.md": "# Concept\n\n* [Page](page.md) - A page.\n",
             "engineering/cc/page.md": "---\ntype: Concept\ntitle: Page\n"
             "generated: { by: x, at: 2026-09-24T15:00:00Z }\n---\nBody\n",

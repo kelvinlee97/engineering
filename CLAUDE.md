@@ -64,7 +64,9 @@ The step-by-step procedures live in `.claude/skills/wiki/SKILL.md`. In short:
   `sources/<id>.md` of each source it cites. Every listed source is cited at
   least once. `wiki_check.py` enforces all of this.
 - Links between pages are relative paths (`../claude-code/subagent.md`), so
-  they resolve on GitHub and in Obsidian. OKF allows both forms.
+  they resolve on GitHub and in Obsidian. OKF allows both forms. Link a
+  directory through its index file (`claude-code/index.md`), never as
+  `claude-code/`: Obsidian cannot resolve a bare directory link.
 - One concept, one page. Update the existing page rather than creating a
   near-duplicate. When a new source contradicts an existing claim, keep both
   claims with their footnotes under `## Contradictions`; do not pick a winner.
