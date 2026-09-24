@@ -145,12 +145,15 @@ kbd,
 .md-typeset h3,
 .md-typeset h4 {
   color: var(--md-default-fg-color);
-  font-family: var(--kb-display-font);
+  font-family: var(--md-text-font);
   font-weight: 600;
   letter-spacing: -0.006em;
 }
 
+/* Only the page title uses the serif display face; section headings share the
+   body sans so long technical articles scan as one family. */
 .md-typeset h1 {
+  font-family: var(--kb-display-font);
   margin-bottom: 0.6rem;
   font-size: clamp(2.1rem, 4.4vw, 3rem);
   font-weight: 650;
