@@ -27,10 +27,9 @@ def run(cwd: pathlib.Path) -> subprocess.CompletedProcess[str]:
 
 @pytest.fixture
 def repo(tmp_path: pathlib.Path) -> pathlib.Path:
-    """A copy of the real .github tree, plus the directories dependabot expects."""
+    """A copy of the real .github tree, plus the directory dependabot expects."""
     shutil.copytree(REPO / ".github", tmp_path / ".github")
     (tmp_path / "youtube-transcript").mkdir()
-    (tmp_path / "pages").mkdir()
     return tmp_path
 
 

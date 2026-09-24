@@ -15,8 +15,8 @@ follows. It co-evolves with the wiki; propose edits when a rule stops working.
 | Wiki | `wiki/` (OKF bundle root) | The LLM only. The user reads and reviews. |
 | Schema | this file and `.claude/skills/wiki/SKILL.md` | The user and the LLM together. |
 
-The legacy articles still publish to <https://blog.kelvin.ink/>, but they are
-frozen: no new articles are added there, and they are not edited.
+The legacy articles are frozen and no longer published; the old blog at
+blog.kelvin.ink is retired. Wiki pages link to them on GitHub.
 
 ## Default behaviour in every session
 
@@ -110,13 +110,13 @@ Run what touches your change:
   then `python scripts/build_site.py check`. Quartz config lives in `site/`.
 - Python tooling: `uvx ruff check .`, `mypy`, and
   `python -m unittest discover -s scripts/tests -p 'test_*.py'`.
-- Legacy site (only if something under the legacy tree or `pages/` changed):
-  `python scripts/knowledge_base.py validate`, then
-  `python scripts/knowledge_base.py stage --output .pages-build` and
-  `mkdocs build --strict`.
+- Any page with a new or edited Mermaid diagram:
+  `python3 scripts/check_mermaid_diagrams.py` renders every diagram with the real
+  Mermaid CLI (the regex check in `wiki_check.py` cannot catch syntax errors).
 - `git diff --check`.
 
-## Site design system
+## Site
 
-The legacy site's look lives in `pages/knowledge-base.css` as CSS custom
-properties. Change tokens there rather than hardcoding values.
+The wiki is published at <https://wiki.kelvin.ink/> by `.github/workflows/wiki-site.yml`
+on every push to main. Its look and behaviour are set in `site/quartz.config.ts` and
+`site/quartz.layout.ts`; Quartz itself is pinned in `scripts/build_site.py`.

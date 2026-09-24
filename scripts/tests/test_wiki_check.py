@@ -144,6 +144,13 @@ class WikiCheckTest(unittest.TestCase):
         self.assertTrue(any("## Related" in e for e in errors))
         self.assertTrue(any("sources/src.md" in e for e in errors))
 
+    def test_mermaid_without_accessibility_metadata_fails(self) -> None:
+        diagram = "```mermaid\nflowchart LR\n    accTitle: T\n    A --> B\n```\n\n"
+        self.write("eng/subagent.md", PAGE.replace("## Related", diagram + "## Related"))
+        errors = self.run_check().errors
+        self.assertTrue(any("missing `accDescr`" in e for e in errors))
+        self.assertFalse(any("missing `accTitle`" in e for e in errors))
+
     def test_claude_md_lists_the_same_type_vocabulary(self) -> None:
         claude_md = (Path(__file__).resolve().parents[2] / "CLAUDE.md").read_text(encoding="utf-8")
         line = next(ln for ln in claude_md.splitlines() if "`type` vocabulary" in ln)

@@ -25,7 +25,7 @@ flowchart TD
 For any article containing Mermaid:
 
 1. Confirm every block has `accTitle` and `accDescr`.
-2. Run the knowledge-base validation and `mkdocs build --strict`.
+2. Run `python scripts/wiki_check.py` and `python3 scripts/check_mermaid_diagrams.py`.
 3. Inspect the rendered article, not only the Markdown source.
 4. Check a desktop and narrow mobile viewport for clipping, tiny labels, excessive height, and horizontal overflow.
 5. Check light and dark themes when diagram or site styling changes.

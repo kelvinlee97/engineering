@@ -10,7 +10,6 @@ on:
   push:
     branches: [main]
     paths:
-      - "pages/requirements.txt"
       - "youtube-transcript/pyproject.toml"
       - "youtube-transcript/uv.lock"
       - ".github/workflows/dependency-audit.yml"
@@ -49,7 +48,7 @@ jobs:
           echo "--- changed files ---"
           echo "$changed"
           # Keep this pattern in step with the push path filter above.
-          if printf '%s\n' "$changed" | grep -qE '^pages/requirements\.txt$|^youtube-transcript/pyproject\.toml$|^youtube-transcript/uv\.lock$|^\.github/workflows/dependency-audit\.yml$'; then
+          if printf '%s\n' "$changed" | grep -qE '^youtube-transcript/pyproject\.toml$|^youtube-transcript/uv\.lock$|^\.github/workflows/dependency-audit\.yml$'; then
             echo "run=true" >>"$GITHUB_OUTPUT"
           else
             echo "run=false" >>"$GITHUB_OUTPUT"
@@ -60,9 +59,6 @@ jobs:
       - name: Install audit tooling
         if: steps.filter.outputs.run == 'true'
         run: python -m pip install pip-audit uv
-      - name: Audit the site toolchain
-        if: steps.filter.outputs.run == 'true'
-        run: pip-audit --strict --requirement pages/requirements.txt
       - name: Export the YouTube transcript lockfile
         if: steps.filter.outputs.run == 'true'
         working-directory: youtube-transcript

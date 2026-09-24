@@ -46,9 +46,50 @@ jobs:
         with:
           path: .site-build/public
 
+  mermaid:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+      - name: Render every Mermaid diagram
+        run: python3 scripts/check_mermaid_diagrams.py
+
+  gate:
+    # Kept under the name of the retired mkdocs workflow's gate because branch
+    # protection on main requires a check with this exact name. It always
+    # reports; only a failed or cancelled upstream job fails it.
+    name: Knowledge base site gate
+    if: always()
+    needs: [build, mermaid]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the results of the jobs above
+        env:
+          NEEDS_JSON: ${{ toJSON(needs) }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import sys
+
+          needs = json.loads(os.environ["NEEDS_JSON"])
+          for name in sorted(needs):
+              print(f"{name}: {needs[name]['result']}")
+          bad = sorted(n for n, v in needs.items() if v["result"] not in ("success", "skipped"))
+          if bad:
+              print(f"::error::upstream jobs did not pass: {', '.join(bad)}")
+              sys.exit(1)
+          print("All upstream jobs passed or were skipped.")
+          PY
+
   deploy:
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
-    needs: build
+    needs: [build, mermaid]
     runs-on: ubuntu-latest
     permissions:
       contents: read
