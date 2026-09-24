@@ -60,10 +60,9 @@ jobs:
         run: python3 scripts/check_mermaid_diagrams.py
 
   gate:
-    # Kept under the name of the retired mkdocs workflow's gate because branch
-    # protection on main requires a check with this exact name. It always
+    # The required status check for main (set in branch protection). It always
     # reports; only a failed or cancelled upstream job fails it.
-    name: Knowledge base site gate
+    name: Wiki site gate
     if: always()
     needs: [build, mermaid]
     runs-on: ubuntu-latest
