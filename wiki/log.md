@@ -1,5 +1,8 @@
 # Wiki Update Log
 
+## 2026-09-25
+* **Lint**: Obsidian check found five directory links (`engineering/`, `sources/`, `syntheses/`, `ai-engineering/`, `claude-code/`) that Obsidian could not resolve, leaving index pages isolated in the graph. Pointed them at each directory's `index.md`; `wiki_check.py` now rejects directory links in indexes.
+
 ## 2026-09-24
 * **Ingest**: Building an AI-Native Revenue Organization (`Claude/ai-native-revenue-org/README.md`): created 3 pages, updated 1 page (agent-skill).
 * **Ingest**: GitHub Certified: Agentic AI Developer (`Claude/github-agentic-ai-developer/README.md`): created 3 pages, updated 3 pages (extension-mechanisms, least-privilege-tool-access, delegation-contract). Only module 2 was read in full.
