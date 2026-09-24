@@ -1,9 +1,5 @@
 # Python Strings Cheatsheet
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > Every string method returns a new string; the original text is never modified in place.
 
 ```python

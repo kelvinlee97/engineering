@@ -1,10 +1,6 @@
 # Amazon EC2 Auto Scaling (Auto Scaling Groups) - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > An Auto Scaling group is a self-healing capacity boundary: it never launches below minimum or above maximum, scaling policies move desired capacity within that boundary, and health checks continuously replace any instance that falls out of the group regardless of why it failed.
 

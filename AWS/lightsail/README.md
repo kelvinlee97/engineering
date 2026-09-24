@@ -1,10 +1,6 @@
 # Amazon Lightsail - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Amazon Lightsail is the simplest way to launch and manage virtual private servers and web applications on AWS, with low, predictable monthly pricing. It bundles instances, containers, managed databases (MySQL/PostgreSQL), load balancers, CDN distributions, block/object storage, static IPs, DNS, and snapshots in one console.
 

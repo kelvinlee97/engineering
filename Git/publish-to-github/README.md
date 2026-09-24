@@ -1,9 +1,5 @@
 # Publish Changes to GitHub: A Beginner's Guide
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > Publishing to GitHub is a straight line, not one command: edit, inspect, test, commit, push a branch, open a pull request, merge. Nothing reaches your teammates or `main` until you push, and pushing a branch is not the same as merging it.
 
 Publishing code safely is not one command. The normal path is:

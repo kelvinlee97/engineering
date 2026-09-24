@@ -1,10 +1,6 @@
 # Nginx Production Deployment and Operations for Beginners
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
 Deploy **Nginx only** on one Ubuntu 24.04 LTS VM. It serves static files, reverse-proxies an application on `127.0.0.1:3000`, and obtains HTTPS certificates through Certbot webroot. Replace `<domain>`, `<site>`, `<operations-email>`, and `<approved-health-path>` through your change process. This is a deployable baseline, not evidence that any particular server has been deployed.
-
-## Mental model
 
 > Nginx terminates HTTPS on the public side and splits every request between two local origins: static files served directly from disk, and a dynamic application reached only through loopback proxy — so the host never exposes the application port directly.
 

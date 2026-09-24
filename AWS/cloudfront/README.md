@@ -1,10 +1,6 @@
 # Amazon CloudFront - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > CloudFront answers every request from the nearest edge first: a cache hit never touches your origin, and only a cache miss — shaped by the cache behavior's TTL and forwarded headers/cookies — turns into an origin fetch, which is why cache configuration is the main lever over both cost and freshness.
 

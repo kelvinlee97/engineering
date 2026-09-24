@@ -1,10 +1,6 @@
 # Elastic Load Balancing - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Elastic Load Balancing (ELB) automatically distributes incoming traffic across targets (EC2 instances, containers, IP addresses, Lambda functions) in one or more Availability Zones, routing traffic only to healthy targets. Capacity scales automatically.
 

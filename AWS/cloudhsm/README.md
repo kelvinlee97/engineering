@@ -1,10 +1,6 @@
 # AWS CloudHSM - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > CloudHSM splits control into two planes that never overlap: IAM governs who can call the CloudHSM API to manage clusters and HSMs, while HSM users — created and managed inside the HSM itself, invisible to IAM — govern who can use the keys. AWS cannot see either your keys or your HSM users.
 

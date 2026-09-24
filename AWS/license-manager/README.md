@@ -1,10 +1,6 @@
 # AWS License Manager - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > AWS License Manager helps you manage software licenses from vendors such as Microsoft, SAP, Oracle, and IBM across AWS accounts and Regions. It provides consolidated visibility and reporting, supports Bring Your Own License (BYOL), enforces license limits with rules, and helps independent software vendors (ISVs) distribute and track licenses through managed entitlements.
 

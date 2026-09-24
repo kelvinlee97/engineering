@@ -1,10 +1,6 @@
 # Amazon Cognito - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Cognito answers two different questions with two different components: a user pool answers "who is this person" and hands back a JWT, while an identity pool answers "what AWS resources can they touch" and hands back temporary AWS credentials — an app that only needs the first component never needs an identity pool at all.
 

@@ -1,12 +1,8 @@
 # Amazon Connect - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Mental model
-
-> A contact's entire journey is scripted by one flow object, and it never reaches an agent directly: the flow puts it in a queue, and a routing profile — not the flow — is what actually decides which agent picks it up, so routing problems and flow problems have different root causes even though they feel the same to a caller.
+> A contact's entire journey is scripted by one flow object, and it never reaches an agent directly: the flow puts it in a queue, and the routing profile, rather than the flow, decides which agent picks it up, so routing problems and flow problems have different root causes even though they feel the same to a caller.
 
 This article answers one practical question:
 

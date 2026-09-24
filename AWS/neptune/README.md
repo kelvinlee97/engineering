@@ -1,10 +1,6 @@
 # Amazon Neptune - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > A Neptune cluster is one primary and up to 15 replicas all reading the same self-healing, multi-AZ cluster volume — writes always go through the primary, reads scale out across replicas.
 

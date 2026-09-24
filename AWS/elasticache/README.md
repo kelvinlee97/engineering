@@ -1,10 +1,6 @@
 # Amazon ElastiCache - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Amazon ElastiCache is a fully managed in-memory data store and cache service. It supports the Valkey, Redis OSS, and Memcached engines in either serverless or node-based deployments, and is commonly used for caching, session storage, and real-time data access.
 

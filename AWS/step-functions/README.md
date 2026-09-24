@@ -1,16 +1,12 @@
 # AWS Step Functions - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > AWS Step Functions is a serverless orchestration service.
 
 ## Overview
 
-AWS Step Functions is a serverless orchestration service. You define workflows (state machines) as a series of steps to coordinate Lambda functions, AWS services, and human approval flows. It supports visual debugging, retries, parallel processing, and long-running workflows.
+You define workflows (state machines) as a series of steps to coordinate Lambda functions, AWS services, and human approval flows. It supports visual debugging, retries, parallel processing, and long-running workflows.
 
 ## Key concepts
 

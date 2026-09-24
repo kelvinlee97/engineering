@@ -26,11 +26,10 @@ def _parser() -> argparse.ArgumentParser:
         "--output", type=Path, required=True, help="Ignored local capture directory"
     )
     publication = commands.add_parser(
-        "validate-publication", help="Validate the local coverage ledger and two summaries"
+        "validate-publication", help="Validate the local coverage ledger and the summary"
     )
     publication.add_argument("validation", type=Path)
-    publication.add_argument("english", type=Path)
-    publication.add_argument("chinese", type=Path)
+    publication.add_argument("summary", type=Path)
     return parser
 
 
@@ -54,7 +53,7 @@ def main() -> int:
                 write_local_capture(args.output, metadata, segments, validation)
             print(json.dumps(payload, ensure_ascii=False, indent=2))
             return 0 if validation.status is CaptureStatus.COMPLETE else 2
-        errors = validate_publication(args.validation, args.english, args.chinese)
+        errors = validate_publication(args.validation, args.summary)
         print(
             json.dumps(
                 {"status": "complete" if not errors else "partial", "errors": errors},

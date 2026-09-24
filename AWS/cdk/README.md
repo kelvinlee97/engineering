@@ -1,10 +1,6 @@
 # AWS Cloud Development Kit (CDK) - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > CDK never talks to AWS directly — it compiles your code into a CloudFormation template, and CloudFormation does the actual provisioning; every CDK command is really a step before or around a CloudFormation deployment.
 

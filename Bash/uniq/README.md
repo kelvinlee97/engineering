@@ -1,9 +1,5 @@
 # The `uniq` command
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > `uniq` only collapses lines that are already **adjacent and identical**; it has no memory of lines seen earlier. That is why it is almost always chained right after `sort`, which brings matching lines next to each other first.
 
 `uniq` is not an acronym and has no expanded form; its name comes from **unique**. It combines identical lines that appear next to each other.

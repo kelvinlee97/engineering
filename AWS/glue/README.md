@@ -1,10 +1,6 @@
 # AWS Glue - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > AWS Glue is a serverless data integration service for discovering, preparing, moving, and integrating data. It provides a central Data Catalog, crawlers for schema discovery, ETL jobs on Spark or Ray engines, streaming ETL, workflows, and visual tooling (Glue Studio). Data in the catalog is queryable from Athena, EMR, and Redshift Spectrum.
 

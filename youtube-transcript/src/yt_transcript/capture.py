@@ -236,11 +236,8 @@ def write_local_capture(
             for chunk in validation.chunks
         ],
         "audit": {
-            "missing_from_english": [],
-            "missing_from_chinese": [],
-            "unsupported_english_claims": [],
-            "unsupported_chinese_claims": [],
-            "timestamp_mismatches": [],
+            "missing_items": [],
+            "unsupported_claims": [],
             "unresolved_capture_warnings": list(validation.warnings),
             "status": "pending",
         },

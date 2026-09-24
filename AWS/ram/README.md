@@ -1,10 +1,6 @@
 # AWS Resource Access Manager (RAM) - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > A resource share bundles resources with principals and a managed permission; sharing within your organization takes effect immediately, while sharing outside it requires the recipient to accept an invitation first.
 

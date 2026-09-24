@@ -1,9 +1,5 @@
 # Claude Projects, Redesigned
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > A project used to be a folder: a place to park instructions and reference files that every new
 > chat started from. In the redesign it becomes a single, long-running **conversation**. You state a
 > goal; Claude splits it into threads, runs them as parallel cloud sessions, and reassembles the
@@ -40,7 +36,7 @@ Sections marked *Analysis* are my own reading, not claims from the announcement.
 | | Old Projects | Redesigned Projects |
 | --- | --- | --- |
 | Shape | A folder of files and custom instructions | One ongoing conversation |
-| Who splits the work | You do — separate chats, manual handoffs | Claude scopes and delegates |
+| Who splits the work | You do: separate chats, manual handoffs | Claude scopes and delegates |
 | Where work runs | The chat you are in | Parallel cloud sessions, one per thread |
 | Context between units | You re-paste it | Shared project memory |
 | Outputs | Scattered across chats | Collected in the project library |
@@ -84,7 +80,7 @@ thread both reads and writes them.
   finished result.
 - **Threads** do the work. Each runs as a separate cloud session, so they run in parallel and keep
   going after you close your laptop.
-- **Memory** is shared across threads. Every thread adds to it and draws from it — the release slipped
+- **Memory** is shared across threads. Every thread adds to it and draws from it: the release slipped
   to Friday, why the export was dropped, who to check with before touching the billing service. It
   also holds your working and communication style: you can ask Claude to check in more or less often,
   start new threads more or less eagerly, or make each update more or less detailed.
@@ -99,7 +95,7 @@ Beta access opened on **September 17, 2026**, and the initial gate is narrow:
 | --- | --- |
 | Plan | Claude **Pro** or **Max** |
 | Surface | Claude **Code** (desktop and web) |
-| Must use | **Cloud sessions** — local-only workflows are not supported yet |
+| Must use | **Cloud sessions**: local-only workflows are not supported yet |
 | Must not have | Existing projects on web or desktop |
 
 Rollout order, as announced: more Claude Code users on Pro and Max over the following week, then the
@@ -133,6 +129,6 @@ surprise accumulates before you look again.
 
 ## Related notes
 
-- [Claude Code Cloud Sessions](../cloud-sessions/README.md) — the runtime each thread executes in
-- [Introduction to Claude Code Subagents](../subagents/README.md) — delegation *within* a single session
-- [Claude Managed Agents](../managed-agents/README.md) — the API-side equivalent for long-running asynchronous work
+- [Claude Code Cloud Sessions](../cloud-sessions/README.md): the runtime each thread executes in
+- [Introduction to Claude Code Subagents](../subagents/README.md): delegation *within* a single session
+- [Claude Managed Agents](../managed-agents/README.md): the API-side equivalent for long-running asynchronous work

@@ -1,10 +1,6 @@
 # Amazon RDS - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > RDS separates two independent scaling axes: Multi-AZ gives you a synchronous standby for failover, and read replicas give you asynchronous copies for read scaling — writes always go to the primary either way.
 

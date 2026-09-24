@@ -1,9 +1,5 @@
 # Claude Code Cloud Sessions
 
-English | [简体中文](README_ZH.md)
-
-## Mental model
-
 > A cloud session is an ordinary Claude Code session whose machine is not yours. It runs in an
 > Anthropic-managed VM that clones your repository from GitHub, keeps running after you close the
 > laptop, and can be picked up later from a browser, a phone, or back in your own terminal.
@@ -92,7 +88,7 @@ features at all.
 
 ## Moving work between terminal and cloud
 
-This is the part where the mental model earns its keep. Handoff from the CLI is **one-way**: you can
+This is where the distinction matters most. Handoff from the CLI is **one-way**: you can
 pull a cloud session down, but you cannot push a running terminal session up. (The Desktop app has a
 **Continue in** menu that can send a local session to the cloud; the CLI does not.)
 
@@ -148,7 +144,7 @@ Bundle limits:
 | --- | --- |
 | Repository required | Must be a git repository with at least one commit |
 | Size | Under 100 MB; larger falls back to current branch only, then to a single squashed snapshot, then fails |
-| Untracked files | Not included — `git add` anything the session must see |
+| Untracked files | Not included: `git add` anything the session must see |
 | Push back | Only when your GitHub connection has push access to that repository |
 
 ### Sending follow-ups from any machine
@@ -211,9 +207,9 @@ does not flow back into the cloud session. To keep steering from your phone afte
 Cloud sessions support built-in commands that produce text output. Terminal-interface-only commands
 such as `/plugin` and `/resume` are unavailable, and picker-style commands behave differently:
 
-- `/model`, `/effort`, `/color`, `/rename` — pass the value as an argument (`/model sonnet`) instead of opening a picker. Requires Claude Code v2.1.205+ in the session's environment.
-- `/fast` — toggles fast mode when available on your account. Requires v2.1.271+.
-- `/config` — in the browser this opens your settings panel rather than setting a value, and any `key=value` text after it is ignored. To change a setting for a cloud session, set an environment variable on the environment, or commit the key to the repository's `.claude/settings.json`.
+- `/model`, `/effort`, `/color`, `/rename`: pass the value as an argument (`/model sonnet`) instead of opening a picker. Requires Claude Code v2.1.205+ in the session's environment.
+- `/fast`: toggles fast mode when available on your account. Requires v2.1.271+.
+- `/config`: in the browser this opens your settings panel rather than setting a value, and any `key=value` text after it is ignored. To change a setting for a cloud session, set an environment variable on the environment, or commit the key to the repository's `.claude/settings.json`.
 
 Context management specifically:
 
@@ -262,7 +258,7 @@ flowchart TD
 Turning it on, depending on where the PR came from:
 
 - **PRs created in a cloud session**: open the CI status bar in the session and select **Auto-fix**
-- **From your terminal**: `/autofix-pr` on the PR's branch — Claude Code detects the open PR with `gh`, spawns a cloud session, and enables auto-fix in one step
+- **From your terminal**: run `/autofix-pr` on the PR's branch and Claude Code detects the open PR with `gh`, spawns a cloud session, and enables auto-fix in one step
 - **From mobile**: ask Claude in words, e.g. "watch this PR and fix any CI failures or review comments"
 - **Any existing PR**: paste the PR URL into a session and ask
 
@@ -298,7 +294,7 @@ Anthropic API, which may allow data to exit the VM.** "Network disabled" is not 
 | `Unable to get organization UUID`, or `Error loading Claude Code sessions` in the picker | You're authenticated with an API key, or stored account details are stale. Run `/login` with your claude.ai account. |
 | `Remote Control session expired` / `Access denied` | `--teleport` uses the Remote Control session infrastructure, so its wording surfaces here. Run `/login` to refresh, and confirm the same account owns the session. |
 | `Remote Control may not be available for this organization` | An Owner has not enabled cloud sessions for the organization. |
-| Session stopped, VM reclaimed | Environment expiry after inactivity. Reopen from claude.ai/code for a fresh VM with history restored — but background work such as subagents and shell commands is **not** restored. |
+| Session stopped, VM reclaimed | Environment expiry after inactivity. Reopen from claude.ai/code for a fresh VM with history restored: but background work such as subagents and shell commands is **not** restored. |
 
 A subtle one: a session counts as **inactive while it waits for you to approve an MCP connector tool
 call or to sign in to an MCP server**, and it can expire during that wait.
@@ -335,10 +331,10 @@ cloud as a place you can escalate to mid-task will not work from the CLI.
 
 ## Related documentation
 
-- [Cloud environments](https://code.claude.com/docs/en/cloud-environments) — network access, environment variables, setup scripts
+- [Cloud environments](https://code.claude.com/docs/en/cloud-environments): network access, environment variables, setup scripts
 - [Get started with cloud sessions](https://code.claude.com/docs/en/web-quickstart)
 - [Self-hosted environments](https://code.claude.com/docs/en/self-hosted-environments)
-- [Routines](https://code.claude.com/docs/en/routines) — scheduled, API-triggered, and GitHub-event-driven runs
-- [Remote Control](https://code.claude.com/docs/en/remote-control) — steering a *local* session from claude.ai
+- [Routines](https://code.claude.com/docs/en/routines): scheduled, API-triggered, and GitHub-event-driven runs
+- [Remote Control](https://code.claude.com/docs/en/remote-control): steering a *local* session from claude.ai
 - [Permission modes](https://code.claude.com/docs/en/permission-modes)
 - [Security](https://code.claude.com/docs/en/security) and [Data usage](https://code.claude.com/docs/en/data-usage)

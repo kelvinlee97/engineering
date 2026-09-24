@@ -1,16 +1,12 @@
 # AWS Systems Manager - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > AWS Systems Manager helps you centrally view, manage, and operate nodes at scale across AWS, on-premises, and multicloud environments.
 
 ## Overview
 
-AWS Systems Manager helps you centrally view, manage, and operate nodes at scale across AWS, on-premises, and multicloud environments. Nodes run the SSM Agent and are registered as managed nodes; you then use tools like Run Command, Session Manager, Patch Manager, Parameter Store, Automation, and OpsCenter without logging into servers.
+Nodes run the SSM Agent and are registered as managed nodes; you then use tools like Run Command, Session Manager, Patch Manager, Parameter Store, Automation, and OpsCenter without logging into servers.
 
 ## Key concepts
 

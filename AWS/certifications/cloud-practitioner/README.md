@@ -1,16 +1,12 @@
 # AWS Certified Cloud Practitioner (CLF-C02) - Study Outline
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > The CLF-C02 exam validates a foundational understanding of AWS Cloud concepts, services, security, architecture, pricing, and support.
 
 ## Exam overview
 
-The CLF-C02 exam validates a foundational understanding of AWS Cloud concepts, services, security, architecture, pricing, and support. It is for individuals who want to demonstrate overall knowledge of the AWS Cloud, regardless of specific technical role.
+It is for individuals who want to demonstrate overall knowledge of the AWS Cloud, regardless of specific technical role.
 
 - **Format**: 65 questions (50 scored + 15 unscored), multiple choice and multiple response.
 - **Duration**: 90 minutes (plus 30 minutes for non-English language exams with extended time).
@@ -48,6 +44,6 @@ Official practice questions and courses are available on AWS Skill Builder. Ques
 
 ## Related runbooks in this knowledge base
 
-- [AWS index](../../README.md) for all bilingual runbooks
+- [AWS index](../../README.md) for all runbooks
 - [Solutions Architect outline](../solutions-architect/README.md) for the next level of certification
 - [Developer Associate outline](../developer-associate/README.md) for developer-focused certification

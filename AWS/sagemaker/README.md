@@ -1,10 +1,6 @@
 # Amazon SageMaker AI - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > SageMaker AI carries you from a notebook, through a managed training job, to a hosted endpoint (real-time, serverless, or batch) — and the 2024 rename to SageMaker AI changed the product's place in a larger unified data/AI platform without changing any existing `sagemaker` API, CLI, or resource name.
 

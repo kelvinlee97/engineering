@@ -1,6 +1,4 @@
-# Git Command-Line Basics, Step 00 — `git init`
-
-Chinese version: [README_ZH.md](README_ZH.md)
+# Git Command-Line Basics, Step 00: `git init`
 
 > This is the first of 7 chapters covering the most essential Git command-line commands, numbered in the order you'd actually use them day to day: `00-init` → `01-clone` → `02-add` → `03-status` → `04-commit` → `05-log` → `06-diff`. Each chapter is a sibling directory under `Git/` — just follow the numbers in order, or jump to whichever command you need.
 >
@@ -39,14 +37,14 @@ flowchart LR
 | Step | Command | One-line takeaway |
 |---|---|---|
 | 00 | `git init` | Turn a plain folder into a Git repository *(you are here)* |
-| 01 | `git clone` | Copy a remote repository to your machine — [../01-clone](../01-clone/README.md) |
-| 02 | `git add` | Stage changes for the next commit — [../02-add](../02-add/README.md) |
-| 03 | `git status` | Inspect the current state of your working tree/index — [../03-status](../03-status/README.md) |
-| 04 | `git commit` | Turn the staged content into a permanent snapshot — [../04-commit](../04-commit/README.md) |
-| 05 | `git log` | Browse commit history — [../05-log](../05-log/README.md) |
-| 06 | `git diff` | Compare the exact differences between two versions — [../06-diff](../06-diff/README.md) |
+| 01 | `git clone` | Copy a remote repository to your machine: [../01-clone](../01-clone/README.md) |
+| 02 | `git add` | Stage changes for the next commit: [../02-add](../02-add/README.md) |
+| 03 | `git status` | Inspect the current state of your working tree/index: [../03-status](../03-status/README.md) |
+| 04 | `git commit` | Turn the staged content into a permanent snapshot: [../04-commit](../04-commit/README.md) |
+| 05 | `git log` | Browse commit history: [../05-log](../05-log/README.md) |
+| 06 | `git diff` | Compare the exact differences between two versions: [../06-diff](../06-diff/README.md) |
 
-## The core mental model (learn this first, everything else follows)
+## The three areas Git works with (learn this first)
 
 Git manages your code across "three areas". Once this clicks, every one of the 7 commands makes sense:
 
@@ -82,7 +80,7 @@ flowchart LR
 
 ---
 
-## `git init` — create your first repository
+## `git init`: create your first repository
 
 ### What this does
 
@@ -122,7 +120,7 @@ git init -b main
 | Flag | Effect |
 |---|---|
 | `-b <name>` / `--initial-branch=<name>` | Sets the initial branch name (e.g. `main`); otherwise Git falls back to its global default |
-| `--bare` | Creates a "bare" repository with no working tree, storing history only — typically used as a server-side remote |
+| `--bare` | Creates a "bare" repository with no working tree, storing history only: typically used as a server-side remote |
 | `-q` / `--quiet` | Suppresses output |
 
 ### Verify it worked
@@ -134,8 +132,8 @@ git status      # should show "On branch main / No commits yet"
 
 ### Common pitfalls
 
-- ⚠️ Don't manually delete `.git` and re-run `init` in a directory that's already a repository — this destroys all history. Check `git status` first if you're unsure whether the working tree is clean.
-- ⚠️ Running `git init` in your home directory (`~`) or a system root is a common mistake — Git will start tracking the entire directory as a repo. Always `cd` into your intended project folder first.
+- ⚠️ Don't manually delete `.git` and re-run `init` in a directory that's already a repository: this destroys all history. Check `git status` first if you're unsure whether the working tree is clean.
+- ⚠️ Running `git init` in your home directory (`~`) or a system root is a common mistake: Git will start tracking the entire directory as a repo. Always `cd` into your intended project folder first.
 
 ### What's next
 

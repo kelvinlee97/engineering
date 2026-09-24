@@ -1,10 +1,6 @@
 # Application Auto Scaling - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Application Auto Scaling is one control loop applied uniformly to many non-EC2 resource types: register a resource as a scalable target with min/max bounds, attach a policy that watches a metric or a clock, and let the loop add or remove capacity within those bounds.
 

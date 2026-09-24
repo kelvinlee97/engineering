@@ -1,10 +1,6 @@
 # AWS Data Pipeline - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > AWS Data Pipeline is a web service for automating the movement and transformation of data between AWS services and on-premises data sources. You define a pipeline definition with data-driven activities and dependencies; the pipeline schedules and runs tasks on EC2 instances. Note: AWS Data Pipeline is no longer available to new customers and is in maintenance mode; existing customers can continue using it, and AWS provides migration guidance for moving workloads to other services.
 

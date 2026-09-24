@@ -1,10 +1,6 @@
 # AWS Managed Services (AMS) - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > AMS is an operations team you consume as a service: your changes flow through a controlled request process, and AMS's own baselines handle monitoring, patching, security, and backup underneath.
 

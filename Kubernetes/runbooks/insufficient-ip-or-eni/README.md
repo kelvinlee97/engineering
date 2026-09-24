@@ -1,9 +1,5 @@
 # Kubernetes IP or ENI Exhaustion Scheduling Failure Runbook
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > A `Pending` Pod with an ENI/IP-related event is a capacity or health problem somewhere in a chain — node readiness, Pod-subnet IP supply, node ENI/IP allocatable, or the IPAM/admission components that connect them — and the runbook's job is to locate which link is broken before touching any control.
 
 > **Use when:** Pods stay `Pending` and events point to ENI/IP capacity or a missing Pod subnet.

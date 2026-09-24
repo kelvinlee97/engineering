@@ -1,10 +1,6 @@
 # Amazon Comprehend - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Comprehend is a set of pre-trained NLP detectors (entities, sentiment, PII, syntax...) plus an optional AutoML layer on top: reach for the `Detect*` APIs first, and only build a custom classifier or entity recognizer when your categories or terms are specific enough that the pre-trained models can't name them.
 
@@ -18,7 +14,7 @@ Amazon Comprehend uses natural language processing (NLP) to extract insights fro
 
 ## Key concepts
 
-- **Insights**: pre-trained model outputs — entities (people, places, organizations), key phrases, PII, dominant language, sentiment (positive/neutral/negative/mixed), targeted sentiment (sentiment per entity), and syntax (parts of speech).
+- **Insights**: pre-trained model outputs covering entities (people, places, organizations), key phrases, PII, dominant language, sentiment (positive/neutral/negative/mixed), targeted sentiment (sentiment per entity), and syntax (parts of speech).
 - **Real-time vs. asynchronous**: `Detect*` APIs for small workloads; analysis jobs for large document sets.
 - **Custom classification**: AutoML-built classifiers that organize documents into your own categories.
 - **Custom entity recognition**: recognizers trained to detect your specific terms and phrases.

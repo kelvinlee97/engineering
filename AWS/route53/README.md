@@ -1,10 +1,6 @@
 # Amazon Route 53 - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > A query lands in a hosted zone, a routing policy picks which record(s) to answer with, and health checks can remove unhealthy targets from that choice before a client ever sees them.
 

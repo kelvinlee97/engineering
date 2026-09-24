@@ -1,9 +1,5 @@
 # Python Exceptions Cheatsheet
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > `try`/`except`/`else`/`finally` are four mutually exclusive-or-guaranteed blocks: exactly one of `except` or `else` runs depending on whether an exception occurred, and `finally` always runs regardless.
 
 ```mermaid

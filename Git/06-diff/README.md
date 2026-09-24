@@ -1,8 +1,6 @@
 ← [Back to index](../00-init/README.md) ｜ Previous: [Git/log](../05-log/README.md)
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-# `git diff` — Compare the Exact Differences
+# `git diff`: Compare the Exact Differences
 
 ## What this does
 
@@ -81,7 +79,7 @@ index 83db48f..bf269b4 100644
 |---|---|
 | `--staged` / `--cached` | Compares the staging area against the most recent commit |
 | `--stat` | Shows only file-level added/removed line counts, no actual code |
-| `--word-diff` | Highlights differences at the word level instead of the whole line — good for prose/docs |
+| `--word-diff` | Highlights differences at the word level instead of the whole line: good for prose/docs |
 | `--color-words` | Similar to `--word-diff`, more compact output |
 
 ## Verify you understood it
@@ -97,7 +95,7 @@ git diff --staged        # should now show that line's diff
 ## Common pitfalls
 
 - ⚠️ Forgetting to run `git diff --staged` as a final check before committing can let debug `console.log` calls or temporary code slip into a commit.
-- ⚠️ Binary files (images, etc.) can't be diffed for content — Git will say `Binary files differ`, which is expected.
+- ⚠️ Binary files (images, etc.) can't be diffed for content: Git will say `Binary files differ`, which is expected.
 
 ## Recap: you've finished all 7 core commands 🎉
 

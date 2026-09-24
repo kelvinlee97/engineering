@@ -1,10 +1,6 @@
 # AWS Config - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > AWS Config only knows about a resource if the recorder was running when it changed: recording, delivery, and rule evaluation are three separate steps in sequence, so a resource can be perfectly real and still invisible to Config, to S3 history, or to compliance rules if any one earlier step was off or unauthorized.
 

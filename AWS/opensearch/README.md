@@ -1,10 +1,6 @@
 # Amazon OpenSearch Service - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > A domain is a managed OpenSearch cluster where you place data on a spectrum of cost/latency tiers — hot data nodes for active queries, UltraWarm and cold storage backed by S3 for aging read-only data.
 

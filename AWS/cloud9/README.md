@@ -1,10 +1,6 @@
 # AWS Cloud9 - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Cloud9 is a browser-based IDE glued to one compute resource per environment — either an EC2 instance it manages for you, or your own server reached over SSH — and it is now a maintenance-mode service: existing environments keep working, but no new customers can start.
 

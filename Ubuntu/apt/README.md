@@ -1,9 +1,5 @@
 # Common Ubuntu APT Operations
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > Every operation here follows the same shape: refresh the index, simulate the change, inspect the plan, then apply it. Hidden state — held versions, phased rollouts, unattended-upgrade timers, dpkg locks — can silently change what a plain install or upgrade would do, so the simulation step is what actually protects you.
 
 This guide is for operators who need to install, update, inspect, and troubleshoot packages on Ubuntu hosts. The rule is simple: refresh the index and inspect the plan before making system changes.

@@ -1,6 +1,6 @@
 site_name: Kelvin’s Engineering Notes
 site_url: https://blog.kelvin.ink/
-site_description: Practical, bilingual engineering notes on cloud, infrastructure, developer tooling, and operations.
+site_description: Practical engineering notes on cloud, infrastructure, developer tooling, and operations.
 repo_name: kelvinlee97/engineering
 repo_url: https://github.com/kelvinlee97/engineering
 docs_dir: .pages-build
@@ -31,7 +31,6 @@ theme:
 # and the SEO title; the bar carries the short form.
 extra:
   kb_wordmark: Kelvin’s Notes
-  kb_wordmark_zh: Kelvin 的笔记
 
 extra_css:
   - stylesheets/knowledge-base.css

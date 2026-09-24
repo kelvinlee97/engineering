@@ -1,10 +1,6 @@
 # Amazon MSK - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > MSK manages the Kafka control plane for you — provisioned gives you broker-level control, serverless removes capacity planning entirely — while your applications keep speaking standard Kafka data-plane APIs either way.
 

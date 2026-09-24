@@ -1,10 +1,6 @@
 # Amazon Detective - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Amazon Detective helps you analyze, investigate, and identify the root cause of security findings and suspicious activity. It automatically extracts time-based events (logins, API calls, network traffic) from AWS CloudTrail and VPC Flow Logs, ingests GuardDuty findings, and uses machine learning and graph analysis to build interactive visualizations for security investigations.
 

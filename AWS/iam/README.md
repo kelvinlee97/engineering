@@ -1,10 +1,6 @@
 # AWS IAM - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-18
-
-## Mental model
 
 > AWS Identity and Access Management (IAM) controls authentication (who is signed in) and authorization (who has permissions) for AWS resources. IAM, IAM Identity Center, and AWS STS are included with your AWS account at no additional charge. IAM is eventually consistent.
 

@@ -1,10 +1,6 @@
 # AWS Artifact - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > AWS Artifact is a read-only evidence and agreements portal, not a compliance service: it hands you AWS's own audited reports and agreements on demand, but producing your own organization's compliance evidence stays your responsibility.
 

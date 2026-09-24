@@ -1,7 +1,5 @@
 # Node.js / Express BFF Operations
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
 This module contains beginner-friendly guides for operating a Node.js Express backend-for-frontend (BFF) with PM2 cluster mode. It uses a generalized production model: an external Nginx or OpenResty gateway sends traffic to a private Node.js BFF, which calls approved downstream HTTP services.
 
 The model is deliberately generic. It does not describe any employer's ports, worker count, downstream services, release tooling, or ingress topology.

@@ -1,10 +1,6 @@
 # Modern BFF Architecture Assessment for Beginners
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
 This guide helps an operator assess a common web path without assuming facts about a particular production environment.
-
-## Mental model
 
 > Modernization is a question of operating model, not component names: a BFF, a gateway, and downstream services can each stay exactly as they are today and still be modern, if evidence shows they are stateless, immutably released, and observable — the platform underneath is the last decision, not the first.
 
@@ -19,7 +15,7 @@ flowchart LR
 
 The pattern is **not obsolete**. A BFF still provides browser-specific authorization, request adaptation, and aggregation. Nginx/OpenResty remains useful at the edge for TLS, routing, rate limiting, and carefully bounded Lua extensions. What can become outdated is the operating model: manually managed hosts, mutable releases, process-local state, shared long-lived credentials, and no usable evidence during an incident.
 
-## Start with evidence, not a migration
+## Gather evidence before planning a migration
 
 Do not infer topology from one host or one process list. Before selecting a platform, record the owner-approved answers below. An unknown is a discovery item, not evidence that a capability is missing.
 

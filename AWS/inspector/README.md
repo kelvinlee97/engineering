@@ -1,10 +1,6 @@
 # Amazon Inspector - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Amazon Inspector is a vulnerability management service that automatically discovers workloads and continuously scans them for software vulnerabilities and unintended network exposure. It scans EC2 instances, container images in Amazon ECR, and Lambda functions, and produces findings with remediation guidance and an environment-specific risk score.
 

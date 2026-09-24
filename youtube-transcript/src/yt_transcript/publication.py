@@ -12,15 +12,10 @@ _TIMESTAMP = re.compile(
     r"https://www\.youtube\.com/watch\?v=([A-Za-z0-9_-]{11})&t=(\d+)s(?=[)\s])"
 )
 _SEGMENT = re.compile(r"segment-(\d+)")
-_RECIPROCAL_ENGLISH = re.compile(r"\]\(summary_zh\.md\)")
-_RECIPROCAL_CHINESE = re.compile(r"\]\(summary\.md\)")
 _DISPOSITIONS = {"included", "compressed", "cta"}
 _AUDIT_KEYS = (
-    "missing_from_english",
-    "missing_from_chinese",
-    "unsupported_english_claims",
-    "unsupported_chinese_claims",
-    "timestamp_mismatches",
+    "missing_items",
+    "unsupported_claims",
 )
 
 
@@ -35,9 +30,7 @@ def _segment_number(value: object) -> int | None:
     return int(match.group(1)) if match else None
 
 
-def validate_publication(
-    validation_path: Path, english_path: Path, chinese_path: Path
-) -> list[str]:
+def validate_publication(validation_path: Path, summary_path: Path) -> list[str]:
     payload: Any = json.loads(validation_path.read_text(encoding="utf-8"))
     if not isinstance(payload, dict):
         return ["validation ledger is not an object"]
@@ -184,32 +177,18 @@ def validate_publication(
     if isinstance(audit, dict) and audit.get("unresolved_capture_warnings"):
         errors.append("capture warnings remain unresolved")
 
-    english = english_path.read_text(encoding="utf-8")
-    chinese = chinese_path.read_text(encoding="utf-8")
-    english_links = _timestamp_links(english)
-    chinese_links = _timestamp_links(chinese)
-    english_timestamps = {timestamp for _, timestamp in english_links}
-    chinese_timestamps = {timestamp for _, timestamp in chinese_links}
-    if not _RECIPROCAL_ENGLISH.search(english):
-        errors.append("English summary does not link to Chinese summary")
-    if not _RECIPROCAL_CHINESE.search(chinese):
-        errors.append("Chinese summary does not link to English summary")
-    if english_timestamps != chinese_timestamps:
-        errors.append("English and Chinese summaries use different timestamps")
-    if video_id is not None:
-        if any(link_video_id != video_id for link_video_id, _ in english_links):
-            errors.append("English summary uses a different video ID")
-        if any(link_video_id != video_id for link_video_id, _ in chinese_links):
-            errors.append("Chinese summary uses a different video ID")
+    summary = summary_path.read_text(encoding="utf-8")
+    summary_links = _timestamp_links(summary)
+    summary_timestamps = {timestamp for _, timestamp in summary_links}
+    if video_id is not None and any(
+        link_video_id != video_id for link_video_id, _ in summary_links
+    ):
+        errors.append("summary uses a different video ID")
     if duration is not None:
-        outside = sorted(
-            timestamp
-            for timestamp in english_timestamps | chinese_timestamps
-            if timestamp > duration
-        )
+        outside = sorted(timestamp for timestamp in summary_timestamps if timestamp > duration)
         if outside:
-            errors.append(f"summaries use timestamps outside video duration: {outside}")
-    missing = required_timestamps - english_timestamps
+            errors.append(f"summary uses timestamps outside video duration: {outside}")
+    missing = required_timestamps - summary_timestamps
     if missing:
-        errors.append(f"summaries omit required timestamps: {sorted(missing)}")
+        errors.append(f"summary omits required timestamps: {sorted(missing)}")
     return errors

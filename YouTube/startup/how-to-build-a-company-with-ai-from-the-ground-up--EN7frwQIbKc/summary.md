@@ -1,7 +1,5 @@
 # How to Build a Company With AI From the Ground Up
 
-[简体中文](summary_zh.md)
-
 ## Source
 
 - Video: [How To Build A Company With AI From The Ground Up](https://www.youtube.com/watch?v=EN7frwQIbKc)

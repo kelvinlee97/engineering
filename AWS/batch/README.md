@@ -1,10 +1,6 @@
 # AWS Batch - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > AWS Batch is a queue in front of elastic compute: a job waits in a priority-ordered queue until its compute environment has room, then runs as a container (or an array/multi-node group of containers) — you describe the work and its resource needs, Batch handles provisioning.
 

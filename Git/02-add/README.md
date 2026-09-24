@@ -1,8 +1,6 @@
 ← [Back to index](../00-init/README.md) ｜ Previous: [Git/clone](../01-clone/README.md)
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-# `git add` — Stage Changes for the Next Commit
+# `git add`: Stage Changes for the Next Commit
 
 ## What this does
 
@@ -61,7 +59,7 @@ git add -p file1.txt
 |---|---|
 | `.` | Stages all added/modified/deleted files under the current directory (not parent directories) |
 | `-A` / `--all` | Stages all changes across the entire repository |
-| `-p` / `--patch` | Interactively confirms each hunk — useful when you only want to commit part of a file's changes |
+| `-p` / `--patch` | Interactively confirms each hunk: useful when you only want to commit part of a file's changes |
 | `-u` / `--update` | Stages modifications/deletions only for files Git already tracks; skips new files |
 
 ## Verify it worked
@@ -77,7 +75,7 @@ git status
 ## Common pitfalls
 
 - ⚠️ `git add .` will also pick up `.env` files, secrets, etc. Always check `git status` before committing, and add sensitive files to `.gitignore`.
-- ⚠️ Edited a file again after `add`-ing it? The change won't automatically sync into the staging area — you need to `git add` it again, or `commit` will still include the old version.
+- ⚠️ Edited a file again after `add`-ing it? The change won't automatically sync into the staging area: you need to `git add` it again, or `commit` will still include the old version.
 - ⚠️ To undo an `add` (without deleting the file, just moving it back out of staging): `git restore --staged file1.txt`.
 
 ## What's next

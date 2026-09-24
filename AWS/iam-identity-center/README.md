@@ -1,10 +1,6 @@
 # AWS IAM Identity Center - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > AWS IAM Identity Center (successor to AWS Single Sign-On, renamed in July 2022) centrally manages workforce identities and access to AWS accounts and cloud applications. It is the recommended service for multi-account access: you create users/groups or connect an external identity provider, assign permission sets, and users sign in through the access portal.
 

@@ -1,10 +1,6 @@
 # Amazon Managed Blockchain (AMB) - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > AMB has two independent shapes: AMB Access gives you API access into public Ethereum/Bitcoin nodes, while private networks let you run a permissioned Hyperledger Fabric network made of member organizations and their peer nodes.
 

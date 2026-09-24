@@ -1,10 +1,6 @@
 # AWS AppSync - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > AppSync sits between a single GraphQL schema and several independent data sources: every field resolves through its own resolver, so a query can fan out to DynamoDB, Lambda, RDS, and HTTP in one round trip, while subscriptions push the same schema's mutations back out over WebSockets.
 

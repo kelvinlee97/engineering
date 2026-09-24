@@ -1,16 +1,12 @@
 # AWS WAF - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > AWS WAF is a web application firewall that monitors HTTP(S) requests to protected resources and controls access based on rules (IP addresses, query strings, headers, body).
 
 ## Overview
 
-AWS WAF is a web application firewall that monitors HTTP(S) requests to protected resources and controls access based on rules (IP addresses, query strings, headers, body). It responds with the content, an HTTP 403, or a custom response.
+It responds with the content, an HTTP 403, or a custom response.
 
 ```mermaid
 flowchart LR

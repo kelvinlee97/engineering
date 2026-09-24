@@ -1,9 +1,5 @@
 # Python Loops Cheatsheet
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > A loop's `else` block is a "did we ever `break`?" check: it runs only when the loop reaches its natural end without a `break`, which is why it pairs naturally with a search.
 
 ```mermaid

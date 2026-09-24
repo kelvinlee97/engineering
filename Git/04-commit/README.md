@@ -1,8 +1,6 @@
 ← [Back to index](../00-init/README.md) ｜ Previous: [Git/status](../03-status/README.md)
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-# `git commit` — Package the Staging Area into a History Snapshot
+# `git commit`: Package the Staging Area into a History Snapshot
 
 ## What this does
 
@@ -78,8 +76,8 @@ git status          # should show "nothing to commit, working tree clean"
 
 ## Common pitfalls
 
-- ⚠️ `--amend` changes the commit's hash. **Never amend a commit that's already been pushed and pulled by others** — it forks history. On shared branches, use `git revert` instead.
-- ⚠️ Empty or vague messages like "update" make `git log` useless when debugging later — spend 10 seconds writing something clear and your future self will thank you.
+- ⚠️ `--amend` changes the commit's hash. **Never amend a commit that's already been pushed and pulled by others**: it forks history. On shared branches, use `git revert` instead.
+- ⚠️ Empty or vague messages like "update" make `git log` useless when debugging later: spend 10 seconds writing something clear and your future self will thank you.
 
 ## What's next
 

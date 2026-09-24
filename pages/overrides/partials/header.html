@@ -1,29 +1,11 @@
 {#-
   The site's menu bar, replacing Material's stock header.
 
-  Four things, left to right: the wordmark (home), two destinations, search,
-  and the language switch. There is no theme control — the site is light only
-  — and no repository link, which lives in the footer.
-
-  The language switch is a segmented control: the lit half is the page you are
-  on (an `aria-current` span, not a link), the other half an ordinary link to
-  the same article in the other language, so each language keeps its own URL.
-  Every staged page carries that URL as `kb_pair` in its front matter.
+  Three things, left to right: the wordmark (home), two destinations, and
+  search. There is no theme control — the site is light only — and no
+  repository link, which lives in the footer.
 -#}
 {% import "partials/language.html" as lang with context %}
-
-{% set page_language = 'en' %}
-{% if page and page.meta and page.meta.kb_language %}
-  {% set page_language = page.meta.kb_language %}
-{% endif %}
-{% set is_zh = page_language == 'zh' %}
-
-{% set wordmark = config.extra.kb_wordmark_zh if is_zh else config.extra.kb_wordmark %}
-{% set topics_url = ('topics/index_zh/' if is_zh else 'topics/') | url %}
-{% set archive_url = ('archive/index_zh/' if is_zh else 'archive/') | url %}
-{% set home_url = ('index_zh/' if is_zh else '') | url %}
-{% set pair_url = page.meta.kb_pair if page and page.meta and page.meta.kb_pair
-                  else ('' if is_zh else 'index_zh/') | url %}
 
 <header class="md-header kb-header" data-md-component="header">
   <nav class="md-header__inner kb-header__inner" aria-label="{{ lang.t('header') }}">
@@ -32,12 +14,12 @@
       {% include ".icons/" ~ icon ~ ".svg" %}
     </label>
 
-    <a class="kb-header__wordmark" href="{{ home_url }}">{{ wordmark }}</a>
+    <a class="kb-header__wordmark" href="{{ '' | url }}">{{ config.extra.kb_wordmark }}</a>
 
     <div class="kb-header__spacer"></div>
 
-    <a class="kb-header__link" href="{{ topics_url }}">{{ "主题" if is_zh else "Topics" }}</a>
-    <a class="kb-header__link" href="{{ archive_url }}">{{ "归档" if is_zh else "Archive" }}</a>
+    <a class="kb-header__link" href="{{ 'topics/' | url }}">Topics</a>
+    <a class="kb-header__link" href="{{ 'archive/' | url }}">Archive</a>
 
     {% if "material/search" in config.plugins %}
       {% set search = config.plugins["material/search"] | attr("config") %}
@@ -45,7 +27,7 @@
         {#- Below the phone breakpoint Material hides the inline box, so the
             bar keeps an icon that opens the search overlay. -#}
         <label class="kb-header__search-toggle" for="__search"
-               aria-label="{{ '搜索工程知识库' if is_zh else 'Search the knowledge base' }}">
+               aria-label="Search the knowledge base">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                stroke-width="2" stroke-linecap="round" aria-hidden="true">
             <circle cx="11" cy="11" r="7"></circle>
@@ -55,17 +37,5 @@
         {% include "partials/search.html" %}
       {% endif %}
     {% endif %}
-
-    <div class="kb-switch">
-      {% if is_zh %}
-        <a class="kb-switch__option" lang="en" href="{{ pair_url }}"
-           aria-label="Switch to English">EN</a>
-        <span class="kb-switch__option kb-switch__option--active" aria-current="page">中</span>
-      {% else %}
-        <span class="kb-switch__option kb-switch__option--active" aria-current="page">EN</span>
-        <a class="kb-switch__option" lang="zh-CN" href="{{ pair_url }}"
-           aria-label="切换到中文">中</a>
-      {% endif %}
-    </div>
   </nav>
 </header>

@@ -1,7 +1,5 @@
 # Nginx and OpenResty Operations
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
 This module contains beginner-friendly production deployment and operations guides for Nginx and OpenResty on Ubuntu 24.04 LTS. They are separate server choices: OpenResty is an Nginx-based distribution with LuaJIT and Lua modules, not a plugin to run alongside a system Nginx.
 
 Do not run both guides on one host at the same time. Both examples bind TCP ports `80` and `443`.

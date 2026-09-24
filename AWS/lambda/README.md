@@ -1,10 +1,6 @@
 # AWS Lambda - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-18
-
-## Mental model
 
 > AWS Lambda is a serverless compute service: you run code without provisioning or managing servers. AWS manages the underlying infrastructure (maintenance, capacity, scaling, patching) and you focus on application logic. Lambda provides two compute primitives:
 

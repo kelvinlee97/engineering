@@ -1,10 +1,6 @@
 # ZooKeeper Quorum-Loss Snapshot Restore Runbook
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
 Use this incident-only Runbook when a three-member ZooKeeper ensemble has lost quorum and cannot accept updates. It is not for a normal restart, a single damaged member, or a disk-full follower repair; use the [single-member disk-full recovery runbook](../disk-full-transaction-log-recovery/README.md) for that case.
-
-## Mental model
 
 > Total quorum loss means there is no surviving authoritative copy of the data to resync from, so recovery is not a repair but a rebuild: every member is wiped down to the same approved snapshot, one at a time, through a deliberately temporary and tightly locked-down administrative interface, and quorum is only re-formed after every member agrees on that one snapshot.
 

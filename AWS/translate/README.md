@@ -1,16 +1,12 @@
 # Amazon Translate - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Amazon Translate is a text translation service using advanced machine learning for high-quality, on-demand translation.
 
 ## Overview
 
-Amazon Translate is a text translation service using advanced machine learning for high-quality, on-demand translation. You can translate unstructured text, translate documents stored in S3, or integrate translation into applications that work in multiple languages. There are no contracts or minimum commitments; you pay per character translated.
+You can translate unstructured text, translate documents stored in S3, or integrate translation into applications that work in multiple languages. There are no contracts or minimum commitments; you pay per character translated.
 
 ## Key concepts
 

@@ -1,10 +1,6 @@
 # Node.js / Express BFF: Ten Common Incidents Runbook
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
 Use this generic runbook for an Express BFF supervised by PM2 cluster mode. Replace placeholders only in an authorized environment. Preserve evidence before changing processes, releases, routes, credentials, or downstream targets. A restart can restore service temporarily; it does not prove the root cause.
-
-## Mental model
 
 > A failing request crosses a fixed chain of hops — gateway, PM2/BFF process, route/app logic, downstream dependency, host resources — and each of the ten incidents below is a known way one specific hop breaks; find the first broken hop before touching any control.
 

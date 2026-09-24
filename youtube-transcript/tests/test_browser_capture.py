@@ -313,11 +313,8 @@ def _publication_ledger(
             }
         ],
         "audit": {
-            "missing_from_english": [],
-            "missing_from_chinese": [],
-            "unsupported_english_claims": [],
-            "unsupported_chinese_claims": [],
-            "timestamp_mismatches": [],
+            "missing_items": [],
+            "unsupported_claims": [],
             "unresolved_capture_warnings": unresolved_capture_warnings or [],
             "status": "complete",
         },
@@ -328,34 +325,26 @@ def _write_publication_fixture(
     tmp_path: Path,
     ledger: dict[str, object],
     *,
-    english_video_id: str = "abcdefghijk",
-    chinese_video_id: str = "abcdefghijk",
+    video_id: str = "abcdefghijk",
     timestamp: int = 60,
 ) -> None:
     (tmp_path / "validation.json").write_text(json.dumps(ledger), encoding="utf-8")
     (tmp_path / "summary.md").write_text(
-        "[中文](summary_zh.md) "
-        f"[source](https://www.youtube.com/watch?v={english_video_id}&t={timestamp}s)",
-        encoding="utf-8",
-    )
-    (tmp_path / "summary_zh.md").write_text(
-        "[English](summary.md) "
-        f"[来源](https://www.youtube.com/watch?v={chinese_video_id}&t={timestamp}s)",
+        f"[source](https://www.youtube.com/watch?v={video_id}&t={timestamp}s)",
         encoding="utf-8",
     )
 
 
 def test_publication_rejects_timestamps_from_another_video(tmp_path: Path) -> None:
     ledger = _publication_ledger()
-    _write_publication_fixture(tmp_path, ledger, english_video_id="wrongvideo1")
+    _write_publication_fixture(tmp_path, ledger, video_id="wrongvideo1")
 
     errors = validate_publication(
         tmp_path / "validation.json",
         tmp_path / "summary.md",
-        tmp_path / "summary_zh.md",
     )
 
-    assert "English summary uses a different video ID" in errors
+    assert "summary uses a different video ID" in errors
 
 
 def test_publication_rejects_metadata_source_url_mismatch(tmp_path: Path) -> None:
@@ -366,7 +355,6 @@ def test_publication_rejects_metadata_source_url_mismatch(tmp_path: Path) -> Non
     errors = validate_publication(
         tmp_path / "validation.json",
         tmp_path / "summary.md",
-        tmp_path / "summary_zh.md",
     )
 
     assert "validation ledger source URL does not match video ID" in errors
@@ -379,17 +367,15 @@ def test_publication_rejects_timestamps_outside_video_duration(tmp_path: Path) -
     errors = validate_publication(
         tmp_path / "validation.json",
         tmp_path / "summary.md",
-        tmp_path / "summary_zh.md",
     )
 
-    assert "summaries use timestamps outside video duration: [121]" in errors
+    assert "summary uses timestamps outside video duration: [121]" in errors
 
 
 def test_publication_rejects_timestamp_links_with_extra_query_parameters(tmp_path: Path) -> None:
     ledger = _publication_ledger()
     _write_publication_fixture(tmp_path, ledger)
     (tmp_path / "summary.md").write_text(
-        "[中文](summary_zh.md) "
         "[source](https://www.youtube.com/watch?v=abcdefghijk&t=60s&list=playlist)",
         encoding="utf-8",
     )
@@ -397,10 +383,9 @@ def test_publication_rejects_timestamp_links_with_extra_query_parameters(tmp_pat
     errors = validate_publication(
         tmp_path / "validation.json",
         tmp_path / "summary.md",
-        tmp_path / "summary_zh.md",
     )
 
-    assert "summaries omit required timestamps: [60]" in errors
+    assert "summary omits required timestamps: [60]" in errors
 
 
 def test_publication_rejects_unresolved_capture_warnings(tmp_path: Path) -> None:
@@ -410,7 +395,6 @@ def test_publication_rejects_unresolved_capture_warnings(tmp_path: Path) -> None
     errors = validate_publication(
         tmp_path / "validation.json",
         tmp_path / "summary.md",
-        tmp_path / "summary_zh.md",
     )
 
     assert "capture warnings remain unresolved" in errors
@@ -423,7 +407,6 @@ def test_publication_rejects_source_segments_outside_the_chunk(tmp_path: Path) -
     errors = validate_publication(
         tmp_path / "validation.json",
         tmp_path / "summary.md",
-        tmp_path / "summary_zh.md",
     )
 
     assert "chunk 1 item 1 source segment is outside the chunk" in errors
@@ -475,7 +458,6 @@ def test_publication_rejects_non_contiguous_chunks(tmp_path: Path) -> None:
     errors = validate_publication(
         tmp_path / "validation.json",
         tmp_path / "summary.md",
-        tmp_path / "summary_zh.md",
     )
 
     assert "chunks are not contiguous at chunk 2" in errors
@@ -493,7 +475,6 @@ def test_publication_rejects_invalid_chunk_ids_and_incomplete_segment_coverage(
     errors = validate_publication(
         tmp_path / "validation.json",
         tmp_path / "summary.md",
-        tmp_path / "summary_zh.md",
     )
 
     assert "chunk 1 has an invalid chunk ID" in errors
@@ -545,34 +526,24 @@ def test_publication_requires_processed_chunks_a_clean_audit_and_matching_times(
         ],
         "audit": {
             "status": "complete",
-            "missing_from_english": [],
-            "missing_from_chinese": [],
-            "unsupported_english_claims": [],
-            "unsupported_chinese_claims": [],
-            "timestamp_mismatches": [],
+            "missing_items": [],
+            "unsupported_claims": [],
             "unresolved_capture_warnings": [],
         },
     }
     validation = tmp_path / "validation.json"
-    english = tmp_path / "summary.md"
-    chinese = tmp_path / "summary_zh.md"
+    summary = tmp_path / "summary.md"
     validation.write_text(json.dumps(ledger), encoding="utf-8")
-    english.write_text(
-        "[中文](summary_zh.md) "
+    summary.write_text(
         "[source](https://www.youtube.com/watch?v=abcdefghijk&t=60s)",
         encoding="utf-8",
     )
-    chinese.write_text(
-        "[English](summary.md) "
-        "[来源](https://www.youtube.com/watch?v=abcdefghijk&t=60s)",
-        encoding="utf-8",
-    )
 
-    assert validate_publication(validation, english, chinese) == []
+    assert validate_publication(validation, summary) == []
 
     ledger["chunks"][0]["status"] = "pending"
     validation.write_text(json.dumps(ledger), encoding="utf-8")
-    assert validate_publication(validation, english, chinese) == ["chunk 1 is not processed"]
+    assert validate_publication(validation, summary) == ["chunk 1 is not processed"]
 
 
 def test_publication_requires_verbatim_quotes_from_the_chunk(tmp_path: Path) -> None:
@@ -606,39 +577,29 @@ def test_publication_requires_verbatim_quotes_from_the_chunk(tmp_path: Path) -> 
         ],
         "audit": {
             "status": "complete",
-            "missing_from_english": [],
-            "missing_from_chinese": [],
-            "unsupported_english_claims": [],
-            "unsupported_chinese_claims": [],
-            "timestamp_mismatches": [],
+            "missing_items": [],
+            "unsupported_claims": [],
             "unresolved_capture_warnings": [],
         },
     }
     validation = tmp_path / "validation.json"
-    english = tmp_path / "summary.md"
-    chinese = tmp_path / "summary_zh.md"
+    summary = tmp_path / "summary.md"
     validation.write_text(json.dumps(ledger), encoding="utf-8")
-    english.write_text(
-        "[中文](summary_zh.md) "
+    summary.write_text(
         "[source](https://www.youtube.com/watch?v=abcdefghijk&t=60s)",
         encoding="utf-8",
     )
-    chinese.write_text(
-        "[English](summary.md) "
-        "[来源](https://www.youtube.com/watch?v=abcdefghijk&t=60s)",
-        encoding="utf-8",
-    )
 
-    assert validate_publication(validation, english, chinese) == []
+    assert validate_publication(validation, summary) == []
 
     del ledger["chunks"][0]["content_items"][0]["quote"]
     validation.write_text(json.dumps(ledger), encoding="utf-8")
-    assert validate_publication(validation, english, chinese) == [
+    assert validate_publication(validation, summary) == [
         "chunk 1 item 1 has no quote"
     ]
 
     ledger["chunks"][0]["content_items"][0]["quote"] = "not from this chunk"
     validation.write_text(json.dumps(ledger), encoding="utf-8")
-    assert validate_publication(validation, english, chinese) == [
+    assert validate_publication(validation, summary) == [
         "chunk 1 item 1 quote is not from this chunk"
     ]

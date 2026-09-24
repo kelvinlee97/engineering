@@ -1,10 +1,6 @@
 # Introduction to Claude Code Subagents
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
 This is a complete study guide to Anthropic Academy's **Introduction to subagents** course. It covers all four lessons and the accessible subtitles from their official videos. It is an original summary, not a transcript or a replacement for the course.
-
-## Mental model
 
 > A subagent is valuable when a focused worker can complete substantial intermediate work in
 > isolation and return a small, well-defined result that the parent can verify and use.
@@ -44,7 +40,7 @@ The four lessons form one sequence:
 3. **Design for completion:** specify inputs, output format, obstacle reporting, and minimum tool access.
 4. **Delegate selectively:** use subagents when the result matters more than the intermediate journey.
 
-## Lesson 1 — What are subagents?
+## Lesson 1: What are subagents?
 
 ### Definition and lifecycle
 
@@ -85,7 +81,7 @@ Claude Code also supports custom subagents with their own system prompts and too
 
 Video reference: [02:01–02:30](https://www.youtube.com/watch?v=jKErNxuxPXg&t=121s)
 
-## Lesson 2 — Creating a subagent
+## Lesson 2: Creating a subagent
 
 ### Creation flow
 
@@ -165,7 +161,7 @@ The course suggests including **“proactively”** in the description when the 
 
 After creation, test the agent on realistic changes. If Claude does not use it when expected, improve the description with more specific triggers and examples rather than assuming the system prompt alone controls selection.
 
-## Lesson 3 — Designing effective subagents
+## Lesson 3: Designing effective subagents
 
 The course identifies four characteristics of an effective subagent:
 
@@ -225,7 +221,7 @@ Minimum access reduces unintended side effects and makes the responsibility of e
 
 Video reference: [02:42–03:26](https://www.youtube.com/watch?v=WPxWKT_OaU4&t=162s)
 
-## Lesson 4 — Using subagents effectively
+## Lesson 4: Using subagents effectively
 
 ### The decision rule
 
@@ -356,7 +352,7 @@ All articles were read through an enrolled Anthropic Academy session on 2026-08-
 
 ### Official course videos
 
-- [What are subagents?](https://www.youtube.com/watch?v=jKErNxuxPXg) — English auto-generated subtitles read on 2026-08-05.
-- [Creating a subagent](https://www.youtube.com/watch?v=arD6qEWa2Xc) — unavailable on 2026-08-05 because of a copyright claim; no transcript was used.
-- [Designing effective subagents](https://www.youtube.com/watch?v=WPxWKT_OaU4) — English auto-generated subtitles read on 2026-08-05.
-- [Using subagents effectively](https://www.youtube.com/watch?v=n5LoKZ8Oa-A) — English auto-generated subtitles read on 2026-08-05.
+- [What are subagents?](https://www.youtube.com/watch?v=jKErNxuxPXg): English auto-generated subtitles read on 2026-08-05.
+- [Creating a subagent](https://www.youtube.com/watch?v=arD6qEWa2Xc): unavailable on 2026-08-05 because of a copyright claim; no transcript was used.
+- [Designing effective subagents](https://www.youtube.com/watch?v=WPxWKT_OaU4): English auto-generated subtitles read on 2026-08-05.
+- [Using subagents effectively](https://www.youtube.com/watch?v=n5LoKZ8Oa-A): English auto-generated subtitles read on 2026-08-05.

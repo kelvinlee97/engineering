@@ -1,9 +1,5 @@
 # How Warp Builds Self-Improving Agents on Claude
 
-English | [简体中文](README_ZH.md)
-
-## Mental model
-
 > A skill is just a file. So an agent can edit it. Warp runs a second, scheduled agent whose only
 > job is to read human feedback on the first agent's work and open a pull request that improves the
 > skill file the first agent reads.
@@ -32,7 +28,7 @@ them. Sections marked *Analysis* are my own reading, not claims from Warp or Ant
 ## The problem: feedback dies with the session
 
 Warp's agents serve roughly 800,000 monthly developers. Their code review agent shipped with an
-ordinary failure mode: it produced suggestions engineers disagreed with — the reviewer explained why
+ordinary failure mode: it produced suggestions engineers disagreed with. The reviewer explained why
 in a comment, the agent never saw that explanation again, and the next pull request got the same
 suggestion.
 
@@ -66,10 +62,10 @@ Two loops at different frequencies:
 | **Applied by** | Immediately, in the session | A pull request a human merges |
 
 The inner skill is the functional one: what to look for in a diff, what the codebase's conventions
-are, what to stay quiet about. The outer skill is an *observer* — it never does the task, it only
+are, what to stay quiet about. The outer skill is an *observer*: it never does the task, it only
 compares what the agent suggested against how humans responded, and proposes an edit.
 
-## Why the improvement is a pull request, not a write
+## Why the improvement arrives as a pull request
 
 The outer loop proposes; it does not apply silently. Every change to a skill file goes through the
 repository's normal code review before merging.
@@ -78,7 +74,7 @@ That single design choice carries most of the safety of the pattern:
 
 - The team decides what counts as an improvement; the agent only drafts it.
 - Every behaviour change is a reviewable diff with an author, a date, and a revert path.
-- A bad lesson — feedback from one dissenting reviewer, or a misread of a one-off exception — gets
+- A bad lesson, such as feedback from one dissenting reviewer or a misread of a one-off exception, gets
   caught in review rather than quietly reshaping the agent's behaviour.
 
 *Analysis:* this is also why the pattern needs no new infrastructure. Version control already
@@ -96,7 +92,7 @@ extracted from it. Compare:
 
 | Feedback | What the improver can extract |
 | --- | --- |
-| 👎 | Nothing actionable — wrong output, unknown reason |
+| 👎 | Nothing actionable: wrong output, unknown reason |
 | "Bad suggestion" | The case was wrong; not the rule behind it |
 | "You suggested renaming this variable, but our convention is that this type of global variable uses this naming pattern" | A stated convention, which becomes a line in the skill file |
 
@@ -130,11 +126,10 @@ them.
   a rule, or it may mean the agent should not be reviewing that file type at all. The improver will
   tend to produce the former.
 - **No rollback signal.** The loop measures nothing after merge. If a change makes reviews worse,
-  only the next round of human feedback will show it — slowly.
+  only the next round of human feedback will show it, and slowly.
 
-## The takeaway
+## Why the pattern is worth copying
 
-The pattern is deliberately unremarkable: text files, a scheduled job, and pull requests. It is worth
-copying not because it is clever but because it turns corrections that used to evaporate at the end
-of a session into a reviewable, versioned, compounding asset — using tooling every engineering team
-already runs.
+The pattern is deliberately unremarkable: text files, a scheduled job, and pull requests. Its value
+is that corrections which used to disappear at the end of a session become reviewable, versioned
+edits that accumulate over time, using tooling every engineering team already runs.

@@ -1,12 +1,10 @@
 # What Happens When AI Agents Run the Business?
 
-中文版本：[summary_zh.md](summary_zh.md)
-
 - Source: [a16z on YouTube](https://www.youtube.com/watch?v=n34CIw3gk1k)
-- Transcript: YouTube visible Transcript — English, auto-generated
+- Transcript: YouTube visible Transcript (English, auto-generated)
 - Coverage: 286 segments, `00:00–36:13` of a `36:31` video
 
-## The claim: redesign the company, not just a workflow
+## The claim: redesign the whole company around agents
 
 Before joining Kavak, Maza Ayala says he built machine-learning systems before transformers, including work on risk algorithms, logistics, forecasting, and marketing. He presents the arrival of transformers and ChatGPT as making a new way of building companies possible. [01:03](https://www.youtube.com/watch?v=n34CIw3gk1k&t=63s)
 

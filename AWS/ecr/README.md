@@ -1,10 +1,6 @@
 # Amazon Elastic Container Registry (ECR) - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Amazon Elastic Container Registry (Amazon ECR) is a managed container image registry. It supports private repositories with IAM-based access and public repositories, and stores Docker, Open Container Initiative (OCI) images, and OCI-compatible artifacts.
 

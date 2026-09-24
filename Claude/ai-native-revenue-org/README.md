@@ -1,9 +1,5 @@
 # Building an AI-Native Revenue Organization
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > Two sales teams can buy the same number of Claude seats and get very different returns. The
 > difference is not the model — it is what the organization built around it: which systems Claude
 > can read and write, how much of the work it is trusted to finish, and whether the best sellers'
@@ -92,13 +88,13 @@ three enablers as a set is the useful part:
 
 | Decision | What the guide recommends |
 | --- | --- |
-| Owner | RevOps — they own the CRM Claude connects to *and* the pipeline reporting the program is measured by |
+| Owner | RevOps: they own the CRM Claude connects to *and* the pipeline reporting the program is measured by |
 | Connectors | Connect the tools reps already live in (Zoom, Granola, Gong, HubSpot, Clay, ZoomInfo, Fireflies, Microsoft 365); manual transcript uploads are a signal of a missing connector |
 | IT | Name an IT owner for workspace provisioning, SSO, and admin consents; agree provisioning dates **before** committing to a pilot date |
 | Security | Start the review early; it covers data boundaries, the connector permission model, auditability, and telemetry export |
 | Success metrics | Pick exactly **one activity metric** (e.g. call-prep briefs generated) and **one revenue metric** (e.g. pipeline per rep, cycle length); baseline both before deployment |
 | Spend visibility | Set limits by org, group, and user; gate costlier capabilities by role; track usage analytics from day one, not from the first readout |
-| Pilot cohort | Two or three teams with motivated leads — not volunteers scattered across the org; provision plugins at the admin level |
+| Pilot cohort | Two or three teams with motivated leads, rather than volunteers scattered across the org; provision plugins at the admin level |
 
 > **The one most teams skip.** Baselining before deployment. Without a pre-deployment baseline and a
 > concurrent control group, the pilot readout degrades into anecdotes, and the scale decision gets
@@ -116,12 +112,12 @@ Anthropic's Sales plugin ships commands and skills; the guide lists them explici
 
 | Skill | What it does |
 | --- | --- |
-| `account-research` | Company or person research — company intel, key contacts, recent news, hiring signals |
+| `account-research` | Company or person research: company intel, key contacts, recent news, hiring signals |
 | `call-prep` | Account context, attendee research, suggested agenda, discovery questions |
-| `daily-briefing` | Prioritized daily brief — meetings, pipeline alerts, email priorities, suggested actions |
-| `draft-outreach` | Research-first outreach — research the prospect, then draft email and LinkedIn messages |
+| `daily-briefing` | Prioritized daily brief: meetings, pipeline alerts, email priorities, suggested actions |
+| `draft-outreach` | Research-first outreach: research the prospect, then draft email and LinkedIn messages |
 | `competitive-intelligence` | Product comparison, pricing intel, recent releases, differentiation matrix, talk tracks |
-| `create-an-asset` | Custom sales assets — landing pages, decks, one-pagers, workflow demos |
+| `create-an-asset` | Custom sales assets: landing pages, decks, one-pagers, workflow demos |
 
 Three mechanics worth pulling out of the prose:
 
@@ -167,7 +163,7 @@ The gate between pilot and scale is stated as three signals, all of which must h
 
 1. Reps are still producing **after the novelty has worn off**.
 2. The quality checks are holding.
-3. Pilot teams are outperforming on the chosen outcome metric — even if the gap is still small.
+3. Pilot teams are outperforming on the chosen outcome metric: even if the gap is still small.
 
 The guide also names its best early predictor of how scaling will go: **the number of
 champion-created skills that pilot teams use regularly**. Field examples — Cyera ran a full-day
@@ -232,7 +228,7 @@ a date.
 
 ## Related notes
 
-- [The AI-Native SDLC Playbook](../ai-native-sdlc-playbook/README.md) — the same "redesign the
+- [The AI-Native SDLC Playbook](../ai-native-sdlc-playbook/README.md): the same "redesign the
   organization, not just the tooling" argument, applied to software delivery.
-- [Introduction to Claude Code Agent Skills](../agent-skills/README.md) — the mechanics behind
+- [Introduction to Claude Code Agent Skills](../agent-skills/README.md): the mechanics behind
   "skills are editable files you can provision to a team".

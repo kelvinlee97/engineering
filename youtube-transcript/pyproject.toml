@@ -1,7 +1,7 @@
 [project]
 name = "verified-youtube-transcript"
 version = "0.1.0"
-description = "Validate browser-read YouTube Transcript exports before grounded bilingual summarization."
+description = "Validate browser-read YouTube Transcript exports before grounded summarization."
 requires-python = ">=3.11"
 dependencies = []
 

@@ -1,19 +1,15 @@
 # YouTube Transcript Skill
 
-中文版本：[README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > One YouTube link produces one validated local transcript before any summary is written; capture, validation, and summarization are separate gates, and a failure at any gate stops the workflow instead of retrying or falling back to a third-party source.
 
 This local-first transcript skill first reads the mounted Transcript segments through one Chrome `evaluateAll` call. If YouTube leaves that panel empty, it uses Chrome's YouTube transcript export once instead. The paths are mutually exclusive; failure is reported without retrying or switching to a third-party source. It does not download media, call `yt-dlp` or a transcript API, use Whisper, or infer missing content from a title or description.
 
-The user gives the agent a YouTube link. It exports one complete transcript, validates its coverage, saves a local `transcript.md`, and only then writes reader-facing English and Chinese summaries. A failed first attempt stops the workflow.
+The user gives the agent a YouTube link. It exports one complete transcript, validates its coverage, saves a local `transcript.md`, and only then writes a reader-facing summary. A failed first attempt stops the workflow.
 
 ```mermaid
 flowchart TD
     accTitle: YouTube transcript capture and publication pipeline
-    accDescr: A YouTube link is captured via the Transcript panel, or the transcript export helper if the panel is empty. The capture is validated for coverage; a failure at capture or validation stops the workflow. A valid transcript is summarized into English and Chinese, audited, and checked by validate-publication before it is published.
+    accDescr: A YouTube link is captured via the Transcript panel, or the transcript export helper if the panel is empty. The capture is validated for coverage; a failure at capture or validation stops the workflow. A valid transcript is summarized, audited, and checked by validate-publication before it is published.
     L[YouTube link] --> P{Transcript panel<br/>has segments?}
     P -- Yes --> C1[Read via evaluateAll]
     P -- No --> C2[Use transcript export helper once]
@@ -21,10 +17,10 @@ flowchart TD
     C2 --> V
     V -- No --> S[Stop: report failure]
     V -- Yes --> T[Local transcript.md<br/>+ validation.json]
-    T --> M[Write English + Chinese summaries]
-    M --> A{Bilingual audit +<br/>validate-publication pass?}
+    T --> M[Write summary]
+    M --> A{Audit +<br/>validate-publication pass?}
     A -- No --> S
-    A -- Yes --> R[Publish summary.md<br/>+ summary_zh.md]
+    A -- Yes --> R[Publish summary.md]
 ```
 
 ## Output contract
@@ -35,10 +31,9 @@ flowchart TD
 ├── transcript.md
 └── validation.json
 
-# Published reading files
+# Published reading file
 YouTube/<topic>/<title-slug>--<video-id>/
-├── summary.md
-└── summary_zh.md
+└── summary.md
 ```
 
 `transcript.md` and `validation.json` are intentionally ignored by Git. Full transcripts can be copyrighted; only the reader-facing summaries are published.
@@ -51,14 +46,12 @@ It produces deterministic chunks of roughly 1,000 text units—English word runs
 
 ## Summary contract
 
-Before publishing, the Skill must process every chunk, record every substantive item as `included`, `compressed`, or a pure `cta` with source segment IDs and quotes, then perform a fresh bilingual audit. Publication is blocked unless:
+Before publishing, the Skill must process every chunk, record every substantive item as `included`, `compressed`, or a pure `cta` with source segment IDs and quotes, then perform a fresh audit. Publication is blocked unless:
 
 ```text
 processed segments = captured segments
 missing substantive items = 0
-unsupported English claims = 0
-unsupported Chinese claims = 0
-English/Chinese timestamp mismatch = 0
+unsupported claims = 0
 ```
 
 No summary may add recommendations, plans, corrections, or outside facts. Pure subscribe, like, comment, and share calls to action may be omitted.
@@ -96,11 +89,10 @@ After the Skill marks every chunk processed and completes its manual audit, it a
 ```bash
 uv run yt-transcript validate-publication \
   ../../.local/youtube/<title-slug>--<video-id>/validation.json \
-  ../../YouTube/<topic>/<title-slug>--<video-id>/summary.md \
-  ../../YouTube/<topic>/<title-slug>--<video-id>/summary_zh.md
+  ../../YouTube/<topic>/<title-slug>--<video-id>/summary.md
 ```
 
-This gate checks ledger structure and contiguous chunks, source video ID, timestamp range, source segment binding, required timestamps, timestamp parity, unresolved capture warnings, and reciprocal links; it does not determine whether a summary is semantically complete or source-faithful.
+This gate checks ledger structure and contiguous chunks, source video ID, timestamp range, source segment binding, required timestamps, and unresolved capture warnings; it does not determine whether a summary is semantically complete or source-faithful.
 
 ## Development
 

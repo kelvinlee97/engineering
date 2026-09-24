@@ -1,10 +1,6 @@
 # AWS Secrets Manager - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Secrets Manager stores versioned secret values behind an API call, so applications fetch credentials at runtime instead of hard-coding them, and an attached Lambda function can rotate those values on a schedule without changing application code.
 

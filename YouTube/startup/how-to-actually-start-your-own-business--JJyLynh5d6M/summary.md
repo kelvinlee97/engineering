@@ -1,7 +1,5 @@
 # How to Actually Start Your Own Business
 
-[简体中文](summary_zh.md)
-
 ## Source
 
 - Video: [How to Actually Start Your Own Business (No-Bs Guide)](https://www.youtube.com/watch?v=JJyLynh5d6M)

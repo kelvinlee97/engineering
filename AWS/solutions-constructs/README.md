@@ -1,16 +1,12 @@
 # AWS Solutions Constructs - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > AWS Solutions Constructs is an open-source extension of the AWS Cloud Development Kit (AWS CDK).
 
 ## Overview
 
-AWS Solutions Constructs is an open-source extension of the AWS Cloud Development Kit (AWS CDK). It provides pre-built, well-architected patterns that combine AWS services for common use cases, so you can define infrastructure with familiar programming languages and existing development workflows.
+It provides pre-built, well-architected patterns that combine AWS services for common use cases, so you can define infrastructure with familiar programming languages and existing development workflows.
 
 ## Key concepts
 

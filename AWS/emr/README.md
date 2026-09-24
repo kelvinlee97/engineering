@@ -1,10 +1,6 @@
 # Amazon EMR - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Amazon EMR (formerly Amazon Elastic MapReduce) is a managed cluster platform for running big data frameworks such as Apache Spark, Hive, HBase, Flink, Trino, and Presto. It supports traditional EC2-based clusters, EMR Serverless, and EMR on EKS.
 

@@ -1,10 +1,6 @@
 # AWS Pricing Models - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Every AWS pricing model trades flexibility for discount along the same axis: On-Demand gives full flexibility at the highest unit price, commitment-based plans trade flexibility for savings, and Spot trades availability guarantees for the deepest discount.
 

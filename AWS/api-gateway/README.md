@@ -1,10 +1,6 @@
 # Amazon API Gateway - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > API Gateway is a policy-enforcing front door: every request passes through authentication, throttling, and a stage before it ever reaches an integration, so backend code never has to implement those cross-cutting concerns itself.
 

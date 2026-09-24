@@ -55,11 +55,6 @@
     "description": "Dependency updates"
   },
   {
-    "name": "translation",
-    "color": "bfd4f2",
-    "description": "English/Chinese pairing or translation work"
-  },
-  {
     "name": "bug",
     "color": "d73a4a",
     "description": "Something is wrong or broken"

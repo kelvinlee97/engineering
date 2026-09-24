@@ -1,9 +1,5 @@
 # Python Tuples and Sets Cheatsheet
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > A tuple is an immutable, ordered record; a set is a mutable, unordered collection of unique hashable values. Pick the one whose properties (order and mutability vs. uniqueness) match the data.
 
 ## Tuples

@@ -1,16 +1,12 @@
 # Amazon SQS - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Amazon Simple Queue Service (Amazon SQS) is a fully managed message queue for decoupling distributed systems.
 
 ## Overview
 
-Amazon Simple Queue Service (Amazon SQS) is a fully managed message queue for decoupling distributed systems. Messages are stored redundantly across servers; queues support dead-letter queues and cost allocation tags.
+Messages are stored redundantly across servers; queues support dead-letter queues and cost allocation tags.
 
 ## Key concepts
 

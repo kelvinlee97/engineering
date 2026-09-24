@@ -1,7 +1,5 @@
 # Building and Structuring an AI-Native Company
 
-[简体中文](summary_zh.md)
-
 ## Source
 
 - Video: [Building And Structuring An AI Native Company](https://www.youtube.com/watch?v=Z3JyAqh4ixg)

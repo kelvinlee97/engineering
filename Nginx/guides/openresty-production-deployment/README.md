@@ -1,10 +1,6 @@
 # OpenResty Production Deployment and Operations for Beginners
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
 Deploy **OpenResty only** on one Ubuntu 24.04 LTS VM. OpenResty is an Nginx-based web platform with LuaJIT and Lua modules. This baseline provides a Lua health endpoint, reverse-proxies an application at `127.0.0.1:3000`, and uses Certbot webroot for HTTPS. Replace every `<example>` value through approved change control.
-
-## Mental model
 
 > OpenResty replaces the Nginx web-server process itself, adding a reviewed Lua script in the request path for the health endpoint while still reverse-proxying ordinary traffic to the local application over loopback.
 

@@ -1,9 +1,5 @@
 # Essential Git Commands for Operations
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > Git moves your work through four places — working tree, staging area, local repository, remote repository — and almost every command in this guide only inspects or moves content between them. On a shared branch, prefer an additive `revert` over rewriting history.
 
 New to GitHub collaboration? Start with [Publish Changes to GitHub: A Beginner's Guide](publish-to-github/README.md).

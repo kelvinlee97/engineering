@@ -16,7 +16,6 @@ const AREA_RULES = [
 ];
 
 const TYPE_RULES = [
-  ['translation', /translat|chinese|中文|readme_zh|bilingual/],
   ['bug', /\bbug\b|broken|\berror\b|\bfails?\b|typo|incorrect|404/],
   ['enhancement', /feature request|\bproposal\b|would be nice|please add|new article/],
   ['question', /^how |\bhow do i\b|\bquestion\b|\?\s*$/m],

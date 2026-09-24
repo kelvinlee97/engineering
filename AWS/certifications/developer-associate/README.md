@@ -1,16 +1,12 @@
 # AWS Certified Developer - Associate (DVA-C02) - Study Outline
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > The DVA-C02 exam validates proficiency in developing, testing, deploying, and debugging AWS cloud applications.
 
 ## Exam overview
 
-The DVA-C02 exam validates proficiency in developing, testing, deploying, and debugging AWS cloud applications. It covers writing application code, working with AWS services (including Lambda and data stores), implementing security and encryption, and automating deployments with CI/CD.
+It covers writing application code, working with AWS services (including Lambda and data stores), implementing security and encryption, and automating deployments with CI/CD.
 
 ## Official resources
 

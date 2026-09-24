@@ -1,10 +1,6 @@
 # AWS Application Migration Service (MGN) - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > MGN keeps a source server continuously replicating into AWS in the background, so cutover is just a short switch from an already-warm target rather than a from-scratch migration.
 

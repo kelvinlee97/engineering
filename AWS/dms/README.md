@@ -1,10 +1,6 @@
 # AWS Database Migration Service (DMS) - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > AWS Database Migration Service (AWS DMS) migrates relational databases, data warehouses, NoSQL databases, and other data stores into AWS or between combinations of cloud and on-premises environments. It supports one-time migrations and ongoing replication to keep sources and targets in sync, plus Fleet Advisor (discovery) and Schema Conversion (engine conversion).
 
