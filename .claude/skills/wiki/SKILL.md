@@ -54,8 +54,9 @@ Input: a URL, or a legacy article path such as `Claude/subagents/README.md`.
 9. **Check.** `python scripts/wiki_check.py` and `git diff --check`. Fix and
    rerun until clean.
 10. **Ship.** Commit, push `wiki/<slug>`, open a pull request listing the
-    pages created and updated. Do not enable auto-merge: the user reviews wiki
-    changes. Report the page list to the user.
+    pages created and updated, and enable auto-merge (squash). GitHub merges it
+    once the required checks on `main` pass; if a check fails, fix it and push.
+    The user reviews the result on wiki.kelvin.ink. Report the page list to the user.
 
 ## Query
 
