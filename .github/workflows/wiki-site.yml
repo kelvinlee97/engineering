@@ -1,0 +1,41 @@
+name: Wiki site
+
+# Builds wiki/ with Quartz (pinned in scripts/build_site.py) and checks that
+# every page is emitted with no broken internal links. Build and check only:
+# the live site is still deployed by knowledge-pages.yml until the switch to
+# wiki.kelvin.ink is confirmed.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wiki-site-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: python -m pip install --quiet pyyaml
+
+      - name: Build the site
+        run: python scripts/build_site.py build
+
+      - name: Check the build output
+        run: python scripts/build_site.py check

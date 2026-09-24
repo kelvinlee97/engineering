@@ -106,6 +106,8 @@ Run what touches your change:
 
 - Wiki: `python scripts/wiki_check.py` (conformance, index, log, footnotes,
   frozen sources).
+- Wiki site (Quartz, published at wiki.kelvin.ink): `python scripts/build_site.py build`
+  then `python scripts/build_site.py check`. Quartz config lives in `site/`.
 - Python tooling: `uvx ruff check .`, `mypy`, and
   `python -m unittest discover -s scripts/tests -p 'test_*.py'`.
 - Legacy site (only if something under the legacy tree or `pages/` changed):
