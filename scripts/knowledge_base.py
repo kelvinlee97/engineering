@@ -1333,12 +1333,9 @@ def _topic_tile_html(
     if catalog is None:
         return ""
     count = _area_note_count(documents, area)
-    if count == 0:
-        # A topic whose only page is its own overview still deserves a tile;
-        # claiming "0 notes" would read as an empty section.
-        count_label = "Overview"
-    else:
-        count_label = f"{count} note" if count == 1 else f"{count} notes"
+    # A topic whose only page is its own overview still deserves a tile;
+    # claiming "0 notes" would read as an empty section.
+    count_label = "Overview" if count == 0 else f"{count} note" if count == 1 else f"{count} notes"
     blurb = _topic_blurb(area)
     blurb_html = (
         f'<span class="kb-topic-card__blurb">{_escape(blurb)}</span>' if blurb else ""
