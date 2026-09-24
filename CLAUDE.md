@@ -59,6 +59,10 @@ The step-by-step procedures live in `.claude/skills/wiki/SKILL.md`. In short:
   `verified: { by: human:kelvinlee97, at: ... }`.
 - Lifecycle: new pages start as `status: draft`; the user promotes them to
   `stable`. Superseded pages become `deprecated`, never deleted.
+- Body shape: no H1 (the title lives in frontmatter); every page except a
+  source summary ends with `## Related`, which links to the summary page
+  `sources/<id>.md` of each source it cites. Every listed source is cited at
+  least once. `wiki_check.py` enforces all of this.
 - Links between pages are relative paths (`../claude-code/subagent.md`), so
   they resolve on GitHub and in Obsidian. OKF allows both forms.
 - One concept, one page. Update the existing page rather than creating a

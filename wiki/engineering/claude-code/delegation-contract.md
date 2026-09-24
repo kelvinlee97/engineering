@@ -14,7 +14,12 @@ sources:
     title: Introduction to Claude Code Agent Skills (study guide)
     author: human:kelvinlee97
     last_modified: 2026-09-24T14:48:10Z
-generated: { by: claude-code/wiki-v1, at: 2026-09-24T15:20:00Z }
+  - id: gh-600-study-notes
+    resource: https://github.com/kelvinlee97/engineering/blob/main/Claude/github-agentic-ai-developer/README.md
+    title: "GitHub Certified: Agentic AI Developer (study notes)"
+    author: human:kelvinlee97
+    last_modified: 2026-09-24T14:48:10Z
+generated: { by: claude-code/wiki-v1, at: 2026-09-24T16:05:00Z }
 status: draft
 ---
 Because the parent sees only the returned summary ([context isolation](context-isolation.md)), everything it needs back has to be agreed before the work starts. The course names four characteristics of an effective subagent: a specific description, structured output, obstacle reporting, and limited tool access.[^claude-subagents-course] The last one has its own page: [Least-privilege tool access](least-privilege-tool-access.md).
@@ -31,6 +36,10 @@ Skills are selected the same way: Claude matches the request against each skill'
 
 The course calls a defined output format the most important improvement: it acts as a checklist and gives a natural stopping point. Without it, a research subagent may not know when it has learned enough.[^claude-subagents-course] A code review output could be: summary, critical issues, major issues, minor issues, recommendations, approval status, obstacles encountered.[^claude-subagents-course]
 
+## The same idea for whole tasks
+
+The GH-600 course applies the contract to agent tasks on GitHub: each task needs inputs (issue context, repository scope, explicit constraints), outputs (a pull request with a structured plan, a bounded changeset, and evidence links), and success criteria that reflect the real intent, such as "vulnerability resolved" rather than just "tests passed". Criteria can be enforced as a required status check.[^gh-600-study-notes] See [Agents propose, people and policy accept](../ai-engineering/propose-accept-boundary.md).
+
 ## Obstacles are part of the result
 
 If a subagent finds a workaround or quirk and leaves it out, the main thread must rediscover it. The output format should ask for:[^claude-subagents-course]
@@ -42,9 +51,11 @@ If a subagent finds a workaround or quirk and leaves it out, the main thread mus
 
 ## Related
 
+- Source: [GitHub Certified: Agentic AI Developer](../../sources/gh-600-study-notes.md)
 - [Subagent configuration file](subagent-configuration.md): where the description and system prompt live.
 - Source: [Introduction to Claude Code Subagents](../../sources/claude-subagents-course.md)
 - Source: [Introduction to Claude Code Agent Skills](../../sources/claude-agent-skills-course.md)
 
 [^claude-subagents-course]: Introduction to Claude Code Subagents (study guide)
 [^claude-agent-skills-course]: Introduction to Claude Code Agent Skills (study guide)
+[^gh-600-study-notes]: GitHub Certified: Agentic AI Developer (study notes)

@@ -14,7 +14,7 @@ sources:
     title: Claude Code Cloud Sessions
     author: human:kelvinlee97
     last_modified: 2026-09-24T14:48:10Z
-generated: { by: claude-code/wiki-v1, at: 2026-09-24T15:40:00Z }
+generated: { by: claude-code/wiki-v1, at: 2026-09-24T16:10:00Z }
 status: draft
 ---
 
@@ -50,6 +50,7 @@ The note's author argues that shared memory is what makes delegation cheap, sinc
 
 ## Related
 
+- Source: [Claude Code Cloud Sessions](../../sources/claude-cloud-sessions.md)
 - [Claude Managed Agents](claude-managed-agents.md): the API-side option for long-running asynchronous work.
 - Source: [Claude Projects, Redesigned](../../sources/claude-projects.md)
 

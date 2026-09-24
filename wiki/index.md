@@ -12,6 +12,7 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 
 # Concept
 
+* [AI adoption maturity](engineering/ai-engineering/ai-adoption-maturity.md) - A four-stage ladder from individual chat use to end-to-end processes, driven by growing user fluency, system access, and governance.
 * [Agent skill](engineering/claude-code/agent-skill.md) - A folder of task-specific instructions and optional resources that Claude Code loads only when a request matches its description.
 * [Auto Mode](engineering/claude-code/auto-mode.md) - A Claude Code permission mode where low-risk actions run directly and a separate classifier reviews higher-risk ones against user intent and a configured trust boundary.
 * [Context isolation](engineering/claude-code/context-isolation.md) - Keeping an agent's intermediate work out of the main context window, at the cost of losing whatever the summary leaves out.
@@ -21,6 +22,11 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 
 # Pattern
 
+* [AI-native SDLC](engineering/ai-engineering/ai-native-sdlc.md) - A software delivery loop where each stage leaves a committed artifact, agents work between human approval gates, and production evidence returns as new intent.
+* [Measuring an AI rollout](engineering/ai-engineering/ai-rollout-measurement.md) - Judge an AI tooling rollout by comparing concurrent cohorts against pre-set baselines, and lead with expansion rather than hours saved.
+* [Agents propose, people and policy accept](engineering/ai-engineering/propose-accept-boundary.md) - Route every agent change through pull requests so that required checks, code owners, and approval gates, not the agent, decide what is accepted.
+* [Risk-based autonomy](engineering/ai-engineering/risk-based-autonomy.md) - Give agents more autonomy on low-risk, reversible work and keep human approval for high-risk and production changes, widening scope gradually.
+* [Self-improving skill loop](engineering/ai-engineering/self-improving-skill-loop.md) - A scheduled agent reads human feedback on another agent's output and opens a pull request that edits that agent's skill file.
 * [Delegation contract](engineering/claude-code/delegation-contract.md) - What a subagent must be told up front: when it is used, what its output looks like, and which obstacles it must report.
 * [Least-privilege tool access](engineering/claude-code/least-privilege-tool-access.md) - Grant an agent only the tools its job requires, starting from what it must do.
 * [Progressive disclosure](engineering/claude-code/progressive-disclosure.md) - Expose only a short summary up front and load detailed material into context only when the task needs it.
@@ -50,6 +56,8 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 
 # Source Summary
 
+* [Building an AI-Native Revenue Organization (summary)](sources/ai-native-revenue-org.md) - Summary of Anthropic's 2026-09-15 guide and eBook on rolling Claude out across a sales organization.
+* [The AI-Native SDLC Playbook (summary)](sources/ai-native-sdlc-playbook.md) - Summary of Anthropic's 2026-08-21 playbook that redesigns software delivery as a loop of versioned artifacts with human approval gates.
 * [Introduction to Claude Code Agent Skills (course study guide)](sources/claude-agent-skills-course.md) - Study guide covering all six lessons of Anthropic Academy's Introduction to agent skills course.
 * [How Claude Code Auto Mode Works (video summary)](sources/claude-auto-mode.md) - Summary of Claude's 2026-08-04 video explaining how Auto Mode reviews higher-risk actions with a separate classifier.
 * [Claude Code Cloud Sessions (summary of the official docs)](sources/claude-cloud-sessions.md) - Summary of Anthropic's Use Claude Code in the cloud documentation, reviewed on 2026-09-18.
@@ -57,3 +65,5 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 * [Claude Managed Agents (summary of the official overview)](sources/claude-managed-agents.md) - Summary of Anthropic's Claude Managed Agents overview documentation, reviewed on 2026-09-15 while the product was in beta.
 * [Claude Projects, Redesigned (announcement summary)](sources/claude-projects.md) - Summary of Anthropic's 2026-09-17 announcement that Claude Projects became one long-running conversation coordinating parallel threads.
 * [Introduction to Claude Code Subagents (course study guide)](sources/claude-subagents-course.md) - Study guide covering all four lessons of Anthropic Academy's Introduction to subagents course.
+* [GitHub Certified: Agentic AI Developer (study notes)](sources/gh-600-study-notes.md) - Study notes for GitHub's GH-600 exam and its Microsoft Learn course, with one architecture module read in full.
+* [How Warp Builds Self-Improving Agents on Claude (summary)](sources/warp-self-improving-agents.md) - Summary of an Anthropic post and Warp webinar on agents that improve their own skill files through reviewed pull requests.

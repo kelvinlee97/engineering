@@ -11,6 +11,11 @@ Errors (exit code 1):
   - a raw source or legacy article modified, deleted, or added relative to the
     base ref (raw/ only allows additions)
 
+  - a page that breaks the house format set in CLAUDE.md: `type` outside the
+    vocabulary; missing `title`, one-line `description`, `tags`, `sources`,
+    `generated`, or a valid `status`; duplicate or uncited source ids; an H1 in
+    the body; no `## Related` section; or a source with no link to its summary page
+
 Warnings: broken links between wiki pages (OKF allows them), and a missing base
 ref, which skips the frozen-source check.
 """
@@ -22,6 +27,7 @@ import re
 import subprocess
 import sys
 from dataclasses import dataclass, field
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -50,6 +56,21 @@ FOOTNOTE_REF_RE = re.compile(r"\[\^(?P<label>[^\]]+)\](?!:)")
 FOOTNOTE_DEF_RE = re.compile(r"(?m)^\[\^(?P<label>[^\]]+)\]:")
 DATE_HEADING_RE = re.compile(r"^## (?P<date>.+?)\s*$")
 ISO_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+ISO_UTC_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
+TAG_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
+TYPES = {
+    "Concept",
+    "Pattern",
+    "Tool",
+    "Configuration",
+    "Command",
+    "Service",
+    "Source Summary",
+    "Comparison",
+    "Synthesis",
+}
+STATUSES = {"draft", "stable", "deprecated"}
+SUMMARY_TYPE = "Source Summary"
 
 
 @dataclass
@@ -105,9 +126,69 @@ def check_concepts(wiki: Path, report: Report) -> dict[Path, dict[str, Any]]:
             report.errors.append(f"{rel}: frontmatter `type` is missing or empty")
             continue
         concepts[path] = data
+        check_style(wiki, path, data, body, report)
         check_footnotes(rel, data, body, report)
         check_links(wiki, path, body, report)
     return concepts
+
+
+def _timestamp(value: Any) -> str:
+    # PyYAML turns unquoted ISO timestamps into datetime objects; only a UTC
+    # one may be rendered back with a Z suffix.
+    if isinstance(value, datetime):
+        offset = value.utcoffset()
+        if offset is None or offset.total_seconds() != 0:
+            return value.isoformat()
+        return value.strftime("%Y-%m-%dT%H:%M:%SZ")
+    return str(value)
+
+
+def check_style(wiki: Path, page: Path, data: dict[str, Any], body: str, report: Report) -> None:
+    rel = page.relative_to(wiki)
+    err = report.errors.append
+    if data["type"] not in TYPES:
+        err(f"{rel}: type {data['type']!r} is not in the vocabulary {sorted(TYPES)}")
+    for key in ("title", "description"):
+        value = data.get(key)
+        if not isinstance(value, str) or not value.strip() or "\n" in value.strip():
+            err(f"{rel}: `{key}` must be a non-empty single line")
+    tags = data.get("tags")
+    if not isinstance(tags, list) or not tags or not all(
+        isinstance(t, str) and TAG_RE.match(t) for t in tags
+    ):
+        err(f"{rel}: `tags` must be a non-empty list of lowercase-hyphenated tags")
+    generated = data.get("generated")
+    if not isinstance(generated, dict) or not generated.get("by"):
+        err(f"{rel}: `generated.by` is required")
+    elif not ISO_UTC_RE.match(_timestamp(generated.get("at"))):
+        err(f"{rel}: `generated.at` must be an ISO 8601 UTC time like 2026-09-24T15:00:00Z")
+    if data.get("status") not in STATUSES:
+        err(f"{rel}: `status` must be one of {sorted(STATUSES)}")
+    sources = data.get("sources")
+    if not isinstance(sources, list) or not sources:
+        err(f"{rel}: at least one entry in `sources` is required")
+        sources = []
+    ids = [str(s.get("id")) for s in sources if isinstance(s, dict) and s.get("id")]
+    if len(ids) != len(sources):
+        err(f"{rel}: every `sources` entry needs an `id`")
+    if len(set(ids)) != len(ids):
+        err(f"{rel}: duplicate `sources[].id`")
+    text = _strip_code(body)
+    cited = set(FOOTNOTE_REF_RE.findall(text))
+    for sid in ids:
+        if sid not in cited:
+            err(f"{rel}: source {sid!r} is listed but never cited with [^{sid}]")
+    if re.search(r"(?m)^# ", text):
+        err(f"{rel}: the body must not contain an H1; the title lives in frontmatter")
+    if data["type"] == SUMMARY_TYPE:
+        return
+    if "## Related" not in text:
+        err(f"{rel}: missing a `## Related` section")
+    links = {t for t in LINK_RE.findall(text)}
+    for sid in ids:
+        target = (wiki / "sources" / f"{sid}.md").resolve()
+        if not any(_resolve(wiki, page, t) == target for t in links):
+            err(f"{rel}: no link to the summary page sources/{sid}.md")
 
 
 def check_footnotes(rel: Path, data: dict[str, Any], body: str, report: Report) -> None:

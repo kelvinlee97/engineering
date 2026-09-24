@@ -9,7 +9,7 @@ sources:
     title: Introduction to Claude Code Subagents (study guide)
     author: human:kelvinlee97
     last_modified: 2026-09-24T14:48:10Z
-generated: { by: claude-code/wiki-v1, at: 2026-09-24T15:10:00Z }
+generated: { by: claude-code/wiki-v1, at: 2026-09-24T16:10:00Z }
 status: draft
 ---
 Context isolation means running noisy intermediate work (file reads, searches, tool output) somewhere other than the main conversation, so only the conclusion comes back. In Claude Code, a [subagent](subagent.md) is the mechanism.
@@ -28,5 +28,10 @@ The parent loses visibility into how the conclusion was reached and into anythin
 ## A side benefit: fresh context
 
 A reviewer subagent starts without the conversation history that produced the code, so it can review more critically than the main conversation that helped write it.[^claude-subagents-course]
+
+## Related
+
+- [Progressive disclosure](progressive-disclosure.md): saving context by not loading material until needed.
+- Source: [Introduction to Claude Code Subagents](../../sources/claude-subagents-course.md)
 
 [^claude-subagents-course]: Introduction to Claude Code Subagents (study guide)

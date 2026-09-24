@@ -19,7 +19,22 @@ sources:
     title: Claude Code GitHub Actions
     author: human:kelvinlee97
     last_modified: 2026-09-24T14:48:10Z
-generated: { by: claude-code/wiki-v1, at: 2026-09-24T15:50:00Z }
+  - id: warp-self-improving-agents
+    resource: https://github.com/kelvinlee97/engineering/blob/main/Claude/self-improving-agents/README.md
+    title: How Warp Builds Self-Improving Agents on Claude
+    author: human:kelvinlee97
+    last_modified: 2026-09-24T14:48:10Z
+  - id: ai-native-revenue-org
+    resource: https://github.com/kelvinlee97/engineering/blob/main/Claude/ai-native-revenue-org/README.md
+    title: Building an AI-Native Revenue Organization
+    author: human:kelvinlee97
+    last_modified: 2026-09-24T14:48:10Z
+  - id: ai-native-sdlc-playbook
+    resource: https://github.com/kelvinlee97/engineering/blob/main/Claude/ai-native-sdlc-playbook/README.md
+    title: The AI-Native SDLC Playbook
+    author: human:kelvinlee97
+    last_modified: 2026-09-24T14:48:10Z
+generated: { by: claude-code/wiki-v1, at: 2026-09-24T16:05:00Z }
 status: draft
 ---
 An agent skill is a folder of instructions, plus optional resources, that teaches Claude Code how to handle one kind of task. Its required `SKILL.md` starts with frontmatter holding a `name` and a `description`, followed by the instructions.[^claude-agent-skills-course]
@@ -57,6 +72,10 @@ Skills are not limited to Claude Code: an agent in [Claude Managed Agents](claud
 
 In [Claude Code GitHub Actions](claude-code-github-actions.md), repository skills need `actions/checkout` so `.claude/skills/` exists on the runner, and plugin skills must be installed through `plugin_marketplaces` and `plugins` first.[^claude-github-actions]
 
+## Skills are files
+
+Because a skill is a plain file, it can be versioned, shared, and even edited by another agent: Warp's [self-improving skill loop](../ai-engineering/self-improving-skill-loop.md) has a scheduled agent propose edits to a skill through pull requests.[^warp-self-improving-agents] In a sales rollout, a top performer's routine written once as a skill can be provisioned into the team bundle, and updating the file updates it for everyone.[^ai-native-revenue-org] The AI-native SDLC playbook puts organization-wide policy in skills rather than in an ever-growing repository `CLAUDE.md`.[^ai-native-sdlc-playbook]
+
 ## Troubleshooting
 
 Run the Agent Skills validator first to rule out structural problems, then match the symptom:[^claude-agent-skills-course]
@@ -72,6 +91,9 @@ Run the Agent Skills validator first to rule out structural problems, then match
 
 ## Related
 
+- Source: [The AI-Native SDLC Playbook](../../sources/ai-native-sdlc-playbook.md)
+- Source: [Building an AI-Native Revenue Organization](../../sources/ai-native-revenue-org.md)
+- Source: [How Warp Builds Self-Improving Agents on Claude](../../sources/warp-self-improving-agents.md)
 - Source: [Claude Code GitHub Actions](../../sources/claude-github-actions.md)
 - Source: [Claude Managed Agents](../../sources/claude-managed-agents.md)
 - [Skill configuration](skill-configuration.md): frontmatter fields and directory layout.
@@ -81,3 +103,6 @@ Run the Agent Skills validator first to rule out structural problems, then match
 [^claude-agent-skills-course]: Introduction to Claude Code Agent Skills (study guide)
 [^claude-managed-agents]: Claude Managed Agents
 [^claude-github-actions]: Claude Code GitHub Actions
+[^warp-self-improving-agents]: How Warp Builds Self-Improving Agents on Claude
+[^ai-native-revenue-org]: Building an AI-Native Revenue Organization
+[^ai-native-sdlc-playbook]: The AI-Native SDLC Playbook
