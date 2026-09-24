@@ -11,7 +11,7 @@ const AREA_RULES = [
   ['area: dev-tools', /\bgit\b|ghostty|claude|macos|\bterminal\b/],
   ['area: languages', /python|node\.?js|npm|zookeeper|\buv\b/],
   ['area: youtube', /youtube|transcript|subtitle/],
-  ['area: site', /mkdocs|\bsite\b|\bcss\b|\bpages\b|\btheme\b/],
+  ['area: site', /quartz|\bsite\b|\bcss\b|\bpages\b|\btheme\b/],
   ['area: tooling', /\bci\b|workflow|github action|\bscript\b|validate/],
 ];
 

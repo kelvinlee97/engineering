@@ -19,7 +19,7 @@
       - any-glob-to-any-file: ["YouTube/**", "youtube-transcript/**"]
 "area: site":
   - changed-files:
-      - any-glob-to-any-file: ["pages/**", "mkdocs.yml"]
+      - any-glob-to-any-file: ["site/**", "scripts/build_site.py", ".github/workflows/wiki-site.yml"]
 "area: tooling":
   - changed-files:
       - any-glob-to-any-file: ["scripts/**", ".github/**"]

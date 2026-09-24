@@ -14,7 +14,8 @@ Errors (exit code 1):
   - a page that breaks the house format set in CLAUDE.md: `type` outside the
     vocabulary; missing `title`, one-line `description`, `tags`, `sources`,
     `generated`, or a valid `status`; duplicate or uncited source ids; an H1 in
-    the body; no `## Related` section; or a source with no link to its summary page
+    the body; no `## Related` section; a source with no link to its summary page;
+    or a Mermaid block without `accTitle` and `accDescr`
 
 Warnings: broken links between wiki pages (OKF allows them), and a missing base
 ref, which skips the frozen-source check.
@@ -54,6 +55,7 @@ ENTRY_RE = re.compile(r"^[*-] \[(?P<title>[^\]]+)\]\((?P<target>[^)\s]+)\) - (?P
 LINK_RE = re.compile(r"(?<!!)\[[^\]]*\]\((?P<target>[^)\s]+)\)")
 FOOTNOTE_REF_RE = re.compile(r"\[\^(?P<label>[^\]]+)\](?!:)")
 FOOTNOTE_DEF_RE = re.compile(r"(?m)^\[\^(?P<label>[^\]]+)\]:")
+MERMAID_RE = re.compile(r"(?ms)^```mermaid[^\n]*\n(?P<body>.*?)^```\s*$")
 DATE_HEADING_RE = re.compile(r"^## (?P<date>.+?)\s*$")
 ISO_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 ISO_UTC_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
@@ -178,6 +180,10 @@ def check_style(wiki: Path, page: Path, data: dict[str, Any], body: str, report:
     for sid in ids:
         if sid not in cited:
             err(f"{rel}: source {sid!r} is listed but never cited with [^{sid}]")
+    for block in MERMAID_RE.finditer(body):
+        for key in ("accTitle", "accDescr"):
+            if not re.search(rf"(?m)^\s*{key}\s*:", block.group("body")):
+                err(f"{rel}: a Mermaid diagram is missing `{key}`")
     if re.search(r"(?m)^# ", text):
         err(f"{rel}: the body must not contain an H1; the title lives in frontmatter")
     if data["type"] == SUMMARY_TYPE:

@@ -10,7 +10,7 @@ test('area rules match their own topic', () => {
     'area: dev-tools': 'Ghostty theme looks wrong on macOS',
     'area: languages': 'ZooKeeper client for Node.js',
     'area: youtube': 'transcript capture drops the last subtitle',
-    'area: site': 'mkdocs build fails on the CSS',
+    'area: site': 'quartz build fails on the CSS',
     'area: tooling': 'the validate script rejects a valid page',
   };
   for (const [label, title] of Object.entries(cases)) {

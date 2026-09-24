@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Actually render every Mermaid diagram in the repo's tracked Markdown files.
 
-`knowledge_base.py validate` only checks diagram text with regexes (e.g. for
+`wiki_check.py` only checks diagram text with regexes (e.g. for
 accTitle/accDescr); it never parses the diagram, so syntax errors that Mermaid
 itself rejects (invalid edge-style combinations, bad label escaping, etc.)
 can pass validation and still fail to render on GitHub. This script closes
