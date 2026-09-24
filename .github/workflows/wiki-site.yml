@@ -1,9 +1,9 @@
 name: Wiki site
 
-# Builds wiki/ with Quartz (pinned in scripts/build_site.py) and checks that
-# every page is emitted with no broken internal links. Build and check only:
-# the live site is still deployed by knowledge-pages.yml until the switch to
-# wiki.kelvin.ink is confirmed.
+# Builds wiki/ with Quartz (pinned in scripts/build_site.py), checks that
+# every page is emitted with no broken internal links, and on main deploys the
+# result to GitHub Pages at https://wiki.kelvin.ink/ (the custom domain is set
+# in the repository's Pages settings).
 on:
   pull_request:
   push:
@@ -39,3 +39,59 @@ jobs:
 
       - name: Check the build output
         run: python scripts/build_site.py check
+
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: .site-build/public
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Configure Pages
+        uses: actions/configure-pages@v6
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
+      - name: Smoke-test the deployed site
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          set -euo pipefail
+          # Assert against site/quartz.config.ts so a rename cannot rot the check.
+          expected="$(sed -n 's/^ *pageTitle: "\(.*\)",$/\1/p' site/quartz.config.ts | head -n 1)"
+          if [ -z "$expected" ]; then
+            echo "::error::Could not read pageTitle from site/quartz.config.ts"
+            exit 1
+          fi
+          echo "Checking $PAGE_URL for page title: $expected"
+          # Pages can report success before the CDN serves the new build, and a
+          # new custom domain can serve plain HTTP before its certificate is
+          # issued, so retry and fall back to HTTP while TLS is not ready.
+          for attempt in $(seq 1 20); do
+            for url in "$PAGE_URL" "${PAGE_URL/https:/http:}"; do
+              if curl -fsSL --max-time 20 "$url" -o /tmp/index.html 2>/dev/null &&
+                grep -qF "$expected" /tmp/index.html; then
+                echo "Smoke test passed on attempt $attempt via $url"
+                exit 0
+              fi
+            done
+            echo "Attempt $attempt: site not serving the new build yet, waiting."
+            sleep 15
+          done
+          echo "::error::Deployed site never served the page title ($expected)"
+          exit 1
