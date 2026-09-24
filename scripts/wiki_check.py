@@ -16,6 +16,9 @@ Errors (exit code 1):
     `generated`, or a valid `status`; duplicate or uncited source ids; an H1 in
     the body; no `## Related` section; a source with no link to its summary page;
     or a Mermaid block without `accTitle` and `accDescr`
+  - a number in a page that does not appear in any of the page's sources, when
+    those sources are files in this repository (a guard against invented or
+    mistyped figures)
 
 Warnings: broken links between wiki pages (OKF allows them), and a missing base
 ref, which skips the frozen-source check.
@@ -67,6 +70,7 @@ TYPES = {
     "Configuration",
     "Command",
     "Service",
+    "Playbook",
     "Source Summary",
     "Comparison",
     "Synthesis",
@@ -325,6 +329,40 @@ def check_frozen(repo: Path, base: str, report: Report) -> None:
             report.errors.append(f"{name}: legacy articles are frozen ({status})")
 
 
+REPO_BLOB = "https://github.com/kelvinlee97/engineering/blob/main/"
+NUMBER_RE = re.compile(r"(?<![\w.-])\d[\d,.]*\d%?|(?<![\w.-])\d%?")
+
+
+def _local_source_text(root: Path, sources: list[Any]) -> str | None:
+    """Concatenated text of every source, or None if any source is not a repo file."""
+    texts: list[str] = []
+    for entry in sources:
+        resource = str(entry.get("resource", "")) if isinstance(entry, dict) else ""
+        if not resource.startswith(REPO_BLOB):
+            return None
+        path = root / resource[len(REPO_BLOB) :]
+        if not path.is_file():
+            return None
+        texts.append(path.read_text(encoding="utf-8"))
+    return "\n".join(texts) if texts else None
+
+
+def check_faithfulness(wiki: Path, concepts: dict[Path, dict[str, Any]], report: Report) -> None:
+    """Every number on a page must appear in the text of the sources it cites."""
+    root = wiki.resolve().parent
+    for page, data in concepts.items():
+        source = _local_source_text(root, data.get("sources") or [])
+        if source is None:
+            continue
+        _, body, _ = split_frontmatter(page.read_text(encoding="utf-8"))
+        body = re.sub(r"\[\^[^\]]+\]|\([^)]*\)|`[^`]*`", "", _strip_code(body))
+        for number in sorted(set(NUMBER_RE.findall(body))):
+            number = number.rstrip(".,")
+            if number and number not in source:
+                rel = page.relative_to(wiki)
+                report.errors.append(f"{rel}: number {number!r} does not appear in its sources")
+
+
 def run(wiki: Path, repo: Path | None, base: str | None) -> Report:
     report = Report()
     if not wiki.is_dir():
@@ -333,6 +371,7 @@ def run(wiki: Path, repo: Path | None, base: str | None) -> Report:
     concepts = check_concepts(wiki, report)
     check_indexes(wiki, concepts, report)
     check_logs(wiki, report)
+    check_faithfulness(wiki, concepts, report)
     if repo is not None and base:
         check_frozen(repo, base, report)
     return report

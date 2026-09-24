@@ -39,3 +39,6 @@ jobs:
       - name: Check the wiki
         if: github.event_name != 'pull_request'
         run: python scripts/wiki_check.py --no-frozen
+
+      - name: Check the indexes are generated
+        run: python -m scripts.wiki_index --check

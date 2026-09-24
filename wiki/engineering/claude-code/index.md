@@ -2,8 +2,8 @@
 
 * [Agent skill](agent-skill.md) - A folder of task-specific instructions and optional resources that Claude Code loads only when a request matches its description.
 * [Auto Mode](auto-mode.md) - A Claude Code permission mode where low-risk actions run directly and a separate classifier reviews higher-risk ones against user intent and a configured trust boundary.
-* [Context isolation](context-isolation.md) - Keeping an agent's intermediate work out of the main context window, at the cost of losing whatever the summary leaves out.
 * [Claude Code extension mechanisms](extension-mechanisms.md) - How CLAUDE.md, skills, subagents, hooks, and MCP servers differ, and which job each one owns.
+* [Context isolation](context-isolation.md) - Keeping an agent's intermediate work out of the main context window, at the cost of losing whatever the summary leaves out.
 * [Prompt injection](prompt-injection.md) - Instructions hidden in content an agent reads, such as web pages, files, or issue comments, that try to redirect it away from the user's request.
 * [Subagent](subagent.md) - A worker agent that Claude Code hands a bounded task to, which runs in its own context and returns only a focused result.
 

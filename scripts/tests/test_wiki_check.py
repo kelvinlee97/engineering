@@ -151,6 +151,19 @@ class WikiCheckTest(unittest.TestCase):
         self.assertTrue(any("missing `accDescr`" in e for e in errors))
         self.assertFalse(any("missing `accTitle`" in e for e in errors))
 
+    def test_number_missing_from_repo_source_fails(self) -> None:
+        root = self.wiki.parent
+        (root / "Notes").mkdir()
+        (root / "Notes/a.md").write_text("Retries up to 3 times.", encoding="utf-8")
+        blob = wiki_check.REPO_BLOB + "Notes/a.md"
+        page = PAGE.replace("https://example.com/src", blob)
+        summary = SUMMARY.replace("https://example.com/src", blob)
+        self.write("sources/src.md", summary)
+        self.write("eng/subagent.md", page.replace("runs in isolation.", "retries 3 times."))
+        self.assertEqual(self.run_check().errors, [])
+        self.write("eng/subagent.md", page.replace("runs in isolation.", "retries 5 times."))
+        self.assertTrue(any("number '5'" in e for e in self.run_check().errors))
+
     def test_claude_md_lists_the_same_type_vocabulary(self) -> None:
         claude_md = (Path(__file__).resolve().parents[2] / "CLAUDE.md").read_text(encoding="utf-8")
         line = next(ln for ln in claude_md.splitlines() if "`type` vocabulary" in ln)
