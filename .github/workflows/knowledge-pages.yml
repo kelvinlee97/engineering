@@ -1,5 +1,8 @@
 name: Knowledge base site
 
+# Validates the frozen legacy articles. The site it used to deploy
+# (blog.kelvin.ink) is retired; wiki-site.yml now deploys wiki.kelvin.ink.
+
 on:
   workflow_dispatch:
   # No path filter on pull_request: the `gate` job below is a required
@@ -88,11 +91,6 @@ jobs:
         run: mkdocs build --strict
       - name: Test knowledge-base builder
         run: python -m unittest discover -s scripts/tests -p 'test_*.py'
-      - name: Upload Pages artifact
-        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
-        uses: actions/upload-pages-artifact@v5
-        with:
-          path: .pages-site
 
   mermaid:
     needs: changes
@@ -108,53 +106,6 @@ jobs:
           python-version: "3.11"
       - name: Render every Mermaid diagram
         run: python3 scripts/check_mermaid_diagrams.py
-
-  deploy:
-    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
-    needs: [validate, mermaid]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - uses: actions/checkout@v7
-      - name: Configure Pages
-        uses: actions/configure-pages@v6
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v5
-      - name: Smoke-test the deployed site
-        run: |
-          set -euo pipefail
-          url="${{ steps.deployment.outputs.page_url }}"
-          # Assert against mkdocs.yml rather than a hardcoded string, so a
-          # rename of the site cannot silently rot this check.
-          expected="$(sed -n 's/^site_name: *//p' mkdocs.yml | head -n 1)"
-          if [ -z "$expected" ]; then
-            echo "::error::Could not read site_name from mkdocs.yml"
-            exit 1
-          fi
-          echo "Checking $url for site name: $expected"
-          # Pages reports success before the CDN necessarily serves the new
-          # build, so retry on stale content, not just on a failed request.
-          for attempt in $(seq 1 10); do
-            curl --retry 5 --retry-delay 5 --retry-all-errors -fsS "$url" -o /tmp/index.html
-            if grep -qF "$expected" /tmp/index.html &&
-              grep -qF "ibm-plex-sans-latin-wght-normal.woff2" /tmp/index.html; then
-              echo "Smoke test passed on attempt $attempt: $url is live and serving the current build."
-              exit 0
-            fi
-            echo "Attempt $attempt: page does not match yet, waiting for the deploy to propagate."
-            sleep 15
-          done
-          echo "--- last fetched page (first 40 lines) ---"
-          head -n 40 /tmp/index.html
-          echo "::error::Deployed page never served the expected site name ($expected) and font assets"
-          exit 1
 
   gate:
     # The single required status check for this workflow. It always reports,
