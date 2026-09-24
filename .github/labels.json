@@ -32,7 +32,7 @@
   {
     "name": "area: site",
     "color": "0e8a16",
-    "description": "Published site, MkDocs config, CSS"
+    "description": "Wiki site: Quartz config, layout, and build"
   },
   {
     "name": "area: tooling",
@@ -40,9 +40,9 @@
     "description": "Scripts, CI, repository automation"
   },
   {
-    "name": "area: ingest",
+    "name": "area: wiki",
     "color": "1d76db",
-    "description": "Article ingested from a link; auto-merges when checks pass"
+    "description": "Wiki pages and raw sources"
   },
   {
     "name": "documentation",
@@ -67,7 +67,7 @@
   {
     "name": "question",
     "color": "d876e3",
-    "description": "A question about the knowledge base"
+    "description": "A question about the wiki"
   },
   {
     "name": "needs-triage",

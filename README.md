@@ -1,63 +1,99 @@
-# Kelvin’s Engineering Notes
+# Kelvin's Engineering Wiki
 
-Practical notes on troubleshooting systems, working with AI coding tools, and making everyday engineering tasks easier.
+> A personal engineering knowledge base maintained by an LLM. Sources go in; the LLM compiles
+> them into interlinked wiki pages and keeps those pages current as new sources arrive.
 
-I collect explanations, commands, and references worth revisiting, from SRE runbooks to developer tooling. Articles are available in English and Chinese.
+**Read it at <https://wiki.kelvin.ink/>**, or open the [`wiki/`](wiki/index.md) folder in
+Obsidian.
 
-## Start with a real problem
+The approach follows Andrej Karpathy's [LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)
+pattern. Most AI note tools look up raw documents again for every question. Here the LLM files
+each source into the wiki once: it updates the pages that source touches and notes where sources
+disagree. Pages use the [Open Knowledge Format v0.2](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md)
+(OKF): plain Markdown with a small YAML header that records each page's type, sources, and
+review status.
 
-- **[Git branches have diverged. What next?](Git/README.md)** Inspect the state, choose a sync strategy, and recover safely.
-- **[How should I publish changes to GitHub?](Git/publish-to-github/README.md)** Follow a beginner-safe branch, commit, push, pull request, and squash-merge workflow.
-- **[A Pod is stuck Pending. Could it be IP capacity?](Kubernetes/runbooks/insufficient-ip-or-eni/README.md)** Distinguish subnet capacity, node limits, and other causes.
+## How the pieces fit
 
-## Explore by what you want to do
+Where does knowledge come from, and who is allowed to change what?
 
-### Troubleshoot and operate systems
+```mermaid
+flowchart LR
+    accTitle: Layers of the engineering wiki
+    accDescr: A link or a legacy article is the raw source. Ingest compiles it into the wiki folder. Query answers questions from the wiki and can file good answers back into it, and lint checks its health. CLAUDE.md sets the rules for all three. The wiki is read in Obsidian or on wiki.kelvin.ink.
+    L[Link or legacy article] -->|ingest| W[wiki/]
+    Q[query] -->|answers filed back| W
+    T[lint] -->|fixes| W
+    S[CLAUDE.md rules] -.-> Q
+    S -.-> T
+    S -.-> L
+    W --> O[Obsidian]
+    W --> P[wiki.kelvin.ink]
+```
 
-- [Git](Git/README.md): Synchronisation, release tracking, rollback, and recovery; start with the [beginner publishing workflow](Git/publish-to-github/README.md).
-- [Kubernetes](Kubernetes/README.md): Operations and incident runbooks.
-- [AWS](AWS/README.md): Cloud references and runbooks grounded in official documentation.
-- [Nginx & OpenResty](Nginx/README.md): Deployment and operations for beginners.
-- [Node.js & Express](Nodejs/README.md): BFF deployment and incident response.
-- [ZooKeeper](ZooKeeper/README.md): Operations and incident handling.
+Knowledge flows one way: into `wiki/` from sources, then out to readers. Sources are never
+edited after the fact, and people read the wiki rather than write it.
 
-### Work with AI coding tools
+| Layer | Where | Who changes it |
+| --- | --- | --- |
+| Raw sources | `raw/` (snapshots of links) and the frozen legacy articles in the topic folders (`AWS/`, `Claude/`, `Git/`, and so on) | Append only; existing sources are never edited |
+| Wiki | [`wiki/`](wiki/index.md) | The LLM, through pull requests you review |
+| Rules | [`CLAUDE.md`](CLAUDE.md) and [`.claude/skills/wiki/`](.claude/skills/wiki/SKILL.md) | You and the LLM together |
 
-- [Claude subagents](Claude/subagents/README.md): Study guide for Anthropic Academy’s introductory course.
-- [Claude Code GitHub Actions](Claude/github-actions/README.md): Run interactive and automated Claude workflows with explicit permissions and security boundaries.
-- [Claude Managed Agents](Claude/managed-agents/README.md): Hosted agent harness for long-running, asynchronous tasks, as an alternative to the Messages API.
-- [AI-native SDLC playbook](Claude/ai-native-sdlc-playbook/README.md): Redesign delivery around versioned artifacts, feedback loops, and explicit governance gates.
-- [Warp’s self-improving agents](Claude/self-improving-agents/README.md): Turn human feedback on agent output into reviewed pull requests against the agent’s own skill file.
-- [GitHub Certified: Agentic AI Developer](Claude/github-agentic-ai-developer/README.md): Exam domains, course structure, and an in-depth look at agent architecture and SDLC integration.
-- [Claude Code cloud sessions](Claude/cloud-sessions/README.md): Run sessions in an Anthropic-managed VM, hand work between terminal and cloud, and auto-fix pull requests.
-- [Building an AI-native revenue organization](Claude/ai-native-revenue-org/README.md): Roll Claude out across a sales org, covering the maturity ladder, three-phase plan, ROI measurement, and common pitfalls.
-- [Claude Projects, redesigned](Claude/projects/README.md): One conversation coordinates parallel cloud-session threads over shared memory and a shared library.
+## Using it
 
-### Prepare for SRE interviews
+Work happens in a Claude Code session in this repository:
 
-- [Python exercises](Python/README.md): Log processing and algorithms.
-- [Bash exercises](Bash/README.md): Log analysis and process inspection.
+| You do | What happens |
+| --- | --- |
+| Send a link, or `/ingest <link or legacy article>` | The LLM saves a snapshot to `raw/`, writes a source summary, creates or updates the concept pages it touches, updates the indexes and `wiki/log.md`, and opens a pull request |
+| Ask a question | The LLM answers from the wiki with links to the pages it used, and offers to file a useful answer under `wiki/syntheses/` |
+| Ask for a health check | The LLM lists contradictions, stale or orphaned pages, and missing concepts, and fixes the mechanical ones |
 
-### Set up your development environment
+New pages start as `status: draft`. A page counts as reviewed once you add
+`verified: { by: human:kelvinlee97, at: ... }` to it.
 
-- [Ghostty & terminal tools](Ghostty/README.md): Platform-specific setup and a reusable [Ghostty configuration](Ghostty/config.ghostty).
-- [Ubuntu APT](Ubuntu/apt/README.md): Package installation, upgrades, inspection, and troubleshooting.
-- [Apple Container](apple/container/README.md): Architecture, usage, and limitations.
+## Working locally
 
-### Explore ideas from videos
+Open `wiki/` as an Obsidian vault. Under **Settings → Files and links**, turn off
+**Use [[Wikilinks]]** and set **New link format** to **Path from current file**, so any link you
+add matches the existing ones. Use Obsidian for reading; edits go through the LLM so the
+indexes and checks stay consistent.
 
-- [YouTube learning notes](YouTube/README.md): Video summaries organised by topic, including startups and AI agents.
+To preview the site (needs Python 3 and Node 22):
 
-## About these notes
+```bash
+pip3 install pyyaml
+python3 scripts/build_site.py build
+python3 scripts/build_site.py check
+cd .site-build/quartz && npx quartz build -d ../content --serve   # http://localhost:8080
+```
 
-These notes reflect personal study and experience; they are not official product documentation. I prioritise primary sources and distinguish personal interpretation from documented behaviour. The collection evolves as I study new topics and revisit existing notes.
+## Checks
 
-Paired English and Chinese articles keep matching structure, links, and factual scope. Use the language link at the top of an article to switch.
+Every pull request runs these in CI; run them locally before pushing:
 
-## For contributors and maintainers
+| Check | Command | Catches |
+| --- | --- | --- |
+| Wiki | `python3 scripts/wiki_check.py` | Missing frontmatter or `type`, index entries that disagree with pages, uncited sources, broken page format, edits to frozen sources |
+| Site | `python3 scripts/build_site.py build && python3 scripts/build_site.py check` | Pages missing from the build, broken links on the site |
+| Diagrams | `python3 scripts/check_mermaid_diagrams.py` | Mermaid diagrams that fail to render |
+| Tooling | `uvx ruff check .`, `mypy`, `python -m unittest discover -s scripts/tests -p 'test_*.py'` | Lint, type, and test failures in `scripts/` |
 
-Keep contributions focused, reusable, and suitable for a public repository. Do not include credentials, employer or client code, confidential data, conversation history, caches, or machine-specific information.
+## Repository layout
 
-- [Visual-first notes workflow](.agents/skills/visual-first-notes/SKILL.md): Turn source material into a plain-language framing, appropriate diagrams, and concise supporting text.
-- [YouTube transcript workflow](.agents/skills/youtube-transcript/SKILL.md): How video summaries are prepared and checked.
-- [Transcript tool module](youtube-transcript/): Supporting tooling.
+| Path | Contents |
+| --- | --- |
+| `wiki/` | The wiki: `index.md`, `log.md`, `sources/`, `engineering/<domain>/`, `syntheses/` |
+| `raw/` | Snapshots of ingested links |
+| `AWS/`, `Bash/`, `Claude/`, `Ghostty/`, `Git/`, `Kubernetes/`, `Nginx/`, `Nodejs/`, `Python/`, `Ubuntu/`, `YouTube/`, `ZooKeeper/`, `apple/` | Legacy articles, now frozen raw sources |
+| `site/` | Quartz configuration for wiki.kelvin.ink |
+| `scripts/` | Wiki checker, site builder, diagram renderer, and their tests |
+| `youtube-transcript/` | Tool for fetching YouTube transcripts |
+| `.claude/`, `.agents/` | Skills and commands for the LLM |
+
+## About the content
+
+These are personal study notes, not official product documentation. Each page lists the
+sources it draws on and marks the author's own analysis as analysis. Do not contribute
+credentials, employer or client code, or other confidential material.
