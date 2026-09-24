@@ -6,3 +6,5 @@
 __pycache__/
 .plugin-eval/
 .venv/
+.site-build/
+.obsidian/
