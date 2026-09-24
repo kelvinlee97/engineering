@@ -9,7 +9,12 @@ sources:
     title: Introduction to Claude Code Subagents (study guide)
     author: human:kelvinlee97
     last_modified: 2026-09-24T14:48:10Z
-generated: { by: claude-code/wiki-v1, at: 2026-09-24T15:10:00Z }
+  - id: claude-agent-skills-course
+    resource: https://github.com/kelvinlee97/engineering/blob/main/Claude/agent-skills/README.md
+    title: Introduction to Claude Code Agent Skills (study guide)
+    author: human:kelvinlee97
+    last_modified: 2026-09-24T14:48:10Z
+generated: { by: claude-code/wiki-v1, at: 2026-09-24T15:20:00Z }
 status: draft
 ---
 Because the parent sees only the returned summary ([context isolation](context-isolation.md)), everything it needs back has to be agreed before the work starts. The course names four characteristics of an effective subagent: a specific description, structured output, obstacle reporting, and limited tool access.[^claude-subagents-course] The last one has its own page: [Least-privilege tool access](least-privilege-tool-access.md).
@@ -19,6 +24,8 @@ Because the parent sees only the returned summary ([context isolation](context-i
 The name and description of every available subagent are placed in the main agent's system prompt, and the parent uses them to decide which subagent to launch and when.[^claude-subagents-course] The description also shapes the task prompt the parent writes: a vague reviewer description can produce "find the current changes", while a stronger one can require the parent to name the exact files. Requiring citable sources in a research subagent's description carries that requirement into the delegated prompt.[^claude-subagents-course]
 
 To make automatic use more likely, the course suggests including "proactively" and concrete trigger examples in the description. If delegation does not trigger as expected, improve the description rather than the system prompt.[^claude-subagents-course]
+
+Skills are selected the same way: Claude matches the request against each skill's description, so a description needs the words users actually say.[^claude-agent-skills-course] See [Agent skill](agent-skill.md).
 
 ## A defined output is the biggest improvement
 
@@ -37,5 +44,7 @@ If a subagent finds a workaround or quirk and leaves it out, the main thread mus
 
 - [Subagent configuration file](subagent-configuration.md): where the description and system prompt live.
 - Source: [Introduction to Claude Code Subagents](../../sources/claude-subagents-course.md)
+- Source: [Introduction to Claude Code Agent Skills](../../sources/claude-agent-skills-course.md)
 
 [^claude-subagents-course]: Introduction to Claude Code Subagents (study guide)
+[^claude-agent-skills-course]: Introduction to Claude Code Agent Skills (study guide)

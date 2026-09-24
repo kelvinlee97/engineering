@@ -9,7 +9,12 @@ sources:
     title: Introduction to Claude Code Subagents (study guide)
     author: human:kelvinlee97
     last_modified: 2026-09-24T14:48:10Z
-generated: { by: claude-code/wiki-v1, at: 2026-09-24T15:10:00Z }
+  - id: claude-agent-skills-course
+    resource: https://github.com/kelvinlee97/engineering/blob/main/Claude/agent-skills/README.md
+    title: Introduction to Claude Code Agent Skills (study guide)
+    author: human:kelvinlee97
+    last_modified: 2026-09-24T14:48:10Z
+generated: { by: claude-code/wiki-v1, at: 2026-09-24T15:20:00Z }
 status: draft
 ---
 A subagent is a specialized assistant that Claude Code delegates one task to. It works in a separate conversation, returns a short summary to the main conversation (the parent), and its own conversation is then discarded.[^claude-subagents-course]
@@ -42,6 +47,19 @@ The parent only ever sees the result box, so the [delegation contract](delegatio
 
 Claude Code also supports custom subagents with their own system prompts and tool access.[^claude-subagents-course]
 
+## Subagents and skills
+
+Subagents do not inherit the main conversation's [skills](agent-skill.md). Built-in agents cannot use skills at all; a custom subagent can, but only the ones listed in its frontmatter, and those load when the subagent starts rather than matching on demand.[^claude-agent-skills-course] The `skills` field is on [Subagent configuration file](subagent-configuration.md). Where subagents sit among Claude Code's other mechanisms is on [Claude Code extension mechanisms](extension-mechanisms.md).
+
+## Contradictions
+
+The two sources name the built-in agents differently:
+
+- The subagents course lists General purpose, Explore, and Plan.[^claude-subagents-course]
+- The skills course, when saying built-in agents cannot access skills, names Explorer, Plan, and Verify.[^claude-agent-skills-course]
+
+Neither source explains the difference. Check the current Claude Code documentation before relying on either list.
+
 ## Example
 
 To find which service handles refunds in an unfamiliar codebase, Claude might read around 15 files, run searches, and trace function calls. Done in the main conversation, all of that lands in its context although the wanted output is one fact; an Explore subagent keeps the investigation isolated and returns only the answer.[^claude-subagents-course]
@@ -50,6 +68,8 @@ To find which service handles refunds in an unfamiliar codebase, Claude might re
 
 - [When to delegate](when-to-delegate.md): the decision rule and the anti-patterns.
 - [Least-privilege tool access](least-privilege-tool-access.md): which tools a subagent should get.
+- Source: [Introduction to Claude Code Agent Skills](../../sources/claude-agent-skills-course.md)
 - Source: [Introduction to Claude Code Subagents](../../sources/claude-subagents-course.md)
 
 [^claude-subagents-course]: Introduction to Claude Code Subagents (study guide)
+[^claude-agent-skills-course]: Introduction to Claude Code Agent Skills (study guide)

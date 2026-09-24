@@ -9,7 +9,12 @@ sources:
     title: Introduction to Claude Code Subagents (study guide)
     author: human:kelvinlee97
     last_modified: 2026-09-24T14:48:10Z
-generated: { by: claude-code/wiki-v1, at: 2026-09-24T15:10:00Z }
+  - id: claude-agent-skills-course
+    resource: https://github.com/kelvinlee97/engineering/blob/main/Claude/agent-skills/README.md
+    title: Introduction to Claude Code Agent Skills (study guide)
+    author: human:kelvinlee97
+    last_modified: 2026-09-24T14:48:10Z
+generated: { by: claude-code/wiki-v1, at: 2026-09-24T15:20:00Z }
 status: draft
 ---
 A custom [subagent](subagent.md) is one Markdown file: YAML frontmatter for its settings, then a body that is its system prompt. Project-level subagents are typically stored at `.claude/agents/<name>.md`.[^claude-subagents-course]
@@ -38,6 +43,8 @@ As described in the course.[^claude-subagents-course]
 
 As described in the course.[^claude-subagents-course]
 
+A custom subagent can also take a `skills` field listing [skills](agent-skill.md) to load when it starts, for example `skills: accessibility-audit, performance-check`. The listed skills must already exist in an available skills directory; this suits isolated work that must apply a fixed, named set of standards.[^claude-agent-skills-course]
+
 ## Example
 
 ```markdown
@@ -57,6 +64,9 @@ What to write in `description` and the body is covered on [Delegation contract](
 
 ## Related
 
+- [Skill configuration](skill-configuration.md): the matching format for skills.
+- Source: [Introduction to Claude Code Agent Skills](../../sources/claude-agent-skills-course.md)
 - Source: [Introduction to Claude Code Subagents](../../sources/claude-subagents-course.md)
 
 [^claude-subagents-course]: Introduction to Claude Code Subagents (study guide)
+[^claude-agent-skills-course]: Introduction to Claude Code Agent Skills (study guide)
