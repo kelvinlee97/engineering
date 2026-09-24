@@ -14,7 +14,17 @@ sources:
     title: Introduction to Claude Code Agent Skills (study guide)
     author: human:kelvinlee97
     last_modified: 2026-09-24T14:48:10Z
-generated: { by: claude-code/wiki-v1, at: 2026-09-24T15:20:00Z }
+  - id: claude-auto-mode
+    resource: https://github.com/kelvinlee97/engineering/blob/main/Claude/auto-mode/README.md
+    title: How Claude Code Auto Mode Works
+    author: human:kelvinlee97
+    last_modified: 2026-09-24T14:48:10Z
+  - id: claude-github-actions
+    resource: https://github.com/kelvinlee97/engineering/blob/main/Claude/github-actions/README.md
+    title: Claude Code GitHub Actions
+    author: human:kelvinlee97
+    last_modified: 2026-09-24T14:48:10Z
+generated: { by: claude-code/wiki-v1, at: 2026-09-24T15:50:00Z }
 status: draft
 ---
 Least privilege means starting from what an agent must do and granting only the tools that job requires. Both Claude Code courses apply it: subagents through their `tools` list, skills through `allowed-tools`.[^claude-subagents-course][^claude-agent-skills-course] For subagents, the course gives two reasons: fewer unintended side effects, and a clearer responsibility for each subagent.[^claude-subagents-course]
@@ -31,12 +41,22 @@ As described in the course.[^claude-subagents-course]
 
 The `/agents` creation screen groups tools as read-only, edit, execution, MCP, and other. A reviewer normally needs to read, may still use execution to inspect pending changes, and should not get edit or write access.[^claude-subagents-course] The chosen list is stored in the `tools` field of the [subagent configuration file](subagent-configuration.md).
 
+## Rules versus guidance
+
+Claude Code permission rules are the deterministic layer: `deny` blocks matching tool calls, `ask` requires confirmation even in [Auto Mode](auto-mode.md), and `allow` permits them. Auto Mode's classifier guidance (`allow`, `soft deny`, `hard deny`) only steers the classifier and is not enforcement.[^claude-auto-mode] Broad rules that allow arbitrary code execution may still be reviewed by the classifier.[^claude-auto-mode]
+
+## Layers multiply
+
+In [Claude Code GitHub Actions](claude-code-github-actions.md), effective capability is the intersection of actor checks, the job's GitHub `permissions`, and the tools Claude may invoke; granting a tool in one layer does nothing if another withholds it.[^claude-github-actions]
+
 ## Skills: `allowed-tools`
 
 While a [skill](agent-skill.md) is active, `allowed-tools` limits which tools are available without asking for extra permission. A read-only onboarding skill might allow `Read`, `Grep`, `Glob`, and `Bash` and leave out editing tools. Leaving the field out keeps Claude's normal permission model.[^claude-agent-skills-course] Restrict tools only when the workflow needs that boundary.[^claude-agent-skills-course]
 
 ## Related
 
+- Source: [Claude Code GitHub Actions](../../sources/claude-github-actions.md)
+- Source: [How Claude Code Auto Mode Works](../../sources/claude-auto-mode.md)
 - [Skill configuration](skill-configuration.md): where `allowed-tools` is set.
 - Source: [Introduction to Claude Code Agent Skills](../../sources/claude-agent-skills-course.md)
 - [Delegation contract](delegation-contract.md): tool limits are one of the course's four characteristics of an effective subagent.
@@ -44,3 +64,5 @@ While a [skill](agent-skill.md) is active, `allowed-tools` limits which tools ar
 
 [^claude-subagents-course]: Introduction to Claude Code Subagents (study guide)
 [^claude-agent-skills-course]: Introduction to Claude Code Agent Skills (study guide)
+[^claude-auto-mode]: How Claude Code Auto Mode Works
+[^claude-github-actions]: Claude Code GitHub Actions

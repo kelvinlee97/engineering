@@ -9,7 +9,17 @@ sources:
     title: Introduction to Claude Code Agent Skills (study guide)
     author: human:kelvinlee97
     last_modified: 2026-09-24T14:48:10Z
-generated: { by: claude-code/wiki-v1, at: 2026-09-24T15:20:00Z }
+  - id: claude-managed-agents
+    resource: https://github.com/kelvinlee97/engineering/blob/main/Claude/managed-agents/README.md
+    title: Claude Managed Agents
+    author: human:kelvinlee97
+    last_modified: 2026-09-24T14:48:10Z
+  - id: claude-github-actions
+    resource: https://github.com/kelvinlee97/engineering/blob/main/Claude/github-actions/README.md
+    title: Claude Code GitHub Actions
+    author: human:kelvinlee97
+    last_modified: 2026-09-24T14:48:10Z
+generated: { by: claude-code/wiki-v1, at: 2026-09-24T15:50:00Z }
 status: draft
 ---
 An agent skill is a folder of instructions, plus optional resources, that teaches Claude Code how to handle one kind of task. Its required `SKILL.md` starts with frontmatter holding a `name` and a `description`, followed by the instructions.[^claude-agent-skills-course]
@@ -43,6 +53,10 @@ When two skills share a name, precedence is enterprise managed, then personal, t
 
 As described in the course.[^claude-agent-skills-course]
 
+Skills are not limited to Claude Code: an agent in [Claude Managed Agents](claude-managed-agents.md) bundles skills alongside its model, system prompt, tools, and MCP servers.[^claude-managed-agents]
+
+In [Claude Code GitHub Actions](claude-code-github-actions.md), repository skills need `actions/checkout` so `.claude/skills/` exists on the runner, and plugin skills must be installed through `plugin_marketplaces` and `plugins` first.[^claude-github-actions]
+
 ## Troubleshooting
 
 Run the Agent Skills validator first to rule out structural problems, then match the symptom:[^claude-agent-skills-course]
@@ -58,8 +72,12 @@ Run the Agent Skills validator first to rule out structural problems, then match
 
 ## Related
 
+- Source: [Claude Code GitHub Actions](../../sources/claude-github-actions.md)
+- Source: [Claude Managed Agents](../../sources/claude-managed-agents.md)
 - [Skill configuration](skill-configuration.md): frontmatter fields and directory layout.
 - [Subagent](subagent.md): subagents do not inherit skills.
 - Source: [Introduction to Claude Code Agent Skills](../../sources/claude-agent-skills-course.md)
 
 [^claude-agent-skills-course]: Introduction to Claude Code Agent Skills (study guide)
+[^claude-managed-agents]: Claude Managed Agents
+[^claude-github-actions]: Claude Code GitHub Actions

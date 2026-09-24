@@ -14,7 +14,12 @@ sources:
     title: Introduction to Claude Code Agent Skills (study guide)
     author: human:kelvinlee97
     last_modified: 2026-09-24T14:48:10Z
-generated: { by: claude-code/wiki-v1, at: 2026-09-24T15:20:00Z }
+  - id: claude-cloud-sessions
+    resource: https://github.com/kelvinlee97/engineering/blob/main/Claude/cloud-sessions/README.md
+    title: Claude Code Cloud Sessions
+    author: human:kelvinlee97
+    last_modified: 2026-09-24T14:48:10Z
+generated: { by: claude-code/wiki-v1, at: 2026-09-24T15:30:00Z }
 status: draft
 ---
 A subagent is a specialized assistant that Claude Code delegates one task to. It works in a separate conversation, returns a short summary to the main conversation (the parent), and its own conversation is then discarded.[^claude-subagents-course]
@@ -51,6 +56,8 @@ Claude Code also supports custom subagents with their own system prompts and too
 
 Subagents do not inherit the main conversation's [skills](agent-skill.md). Built-in agents cannot use skills at all; a custom subagent can, but only the ones listed in its frontmatter, and those load when the subagent starts rather than matching on demand.[^claude-agent-skills-course] The `skills` field is on [Subagent configuration file](subagent-configuration.md). Where subagents sit among Claude Code's other mechanisms is on [Claude Code extension mechanisms](extension-mechanisms.md).
 
+Subagents also work in [cloud sessions](cloud-session.md) as they do locally, and `.claude/agents/` definitions are picked up automatically.[^claude-cloud-sessions]
+
 ## Contradictions
 
 The two sources name the built-in agents differently:
@@ -66,6 +73,7 @@ To find which service handles refunds in an unfamiliar codebase, Claude might re
 
 ## Related
 
+- Source: [Claude Code Cloud Sessions](../../sources/claude-cloud-sessions.md)
 - [When to delegate](when-to-delegate.md): the decision rule and the anti-patterns.
 - [Least-privilege tool access](least-privilege-tool-access.md): which tools a subagent should get.
 - Source: [Introduction to Claude Code Agent Skills](../../sources/claude-agent-skills-course.md)
@@ -73,3 +81,4 @@ To find which service handles refunds in an unfamiliar codebase, Claude might re
 
 [^claude-subagents-course]: Introduction to Claude Code Subagents (study guide)
 [^claude-agent-skills-course]: Introduction to Claude Code Agent Skills (study guide)
+[^claude-cloud-sessions]: Claude Code Cloud Sessions
