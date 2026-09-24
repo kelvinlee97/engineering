@@ -51,6 +51,6 @@ Continue only on `complete`; delete `browser-export.json` on success and failure
 
 ## Ledger and publication
 
-The ledger has positive `segment_count`. Chunks use `chunk-001` numbering, start at `segment-0001`, continue without gaps, and end at `segment_count`. Each chunk has `first_segment_id`, `last_segment_id`, times, `word_count`, `text`, `status`, and `content_items`; each non-CTA item has `disposition`, `timestamp_seconds`, `source_segment_ids`, and a verbatim `quote`. Set `audit.status` to `complete` only after the bilingual audit and keep `audit.unresolved_capture_warnings` empty.
+The ledger has positive `segment_count`. Chunks use `chunk-001` numbering, start at `segment-0001`, continue without gaps, and end at `segment_count`. Each chunk has `first_segment_id`, `last_segment_id`, times, `word_count`, `text`, `status`, and `content_items`; each non-CTA item has `disposition`, `timestamp_seconds`, `source_segment_ids`, and a verbatim `quote`. Set `audit.status` to `complete` only after a fresh audit and keep `audit.unresolved_capture_warnings` empty.
 
-Run `uv run yt-transcript validate-publication <validation.json> <summary.md> <summary_zh.md>` from `youtube-transcript`. Publish only on `complete`; the gate checks source video ID, ranges, chunk coverage, quote binding, timestamp parity, and reciprocal links, not semantic completeness.
+Run `uv run yt-transcript validate-publication <validation.json> <summary.md>` from `youtube-transcript`. Publish only on `complete`; the gate checks source video ID, ranges, chunk coverage, and quote binding, not semantic completeness.

@@ -187,7 +187,6 @@ kbd,
 .kb-row__link:focus-visible,
 .kb-lead:focus-visible,
 .kb-tab:focus-visible,
-.kb-switch__option:focus-visible,
 .kb-header__search:focus-visible,
 .kb-more:focus-visible,
 .kb-topic-card:focus-visible,
@@ -249,42 +248,6 @@ kbd,
 .kb-header__wordmark:hover,
 .kb-header__link:hover {
   color: var(--kb-accent);
-}
-
-/* Language switch ---------------------------------------------------------- */
-
-/* The lit half is the page you are on, so it is a span, not a link; the other
-   half is an ordinary link to that page's other language. */
-.kb-switch {
-  display: inline-flex;
-  align-items: center;
-  padding: 3px;
-  border: 1px solid var(--kb-border-strong);
-  border-radius: var(--kb-radius-sm);
-  background: var(--kb-surface);
-}
-
-.kb-switch__option {
-  display: inline-flex;
-  align-items: center;
-  height: 26px;
-  padding: 0 0.55rem;
-  border-radius: 6px;
-  color: var(--kb-muted);
-  font-size: 0.65rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background var(--kb-transition), color var(--kb-transition);
-}
-
-a.kb-switch__option:hover {
-  background: var(--kb-surface-sunken);
-  color: var(--md-default-fg-color);
-}
-
-.kb-switch__option--active {
-  background: var(--md-primary-fg-color);
-  color: var(--md-primary-bg-color);
 }
 
 /* Search ------------------------------------------------------------------- */
@@ -941,11 +904,6 @@ a.kb-switch__option:hover {
 
   .kb-header .kb-header__search-toggle {
     display: inline-flex;
-  }
-
-  .kb-switch__option {
-    height: 30px;
-    padding: 0 0.7rem;
   }
 
   .md-typeset .kb-tabs {

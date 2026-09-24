@@ -1,9 +1,5 @@
 # How Claude Code Auto Mode Works
 
-English | [简体中文](README_ZH.md)
-
-## Mental model
-
 > Claude Code Auto Mode does not allow Claude to approve its own actions. Low-risk work can
 > continue, while a separate classifier checks higher-risk actions against user intent, configured
 > rules, and the environment boundary.
@@ -201,7 +197,7 @@ Actions that should normally retain explicit approval:
 
 Video reference: [05:13–05:32](https://www.youtube.com/watch?v=b8SV4U6fEIc&t=313s)
 
-## Key takeaway
+## Where the safety review moved
 
 Auto Mode does not remove safety review. It moves review from every individual tool call to the level of user intent and operational risk.
 

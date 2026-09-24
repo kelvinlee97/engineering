@@ -1,9 +1,5 @@
 # Python SRE HackerRank Quick Reference
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > This page is two things in one: a catalogue of topic cheatsheets (below) and a drill set of small HackerRank-style SRE questions, each solved with the smallest correct algorithm and its time/space cost stated explicitly.
 
 Use [`examples/app.log`](examples/app.log) below. It simulates an Nginx combined access log containing the client IP, identity fields, time, HTTP request, status, response size, Referer, and User-Agent. Run examples from the repository root.
@@ -12,29 +8,29 @@ Use [`examples/app.log`](examples/app.log) below. It simulates an Nginx combined
 
 | Topic | Cheatsheet |
 |---|---|
-| 00. Variables and types | [English](beginner/00-variables-and-types/README.md) · [中文](beginner/00-variables-and-types/README_ZH.md) |
-| 01. Strings | [English](beginner/01-strings/README.md) · [中文](beginner/01-strings/README_ZH.md) |
-| 02. Control flow | [English](beginner/02-control-flow/README.md) · [中文](beginner/02-control-flow/README_ZH.md) |
-| 03. Lists | [English](beginner/03-lists/README.md) · [中文](beginner/03-lists/README_ZH.md) |
-| 04. Loops | [English](beginner/04-loops/README.md) · [中文](beginner/04-loops/README_ZH.md) |
-| 05. Dictionaries | [English](beginner/05-dictionaries/README.md) · [中文](beginner/05-dictionaries/README_ZH.md) |
-| 06. Tuples and sets | [English](beginner/06-tuples-and-sets/README.md) · [中文](beginner/06-tuples-and-sets/README_ZH.md) |
-| 07. Functions | [English](beginner/07-functions/README.md) · [中文](beginner/07-functions/README_ZH.md) |
-| 08. Comprehensions | [English](beginner/08-comprehensions/README.md) · [中文](beginner/08-comprehensions/README_ZH.md) |
-| 09. Exceptions | [English](beginner/09-exceptions/README.md) · [中文](beginner/09-exceptions/README_ZH.md) |
-| 10. Files and paths | [English](beginner/10-files-and-paths/README.md) · [中文](beginner/10-files-and-paths/README_ZH.md) |
-| 11. Modules and packages | [English](beginner/11-modules-and-packages/README.md) · [中文](beginner/11-modules-and-packages/README_ZH.md) |
-| 12. Testing | [English](beginner/12-testing/README.md) · [中文](beginner/12-testing/README_ZH.md) |
+| 00. Variables and types | [Cheatsheet](beginner/00-variables-and-types/README.md) |
+| 01. Strings | [Cheatsheet](beginner/01-strings/README.md) |
+| 02. Control flow | [Cheatsheet](beginner/02-control-flow/README.md) |
+| 03. Lists | [Cheatsheet](beginner/03-lists/README.md) |
+| 04. Loops | [Cheatsheet](beginner/04-loops/README.md) |
+| 05. Dictionaries | [Cheatsheet](beginner/05-dictionaries/README.md) |
+| 06. Tuples and sets | [Cheatsheet](beginner/06-tuples-and-sets/README.md) |
+| 07. Functions | [Cheatsheet](beginner/07-functions/README.md) |
+| 08. Comprehensions | [Cheatsheet](beginner/08-comprehensions/README.md) |
+| 09. Exceptions | [Cheatsheet](beginner/09-exceptions/README.md) |
+| 10. Files and paths | [Cheatsheet](beginner/10-files-and-paths/README.md) |
+| 11. Modules and packages | [Cheatsheet](beginner/11-modules-and-packages/README.md) |
+| 12. Testing | [Cheatsheet](beginner/12-testing/README.md) |
 
 ## Advanced
 
 | Topic | Cheatsheet |
 |---|---|
-| 00. Classes | [English](advanced/00-classes/README.md) · [中文](advanced/00-classes/README_ZH.md) |
-| 01. Type hints | [English](advanced/01-typing/README.md) · [中文](advanced/01-typing/README_ZH.md) |
-| 02. Iterators and generators | [English](advanced/02-iterators-and-generators/README.md) · [中文](advanced/02-iterators-and-generators/README_ZH.md) |
-| 03. Context managers | [English](advanced/03-context-managers/README.md) · [中文](advanced/03-context-managers/README_ZH.md) |
-| 04. Decorators | [English](advanced/04-decorators/README.md) · [中文](advanced/04-decorators/README_ZH.md) |
+| 00. Classes | [Cheatsheet](advanced/00-classes/README.md) |
+| 01. Type hints | [Cheatsheet](advanced/01-typing/README.md) |
+| 02. Iterators and generators | [Cheatsheet](advanced/02-iterators-and-generators/README.md) |
+| 03. Context managers | [Cheatsheet](advanced/03-context-managers/README.md) |
+| 04. Decorators | [Cheatsheet](advanced/04-decorators/README.md) |
 
 ## Q1: Count 5xx requests
 

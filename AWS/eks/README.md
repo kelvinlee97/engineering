@@ -1,10 +1,6 @@
 # Amazon EKS - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Amazon Elastic Kubernetes Service (Amazon EKS) is a fully managed Kubernetes service. AWS operates the Kubernetes control plane; you can also use **EKS Auto Mode** to let AWS manage nodes, scaling, patching, and security integration.
 

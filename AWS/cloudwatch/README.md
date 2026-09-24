@@ -1,10 +1,6 @@
 # Amazon CloudWatch - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > CloudWatch is three parallel telemetry streams — metrics, logs, and traces — feeding one alerting/visualization layer: an alarm never inspects a log or a trace directly, it only ever watches a metric, which is why turning a log pattern into an alarm requires an explicit metric filter step in between.
 

@@ -1,10 +1,6 @@
 # Amazon MQ - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Amazon MQ is a drop-in managed broker: pick ActiveMQ or RabbitMQ, choose single-instance or a highly-available topology, and AWS handles maintenance, patching, and failover underneath your existing broker-protocol clients.
 

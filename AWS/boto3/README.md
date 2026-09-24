@@ -1,10 +1,6 @@
 # boto3 (AWS SDK for Python) - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > boto3 resolves credentials once, through a fixed fallback chain, before any client call — so a working request usually means the chain, not the call, is misconfigured when it fails.
 

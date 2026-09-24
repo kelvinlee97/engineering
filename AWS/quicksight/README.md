@@ -1,10 +1,6 @@
 # Amazon QuickSight - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > QuickSight connects to data sources, models them into datasets served either from the in-memory SPICE cache or live queries, and lets you work in an editable analysis before publishing a read-only dashboard that can be shared or embedded.
 

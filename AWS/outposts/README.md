@@ -1,10 +1,6 @@
 # AWS Outposts - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > An Outpost is a physical extension of an AWS Region into your building: it runs the same APIs locally over a service link back to the Region, while a local gateway connects Outpost resources to your on-premises network.
 

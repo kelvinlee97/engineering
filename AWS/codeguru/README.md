@@ -1,10 +1,6 @@
 # Amazon CodeGuru - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > CodeGuru is two unrelated ML tools sharing a brand name — Reviewer looks at source code before it runs, Profiler looks at running processes in production — and as of November 7, 2025, only one of them (Profiler) still accepts new setups.
 

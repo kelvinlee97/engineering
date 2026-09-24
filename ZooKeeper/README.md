@@ -1,7 +1,5 @@
 # ZooKeeper
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
 This module contains ZooKeeper tutorials and operational usage guides. Incident procedures under `runbooks/` remain separate from beginner material.
 
 ## Guides

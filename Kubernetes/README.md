@@ -1,7 +1,5 @@
 # Kubernetes
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
 This module contains reusable Kubernetes operational documentation. Incident procedures live under `runbooks/`.
 
 ## Runbooks

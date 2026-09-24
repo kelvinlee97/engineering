@@ -1,23 +1,15 @@
 {% import "partials/language.html" as lang with context %}
 
-{% set page_language = 'en' %}
-{% if page and page.meta and page.meta.kb_language %}
-  {% set page_language = page.meta.kb_language %}
-{% endif %}
-
 <footer class="md-footer">
   {% if "navigation.footer" in features %}
     {#
-      MkDocs derives previous/next from the flat nav, which interleaves each
-      English page with its Chinese translation. Walk the nav ourselves and keep
-      only the pages in the reader's current language, skipping the generated
-      hubs (they opt out of the footer via `hide: footer`).
+      MkDocs derives previous/next from the flat nav. Walk it ourselves and
+      skip the generated hubs, which opt out of the footer via `hide: footer`.
     #}
     {% set siblings = [] %}
     {% for candidate in nav.pages %}
       {% set candidate_meta = candidate.meta or {} %}
-      {% if candidate_meta.kb_language == page_language
-            and "footer" not in (candidate_meta.hide or []) %}
+      {% if "footer" not in (candidate_meta.hide or []) %}
         {% set _ = siblings.append(candidate) %}
       {% endif %}
     {% endfor %}
@@ -68,20 +60,11 @@
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
         <div class="kb-footer-note">
-          {% if page_language == 'zh' %}
-            双语工程笔记 · <a href="{{ 'index_zh/' | url }}">首页</a> ·
-            <a href="{{ 'feed_zh.xml' | url }}">RSS</a> ·
-            <a href="{{ config.repo_url }}">GitHub 仓库</a>
-            {% if page and page.meta and page.meta.kb_source %}
-              · <a href="{{ page.meta.kb_source }}">本页源文件</a>
-            {% endif %}
-          {% else %}
-            Bilingual engineering notes · <a href="{{ '' | url }}">Home</a> ·
-            <a href="{{ 'feed.xml' | url }}">RSS</a> ·
-            <a href="{{ config.repo_url }}">GitHub repository</a>
-            {% if page and page.meta and page.meta.kb_source %}
-              · <a href="{{ page.meta.kb_source }}">Source of this page</a>
-            {% endif %}
+          Engineering notes · <a href="{{ '' | url }}">Home</a> ·
+          <a href="{{ 'feed.xml' | url }}">RSS</a> ·
+          <a href="{{ config.repo_url }}">GitHub repository</a>
+          {% if page and page.meta and page.meta.kb_source %}
+            · <a href="{{ page.meta.kb_source }}">Source of this page</a>
           {% endif %}
         </div>
       </div>

@@ -1,12 +1,8 @@
 # Introduction to Claude Code Agent Skills
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
 This is a complete study guide to Anthropic Academy's **Introduction to agent skills**
 course. It covers all six written lessons and the accessible subtitles from the official
 videos. It is an original summary, not a transcript or a replacement for the course.
-
-## Mental model
 
 > A skill is task-specific knowledge that Claude discovers from its description and loads only
 > when relevant. Always-on rules belong elsewhere; delegated work belongs in subagents; events
@@ -58,7 +54,7 @@ The six lessons form one sequence:
 5. **Distribute deliberately:** use Git, plugins, or managed settings according to audience.
 6. **Debug systematically:** validate structure, then check matching, priority, and runtime failures.
 
-## Lesson 1 — What are skills?
+## Lesson 1: What are skills?
 
 ### Definition and discovery
 
@@ -91,7 +87,7 @@ repeatedly explaining the same task is evidence that a skill may be worthwhile.
 
 Official source: [What are skills?](https://anthropic.skilljar.com/introduction-to-agent-skills/434525)
 
-## Lesson 2 — Creating your first skill
+## Lesson 2: Creating your first skill
 
 ### Minimal structure
 
@@ -145,7 +141,7 @@ such as `review`.
 
 Official source: [Creating your first skill](https://anthropic.skilljar.com/introduction-to-agent-skills/434527)
 
-## Lesson 3 — Configuration and multi-file skills
+## Lesson 3: Configuration and multi-file skills
 
 ### Frontmatter fields
 
@@ -187,7 +183,7 @@ rather than its source needs to enter the working context.
 
 Official source: [Configuration and multi-file skills](https://anthropic.skilljar.com/introduction-to-agent-skills/434526)
 
-## Lesson 4 — Skills vs. other Claude Code features
+## Lesson 4: Skills vs. other Claude Code features
 
 ### Pick by behavior
 
@@ -211,7 +207,7 @@ for external services without making any one mechanism carry all five responsibi
 
 Official source: [Skills vs. other Claude Code features](https://anthropic.skilljar.com/introduction-to-agent-skills/434528)
 
-## Lesson 5 — Sharing skills
+## Lesson 5: Sharing skills
 
 ### Distribution choices
 
@@ -250,7 +246,7 @@ useful when isolated work must apply a consistent, named set of standards.
 
 Official source: [Sharing skills](https://anthropic.skilljar.com/introduction-to-agent-skills/434529)
 
-## Lesson 6 — Troubleshooting skills
+## Lesson 6: Troubleshooting skills
 
 ### Diagnose in order
 

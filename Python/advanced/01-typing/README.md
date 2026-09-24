@@ -1,9 +1,5 @@
 # Python Type Hints Cheatsheet
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > Type hints are documentation checked by external tools, not by the interpreter: accept the most abstract type a function can work with, and return the most concrete type callers can rely on.
 
 ```python

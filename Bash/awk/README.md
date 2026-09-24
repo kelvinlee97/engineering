@@ -1,9 +1,5 @@
 # The `awk` command
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > `awk` is a tiny per-line programming language: for every input line it splits the line into numbered fields (`$1`, `$2`, ... `$NF`) and runs your `condition { action }` against them, so most tasks reduce to picking the right field number and the right condition.
 
 `awk` processes text one line at a time. Its name uses the initials of its authors: Aho, Weinberger, and Kernighan. It is useful for selecting columns, filtering rows, and performing simple calculations on logs or tabular text.

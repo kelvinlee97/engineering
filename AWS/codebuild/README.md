@@ -1,10 +1,6 @@
 # AWS CodeBuild - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > A CodeBuild run is entirely scripted by one file: the buildspec's phases execute in a fixed order in a fresh container, so a failure at "install" versus "build" versus "post_build" points to a completely different part of that same file, not a different system.
 

@@ -1,10 +1,6 @@
 # AWS CodePipeline - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > A pipeline is a strict sequence of stages, each an ordered list of actions, connected only by artifacts: an action can only see the artifacts the actions before it explicitly output, so a missing input in stage N almost always traces back to a name mismatch in stage N-1's output.
 

@@ -1,9 +1,5 @@
 # Claude Code GitHub Actions
 
-English | [简体中文](README_ZH.md)
-
-## Mental model
-
 > Claude Code GitHub Actions is a constrained agent inside a GitHub Actions job: an event starts it, identity checks decide whether it may run, and GitHub plus Claude tool permissions limit what it may do.
 
 This article answers four practical questions:
@@ -216,7 +212,7 @@ To migrate from `anthropics/claude-code-action@beta` to `@v1`:
 3. Rename `direct_prompt` to `prompt`.
 4. Move options such as model and maximum turns into `claude_args`; convert `custom_instructions` to `--append-system-prompt`.
 
-## Key takeaway
+## Safety comes from the whole control chain
 
 Claude Code GitHub Actions is best understood as a constrained agent inside an ordinary CI job. Safe adoption depends less on the prompt alone than on the complete control chain: trusted trigger, minimal GitHub permissions, explicit Claude tools, protected credentials, bounded runtime, and human review before merge.
 

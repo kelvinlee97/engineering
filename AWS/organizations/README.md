@@ -1,10 +1,6 @@
 # AWS Organizations - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Organizations is a tree: one root holds OUs, OUs hold accounts, and policies like SCPs attach anywhere in that tree to narrow (never grant) what every account beneath them can do.
 

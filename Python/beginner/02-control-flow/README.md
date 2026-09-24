@@ -1,9 +1,5 @@
 # Python Control Flow Cheatsheet
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > Control flow always picks exactly one path: the first true condition in an `if`/`elif`/`else` chain wins, and later branches are never evaluated.
 
 ```mermaid

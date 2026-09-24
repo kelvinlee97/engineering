@@ -1,9 +1,5 @@
 # Python Decorators Cheatsheet
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > `@trace` on a function definition is syntax sugar for reassigning the name: `deploy = trace(deploy)`. The name `deploy` ends up bound to the wrapper, so every call to `deploy(...)` actually calls the wrapper first.
 
 ```mermaid

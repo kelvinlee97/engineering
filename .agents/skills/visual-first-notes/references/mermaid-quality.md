@@ -1,4 +1,4 @@
-# Mermaid and Bilingual Quality
+# Mermaid Quality
 
 ## Mermaid contract
 
@@ -20,23 +20,13 @@ flowchart TD
 - Do not use custom styling merely for decoration. Ensure meaning does not depend on colour alone.
 - Keep a text interpretation next to each diagram so the essential meaning survives renderer or accessibility failure.
 
-## Paired languages
-
-English and Chinese diagrams must have the same factual topology:
-
-- Keep node and edge meaning aligned.
-- Translate reader-facing labels and accessibility text.
-- Preserve commands, identifiers, API names, resource types, protocol names, and code where translation would reduce precision.
-- A necessary label-length adaptation may change layout, but not scope or meaning.
-
 ## Validation
 
 For any article containing Mermaid:
 
-1. Confirm diagram count, type, and topology across both languages.
-2. Confirm every block has `accTitle` and `accDescr`.
-3. Run the knowledge-base validation and `mkdocs build --strict`.
-4. Inspect the rendered article, not only the Markdown source.
-5. Check a desktop and narrow mobile viewport for clipping, tiny labels, excessive height, and horizontal overflow.
-6. Check light and dark themes when diagram or site styling changes.
-7. Run `git diff --check` and verify local links.
+1. Confirm every block has `accTitle` and `accDescr`.
+2. Run the knowledge-base validation and `mkdocs build --strict`.
+3. Inspect the rendered article, not only the Markdown source.
+4. Check a desktop and narrow mobile viewport for clipping, tiny labels, excessive height, and horizontal overflow.
+5. Check light and dark themes when diagram or site styling changes.
+6. Run `git diff --check` and verify local links.

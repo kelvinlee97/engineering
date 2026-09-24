@@ -1,10 +1,6 @@
 # Amazon Personalize - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Personalize turns imported interaction data into a trained solution version, then serves it either as a live campaign for real-time recommendations or as a batch job for offline lists and segments.
 

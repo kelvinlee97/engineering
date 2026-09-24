@@ -1,8 +1,6 @@
 ← [Back to index](../00-init/README.md) ｜ Previous: [Git/commit](../04-commit/README.md)
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-# `git log` — Browse Commit History
+# `git log`: Browse Commit History
 
 ## What this does
 
@@ -76,7 +74,7 @@ git log --oneline
 
 ## Common pitfalls
 
-- ⚠️ Default `git log` output can be long — press `q` to exit the pager (Git uses `less` by default).
+- ⚠️ Default `git log` output can be long: press `q` to exit the pager (Git uses `less` by default).
 - ⚠️ `--follow` only tracks rename history for a single file; run it separately for other files.
 
 ## What's next

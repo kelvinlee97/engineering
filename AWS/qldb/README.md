@@ -1,10 +1,6 @@
 # Amazon QLDB - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > QLDB reached end of support on July 31, 2025: treat this article only as a runbook for exporting and decommissioning existing ledgers on the way to Amazon Aurora PostgreSQL, never as a starting point for new work.
 

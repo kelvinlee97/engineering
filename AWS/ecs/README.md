@@ -1,10 +1,6 @@
 # Amazon ECS - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Amazon Elastic Container Service (Amazon ECS) is a fully managed container orchestration service for deploying, managing, and scaling containerized applications. It runs workloads across AWS Regions and on-premises without the complexity of managing a control plane.
 

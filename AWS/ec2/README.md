@@ -1,10 +1,6 @@
 # Amazon EC2 - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-18
-
-## Mental model
 
 > Amazon Elastic Compute Cloud (Amazon EC2) provides on-demand, scalable compute capacity in the AWS Cloud. An EC2 instance is a virtual server; the instance type you choose determines the balance of compute, memory, network, and storage available to it.
 

@@ -1,16 +1,12 @@
 # AWS Shared Responsibility Model - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Security and compliance in AWS are a shared responsibility between AWS and the customer.
 
 ## Overview
 
-Security and compliance in AWS are a shared responsibility between AWS and the customer. AWS operates, manages, and controls the components from the host operating system and virtualization layer down to the physical security of the facilities. The customer is responsible for the guest operating system (including updates and security patches), associated application software, and the configuration of AWS-provided security controls.
+AWS operates, manages, and controls the components from the host operating system and virtualization layer down to the physical security of the facilities. The customer is responsible for the guest operating system (including updates and security patches), associated application software, and the configuration of AWS-provided security controls.
 
 ```mermaid
 flowchart TB
@@ -38,7 +34,7 @@ More of the stack shifts to AWS as the service model moves from IaaS (EC2) to Pa
 
 - **AWS responsibility ("security of the cloud")**: physical facilities, hardware, software, networking, and the virtualization layer; AWS operates and verifies the related IT controls.
 - **Customer responsibility ("security in the cloud")**: guest OS updates and patching, application software, data, identity and access management, network and firewall configuration, encryption, and compliance with applicable regulations.
-- **Service model impact**: responsibilities vary by service type — IaaS (EC2: more customer control) vs. PaaS (RDS: AWS manages the OS) vs. SaaS (fully managed: AWS manages more).
+- **Service model impact**: responsibilities vary by service type; IaaS (EC2: more customer control) vs. PaaS (RDS: AWS manages the OS) vs. SaaS (fully managed: AWS manages more).
 - **Shared IT controls**: some controls are shared (for example, patch management is shared for infrastructure but the customer manages guest OS patching).
 - **Customer verification**: use AWS Artifact reports and compliance documentation to evaluate and verify controls for your own audit.
 

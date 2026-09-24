@@ -1,10 +1,6 @@
 # AWS Control Tower - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Control Tower is a layer of governance on top of Organizations, not a replacement for it: it decides what "well-architected" means for your landing zone, and its three control types enforce that definition at three different moments — before a resource can be created, before it can be provisioned by CloudFormation, or after it already exists.
 

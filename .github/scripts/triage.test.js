@@ -39,7 +39,7 @@ test('an issue can carry several area labels', () => {
 });
 
 test('the body is searched as well as the title', () => {
-  assert.ok(issueLabels({ title: 'Question', body: '中文版缺失' }).includes('translation'));
+  assert.ok(issueLabels({ title: 'Question', body: 'this is broken' }).includes('bug'));
 });
 
 test('matching is case insensitive', () => {

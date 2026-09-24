@@ -1,10 +1,6 @@
 # Amazon Athena - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Athena is a query engine with no storage of its own: it plans SQL against metadata in a Data Catalog, reads only the S3 bytes that partitioning and file format let it skip past, and every byte scanned is what you pay for.
 

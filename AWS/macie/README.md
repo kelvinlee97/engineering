@@ -1,10 +1,6 @@
 # Amazon Macie - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Macie continuously inventories your S3 buckets, samples or scans objects for sensitive data and misconfiguration, and turns what it finds into findings that flow to EventBridge or Security Hub for action.
 

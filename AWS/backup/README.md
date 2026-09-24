@@ -1,10 +1,6 @@
 # AWS Backup - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > AWS Backup separates "when and how long" from "where": a plan's rules decide backup frequency and retention, the vault (and its optional Vault Lock) decides how immutable the result is, and copy rules decide whether it also lands in another Region or account.
 

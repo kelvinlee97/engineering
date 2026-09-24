@@ -1,10 +1,6 @@
 # AWS Resource Groups & Tag Editor - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Tags are the metadata you attach to resources; Resource Groups turns a saved tag/type query into a reusable operational view, and Tag Editor lets you search and bulk-edit the underlying tags directly.
 

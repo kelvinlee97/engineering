@@ -1,10 +1,6 @@
 # Amazon Rekognition - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Rekognition analyzes images synchronously in a single API call, but video always runs as an asynchronous job that reports completion through SNS — both call into the same underlying detection features (labels, text, faces, moderation).
 

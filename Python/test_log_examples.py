@@ -24,24 +24,18 @@ class LogExampleTests(unittest.TestCase):
                         )
                         self.assertEqual(result.stdout.strip(), "3")
 
-    def test_bilingual_generators_filter_status_not_response_size(self):
+    def test_generator_filters_status_not_response_size(self):
         lines = (ROOT / "examples/app.log").read_text(encoding="utf-8").splitlines()
         boundary_lines = [
             f'127.0.0.1 - - [time] "GET / HTTP/1.1" {status} 512 "-" "-"'
             for status in (200, 499, 500, 599, 600)
         ]
-        for name in ("README.md", "README_ZH.md"):
-            with self.subTest(language=name):
-                text = (ROOT / "advanced/02-iterators-and-generators" / name).read_text(
-                    encoding="utf-8"
-                )
-                function = text.split("def server_errors", 1)[1].split(
-                    "\n\n\nfor line", 1
-                )[0]
-                namespace = {}
-                exec("def server_errors" + function, namespace)
-                filter_errors = namespace["server_errors"]
-                self.assertEqual(len(list(filter_errors(lines))), 3)
-                self.assertEqual(
-                    list(filter_errors(boundary_lines)), boundary_lines[2:4]
-                )
+        text = (
+            ROOT / "advanced/02-iterators-and-generators" / "README.md"
+        ).read_text(encoding="utf-8")
+        function = text.split("def server_errors", 1)[1].split("\n\n\nfor line", 1)[0]
+        namespace = {}
+        exec("def server_errors" + function, namespace)
+        filter_errors = namespace["server_errors"]
+        self.assertEqual(len(list(filter_errors(lines))), 3)
+        self.assertEqual(list(filter_errors(boundary_lines)), boundary_lines[2:4])

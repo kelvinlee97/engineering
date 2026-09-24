@@ -1,12 +1,8 @@
 # AWS Ecosystem - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Mental model
-
-> The AWS ecosystem is the cloud platform plus everything that surrounds it — partners, marketplace, support, compliance evidence, and the frameworks that guide how you use it — not a single product with one entry point.
+> The AWS ecosystem is the cloud platform plus everything that surrounds it: partners, marketplace, support, compliance evidence, and the frameworks that guide how you use it. There is no single product and no single entry point.
 
 This article answers one practical question:
 

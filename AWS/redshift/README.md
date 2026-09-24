@@ -1,10 +1,6 @@
 # Amazon Redshift - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Redshift is a columnar, massively-parallel warehouse you either run as a provisioned cluster you size yourself (RA3 scales storage independently of compute; DC2 is fixed local storage) or as Serverless, which scales RPU capacity for you and can query cold S3 data directly through Spectrum either way.
 

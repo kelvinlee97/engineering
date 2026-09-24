@@ -1,9 +1,5 @@
 # Ghostty Workstation
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > This is a manual, no-installer setup: you install the tools yourself, add a few shell init lines once, and copy one config file into Ghostty's config location. Nothing here manages state for you afterward.
 
 A small, manual setup for Ghostty and a focused set of terminal tools.

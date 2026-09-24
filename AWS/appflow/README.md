@@ -1,10 +1,6 @@
 # Amazon AppFlow - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > AppFlow is a no-code data-mover between named connectors: a flow declares a source, a destination, field mapping/filters, and one of three trigger types, and AppFlow runs it without any custom integration code.
 

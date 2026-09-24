@@ -1,12 +1,10 @@
 # Node.js / Express BFF Production Deployment for Beginners
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
 This guide deploys a generic Express BFF on a Linux VM. PM2 runs multiple Node.js workers as an unprivileged account; an optional, separately operated Nginx or OpenResty gateway proxies public traffic. Replace every `<placeholder>` through approved change control. It is a repeatable baseline, not evidence that any production service uses these paths, ports, or worker counts.
 
 ## Contents
 
-- [Mental model and boundaries](#mental-model-and-boundaries)
+- [How the pieces fit together](#how-the-pieces-fit-together)
 - [Prepare the release host](#prepare-the-release-host)
 - [Create an application that can be operated](#create-an-application-that-can-be-operated)
 - [Deploy and supervise with PM2](#deploy-and-supervise-with-pm2)
@@ -14,7 +12,7 @@ This guide deploys a generic Express BFF on a Linux VM. PM2 runs multiple Node.j
 - [Gateway integration and daily operations](#gateway-integration-and-daily-operations)
 - [Acceptance checklist](#acceptance-checklist)
 
-## Mental model and boundaries
+## How the pieces fit together
 
 > The BFF is one more hop between an external gateway and approved downstream services: PM2 keeps several stateless Node.js workers alive behind one private listener, so the gateway and downstream API remain separate, independently operated systems.
 

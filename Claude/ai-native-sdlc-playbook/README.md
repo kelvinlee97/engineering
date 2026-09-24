@@ -1,9 +1,5 @@
 # The AI-Native SDLC Playbook
 
-English · [简体中文](README_ZH.md)
-
-## Mental model
-
 > An AI-native SDLC is a versioned artifact loop: each stage consumes the previous stage's durable
 > output, agents accelerate work between gates, and humans remain accountable for approvals that
 > require risk or judgment.
@@ -164,7 +160,7 @@ are not vendor-neutral evidence. The durable ideas are broader: explicit artifac
 fast feedback, least privilege, deterministic enforcement, traceable approvals, and autonomy that
 increases only when verification and rollback are trustworthy.
 
-## Key takeaway
+## Every stage leaves a reviewable artifact
 
 AI-native development is a redesign of the whole delivery system, not just faster coding. The most
 useful shift is to make each stage leave a reviewable artifact and let automation move work between

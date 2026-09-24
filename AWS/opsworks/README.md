@@ -1,10 +1,6 @@
 # AWS OpsWorks - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > OpsWorks Stacks is discontinued (May 26, 2024): treat this article purely as a migration map from its Chef-based stack/layer model onto current services (Systems Manager, CloudFormation, CodeDeploy, containers, Elastic Beanstalk).
 

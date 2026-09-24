@@ -1,10 +1,6 @@
 # AWS Serverless Application Model (SAM) & Serverless Application Repository - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > A SAM template is CloudFormation with serverless shorthand that the SAM transform expands into standard resources; the SAM CLI takes that same template through build, local test, and deploy, and SAR is simply a catalog for sharing the finished template.
 
@@ -26,7 +22,7 @@ flowchart LR
 ## Key concepts
 
 - **SAM template**: a CloudFormation template with SAM shorthand (`AWS::Serverless::Function`, `AWS::Serverless::Api`, `AWS::Serverless::SimpleTable`, etc.); SAM transforms it into standard CloudFormation resources.
-- **SAM CLI**: commands for the full lifecycle — `sam init`, `sam build`, `sam local invoke/start-api` (local testing), `sam deploy`, `sam sync` (continuous sync), and Terraform support for local Lambda debugging.
+- **SAM CLI**: commands for the full lifecycle, including `sam init`, `sam build`, `sam local invoke/start-api` (local testing), `sam deploy`, `sam sync` (continuous sync), and Terraform support for local Lambda debugging.
 - **SAM connectors**: declare resource-to-resource permissions in the template; SAM generates the required IAM permissions.
 - **Policies**: simplified IAM policy templates (for example, S3 read/write, DynamoDB CRUD) attached to functions.
 - **Serverless Application Repository**: publish applications publicly or privately (shared within teams/orgs), deploy with a few clicks from the Lambda console, and version apps with metadata (readme, source code).

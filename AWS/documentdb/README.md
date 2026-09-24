@@ -1,10 +1,6 @@
 # Amazon DocumentDB - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Amazon DocumentDB (with MongoDB compatibility) is a fast, reliable, fully managed document database. You can run the same application code, drivers, and tools you use with MongoDB. It separates storage from compute: a cluster volume is replicated six ways across three Availability Zones and grows automatically as data grows.
 

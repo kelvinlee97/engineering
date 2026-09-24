@@ -1,9 +1,5 @@
 # Understanding Apple Container
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > Docker Desktop hides many containers inside one shared Linux VM; apple/container instead gives **each container its own lightweight VM**, trading a little startup overhead for VM-level isolation and per-container resource accounting.
 
 ## Project Overview
@@ -41,12 +37,12 @@ flowchart TD
 
 ### Key Technologies
 
-- **Virtualization.framework** — Manages Linux VMs and attached devices
-- **vmnet.framework** — Manages virtual networking
-- **XPC** — Provides interprocess communication
-- **launchd** — Manages services
-- **Keychain** — Stores registry credentials
-- **Unified Logging** — Provides application logging
+- **Virtualization.framework**: Manages Linux VMs and attached devices
+- **vmnet.framework**: Manages virtual networking
+- **XPC**: Provides interprocess communication
+- **launchd**: Manages services
+- **Keychain**: Stores registry credentials
+- **Unified Logging**: Provides application logging
 
 ---
 
@@ -94,12 +90,12 @@ container system           # Start or stop system services
 
 The underlying Swift package that provides the core APIs:
 
-1. **OCI image management** — Creates, reads, and modifies OCI-compliant images
-2. **Remote registry interaction** — Supports Docker Hub and private registries
-3. **Filesystem creation** — Creates and populates ext4 filesystems
-4. **Lightweight VM management** — Creates lightweight VMs and manages container runtime environments
-5. **Container process interaction** — Starts and interacts with containerized processes
-6. **vminitd** — A built-in lightweight init system that runs as the VM's initial process and exposes a gRPC API over vsock
+1. **OCI image management**: Creates, reads, and modifies OCI-compliant images
+2. **Remote registry interaction**: Supports Docker Hub and private registries
+3. **Filesystem creation**: Creates and populates ext4 filesystems
+4. **Lightweight VM management**: Creates lightweight VMs and manages container runtime environments
+5. **Container process interaction**: Starts and interacts with containerized processes
+6. **vminitd**: A built-in lightweight init system that runs as the VM's initial process and exposes a gRPC API over vsock
 
 ---
 

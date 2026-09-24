@@ -1,10 +1,6 @@
 # AWS CodeArtifact - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > CodeArtifact repositories form a directed graph, not a flat list: a repository can declare another repository (including one backed by an external public registry) as its upstream, so a single package manager endpoint can transparently resolve packages that actually live in several different repositories.
 

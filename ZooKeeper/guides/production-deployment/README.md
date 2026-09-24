@@ -1,7 +1,5 @@
 # ZooKeeper Production Deployment Guide for DevOps Beginners
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
 This guide presents what a three-member Apache ZooKeeper 3.9.5 production environment on Ubuntu 24.04 LTS should look like. It is a reference architecture and operations guide, not evidence that this repository deployed or certified a live environment. The commands show one coherent implementation; adapt the example names, addresses, CIDRs, certificate paths, capacity, and retention values through your own design review and change process.
 
 ## Read This First: the 30-Minute Model
@@ -64,7 +62,7 @@ ZooKeeper stays available only while a majority can communicate. Three members t
 
 Do not use this guide to recover a damaged data directory. For one failed member after disk-full transaction-log corruption, use the separate [recovery runbook](../../runbooks/disk-full-transaction-log-recovery/README.md) only after proving the other two members are healthy. If quorum is lost, stop routine changes and use the approved disaster-recovery process.
 
-## 1. Prepare Hosts and Release Material — understand before running
+## 1. Prepare Hosts and Release Material: understand before running
 
 **What you are doing:** preparing three independent servers and two persistent storage locations per server. **Why:** a shared failure domain or one busy disk can remove quorum or delay durable writes. **Success looks like:** each host has its own identity, and the snapshot and transaction-log paths are different mounted devices.
 
@@ -105,7 +103,7 @@ sudo chmod -R go-w "/opt/apache-zookeeper-${ZK_VERSION}-bin"
 
 Before continuing, record `hostname -f`, `timedatectl status`, `java -version`, `findmnt /var/lib/zookeeper /srv/zookeeper-txn`, and `df -hT` as sanitized deployment evidence. The data and transaction-log files must survive a process restart; the two directories must not resolve to the same backing device.
 
-## 2. Configure the Ensemble and TLS — understand before running
+## 2. Configure the Ensemble and TLS: understand before running
 
 **What you are doing:** giving all three servers the same membership list, while assigning each one a different `myid`. **Why:** every member must know who may vote, and TLS protects both application-to-ZooKeeper and member-to-member traffic. **Success looks like:** certificates match the host names, configuration is identical except for `myid`, and no plaintext client port exists.
 
@@ -163,7 +161,7 @@ sudo -u zookeeper /opt/apache-zookeeper-3.9.5/bin/zkServer-initialize.sh \
 # ... --myid=3  # zk-3 only
 ```
 
-## 3. Run Under systemd — understand before running
+## 3. Run Under systemd: understand before running
 
 **What you are doing:** letting systemd supervise ZooKeeper as an unprivileged service. **Why:** a failed JVM should be restarted predictably, but a missing data path must stop startup rather than create an empty service. **Success looks like:** systemd reports `active`, then the ensemble elects one leader after enough members start.
 
@@ -273,7 +271,7 @@ sudo -u zookeeper env CLIENT_JVMFLAGS="-Dzookeeper.clientCnxnSocket=org.apache.z
 
 For a TLS-only port, use `zkServer.sh status` with the same client TLS JVM settings; do not send plaintext probes to `2281`. Deeper request, latency, and data-size evidence belongs to the metrics path configured after first acceptance. ZooKeeper documents TLS-specific status invocation in its [tools guide](https://zookeeper.apache.org/doc/r3.9.5/zookeeperTools.html).
 
-## 5. Operate, Monitor, and Change Safely — after first acceptance
+## 5. Operate, Monitor, and Change Safely: after first acceptance
 
 ### Daily checks and alerts
 

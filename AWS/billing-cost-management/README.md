@@ -1,10 +1,6 @@
 # AWS Billing and Cost Management - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Billing and Cost Management is five separate capabilities sharing one console: paying the bill, seeing where the money went, labeling it by team/app, forecasting and capping it, and buying it more cheaply in advance — each with its own tools, and IAM access to any of them is off by default.
 

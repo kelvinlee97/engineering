@@ -1,7 +1,5 @@
 # I make $32K/month from 3 simple, boring websites
 
-[简体中文](summary_zh.md)
-
 ## Source
 
 - Video: [I make $32K/month from 3 simple, boring websites](https://www.youtube.com/watch?v=5-G9WHwQMwQ)

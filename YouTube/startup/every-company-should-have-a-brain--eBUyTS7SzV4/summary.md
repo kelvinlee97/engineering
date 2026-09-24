@@ -1,7 +1,5 @@
 # Every Company Should Have a Brain
 
-[简体中文](summary_zh.md)
-
 ## Source
 
 - Video: [Every company should have a Brain — Garry Tan, Y Combinator](https://www.youtube.com/watch?v=eBUyTS7SzV4)

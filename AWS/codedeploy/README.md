@@ -1,16 +1,12 @@
 # AWS CodeDeploy - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
 
-## Mental model
-
-> CodeDeploy's real product is the AppSpec lifecycle hook sequence: in-place and blue/green deployments both walk through the same named hooks (BeforeInstall, AfterInstall, ApplicationStart, ValidateService...), and it's ValidateService's exit code — not deployment configuration alone — that decides whether the rollout continues or auto-rolls-back.
+> CodeDeploy's real product is the AppSpec lifecycle hook sequence: in-place and blue/green deployments both walk through the same named hooks (BeforeInstall, AfterInstall, ApplicationStart, ValidateService...), and ValidateService's exit code, together with the deployment configuration, decides whether the rollout continues or auto-rolls-back.
 
 This article answers two practical questions:
 
-1. In-place versus blue/green — what actually differs, and what stays the same?
+1. In-place versus blue/green: what actually differs, and what stays the same?
 2. Which hook is responsible for deciding "this deployment is healthy, keep going"?
 
 ## Big picture

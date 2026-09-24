@@ -1,10 +1,6 @@
 # AWS Directory Service - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > AWS Directory Service provides managed directory options for using Microsoft Active Directory (AD) and LDAP with AWS services and workloads. You can run a fully managed Microsoft AD in the cloud, connect AWS applications to your existing on-premises AD, or use a low-cost AD-compatible directory, depending on your needs.
 

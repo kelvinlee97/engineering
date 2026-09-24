@@ -34,101 +34,57 @@ from scripts.knowledge_base import (
 
 
 class KnowledgeBaseTests(unittest.TestCase):
-    def test_discovers_pairs_and_derives_metadata(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            self._write(root, "AWS/README.md", "# AWS\n")
-            self._write(root, "AWS/README_ZH.md", "# AWS 中文\n")
-
-            documents = discover_documents(
-                root,
-                ["AWS/README.md", "AWS/README_ZH.md"],
-            )
-
-            english = next(document for document in documents if document.language == "en")
-            self.assertEqual(english.page, "AWS/index.md")
-            self.assertEqual(english.pair_page, "AWS/index_zh.md")
-            self.assertEqual(english.area, "AWS")
-            self.assertEqual(english.kind, "catalog")
-            self.assertEqual(english.pair_title, "AWS 中文")
-
-    def test_missing_pair_fails(self) -> None:
+    def test_discovers_documents_and_derives_metadata(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             self._write(root, "AWS/README.md", "# AWS\n")
 
-            with self.assertRaisesRegex(KnowledgeBaseError, "missing paired document"):
-                discover_documents(root, ["AWS/README.md"])
+            documents = discover_documents(root, ["AWS/README.md"])
+
+            self.assertEqual(len(documents), 1)
+            document = documents[0]
+            self.assertEqual(document.page, "AWS/index.md")
+            self.assertEqual(document.area, "AWS")
+            self.assertEqual(document.kind, "catalog")
 
     def test_missing_local_link_fails(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             self._write(root, "AWS/README.md", "# AWS\n\n[Missing](missing/README.md)\n")
-            self._write(root, "AWS/README_ZH.md", "# AWS 中文\n")
 
             with self.assertRaisesRegex(KnowledgeBaseError, "missing local link target"):
-                discover_documents(root, ["AWS/README.md", "AWS/README_ZH.md"])
+                discover_documents(root, ["AWS/README.md"])
 
     def test_mermaid_requires_accessible_title_and_description(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             diagram = "# AWS\n\n```mermaid\nflowchart TD\nA --> B\n```\n"
             self._write(root, "AWS/README.md", diagram)
-            self._write(root, "AWS/README_ZH.md", diagram.replace("# AWS", "# AWS 中文"))
 
             with self.assertRaisesRegex(KnowledgeBaseError, "missing accTitle"):
-                discover_documents(root, ["AWS/README.md", "AWS/README_ZH.md"])
+                discover_documents(root, ["AWS/README.md"])
 
-    def test_mermaid_types_and_order_must_match_pair(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            flowchart = (
-                "# AWS\n\n```mermaid\nflowchart TD\n"
-                "accTitle: Overview\naccDescr: A flows to B.\nA --> B\n```\n"
-            )
-            sequence = (
-                "# AWS 中文\n\n```mermaid\nsequenceDiagram\n"
-                "accTitle: 总览\naccDescr: A 向 B 发送请求。\nA->>B: request\n```\n"
-            )
-            self._write(root, "AWS/README.md", flowchart)
-            self._write(root, "AWS/README_ZH.md", sequence)
-
-            with self.assertRaisesRegex(KnowledgeBaseError, "different Mermaid diagram types"):
-                discover_documents(root, ["AWS/README.md", "AWS/README_ZH.md"])
-
-    def test_accessible_paired_mermaid_diagrams_pass(self) -> None:
+    def test_accessible_mermaid_diagram_passes(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             english = (
                 "# AWS\n\n```mermaid\nflowchart TD\n"
                 "accTitle: Overview\naccDescr: A flows to B.\nA --> B\n```\n"
             )
-            chinese = english.replace("# AWS", "# AWS 中文").replace(
-                "Overview\naccDescr: A flows to B.",
-                "总览\naccDescr: A 流向 B。",
-            )
             self._write(root, "AWS/README.md", english)
-            self._write(root, "AWS/README_ZH.md", chinese)
 
-            documents = discover_documents(
-                root,
-                ["AWS/README.md", "AWS/README_ZH.md"],
-            )
+            documents = discover_documents(root, ["AWS/README.md"])
 
-            self.assertEqual(len(documents), 2)
+            self.assertEqual(len(documents), 1)
 
     def test_stage_rewrites_links_and_excludes_internal_files(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             paths = [
                 "README.md",
-                "README_ZH.md",
                 "AWS/README.md",
-                "AWS/README_ZH.md",
                 "Git/README.md",
-                "Git/README_ZH.md",
                 "apple/container/README.md",
-                "apple/container/README_ZH.md",
                 "AGENTS.md",
                 ".agents/skills/youtube-transcript/SKILL.md",
             ]
@@ -138,13 +94,9 @@ class KnowledgeBaseTests(unittest.TestCase):
                 "# Engineering\n\n[AWS](AWS/) · [Rules](AGENTS.md) · "
                 "[Skill](.agents/skills/youtube-transcript/)\n",
             )
-            self._write(root, "README_ZH.md", "# 工程\n")
             self._write(root, "AWS/README.md", "# AWS\n")
-            self._write(root, "AWS/README_ZH.md", "# AWS 中文\n")
             self._write(root, "Git/README.md", "# Git\n")
-            self._write(root, "Git/README_ZH.md", "# Git 中文\n")
             self._write(root, "apple/container/README.md", "# Apple Container\n")
-            self._write(root, "apple/container/README_ZH.md", "# Apple 容器\n")
             self._write(root, "AGENTS.md", "# Internal\n")
             self._write(root, ".agents/skills/youtube-transcript/SKILL.md", "# Skill\n")
             self._write(root, "pages/knowledge-base.css", "/* test stylesheet */\n")
@@ -166,7 +118,6 @@ class KnowledgeBaseTests(unittest.TestCase):
                 repository,
             )
             self.assertIn('class="kb-meta"', repository)
-            self.assertIn("kb_language: en", repository)
             dashboard = (output / "index.md").read_text(encoding="utf-8")
             # The deploy smoke test greps the live page for the site owner's
             # name, and a reader should see whose notes these are.
@@ -176,17 +127,10 @@ class KnowledgeBaseTests(unittest.TestCase):
             # Publication order is the only ranking: no topic tiles, no
             # curated shortcuts competing with the timeline.
             self.assertNotIn('class="kb-topic-card"', dashboard)
-            # The language switch lives in the menu bar, which reads this.
-            self.assertIn("kb_pair: index_zh/", dashboard)
-            chinese_dashboard = (output / "index_zh.md").read_text(encoding="utf-8")
-            self.assertIn('class="kb-tabs"', chinese_dashboard)
-            self.assertIn("Kelvin 的工程笔记", chinese_dashboard)
             self.assertIn('href="apple/container/"', dashboard)
             self.assertIn('href="archive/"', dashboard)
             # The timeline is the navigation, so the left rail stays hidden.
             self.assertIn("  - navigation", dashboard)
-            # The menu bar renders the language switch from this pointer.
-            self.assertIn("kb_pair: ../", chinese_dashboard)
             topics = (output / "topics/index.md").read_text(encoding="utf-8")
             self.assertIn('href="../apple/container/"', topics)
             self.assertIn('class="kb-topic-card__count">1 note</span>', topics)
@@ -195,9 +139,7 @@ class KnowledgeBaseTests(unittest.TestCase):
             # An article names its source file; the footer links to it.
             self.assertIn("kb_source: https://github.com/", repository)
             self.assertIn('class="kb-topic-card__monogram"', topics)
-            self.assertTrue((output / "topics/index_zh.md").exists())
             self.assertTrue((output / "archive/index.md").exists())
-            self.assertTrue((output / "archive/index_zh.md").exists())
             self.assertEqual(
                 (output / "stylesheets/knowledge-base.css").read_text(encoding="utf-8"),
                 "/* test stylesheet */\n",
@@ -220,9 +162,7 @@ class KnowledgeBaseTests(unittest.TestCase):
         pages = {
             document.page
             for document in documents
-            if document.language == "en"
-            and document.page.startswith("AWS/")
-            and document.page != "AWS/index.md"
+            if document.page.startswith("AWS/") and document.page != "AWS/index.md"
         }
         mapped = {f"AWS/{slug}/index.md" for slug in slugs}
         self.assertEqual(
@@ -233,25 +173,15 @@ class KnowledgeBaseTests(unittest.TestCase):
         self.assertEqual(mapped - pages, set(), "AWS_GROUPS names a missing page")
         self.assertNotIn("- More", _summary_markdown(documents))
 
-    def test_summary_nests_sections_and_omits_chinese_pages(self) -> None:
+    def test_summary_nests_sections(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             self._write(root, "Git/README.md", "# Git\n")
-            self._write(root, "Git/README_ZH.md", "# Git 中文\n")
             self._write(root, "AWS/README.md", "# AWS\n")
-            self._write(root, "AWS/README_ZH.md", "# AWS 中文\n")
             self._write(root, "AWS/s3/README.md", "# Amazon S3 - Runbook & Reference\n")
-            self._write(root, "AWS/s3/README_ZH.md", "# Amazon S3 中文\n")
             documents = discover_documents(
                 root,
-                [
-                    "Git/README.md",
-                    "Git/README_ZH.md",
-                    "AWS/README.md",
-                    "AWS/README_ZH.md",
-                    "AWS/s3/README.md",
-                    "AWS/s3/README_ZH.md",
-                ],
+                ["Git/README.md", "AWS/README.md", "AWS/s3/README.md"],
             )
 
             summary = _summary_markdown(documents)
@@ -260,32 +190,28 @@ class KnowledgeBaseTests(unittest.TestCase):
             self.assertIn("    - Storage & migration\n", summary)
             # The shared article-title suffix is trimmed for the sidebar.
             self.assertIn("        - [Amazon S3](AWS/s3/index.md)\n", summary)
-            # Chinese pages are reached through the menu bar's language
-            # switch, so the nav lists one language only.
-            self.assertNotIn("index_zh.md", summary)
 
     def test_home_topics_all_have_a_name_and_blurb(self) -> None:
         """A tile with no curated name falls back to an article title."""
 
         root = Path(__file__).resolve().parents[2]
         documents = discover_documents(root)
-        for language in ("en", "zh"):
-            for area in _home_areas(documents, language):
-                self.assertIn(area, TOPIC_META, f"{area} needs a TOPIC_META entry")
+        for area in _home_areas(documents):
+            self.assertIn(area, TOPIC_META, f"{area} needs a TOPIC_META entry")
         for area in HOME_TOPIC_EXCLUDE:
-            self.assertNotIn(area, _home_areas(documents, "en"))
+            self.assertNotIn(area, _home_areas(documents))
 
     def test_feed_is_reverse_chronological_and_grouped_by_month(self) -> None:
         """Publication order is the site's only ranking."""
 
         root = Path(__file__).resolve().parents[2]
         documents = discover_documents(root)
-        notes = _blog_documents(documents, "en")
+        notes = _blog_documents(documents)
 
         dates = [document.published for document in notes if document.published]
         self.assertEqual(dates, sorted(dates, reverse=True))
 
-        feed = _dense_feed_html(notes[:HOME_DENSE_LIMIT], "en", "index.md")
+        feed = _dense_feed_html(notes[:HOME_DENSE_LIMIT], "index.md")
         self.assertEqual(
             feed.count('class="kb-row"'), min(HOME_DENSE_LIMIT, len(notes))
         )
@@ -296,16 +222,15 @@ class KnowledgeBaseTests(unittest.TestCase):
     def test_archive_feed_holds_every_note(self) -> None:
         root = Path(__file__).resolve().parents[2]
         documents = discover_documents(root)
-        for language in ("en", "zh"):
-            notes = _blog_documents(documents, language)
-            feed = _dense_feed_html(notes, language, "archive/index.md")
-            self.assertEqual(feed.count('class="kb-row"'), len(notes))
+        notes = _blog_documents(documents)
+        feed = _dense_feed_html(notes, "archive/index.md")
+        self.assertEqual(feed.count('class="kb-row"'), len(notes))
 
     def test_lead_notes_keep_order_and_spread_topics(self) -> None:
         """The leads are the newest notes, minus a topic's third in a row."""
 
         root = Path(__file__).resolve().parents[2]
-        notes = _blog_documents(discover_documents(root), "en")
+        notes = _blog_documents(discover_documents(root))
 
         lead, rest = _lead_selection(notes)
 
@@ -322,7 +247,7 @@ class KnowledgeBaseTests(unittest.TestCase):
         self.assertEqual(dense, sorted(set(dense), key=dense.index))
 
     def test_every_kind_has_its_own_timeline(self) -> None:
-        """The tabs point at real pages, in both languages."""
+        """The tabs point at real pages."""
 
         root = Path(__file__).resolve().parents[2]
         documents = discover_documents(root)
@@ -330,57 +255,33 @@ class KnowledgeBaseTests(unittest.TestCase):
             output = Path(directory) / "build"
             stage(root, output)
             for kind, slug in KIND_SLUGS.items():
-                for language, name in (("en", "index.md"), ("zh", "index_zh.md")):
-                    present = any(
-                        document.kind == kind and document.language == language
-                        for document in documents
-                    )
-                    page = output / slug / name
-                    self.assertEqual(
-                        page.is_file(), present, f"{slug}/{name} does not match its notes"
-                    )
-                    if present:
-                        body = page.read_text(encoding="utf-8")
-                        self.assertIn('aria-current="page"', body)
-
-    def test_language_line_is_stripped_wherever_it_sits(self) -> None:
-        """Articles announce their counterpart above or below the title."""
-
-        root = Path(__file__).resolve().parents[2]
-        with tempfile.TemporaryDirectory() as directory:
-            output = Path(directory) / "build"
-            stage(root, output)
-            openings: list[str] = []
-            for page in list(output.rglob("index*.md")) + list(output.rglob("summary*.md")):
-                openings.extend(
-                    block.strip()
-                    for block in page.read_text(encoding="utf-8").split("\n\n")[:8]
+                present = any(document.kind == kind for document in documents)
+                page = output / slug / "index.md"
+                self.assertEqual(
+                    page.is_file(), present, f"{slug}/index.md does not match its notes"
                 )
-            for block in openings:
-                self.assertIsNone(
-                    re.match(r"^(\[?简体中文|\[?English\b|Chinese version|中文版本)", block),
-                    f"a language line survived staging: {block[:60]}",
-                )
+                if present:
+                    body = page.read_text(encoding="utf-8")
+                    self.assertIn('aria-current="page"', body)
 
-    def test_feeds_carry_the_newest_notes(self) -> None:
+    def test_feed_carries_the_newest_notes(self) -> None:
         root = Path(__file__).resolve().parents[2]
         documents = discover_documents(root)
-        for language, expected in (("en", "feed.xml"), ("zh", "feed_zh.xml")):
-            notes = _blog_documents(documents, language)
-            feed = _feed_xml(documents, language, {})
-            root_element = ElementTree.fromstring(feed)
-            items = root_element.findall(".//item")
-            self.assertEqual(len(items), min(FEED_LIMIT, len(notes)))
-            self.assertEqual(items[0].findtext("title"), notes[0].title)
-            self.assertIn(expected, feed)
-            # Links are absolute, as a feed reader needs them.
-            for item in items:
-                self.assertTrue((item.findtext("link") or "").startswith(SITE_URL))
+        notes = _blog_documents(documents)
+        feed = _feed_xml(documents, {})
+        root_element = ElementTree.fromstring(feed)
+        items = root_element.findall(".//item")
+        self.assertEqual(len(items), min(FEED_LIMIT, len(notes)))
+        self.assertEqual(items[0].findtext("title"), notes[0].title)
+        self.assertIn("feed.xml", feed)
+        # Links are absolute, as a feed reader needs them.
+        for item in items:
+            self.assertTrue((item.findtext("link") or "").startswith(SITE_URL))
 
     def test_archive_splits_by_year(self) -> None:
         root = Path(__file__).resolve().parents[2]
         documents = discover_documents(root)
-        years = [label for label, _ in _archive_years(documents, "en")]
+        years = [label for label, _ in _archive_years(documents)]
         self.assertEqual(years, sorted(years, reverse=True))
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "build"
@@ -401,7 +302,7 @@ class KnowledgeBaseTests(unittest.TestCase):
             "layout decide the bill more than the query text does.\n"
         )
 
-        self.assertTrue(_excerpt(text, "en").startswith("Athena reads data"))
+        self.assertTrue(_excerpt(text).startswith("Athena reads data"))
 
     def test_reading_time_ignores_markdown_syntax(self) -> None:
         prose = " ".join(["word"] * 440)
@@ -410,15 +311,13 @@ class KnowledgeBaseTests(unittest.TestCase):
         self.assertEqual(_reading_minutes(fenced), 2)
         self.assertEqual(_reading_minutes(""), 1)
 
-    def test_reading_time_counts_cjk_separately(self) -> None:
-        self.assertEqual(_reading_minutes("汉" * 800), 2)
-        self.assertEqual(_reading_label("汉" * 800, "zh"), "约 2 分钟")
-        self.assertEqual(_reading_label(" ".join(["word"] * 220), "en"), "1 min read")
+    def test_reading_label_reports_minutes(self) -> None:
+        self.assertEqual(_reading_label(" ".join(["word"] * 220)), "1 min read")
+        self.assertEqual(_reading_label(" ".join(["word"] * 440)), "2 min read")
 
-    def test_excerpt_skips_headings_and_language_links(self) -> None:
+    def test_excerpt_skips_headings_and_bullets(self) -> None:
         text = (
             "# Amazon S3\n\n"
-            "English · [简体中文](README_ZH.md)\n\n"
             "## Overview\n\n"
             "- bullet\n\n"
             "> Facts verified against official AWS documentation: 2026-08-18\n\n"
@@ -426,14 +325,33 @@ class KnowledgeBaseTests(unittest.TestCase):
             "amount of data.\n"
         )
         self.assertEqual(
-            _excerpt(text, "en"),
+            _excerpt(text),
             "Amazon S3 is an object storage service for storing and protecting any "
             "amount of data.",
         )
 
+    def test_excerpt_prefers_the_opening_framing_blockquote(self) -> None:
+        text = (
+            "# Amazon SQS\n\n"
+            "> Facts verified against official AWS documentation: 2026-08-19\n\n"
+            "> Amazon SQS is a fully managed message queue for decoupling "
+            "distributed systems.\n\n"
+            "## Overview\n\n"
+            "> A later callout that should never become the excerpt text.\n"
+        )
+        self.assertEqual(
+            _excerpt(text),
+            "Amazon SQS is a fully managed message queue for decoupling "
+            "distributed systems.",
+        )
+
+    def test_excerpt_keeps_punctuation_attached_to_emphasis(self) -> None:
+        text = "# T\n\n> It becomes one **conversation**. Run `ls` first.\n"
+        self.assertEqual(_excerpt(text), "It becomes one conversation. Run ls first.")
+
     def test_excerpt_truncates_long_paragraphs(self) -> None:
         long_paragraph = "# T\n\n" + " ".join(["alpha"] * 60) + "\n"
-        excerpt = _excerpt(long_paragraph, "en")
+        excerpt = _excerpt(long_paragraph)
         self.assertTrue(excerpt.endswith("…"))
         self.assertLessEqual(len(excerpt), EXCERPT_LENGTH + 1)
 
@@ -442,13 +360,9 @@ class KnowledgeBaseTests(unittest.TestCase):
             root = Path(directory)
             paths = []
             for slug in ("s3", "redshift"):
-                for name, heading in (
-                    ("README.md", f"# Amazon {slug}"),
-                    ("README_ZH.md", f"# Amazon {slug} 中文"),
-                ):
-                    relative = f"AWS/{slug}/{name}"
-                    paths.append(relative)
-                    self._write(root, relative, f"{heading}\n\nBody text.\n")
+                relative = f"AWS/{slug}/README.md"
+                paths.append(relative)
+                self._write(root, relative, f"# Amazon {slug}\n\nBody text.\n")
             self._write(root, "pages/knowledge-base.css", "/* test */\n")
             output = root / ".pages-build"
 
@@ -460,22 +374,14 @@ class KnowledgeBaseTests(unittest.TestCase):
             self.assertIn('href="../redshift/"', article)
             self.assertIn('class="kb-meta__reading"', article)
 
-            chinese = (output / "AWS/s3/index_zh.md").read_text(encoding="utf-8")
-            self.assertIn("继续阅读", chinese)
-            self.assertIn('href="../../redshift/index_zh/"', chinese)
-
-    def test_youtube_pairs_keep_video_id(self) -> None:
+    def test_youtube_summary_keeps_video_id(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            paths = [
-                "YouTube/startup/lesson/summary.md",
-                "YouTube/startup/lesson/summary_zh.md",
-            ]
+            path = "YouTube/startup/lesson/summary.md"
             source = "# Lesson\n\nSource: https://www.youtube.com/watch?v=5-G9WHwQMwQ\n"
-            self._write(root, paths[0], source)
-            self._write(root, paths[1], source.replace("# Lesson", "# 课程"))
+            self._write(root, path, source)
 
-            documents = discover_documents(root, paths)
+            documents = discover_documents(root, [path])
 
             self.assertEqual({document.video_id for document in documents}, {"5-G9WHwQMwQ"})
             self.assertEqual({document.kind for document in documents}, {"video-summary"})

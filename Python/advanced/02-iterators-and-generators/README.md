@@ -1,9 +1,5 @@
 # Python Iterators and Generators Cheatsheet
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > A generator function does not run when you call it; it returns a paused generator object that executes up to the next `yield` only when something asks for a value, and remembers exactly where it left off.
 
 ```mermaid

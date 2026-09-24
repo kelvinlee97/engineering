@@ -1,10 +1,6 @@
 # AWS CLI - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > The AWS CLI is a thin shell layer over the same APIs the console uses: it resolves credentials from a fixed chain and a chosen profile before every call, so most CLI problems are really profile/credential problems, not command problems.
 

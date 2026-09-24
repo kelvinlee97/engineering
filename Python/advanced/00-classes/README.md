@@ -1,9 +1,5 @@
 # Python Classes Cheatsheet
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > A class is a template for objects that bundle state (attributes) with behavior (methods) bound to `self`. Choose the binding that matches what the method needs:
 
 | Decorator | Receives | Use for |

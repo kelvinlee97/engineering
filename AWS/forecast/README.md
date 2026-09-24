@@ -1,10 +1,6 @@
 # Amazon Forecast - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > Amazon Forecast is a fully managed time-series forecasting service that uses statistical and machine learning algorithms to predict future values from historical data, with no ML experience required. Note: Amazon Forecast is no longer available to new customers; existing customers can continue using the service as normal.
 

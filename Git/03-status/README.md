@@ -1,8 +1,6 @@
 ← [Back to index](../00-init/README.md) ｜ Previous: [Git/add](../02-add/README.md)
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-# `git status` — Check the Current State
+# `git status`: Check the Current State
 
 ## What this does
 
@@ -50,7 +48,7 @@ git status --short
 | `??` | Brand new file, completely untracked by Git |
 | ` M` | Modified in the working tree, but **not staged** |
 | `M ` | Staged modification (left column = staging-area state) |
-| `MM` | Staged, then modified again — both staging area and working tree differ |
+| `MM` | Staged, then modified again: both staging area and working tree differ |
 | `A ` | New file, already staged (Added) |
 | ` D` | Deleted in the working tree, but not staged |
 
@@ -67,8 +65,8 @@ git status                  # it should now show under "to be committed"
 
 ## Common pitfalls
 
-- ⚠️ Seeing a pile of files that shouldn't be tracked (`node_modules/`, `.DS_Store`)? You're missing a `.gitignore` — add them there instead of ignoring them manually each time.
-- ⚠️ `status` is **read-only** and never changes any state, so run it as often as you like — make "run status after every change" a habit.
+- ⚠️ Seeing a pile of files that shouldn't be tracked (`node_modules/`, `.DS_Store`)? You're missing a `.gitignore`: add them there instead of ignoring them manually each time.
+- ⚠️ `status` is **read-only** and never changes any state, so run it as often as you like: make "run status after every change" a habit.
 
 ## What's next
 

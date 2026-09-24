@@ -1,6 +1,6 @@
 ---
 name: blog-ingest
-description: Turn a bare link the user sends into a published bilingual article on blog.kelvin.ink, end to end, with no review step. Use whenever the user's message is a URL (or a URL plus a short remark) and they are not asking a question about that page. Covers fetching the source, choosing the topic directory, writing the paired README.md/README_ZH.md, updating catalogues, running the repo checks, opening the pull request, and turning on auto-merge.
+description: Turn a bare link the user sends into a published article on blog.kelvin.ink, end to end, with no review step. Use whenever the user's message is a URL (or a URL plus a short remark) and they are not asking a question about that page. Covers fetching the source, choosing the topic directory, writing the README.md, updating catalogues, running the repo checks, opening the pull request, and turning on auto-merge.
 ---
 
 # Blog ingest
@@ -24,16 +24,16 @@ Ask a question only in the two cases listed under **When to stop and ask**.
    paywalled/JS-only, say so and stop — do not write from memory.
    A `youtube.com` / `youtu.be` link routes to `.agents/skills/youtube-transcript/SKILL.md`
    instead, whose evidence gate is authoritative; those pages are
-   `summary.md` / `summary_zh.md` under `YouTube/<topic>/`, not READMEs.
+   `summary.md` under `YouTube/<topic>/`, not READMEs.
 4. **Place it.** Pick the existing top-level directory that fits (see the
    table below) and create `<Area>/<slug>/`. Read one or two neighbouring
    articles first so the new one matches their shape.
 5. **Write it** by following `.agents/skills/visual-first-notes/SKILL.md`:
-   mental model first, diagrams only where they beat prose, both languages
-   from the start, every Mermaid block carrying `accTitle` and `accDescr`.
-   Always include a `## Source` section with the URL and the review date.
-6. **Wire it up.** Add the article to `README.md` and `README_ZH.md` under
-   the right heading, and to the area's own `README.md` / `README_ZH.md`.
+   a plain-language framing sentence first, diagrams only where they beat
+   prose, every Mermaid block carrying `accTitle` and `accDescr`. Always
+   include a `## Source` section with the URL and the review date.
+6. **Wire it up.** Add the article to `README.md` under the right heading,
+   and to the area's own `README.md`.
 7. **Check it**, and fix anything that fails before going on:
    ```
    python scripts/knowledge_base.py validate
@@ -69,8 +69,8 @@ Ask a question only in the two cases listed under **When to stop and ask**.
 
 Prefer an existing directory even when the fit is loose. A genuinely new
 top-level area also needs an entry in `NAV_SECTIONS` in
-`scripts/knowledge_base.py` and in the Chinese `extra.kb_tabs_zh` list in
-`mkdocs.yml`, or the article will not appear in the site navigation.
+`scripts/knowledge_base.py`, or the article will not appear in the site
+navigation.
 
 ## When to stop and ask
 
@@ -83,7 +83,6 @@ Only these two. Everything else is yours to decide.
 
 ## Never
 
-- Publish one language and backfill the other later.
-- Add facts, opinions, or relationships the source does not support, in
-  either language, to make a diagram or a section feel complete.
+- Add facts, opinions, or relationships the source does not support, to
+  make a diagram or a section feel complete.
 - Merge by hand, or push past a red check — fix the check.

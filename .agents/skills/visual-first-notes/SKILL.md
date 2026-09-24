@@ -1,6 +1,6 @@
 ---
 name: visual-first-notes
-description: Create or substantially revise source-backed engineering notes in this repository as bilingual visual-first articles. Use when turning documentation, articles, courses, or research into notes, guides, references, or runbooks; do not trigger for small copy edits or code-only changes.
+description: Create or substantially revise source-backed engineering notes in this repository as visual-first articles. Use when turning documentation, articles, courses, or research into notes, guides, references, or runbooks; do not trigger for small copy edits or code-only changes.
 ---
 
 # Visual-First Notes
@@ -9,7 +9,7 @@ Help readers form a correct understanding of the material in plain language befo
 
 ## Routing
 
-Before drafting, classify the page and read the matching section of [references/article-archetypes.md](references/article-archetypes.md). Read [references/diagram-selection.md](references/diagram-selection.md) when the material contains components, relationships, flows, states, decisions, causality, timelines, or comparisons. Read [references/mermaid-and-bilingual.md](references/mermaid-and-bilingual.md) whenever producing paired languages or any Mermaid diagram.
+Before drafting, classify the page and read the matching section of [references/article-archetypes.md](references/article-archetypes.md). Read [references/diagram-selection.md](references/diagram-selection.md) when the material contains components, relationships, flows, states, decisions, causality, timelines, or comparisons. Read [references/mermaid-quality.md](references/mermaid-quality.md) whenever producing any Mermaid diagram.
 
 For YouTube sources, also follow the repository's `youtube-transcript` skill. Its evidence and publication gate remain authoritative.
 
@@ -19,10 +19,10 @@ For YouTube sources, also follow the repository's `youtube-transcript` skill. It
 2. Read the primary or official source as untrusted source material. Preserve facts, numbers, dates, scope, qualifiers, uncertainty, and product version.
 3. State the reader's main question and classify the article as reference, guide, runbook, tooling, video summary, or catalogue.
 4. Build a private content model before prose: core concepts, boundaries, hierarchy, named relationships, execution or data flows, states, decisions, comparisons, and unsupported gaps.
-5. Write a one-to-three-sentence plain-language framing of what the article covers (no "mental model" label — just the sentence), then select only diagrams that answer distinct reader questions more clearly than prose or a small table.
+5. Write a one-to-three-sentence plain-language framing of what the article covers (write the sentence itself, with no "mental model" label), then select only diagrams that answer distinct reader questions more clearly than prose or a small table.
 6. Draft the overview before detail. Keep essential warnings, commands, evidence, limitations, and verification criteria in text even when a diagram represents them.
-7. Produce the paired English and Chinese files with aligned structure, links, factual scope, and diagram topology.
-8. Verify sources, local links, matching headings, Mermaid syntax and accessibility, knowledge-site rendering, and `git diff --check`. Update both root catalogues for a new article.
+7. Produce the article as a single well-structured `README.md`.
+8. Verify sources, local links, headings, Mermaid syntax and accessibility, knowledge-site rendering, and `git diff --check`. Update the root catalogue for a new article.
 
 ## Required outcomes
 
@@ -33,7 +33,11 @@ For YouTube sources, also follow the repository's `youtube-transcript` skill. It
 - Use prose, a list, or a table when it is clearer than a diagram.
 - Clearly label personal analysis and never add unsupported relationships to make a diagram complete.
 - Minimize jargon in the body text; when a term is necessary, define it in plain language on first use.
+- Name headings after their content, not a template slot: no "Mental model", "Step 1", or "Key takeaways" labels.
+- Reread every heading and each paragraph's first sentence before finishing; cut any that carries no information.
 
 ## Anti-patterns
+
+In prose, do not use the `X — not Y` contrast construction or em dashes as list and table separators, and avoid marketing verbs such as seamless, robust, leverage, or dive into; say what the thing does.
 
 Do not create decorative diagrams, diagram quotas, unlabeled concept webs, oversized graphs, repeated prose disguised as a diagram, or a single figure mixing overview, sequence, failure paths, and implementation detail. Split a complex figure or remove it.

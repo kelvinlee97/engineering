@@ -1,10 +1,6 @@
 # AWS DataSync - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > AWS DataSync is a secure, reliable, high-speed data transfer service for moving file and object data to, from, and between AWS storage services. It works with on-premises storage (via an agent), AWS storage (S3, EFS, FSx), and other cloud storage, with encryption and data integrity validation built in.
 

@@ -1,8 +1,6 @@
 ← [Back to index](../00-init/README.md) ｜ Previous: [Git/init](../00-init/README.md)
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-# `git clone` — Copy an Existing Remote Repository
+# `git clone`: Copy an Existing Remote Repository
 
 ## What this does
 
@@ -45,7 +43,7 @@ git clone --branch main --depth 1 https://github.com/owner/repo.git
 | Flag | Effect |
 |---|---|
 | `--branch <name>` / `-b` | Checks out the given branch right after cloning, instead of the default branch |
-| `--depth <n>` | Shallow clone: fetches only the last n commits of history — good when you just want the code and don't need full history |
+| `--depth <n>` | Shallow clone: fetches only the last n commits of history. Good when you just want the code and don't need full history |
 | `--recurse-submodules` | Also clones any submodules the repository references |
 | `--origin <name>` | Custom name for the remote alias, instead of the default `origin` |
 
@@ -60,7 +58,7 @@ git log --oneline -5   # should show recent commit history
 ## Common pitfalls
 
 - ⚠️ HTTPS may prompt for a username/token on every push; SSH only needs a one-time key setup. For team collaboration, SSH is recommended.
-- ⚠️ A `--depth 1` shallow clone has no full history — if you later want `git log` to show everything or need to `rebase`, run `git fetch --unshallow` first to backfill history.
+- ⚠️ A `--depth 1` shallow clone has no full history: if you later want `git log` to show everything or need to `rebase`, run `git fetch --unshallow` first to backfill history.
 
 ## What's next
 

@@ -1,10 +1,6 @@
 # AWS CloudFormation - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > CloudFormation treats infrastructure as one unit driven by diffing, not by direct commands: every update — safe or not — is really "compute a change set, then execute it," and the stack's event log is the only reliable place to find why a change failed.
 

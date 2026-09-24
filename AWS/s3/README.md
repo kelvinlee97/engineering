@@ -1,10 +1,6 @@
 # Amazon S3 - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-18
-
-## Mental model
 
 > An S3 object lives in one bucket type, and lifecycle rules can move it down a cost/latency spectrum — from frequent-access storage through infrequent-access to archive tiers — automatically or under your control.
 

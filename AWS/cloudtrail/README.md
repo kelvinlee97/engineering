@@ -1,10 +1,6 @@
 # AWS CloudTrail - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > CloudTrail has three layers of increasing commitment: Event history is always-on and free but capped at 90 days, a trail is an explicit choice to keep management/data events longer by shipping them to S3, and CloudTrail Lake is a queryable audit warehouse built on top of that shipped data.
 

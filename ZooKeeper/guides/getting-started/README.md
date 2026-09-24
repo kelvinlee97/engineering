@@ -1,12 +1,8 @@
 # ZooKeeper Beginner Tutorial
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
 ZooKeeper is a distributed coordination service. Applications use it to keep a small amount of shared coordination state: for example, electing one leader, recording which workers are available, or notifying clients that a setting changed.
 
 It is not a general database, message queue, object store, or a place for large files and secrets.
-
-## Mental model
 
 > An ensemble of ZooKeeper servers keeps one small, consistently replicated tree of znodes; clients read and write through any member, one elected leader orders writes, and a quorum must agree before a write is considered durable.
 

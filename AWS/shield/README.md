@@ -1,16 +1,12 @@
 # AWS Shield - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > AWS Shield is a managed Distributed Denial of Service (DDoS) protection service.
 
 ## Overview
 
-AWS Shield is a managed Distributed Denial of Service (DDoS) protection service. **Shield Standard** is enabled automatically for all AWS customers at no additional cost and protects internet-facing applications against common volumetric attacks (for example, UDP reflection and TCP SYN floods). **Shield Advanced** is a paid tier that adds enhanced detection and mitigation, protection groups, health-based detection, cost protection, and access to the AWS Shield Response Team (SRT).
+**Shield Standard** is enabled automatically for all AWS customers at no additional cost and protects internet-facing applications against common volumetric attacks (for example, UDP reflection and TCP SYN floods). **Shield Advanced** is a paid tier that adds enhanced detection and mitigation, protection groups, health-based detection, cost protection, and access to the AWS Shield Response Team (SRT).
 
 ## Shield Standard vs. Shield Advanced
 

@@ -1,10 +1,6 @@
 # Amazon CloudSearch - Runbook & Reference
 
-English | [简体中文](README_ZH.md)
-
 > Facts verified against official AWS documentation: 2026-08-19
-
-## Mental model
 
 > A CloudSearch domain has two separate front doors — a document endpoint for writes and a search endpoint for reads — and data uploaded through the first is not searchable until an explicit indexing step runs, so "upload" and "make searchable" are two distinct operations, not one.
 

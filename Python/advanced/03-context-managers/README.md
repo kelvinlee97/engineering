@@ -1,9 +1,5 @@
 # Python Context Managers Cheatsheet
 
-Chinese version: [README_ZH.md](README_ZH.md)
-
-## Mental model
-
 > `with` guarantees a cleanup call happens exactly once, whether the block finishes normally or raises: entry runs before the block, and exit always runs after it, even on an exception.
 
 ```mermaid
