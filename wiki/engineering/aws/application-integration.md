@@ -34,196 +34,132 @@ sources:
     title: "Amazon Connect - Runbook & Reference"
     author: human:kelvinlee97
     last_modified: 2026-09-24T14:48:10Z
-generated: { by: claude-code/wiki-v1, at: 2026-09-25T18:30:00Z }
+generated: { by: claude-code/wiki-v1, at: 2026-09-25T18:31:02Z }
 status: draft
 ---
-These services connect application components and users: HTTP and GraphQL front doors, workflow orchestration, standard-protocol message brokers, email, and a cloud contact center.
+These services connect applications to their clients and to each other: API Gateway and AppSync are front doors for HTTP and GraphQL calls, Step Functions coordinates multi-step workflows, Amazon MQ runs standard message brokers for existing applications, SES sends and receives email, and Amazon Connect runs a contact center. For native AWS queues, topics, and event buses, see [Messaging](messaging.md).
 
 ## Choosing a service
 
-| Service | What it is for |
-| --- | --- |
-| [Amazon API Gateway](#amazon-api-gateway) | API Gateway is a policy-enforcing front door |
-| [AWS AppSync](#aws-appsync) | AppSync sits between a single GraphQL schema and several independent data sources |
-| [AWS Step Functions](#aws-step-functions) | AWS Step Functions is a serverless orchestration service |
-| [Amazon MQ](#amazon-mq) | Amazon MQ is a drop-in managed broker |
-| [Amazon SES](#amazon-ses) | Amazon Simple Email Service (Amazon SES) is a scalable email platform for sending transactional email (order confirmations, password resets), marketing email (offers, newsletters), and for receiving email |
-| [Amazon Connect](#amazon-connect) | A contact's entire journey is scripted by one flow object, and it never reaches an agent directly |
+| You need to | Use | Choose it over the nearest alternative when |
+| --- | --- | --- |
+| Expose REST, HTTP, or WebSocket APIs | [API Gateway](#amazon-api-gateway) | Clients call separate endpoints and you want auth and throttling in front of every one |
+| Serve one GraphQL schema over several data sources | [AppSync](#aws-appsync) | Clients want one query to fan out to DynamoDB, Lambda, RDS, and HTTP, with subscriptions pushed back |
+| Coordinate steps with retries, branches, and waits | [Step Functions](#aws-step-functions) | The logic is a sequence of calls; glue code in one Lambda would hide the state |
+| Keep ActiveMQ or RabbitMQ clients unchanged | [Amazon MQ](#amazon-mq) | You are migrating broker workloads; for new AWS-native designs use [SQS or SNS](messaging.md) |
+| Send or receive email | [SES](#amazon-ses) | You need transactional or marketing mail with deliverability tracking |
+| Route customer calls, chats, SMS, and tasks to agents | [Connect](#amazon-connect) | You run a contact center |
 
-Analysis: this table condenses each note's opening line; the sections below carry the details and citations.
+Analysis: the "choose it over" column draws on each service's own note; the notes do not compare the services with one another.
 
 ## Amazon API Gateway
 
-API Gateway is a policy-enforcing front door: every request passes through authentication, throttling, and a stage before it ever reaches an integration, so backend code never has to implement those cross-cutting concerns itself. Amazon API Gateway is a managed service for creating, publishing, maintaining, monitoring, and securing REST, HTTP, and WebSocket APIs at any scale. It acts as a "front door" to backends such as Lambda functions, EC2 workloads, or any HTTP endpoint.
+API Gateway is a front door for Lambda functions, EC2 workloads, or any HTTP endpoint. Every request passes authentication (IAM, a Lambda authorizer, or a Cognito user pool), throttling, and a stage before it reaches the integration, so backends do not implement those concerns themselves.
 
-Key points:
+| API type | For |
+| --- | --- |
+| REST API | The full feature set |
+| HTTP API | Lighter, simple serverless backends |
+| WebSocket API | Stateful, full-duplex connections |
 
-- API types: REST APIs (full-featured), HTTP APIs (lighter, for serverless), and WebSocket APIs (stateful, full-duplex).
-- Resources and methods: URL paths with HTTP methods mapped to integrations.
-- Integrations: AWS Lambda (proxy), HTTP endpoints, AWS services, or mock.
-- Stages and deployments: publish API versions; canary deployments for gradual rollout.
-- Authentication: IAM, Lambda authorizers, Amazon Cognito user pools.
-
-Practices:
-
-- Use HTTP APIs for simple serverless backends; REST APIs when you need the full feature set.
-- Enable throttling and use API keys + usage plans for client quotas.
-- Authenticate with Cognito or Lambda authorizers; never leave routes open by default.
+- Publish versions through stages and deployments; use canary deployments for gradual rollout.
+- Turn on throttling, and use API keys with usage plans for per-client quotas. Never leave a route open by default.
 
 | Symptom | Check |
 | --- | --- |
-| `429 Too Many Requests` | Check account/per-API throttling limits and usage plans; raise quotas or add caching. |
-| `500` from Lambda integration | Check Lambda function logs and the execution role; verify the integration URI/ARN. |
-| `403 Forbidden` | Check IAM authorization, authorizer configuration, WAF rules, and API key requirements. |
-| CORS errors | Configure CORS on the method/API and verify preflight (`OPTIONS`) handling. |
+| `429 Too Many Requests` | Account and per-API throttling limits, and usage plans; add caching |
+| `500` from a Lambda integration | The function's logs, its execution role, and the integration ARN |
+| `403 Forbidden` | IAM authorization, the authorizer, WAF rules, and API key requirements |
+| CORS errors | CORS on the method and `OPTIONS` preflight handling |
 
-Default account-level throttling is 10,000 requests per second per Region (adjustable); per-API limits and regional availability apply. See Service Quotas.[^aws-api-gateway]
-
+Default account throttling is 10,000 requests per second per Region, adjustable.[^aws-api-gateway]
 
 ## AWS AppSync
 
-AppSync sits between a single GraphQL schema and several independent data sources: every field resolves through its own resolver, so a query can fan out to DynamoDB, Lambda, RDS, and HTTP in one round trip, while subscriptions push the same schema's mutations back out over WebSockets. AWS AppSync is a managed GraphQL and Pub/Sub API service. It connects your applications to data and events through a single GraphQL endpoint backed by one or more data sources (DynamoDB, Lambda, RDS, HTTP), with real-time updates via subscriptions and AppSync Events (WebSocket pub/sub, available since March 2025).
+AppSync serves a single GraphQL endpoint whose fields each resolve through their own resolver, written in VTL or JavaScript/TypeScript, against DynamoDB, Lambda, RDS, OpenSearch, or HTTP data sources. Mutations can be pushed to clients as subscriptions over WebSockets, and AppSync Events (available since March 2025) adds WebSocket pub/sub channels.
 
-Key points:
-
-- GraphQL API: the endpoint your clients query; schemas define types, queries, mutations, and subscriptions.
-- Data sources: DynamoDB tables, Lambda functions, RDS clusters, OpenSearch, HTTP endpoints.
-- Resolvers: functions that map GraphQL fields to data source operations; written in VTL or JavaScript/TypeScript.
-- Subscriptions: real-time updates pushed to clients over WebSockets when mutations occur.
-- AppSync Events: WebSocket-based pub/sub channels for real-time messaging.
-
-Practices:
-
-- Define schema-first and keep resolvers thin; use JS/TS resolvers for complex logic.
-- Choose authorization per API: Cognito for user-facing apps, IAM for service-to-service, API keys for public/development.
-- Batch and paginate DynamoDB data source requests to avoid per-item latency.
+- Design the schema first and keep resolvers thin.
+- Choose authorization per API: Cognito for user-facing apps, IAM between services, API keys for public or development use.
+- Batch and paginate DynamoDB requests, and watch for N+1 resolver patterns in slow queries.[^aws-appsync]
 
 | Symptom | Check |
 | --- | --- |
-| Resolver returns null | Check data source permissions (IAM role) and resolver mapping templates. |
-| Subscription not receiving events | Verify subscription auth, WebSocket connection, and that the mutation publishes to the topic. |
-| `401/403` on requests | Check API key validity, Cognito tokens, and IAM signing. |
-| Slow queries | Enable caching, review N+1 resolver patterns, and index the underlying data source. |
-
-API count, resolvers per API, request/response sizes, subscription connection counts, and caching have per-account quotas. See the Service Quotas console for current values.[^aws-appsync]
-
+| Resolver returns null | The data source's IAM role and the resolver mapping |
+| Subscription gets no events | Subscription auth, the WebSocket connection, and that the mutation publishes |
 
 ## AWS Step Functions
 
-AWS Step Functions is a serverless orchestration service. You define workflows (state machines) as a series of steps to coordinate Lambda functions, AWS services, and human approval flows. It supports visual debugging, retries, parallel processing, and long-running workflows.
+Step Functions runs state machines written in Amazon States Language: Task, Choice, Parallel, Map, Wait, Pass, Succeed, and Fail states that call Lambda, AWS services, or wait for a human. The two workflow types trade durability for volume.
 
-Key points:
+| | Standard | Express |
+| --- | --- | --- |
+| Execution | Exactly once | At least once |
+| Maximum duration | 1 year | 5 minutes |
+| Rate | Up to 2,000 executions per second | Up to 100,000 executions per second |
+| Fits | Long-running, auditable processes | High-volume streaming and ingestion |
 
-- State machine (workflow): a JSON definition (Amazon States Language) of the workflow.
-- States: Task, Choice, Parallel, Map, Wait, Pass, Succeed, and Fail.
-- Executions: running instances of a state machine.
-- Standard workflows: exactly-once execution, run up to 1 year, up to 2,000 executions/second; ideal for long-running, auditable processes.
-- Express workflows: at-least-once execution, run up to 5 minutes, up to 100,000 executions/second; ideal for high-volume streaming/ingestion.
-
-Practices:
-
-- Choose Standard for auditable, long-running workflows and Express for high-volume, short workflows.
-- Prefer AWS SDK/optimized integrations over custom Lambda glue code.
+- Prefer the SDK and optimized service integrations over custom Lambda glue.
 - Use `Retry` with backoff for transient errors and `Catch` for business failures.
-
-| Symptom | Check |
-| --- | --- |
-| Execution fails | Inspect `get-execution-history` error output and the failed state. |
-| Lambda not invoked | Check the state machine IAM role and Lambda permissions. |
-| Callback never returns | Verify the worker sends the task token back to Step Functions. |
-| Timeout errors | Adjust state timeout/`heartbeatSeconds` for long tasks. |
-
-Executions per second, state transitions, execution history size, and payload sizes have quotas that differ between Standard and Express workflows. See the Service Quotas console for current values.[^aws-step-functions]
-
+- A callback that never returns usually means the worker did not send the task token back.[^aws-step-functions]
 
 ## Amazon MQ
 
-Amazon MQ is a drop-in managed broker: pick ActiveMQ or RabbitMQ, choose single-instance or a highly-available topology, and AWS handles maintenance, patching, and failover underneath your existing broker-protocol clients. Amazon MQ is a managed message broker service for Apache ActiveMQ and RabbitMQ. It provides brokers with managed maintenance, version upgrades, CloudWatch monitoring, encryption at rest and in transit, and private VPC endpoints, so you can migrate existing message-broker workloads without rewriting applications.
+Amazon MQ runs Apache ActiveMQ or RabbitMQ brokers with AWS handling maintenance, upgrades, failover, CloudWatch monitoring, and encryption, so existing broker clients move without rewrites. Brokers use EBS storage sized at creation.
 
-Key points:
+| Engine | Production topology | Cross-Region |
+| --- | --- | --- |
+| ActiveMQ | Active/standby (single-instance only for development) | Asynchronous replication to a replica Region, with failover promotion |
+| RabbitMQ | Quorum queues replicated across Availability Zones | Not described in its note |
 
-- Broker: the managed message broker environment; the basic unit of Amazon MQ (ActiveMQ or RabbitMQ engine).
-- Deployment mode (ActiveMQ): single-instance for development or active/standby for high availability.
-- Storage: EBS-backed storage; choose instance type and storage size when creating the broker.
-- Quorum queues (RabbitMQ): replicated queue type with leader/follower nodes across AZs for durability and poison-message handling.
-- Cross-Region data replication (ActiveMQ): asynchronous replication from a primary broker Region to a replica broker Region with failover promotion.
-
-Practices:
-
-- Use active/standby (ActiveMQ) or quorum queues (RabbitMQ) for production; single instance only for dev.
-- Keep brokers in private subnets and connect through VPC endpoints; restrict with security groups.
-- Enable encryption at rest (KMS) and require TLS in transit; rotate broker user credentials.
+- Keep brokers in private subnets behind VPC endpoints and security groups; require TLS and rotate broker credentials.[^aws-mq]
 
 | Symptom | Check |
 | --- | --- |
-| Clients can't connect | Check security group rules (ports 61617/61614 for ActiveMQ, 5671/443 for RabbitMQ), TLS, and VPC routing. |
-| Queue depth grows | Check consumer health, message TTL, and broker capacity; scale instance/storage. |
-| Failover not working | Verify active/standby or quorum queue configuration and replica health. |
-| Storage full | Increase EBS storage or reduce retention; monitor `StorageUsed` in CloudWatch. |
-
-Brokers per account, instance types, storage, and connections have quotas. See the Service Quotas console for current values.[^aws-mq]
-
+| Clients cannot connect | Security group ports (61617/61614 for ActiveMQ, 5671/443 for RabbitMQ), TLS, and routing |
+| Queue depth grows | Consumer health, message TTL, and broker capacity |
+| Storage full | EBS size or retention; watch `StorageUsed` |
 
 ## Amazon SES
 
-Amazon Simple Email Service (Amazon SES) is a scalable email platform for sending transactional email (order confirmations, password resets), marketing email (offers, newsletters), and for receiving email. You can send through the SES API, the SMTP interface, or AWS SDKs, and receive email into S3, SNS, or Lambda. You pay per email sent and received.
+SES sends transactional and marketing email through its API, SMTP, or the SDKs, and receives email into S3, SNS, or Lambda through receipt rules. You pay per email. Sending requires a verified identity (a domain or address) with DKIM, which Easy DKIM manages, plus SPF and DMARC. SES tracks bounce and complaint rates, adjusts sending quotas by reputation, and keeps a suppression list.
 
-Key points:
-
-- Email identity: a verified domain or email address that you are authorized to send from; DKIM and SPF/DMARC are configured for the domain.
-- Easy DKIM: SES manages DKIM signing for your domain (especially simple when DNS is in Route 53); required for production sending.
-- Configuration sets: group sending settings and event destinations (CloudWatch, Amazon Data Firehose, SNS, EventBridge, Pinpoint) for tracking bounces, complaints, deliveries, and opens/clicks.
-- Suppression and reputation: SES tracks bounce and complaint rates, applies sending limits, and lets you manage a suppression list.
-- Receiving: incoming email routes to S3 (optionally KMS-encrypted), SNS, or Lambda through receipt rules in a rule set.
-
-Practices:
-
-- Verify and configure Easy DKIM (and SPF/DMARC) for all sending domains; never send from unverified identities.
-- Warm up new sending identities gradually and keep bounce/complaint rates low; act on feedback notifications.
-- Use configuration sets for every workload and alert on bounce/complaint spikes.
+- Attach a configuration set to every workload, sending events to CloudWatch, Data Firehose, SNS, EventBridge, or Pinpoint, and alert on bounce or complaint spikes.
+- Warm up new identities gradually.[^aws-ses]
 
 | Symptom | Check |
 | --- | --- |
-| Sending from unverified identity | Verify the domain/email identity and complete DKIM setup; wait for propagation. |
-| Daily quota exceeded | Check `get-send-quota`; request a limit increase after demonstrating low complaint/bounce rates. |
-| Emails landing in spam | Verify DKIM/SPF/DMARC, warm up the identity, and review content and sending patterns. |
-| Bounce/complaint events missing | Confirm the configuration set is attached and the event destination is configured correctly. |
-
-Daily sending quota, maximum send rate, message size, and identities per account have limits; SES adjusts quotas based on reputation. See the SES service quotas page and Service Quotas console for current values.[^aws-ses]
-
+| Daily quota exceeded | `get-send-quota`; ask for an increase after showing low bounce and complaint rates |
+| Mail lands in spam | DKIM, SPF, DMARC, warm-up, and content |
 
 ## Amazon Connect
 
-A contact's entire journey is scripted by one flow object, and it never reaches an agent directly: the flow puts it in a queue, and the routing profile, rather than the flow, decides which agent picks it up, so routing problems and flow problems have different root causes even though they feel the same to a caller. Amazon Connect is a cloud contact center that lets you build and manage customer communication experiences. Amazon Connect now refers to a portfolio of agentic solutions for business functions; the legacy contact center product is called Amazon Connect Customer (or simply Customer). Connect Customer provides voice, chat, SMS, and task channels, intelligent routing, real-time metrics, and AI-powered capabilities, and you pay only for what you use.
+Amazon Connect now names a portfolio of agentic business solutions; the contact center product is Amazon Connect Customer. It handles voice, chat, SMS, and task contacts, with phone numbers (local, toll-free, DID), routing, real-time metrics, and pay-per-use pricing. A contact never goes to an agent directly: a flow handles it and places it in a queue, and the routing profile decides which agent takes it. Routing problems and flow problems therefore have different causes, though a caller cannot tell them apart.
 
-Key points:
+```mermaid
+flowchart LR
+    accTitle: How a contact reaches an agent in Amazon Connect
+    accDescr: A contact enters through a phone number or channel, a flow handles it with menus, attributes, and Lambda lookups, and places it in a queue. Routing profiles map agents to queues, so the routing profile decides which agent picks the contact up.
+    C[Contact via phone, chat, SMS, or task] --> F[Flow: menus, attributes, Lambda]
+    F --> Q[Queue]
+    RP[Routing profile] -. maps agents to queues .-> Q
+    Q --> A[Agent workspace]
+```
 
-- Contact center: the hub where customers reach agents through voice, chat, SMS, or tasks, and where interactions are recorded, routed, and measured.
-- Phone numbers and channels: provision phone numbers (local, toll-free, DID) and enable chat/SMS channels for customer entry points.
-- Flows (contact flows): visual, drag-and-drop workflows that define how contacts are handled (IVR menus, queueing, attributes, transfers, Lambda integration).
-- Queues and routing profiles: queues hold contacts waiting for agents; routing profiles map agents to queues and prioritize contact types.
-- Agent workspace: the agent UI for handling contacts, chat, and tasks, with integrated CRM and other applications.
-
-Practices:
-
-- Design flows with clear entry points, error handling, and escalation paths; test flows in a staging instance first.
-- Use routing profiles and queues to match contact priority and agent skill instead of manual transfers.
-- Integrate Lambda for dynamic data (customer lookup, attribute enrichment) and Lex for self-service.
+- Test flows in a staging instance first, with error handling and escalation paths.
+- Use Lambda for customer lookup and Lex for self-service.
 
 | Symptom | Check |
 | --- | --- |
-| Calls not routing | Check the contact flow, queue/routing profile association, and phone number status. |
-| Agents cannot receive contacts | Verify agent user setup, routing profile, and channel availability. |
-| Flow errors | Test the flow with sample attributes; check Lambda integration and permissions. |
-| No metrics | Confirm the queue/agent is in the metrics filters and the instance Region matches. |
+| Calls not routing | The flow, the queue and routing profile association, and the number's status |
+| Agents get no contacts | The agent's user setup, routing profile, and channel availability |
 
-Phone numbers per instance, concurrent contacts, and API request rates have quotas; contact limits vary by Region and instance type. See the Amazon Connect endpoints and quotas page and Service Quotas console for current values.[^aws-connect]
-
+Contact limits vary by Region and instance type.[^aws-connect]
 
 ## Related
 
-- [AWS messaging](messaging.md)
-- [Containers and serverless](containers-and-serverless.md)
+- [Messaging](messaging.md): SQS, SNS, and EventBridge for AWS-native decoupling.
+- [Containers and serverless](containers-and-serverless.md): Lambda, the usual backend behind API Gateway and Step Functions.
+- [Application security](application-security.md): Cognito and WAF in front of these APIs.
 - [Domain index](index.md)
 
 [^aws-api-gateway]: [Amazon API Gateway - Runbook & Reference](../../sources/aws-api-gateway.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/api-gateway/README.md)

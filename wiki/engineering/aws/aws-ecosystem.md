@@ -24,126 +24,61 @@ sources:
     title: "AWS Consulting Offers - Runbook & Reference"
     author: human:kelvinlee97
     last_modified: 2026-09-24T14:48:10Z
-generated: { by: claude-code/wiki-v1, at: 2026-09-25T18:30:00Z }
+generated: { by: claude-code/wiki-v1, at: 2026-09-25T18:32:06Z }
 status: draft
 ---
-These notes cover what sits around the services: why cloud computing works the way it does, the partner and marketplace ecosystem, and the reference implementations and consulting offers AWS publishes.
+This page covers what surrounds the individual AWS services: the ideas behind cloud computing, the ecosystem of partners, marketplace, support, and compliance evidence, and the two kinds of ready-made help AWS publishes, deployable reference solutions and partner consulting offers.
 
-## Choosing a service
+## Cloud computing basics
 
-| Service | What it is for |
+Cloud computing delivers IT resources on demand over the internet with pay-as-you-go pricing, replacing large up-front capital expenses with variable costs that follow usage. Five properties recur in the rest of the AWS pages:
+
+| Property | What it means in practice |
 | --- | --- |
-| [Foundations of Cloud Computing](#foundations-of-cloud-computing) | Cloud computing delivers on-demand IT resources over the internet with pay-as-you-go pricing |
-| [AWS Ecosystem](#aws-ecosystem) | The AWS ecosystem is the cloud platform plus everything that surrounds it |
-| [AWS Solutions Library (Solutions Implementations)](#aws-solutions-library-solutions-implementations) | The AWS Solutions Library (formerly AWS Solutions Implementations) provides vetted solutions and guidance for common business and technical use cases |
-| [AWS Consulting Offers](#aws-consulting-offers) | AWS Consulting Offers are packaged consulting engagements from AWS Partners that address specific business outcomes (for example, migration, modernization, security assessments, and data analytics) |
+| On-demand self-service | Provision resources when needed, without a human in the loop, and release them when done |
+| Pay-as-you-go | Capital expense becomes variable operating expense |
+| Economies of scale | AWS pools demand across many customers, lowering per-unit cost |
+| Elasticity | Scale up (larger instances) or out (more instances), and back, automatically |
+| High availability | Survive failures by spreading across Availability Zones and Regions |
 
-Analysis: this table condenses each note's opening line; the sections below carry the details and citations.
+The practices that follow are to design for failure (multi-AZ or multi-Region, health checks, automated recovery), to match capacity to demand with Auto Scaling or serverless options, and to pick the service model (IaaS, PaaS, or SaaS) that removes the most operational work for each workload. Idle resources are the usual source of cost growth; single points of failure are fixed by spreading across Availability Zones.[^aws-foundations-cloud-computing]
 
-## Foundations of Cloud Computing
+## What the ecosystem includes
 
-Cloud computing delivers on-demand IT resources over the internet with pay-as-you-go pricing. AWS provides compute, storage, databases, networking, analytics, and many other services on a global infrastructure, replacing large up-front capital expenses with variable costs that scale with usage.
+The AWS ecosystem has no single product or entry point. It is the platform (compute, storage, database, networking, analytics, security, and AI/ML services on global infrastructure) plus:
 
-Key points:
+- The AWS Partner Network (APN) and AWS Marketplace, where partners sell software and services.
+- Support plans.
+- AWS Artifact, which provides compliance evidence for the controls AWS runs; controls on your side are your team's to evidence.
+- The Well-Architected Framework and the shared responsibility model, which guide how to use all of it (see [AWS foundations](aws-foundations.md)).
 
-- On-demand self-service: provision resources when you need them without human interaction, and release them when done.
-- Pay-as-you-go: pay only for what you use, converting capital expense into variable operating expense.
-- Economies of scale: AWS aggregates demand across many customers, reducing per-unit costs.
-- Elasticity and scalability: scale capacity up/down or out/in automatically; vertical (larger instances) and horizontal (more instances) scaling.
-- High availability and fault tolerance: design across Availability Zones and Regions to survive failures.
+Choose services by workload requirements and the Well-Architected pillars rather than by feature list, use consolidated billing and tagging for cost visibility, and check a Marketplace or partner offering's support path, IAM, and network requirements before deploying it. Some services are not available in every Region; check the service's Regional availability first.[^aws-aws-ecosystem]
 
-Practices:
+## Ready-made help: build it yourself or hire a partner
 
-- Design for failure: multi-AZ/Region architectures, health checks, and automated recovery.
-- Use elasticity: match capacity to demand with Auto Scaling and serverless options.
-- Choose the right service model (IaaS/PaaS/SaaS) per workload to reduce operational burden.
+AWS publishes two kinds of packaged help that complement each other and [Solutions Constructs](developer-tools.md#aws-solutions-constructs), the library of prebuilt CDK patterns.
 
-| Symptom | Check |
-| --- | --- |
-| Capacity surprises at launch | Use Elastic Beanstalk/Auto Scaling and test scaling behavior in staging. |
-| Costs grow with idle resources | Release or scale down unused resources; use managed/serverless where possible. |
-| Single point of failure | Spread workloads across AZs and add health-checked redundancy. |
+| | Solutions Library | Consulting Offers |
+| --- | --- | --- |
+| What you get | Reference implementations for use cases such as data lakes, security, DevOps, and analytics | Fixed-scope engagements with defined deliverables, for outcomes such as migration, modernization, security assessments, and data analytics |
+| Who does the work | You, in your own account | A validated AWS Partner |
+| Delivered as | CloudFormation templates or CDK code plus an implementation guide | A purchase in AWS Marketplace, then a statement of work |
+| Vetting | Reviewed by AWS architects for reliability, security, and cost | Partners validated through competency programs |
+| Watch for | Regional support, and keeping your changes across upgrades | Scope and exclusions agreed before purchase |
 
-Concepts are general; actual behavior depends on service quotas and architecture choices. See the AWS Cloud overview and the per-service runbooks in this knowledge base.[^aws-foundations-cloud-computing]
+### AWS Solutions Library
 
+The Solutions Library, formerly AWS Solutions Implementations, is open-source code you can fork and customize. Read the implementation guide first for prerequisites, Regions, and cost estimates; deploy in a test account, then adapt the code for production (VPC, encryption, logging). Keep custom changes in a fork so upgrades do not overwrite them, and when a deployment fails, read the CloudFormation stack events.[^aws-solutions-implementations]
 
-## AWS Ecosystem
+### AWS Consulting Offers
 
-The AWS ecosystem is the cloud platform plus everything that surrounds it: partners, marketplace, support, compliance evidence, and the frameworks that guide how you use it. There is no single product and no single entry point. The AWS ecosystem includes the AWS Cloud platform itself (compute, storage, database, networking, analytics, security, and AI/ML services on global infrastructure), plus the AWS Partner Network (APN), AWS Marketplace, support plans, compliance resources (AWS Artifact), and the Well-Architected and Shared Responsibility frameworks that guide how you use it.
-
-Practices:
-
-- Choose services by workload requirements and the Well-Architected pillars, not by feature list.
-- Use consolidated billing and tagging for cost visibility across the ecosystem.
-- Evaluate Marketplace/partner offerings against support, security, and compliance requirements.
-
-| Symptom | Check |
-| --- | --- |
-| Service unavailable in Region | Check the service's Regional availability page; some services are not global. |
-| Partner solution issues | Verify the offering's support path and IAM/network requirements before deploying. |
-| Compliance evidence needed | Use AWS Artifact; AWS-side controls are covered by AWS, customer-side by your team. |
-
-The ecosystem is governed by per-service quotas and agreements; see the AWS index and per-service runbooks in this knowledge base for details.[^aws-aws-ecosystem]
-
-
-## AWS Solutions Library (Solutions Implementations)
-
-The AWS Solutions Library (formerly AWS Solutions Implementations) provides vetted solutions and guidance for common business and technical use cases. Each solution is reviewed by AWS architects for reliability, security, and cost-efficiency and ships with deployment guidance and code you can deploy in your own account.
-
-Key points:
-
-- Solutions: packaged reference implementations covering industry and technical use cases (for example, data lakes, security, DevOps, and analytics).
-- Deployment assets: solutions include CloudFormation templates and/or CDK code plus implementation guides with architecture and operational details.
-- Vetting: solutions are reviewed by AWS architects against reliability, security, and cost best practices before publication.
-- Customization: you can fork and customize the open-source code to fit your environment.
-- Relationship to other AWS assets: the Solutions Library complements AWS Solutions Constructs (pre-built CDK patterns) and AWS Partner Consulting Offers (partner-delivered engagements).
-
-Practices:
-
-- Review the implementation guide before deploying; note prerequisites, Regions, and cost estimates.
-- Deploy in a test account first, then adapt the code for production (VPC, encryption, logging).
-- Track the solution version and AWS service updates; re-deploy or upgrade when the library publishes updates.
-
-| Symptom | Check |
-| --- | --- |
-| Deployment fails | Check the CloudFormation stack events and the implementation guide prerequisites. |
-| Regional limitations | Verify the solution supports your Region; some use services with limited availability. |
-| Customization lost on upgrade | Keep custom changes in a fork and track upstream updates. |
-
-Solutions are guidance artifacts; quotas depend on the underlying AWS services they deploy. See the AWS Solutions Library page for current solution lists and the service runbooks in this knowledge base for quotas.[^aws-solutions-implementations]
-
-
-## AWS Consulting Offers
-
-AWS Consulting Offers are packaged consulting engagements from AWS Partners that address specific business outcomes (for example, migration, modernization, security assessments, and data analytics). They are part of the AWS Partner Network (APN) and AWS Marketplace ecosystem, giving customers a scoped, repeatable way to procure partner expertise.
-
-Key points:
-
-- Consulting offers: fixed-scope engagements from AWS Partners with defined deliverables and outcomes, listed for discovery.
-- Partner ecosystem: offers come from validated AWS Partners; competency programs validate partner expertise in solution areas.
-- Discovery: browse offers in AWS Marketplace and AWS Partner resources; filter by use case, industry, and partner.
-- Procurement and execution: purchase the offer, engage the partner, and track deliverables against the engagement scope.
-- Relationship to AWS assets: Consulting Offers complement the AWS Solutions Library (self-deployable code) and Solutions Constructs (CDK patterns); partners deliver the consulting layer.
-
-Practices:
-
-- Define the expected outcome and deliverables before purchasing; match the offer to a specific business need.
-- Validate the partner's credentials (competencies, customer references) before engagement.
-- Agree on access, security, and data-handling requirements for the engagement.
-
-| Symptom | Check |
-| --- | --- |
-| Cannot find an offer | Broaden filters in AWS Marketplace; check the partner's site for direct offers. |
-| Offer scope mismatch | Contact the partner to confirm deliverables and exclusions before purchasing. |
-| Deliverables unclear | Reference the offer description and agreed statement of work. |
-
-Consulting offers are governed by the partner agreement and Marketplace terms; technical quotas depend on the AWS services involved. See the AWS Partner Network and Marketplace documentation for current details.[^aws-solutions-consulting-offers]
-
+Consulting Offers are part of the APN and Marketplace. Browse them in Marketplace by use case, industry, and partner, or on a partner's own site. Before buying, define the outcome you need, check the partner's competencies and customer references, and agree on access, security, and data-handling rules for the engagement; afterwards, track deliverables against the agreed scope.[^aws-solutions-consulting-offers]
 
 ## Related
 
-- [AWS foundations](aws-foundations.md)
-- [AWS certifications](certifications.md)
+- [AWS foundations](aws-foundations.md): the shared responsibility model and Well-Architected Framework.
+- [AWS certifications](certifications.md): the exams that test these basics.
+- [Cost](cost.md): pricing models behind pay-as-you-go.
 - [Domain index](index.md)
 
 [^aws-foundations-cloud-computing]: [Foundations of Cloud Computing - Runbook & Reference](../../sources/aws-foundations-cloud-computing.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/foundations-cloud-computing/README.md)
