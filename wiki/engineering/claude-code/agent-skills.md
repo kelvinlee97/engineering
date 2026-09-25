@@ -168,7 +168,7 @@ When writing a PR description:
 
 ## Related
 
-- [Subagent](subagents.md#what-a-subagent-is): subagents do not inherit skills.
+- [Subagents](subagents.md): subagents do not inherit skills.
 - [Context isolation](subagents.md#context-isolation) saves context by moving work elsewhere; progressive disclosure saves it by not loading material until needed. (Analysis: this link is the wiki's own comparison, not a claim from either source.)
 - [Subagent configuration file](subagents.md#subagent-configuration-file): the parallel format for subagents, which can list skills to preload.
 

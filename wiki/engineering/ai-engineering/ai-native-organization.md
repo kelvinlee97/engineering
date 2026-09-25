@@ -82,7 +82,7 @@ Use the model for judgment and vague intent; use ordinary code and data structur
 
 - [Self-improving skill loop](self-improving-skill-loop.md)
 - [AI adoption maturity](ai-adoption.md#ai-adoption-maturity)
-- [Agent skill](../claude-code/agent-skills.md#what-a-skill-is)
+- [Agent skills](../claude-code/agent-skills.md)
 
 [^kavak-agents-video]: [What Happens When AI Agents Run the Business? (video summary)](../../sources/kavak-agents-video.md), [original](https://github.com/kelvinlee97/engineering/blob/main/YouTube/claude/what-happens-when-ai-agents-run-the-business--n34CIw3gk1k/summary.md)
 [^ai-native-company-structure-video]: [Building and Structuring an AI-Native Company (video summary)](../../sources/ai-native-company-structure-video.md), [original](https://github.com/kelvinlee97/engineering/blob/main/YouTube/startup/building-and-structuring-an-ai-native-company--Z3JyAqh4ixg/summary.md)

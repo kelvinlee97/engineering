@@ -89,8 +89,8 @@ mTLS identifies a client but does not grant znode permissions; each application 
 
 ## Related
 
-- [ZooKeeper single-member recovery](zookeeper-recovery.md#recovering-a-single-member)
-- [ZooKeeper quorum-loss restore](zookeeper-recovery.md#restoring-after-quorum-loss)
+- [Recovering a single ZooKeeper member](zookeeper-recovery.md#recovering-a-single-member)
+- [Restoring ZooKeeper after quorum loss](zookeeper-recovery.md#restoring-after-quorum-loss)
 - [Safe change procedure](../operations/incident-operations.md#safe-change-procedure)
 
 [^zookeeper-getting-started]: [ZooKeeper Beginner Tutorial](../../sources/zookeeper-getting-started.md), [original](https://github.com/kelvinlee97/engineering/blob/main/ZooKeeper/guides/getting-started/README.md)
