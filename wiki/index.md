@@ -74,17 +74,29 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 
 # Service
 
+* [Amazon CloudFront](engineering/aws/cloudfront.md) - AWS's CDN: requests are answered from the nearest edge cache, and only misses reach the origin, so cache settings control both cost and freshness.
+* [Amazon EC2](engineering/aws/ec2.md) - AWS's virtual servers: the instance type sets compute, memory, network, and storage, and the lifecycle state decides what you pay and what data survives.
+* [Amazon EC2 Auto Scaling](engineering/aws/auto-scaling-groups.md) - Groups of EC2 instances held between a minimum and maximum size, scaled by policies and self-healed by health checks.
+* [Amazon ECR](engineering/aws/ecr.md) - AWS's container image registry, with IAM-controlled private repositories, scanning, lifecycle cleanup, and replication.
+* [Amazon ECS](engineering/aws/ecs.md) - AWS's own container orchestrator: task definitions run as tasks or long-running services on Fargate, EC2, or on-premises capacity.
+* [Amazon EKS](engineering/aws/eks.md) - AWS's managed Kubernetes: AWS runs the control plane, and with Auto Mode also the nodes.
 * [Amazon GuardDuty](engineering/aws/guardduty.md) - AWS's threat detection service that analyzes CloudTrail, VPC Flow Logs, and DNS logs, plus optional protection plans, to produce findings.
+* [Amazon Route 53](engineering/aws/route53.md) - AWS's DNS service: domain registration, hosted zones with routing policies, and health checks that drop unhealthy targets from answers.
+* [Amazon VPC](engineering/aws/vpc.md) - AWS's logically isolated virtual network: CIDR ranges split into per-AZ subnets, with route tables, gateways, and firewalls deciding where traffic goes.
 * [AWS CloudTrail](engineering/aws/cloudtrail.md) - AWS's audit log of API and console actions, from a free 90-day event history to long-term trails and a queryable data lake.
+* [AWS Direct Connect](engineering/aws/direct-connect.md) - A dedicated private network link from on-premises to AWS that bypasses the public internet, carried as virtual interfaces over BGP.
+* [AWS Global Accelerator](engineering/aws/global-accelerator.md) - Static anycast IP addresses that carry user traffic over the AWS network to the healthiest, nearest regional endpoint.
 * [AWS IAM](engineering/aws/iam.md) - AWS's authentication and authorization service: identities, policies, and temporary credentials that decide who can do what to which resource.
 * [AWS IAM Identity Center](engineering/aws/iam-identity-center.md) - AWS's service for workforce sign-in to many accounts: users or an external identity provider, permission sets, and an access portal.
 * [AWS KMS](engineering/aws/kms.md) - AWS's managed service for creating and controlling encryption and signing keys, used through envelope encryption.
+* [AWS Lambda](engineering/aws/lambda.md) - AWS's serverless compute: functions run per event with no servers to manage, billed per request and GB-second.
 * [AWS Organizations](engineering/aws/organizations.md) - AWS's service for managing many accounts as one tree of organizational units with shared billing and policy guardrails.
 * [AWS Secrets Manager](engineering/aws/secrets-manager.md) - AWS's service for storing versioned secrets that applications fetch at runtime, with scheduled rotation through Lambda.
 * [AWS Security Hub CSPM](engineering/aws/security-hub.md) - AWS's security posture service that gathers findings from other services and runs continuous checks against security standards.
 * [Claude GitHub App](engineering/claude-code/claude-github-app.md) - The GitHub App that gives Claude features repository access, and which features depend on it rather than on other sign-in methods.
 * [Claude Managed Agents](engineering/claude-code/claude-managed-agents.md) - An Anthropic-hosted agent harness that runs the agent loop, sandbox, and tools for long-running tasks, driven by events instead of your own runtime.
 * [Cloud session](engineering/claude-code/cloud-session.md) - A Claude Code session that runs on an Anthropic-managed VM instead of your machine, cloning your repository from GitHub and running after you disconnect.
+* [Elastic Load Balancing](engineering/aws/elb.md) - AWS's load balancers (ALB, NLB, GWLB) that spread traffic across healthy targets in several Availability Zones.
 * [ZooKeeper](engineering/zookeeper/zookeeper.md) - A distributed coordination service that keeps a small, consistently replicated tree of data for leader election, membership, and configuration notification.
 
 # Configuration
@@ -101,13 +113,29 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 * [Moving work between terminal and cloud](engineering/claude-code/terminal-cloud-handoff.md) - The CLI commands that start, message, and pull down Claude Code cloud sessions, and what each one needs.
 * [uniq](engineering/linux/uniq.md) - Collapses or counts adjacent identical lines, which is why it almost always follows sort.
 
+# Comparison
+
+* [AWS compute options](engineering/aws/compute-options.md) - How EC2, Lambda, ECS, and EKS divide the work between you and AWS, and the hard limits that push a workload from one to another.
+* [AWS global traffic routing](engineering/aws/global-traffic-routing.md) - Route 53, CloudFront, and Global Accelerator all steer users toward healthy endpoints, but at different layers and with different failover speed.
+
 # Source Summary
 
+* [Amazon CloudFront runbook and reference (summary)](sources/aws-cloudfront.md) - Summary of the legacy AWS runbook and reference note for Amazon CloudFront, verified against AWS documentation on 2026-08-19.
+* [Amazon EC2 Auto Scaling runbook and reference (summary)](sources/aws-auto-scaling-groups.md) - Summary of the legacy AWS runbook and reference note for Amazon EC2 Auto Scaling, verified against AWS documentation on 2026-08-19.
+* [Amazon EC2 runbook and reference (summary)](sources/aws-ec2.md) - Summary of the legacy AWS runbook and reference note for Amazon EC2, verified against AWS documentation on 2026-08-18.
+* [Amazon ECR runbook and reference (summary)](sources/aws-ecr.md) - Summary of the legacy AWS runbook and reference note for Amazon ECR, verified against AWS documentation on 2026-08-19.
+* [Amazon ECS runbook and reference (summary)](sources/aws-ecs.md) - Summary of the legacy AWS runbook and reference note for Amazon ECS, verified against AWS documentation on 2026-08-19.
+* [Amazon EKS runbook and reference (summary)](sources/aws-eks.md) - Summary of the legacy AWS runbook and reference note for Amazon EKS, verified against AWS documentation on 2026-08-19.
 * [Amazon GuardDuty runbook and reference (summary)](sources/aws-guardduty.md) - Summary of the legacy AWS runbook and reference note for Amazon GuardDuty, verified against AWS documentation on 2026-08-19.
+* [Amazon Route 53 runbook and reference (summary)](sources/aws-route53.md) - Summary of the legacy AWS runbook and reference note for Amazon Route 53, verified against AWS documentation on 2026-08-19.
+* [Amazon VPC runbook and reference (summary)](sources/aws-vpc.md) - Summary of the legacy AWS runbook and reference note for Amazon VPC, verified against AWS documentation on 2026-08-19.
 * [AWS CloudTrail runbook and reference (summary)](sources/aws-cloudtrail.md) - Summary of the legacy AWS runbook and reference note for AWS CloudTrail, verified against AWS documentation on 2026-08-19.
+* [AWS Direct Connect runbook and reference (summary)](sources/aws-direct-connect.md) - Summary of the legacy AWS runbook and reference note for AWS Direct Connect, verified against AWS documentation on 2026-08-19.
+* [AWS Global Accelerator runbook and reference (summary)](sources/aws-global-accelerator.md) - Summary of the legacy AWS runbook and reference note for AWS Global Accelerator, verified against AWS documentation on 2026-08-19.
 * [AWS IAM Identity Center runbook and reference (summary)](sources/aws-iam-identity-center.md) - Summary of the legacy AWS runbook and reference note for AWS IAM Identity Center, verified against AWS documentation on 2026-08-19.
 * [AWS IAM runbook and reference (summary)](sources/aws-iam.md) - Summary of the legacy AWS runbook and reference note for AWS IAM, verified against AWS documentation on 2026-08-18.
 * [AWS KMS runbook and reference (summary)](sources/aws-kms.md) - Summary of the legacy AWS runbook and reference note for AWS KMS, verified against AWS documentation on 2026-08-19.
+* [AWS Lambda runbook and reference (summary)](sources/aws-lambda.md) - Summary of the legacy AWS runbook and reference note for AWS Lambda, verified against AWS documentation on 2026-08-18.
 * [AWS Organizations runbook and reference (summary)](sources/aws-organizations.md) - Summary of the legacy AWS runbook and reference note for AWS Organizations, verified against AWS documentation on 2026-08-19.
 * [AWS Secrets Manager runbook and reference (summary)](sources/aws-secrets-manager.md) - Summary of the legacy AWS runbook and reference note for AWS Secrets Manager, verified against AWS documentation on 2026-08-19.
 * [AWS Security Hub CSPM runbook and reference (summary)](sources/aws-security-hub.md) - Summary of the legacy AWS runbook and reference note for AWS Security Hub CSPM, verified against AWS documentation on 2026-08-19.
@@ -119,6 +147,7 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 * [Claude Managed Agents (summary of the official overview)](sources/claude-managed-agents.md) - Summary of Anthropic's Claude Managed Agents overview documentation, reviewed on 2026-09-15 while the product was in beta.
 * [Claude Projects, Redesigned (announcement summary)](sources/claude-projects.md) - Summary of Anthropic's 2026-09-17 announcement that Claude Projects became one long-running conversation coordinating parallel threads.
 * [Common Ubuntu APT operations (summary)](sources/ubuntu-apt-guide.md) - Summary of the legacy guide to installing, upgrading, inspecting, and troubleshooting packages on Ubuntu with APT and dpkg.
+* [Elastic Load Balancing runbook and reference (summary)](sources/aws-elb.md) - Summary of the legacy AWS runbook and reference note for Elastic Load Balancing, verified against AWS documentation on 2026-08-19.
 * [Essential Git commands for operations (summary)](sources/git-operations-reference.md) - Summary of the legacy operations-oriented Git reference: inspect first, sync deliberately, prefer revert on shared branches.
 * [Every company should have a brain (summary)](sources/company-brain-video.md) - Summary of the legacy note on Garry Tan's talk about skills as an organization and a curated company memory.
 * [Express BFF incidents runbook (summary)](sources/express-bff-incidents-runbook.md) - Summary of the legacy runbook covering ten common incidents for an Express BFF supervised by PM2 cluster mode.
