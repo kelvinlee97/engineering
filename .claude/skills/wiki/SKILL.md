@@ -45,10 +45,10 @@ Input: a URL, or a legacy article path such as `Claude/subagents/README.md`.
      `## Contradictions`, each with its footnote.
    - Add relative links to related pages, both directions.
    - Refresh `generated`; keep `status: draft` unless the user promoted it.
-7. **Index.** Add or update entries in the directory `index.md` of every page
-   touched, in each parent `index.md` for new subdirectories, and in the
-   root `wiki/index.md` (grouped by type). Descriptions are copied verbatim
-   from frontmatter.
+7. **Index.** Run `python -m scripts.wiki_index` to regenerate every
+   `index.md` from frontmatter; never edit index entries by hand. A new domain
+   under `wiki/engineering/` needs a hand-written entry in
+   `wiki/engineering/index.md` (the script reports it if missing).
 8. **Log.** Under today's `## YYYY-MM-DD` heading at the top of `wiki/log.md`:
    `* **Ingest**: <source title> (<source path or URL>): created <n>, updated <m> pages.`
 9. **Check.** `python scripts/wiki_check.py` and `git diff --check`. Fix and

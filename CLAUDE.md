@@ -49,7 +49,7 @@ The step-by-step procedures live in `.claude/skills/wiki/SKILL.md`. In short:
 - Never name a wiki file `README.md` or `summary.md`: the site build would
   publish it.
 - `type` vocabulary: `Concept`, `Pattern`, `Tool`, `Configuration`, `Command`,
-  `Service`, `Source Summary`, `Comparison`, `Synthesis`. Add a new value here
+  `Service`, `Playbook`, `Source Summary`, `Comparison`, `Synthesis`. Add a new value here
   before using it.
 - Provenance: list every source under `sources` with a stable `id` and a
   `resource` (GitHub blob URL of the raw file). Attribute each factual claim
@@ -107,7 +107,8 @@ own analysis as analysis.
 Run what touches your change:
 
 - Wiki: `python scripts/wiki_check.py` (conformance, index, log, footnotes,
-  frozen sources).
+  numbers against sources, frozen sources) and `python -m scripts.wiki_index --check`
+  (indexes are generated with `python -m scripts.wiki_index`, never by hand).
 - Wiki site (Quartz, published at wiki.kelvin.ink): `python scripts/build_site.py build`
   then `python scripts/build_site.py check`. Quartz config lives in `site/`.
 - Python tooling: `uvx ruff check .`, `mypy`, and
