@@ -62,6 +62,7 @@
 * [How Claude Code Auto Mode Works (video summary)](claude-auto-mode.md) - Summary of Claude's 2026-08-04 video explaining how Auto Mode reviews higher-risk actions with a separate classifier.
 * [How to actually start your own business (summary)](start-a-business-video.md) - Summary of the legacy note on a video outlining seven steps for starting a small business.
 * [How to build a company with AI from the ground up (summary)](ai-company-ground-up-video.md) - Summary of the legacy note on a Y Combinator talk treating AI as the company's operating system.
+* [How to prepare for AI-driven code modernization projects (summary)](ai-code-modernization.md) - Summary of Anthropic's 2026-09-23 field note on the six steps an enterprise completes before and during an agent-driven code modernization.
 * [How Warp Builds Self-Improving Agents on Claude (summary)](warp-self-improving-agents.md) - Summary of an Anthropic post and Warp webinar on agents that improve their own skill files through reviewed pull requests.
 * [Introduction to Claude Code Agent Skills (course study guide)](claude-agent-skills-course.md) - Study guide covering all six lessons of Anthropic Academy's Introduction to agent skills course.
 * [Introduction to Claude Code Subagents (course study guide)](claude-subagents-course.md) - Study guide covering all four lessons of Anthropic Academy's Introduction to subagents course.

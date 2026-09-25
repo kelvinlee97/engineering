@@ -35,6 +35,7 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 
 * [APT package management](engineering/linux/apt-package-management.md) - Install, upgrade, hold, roll back, and troubleshoot Ubuntu packages safely by refreshing, simulating, and inspecting before applying.
 * [Branches and pull requests](engineering/git/branches-and-pull-requests.md) - Keeping a branch in sync with its upstream and taking it through the GitHub pull request workflow.
+* [Code modernization with agents](engineering/ai-engineering/code-modernization.md) - Preparing and running an agent-driven code modernization, from choosing the target to the certificate, promotion policy, pilot, and token cost.
 * [Express backend for frontend](engineering/web-serving/express-bff.md) - The backend-for-frontend pattern, deploying an Express BFF to production, and handling its common incidents.
 * [Kubernetes IP or ENI exhaustion](engineering/kubernetes/ip-eni-exhaustion.md) - Diagnose and remediate Pods stuck Pending on ENI or IP capacity in an ENI-based Pod network, in dependency order.
 * [Reverse proxy gateway](engineering/web-serving/reverse-proxy-gateway.md) - Terminating HTTPS at an Nginx or OpenResty gateway in front of a private application, and deploying either in production.
@@ -139,6 +140,7 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 * [How Claude Code Auto Mode Works (video summary)](sources/claude-auto-mode.md) - Summary of Claude's 2026-08-04 video explaining how Auto Mode reviews higher-risk actions with a separate classifier.
 * [How to actually start your own business (summary)](sources/start-a-business-video.md) - Summary of the legacy note on a video outlining seven steps for starting a small business.
 * [How to build a company with AI from the ground up (summary)](sources/ai-company-ground-up-video.md) - Summary of the legacy note on a Y Combinator talk treating AI as the company's operating system.
+* [How to prepare for AI-driven code modernization projects (summary)](sources/ai-code-modernization.md) - Summary of Anthropic's 2026-09-23 field note on the six steps an enterprise completes before and during an agent-driven code modernization.
 * [How Warp Builds Self-Improving Agents on Claude (summary)](sources/warp-self-improving-agents.md) - Summary of an Anthropic post and Warp webinar on agents that improve their own skill files through reviewed pull requests.
 * [Introduction to Claude Code Agent Skills (course study guide)](sources/claude-agent-skills-course.md) - Study guide covering all six lessons of Anthropic Academy's Introduction to agent skills course.
 * [Introduction to Claude Code Subagents (course study guide)](sources/claude-subagents-course.md) - Study guide covering all four lessons of Anthropic Academy's Introduction to subagents course.
