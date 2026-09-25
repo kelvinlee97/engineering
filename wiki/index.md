@@ -55,11 +55,26 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 
 # Service
 
+* [AWS AI services](engineering/aws/ai-services.md) - Pre-trained AWS APIs for language, vision, speech, translation, chatbots, and enterprise search.
+* [AWS analytics](engineering/aws/analytics.md) - Querying, transforming, warehousing, and visualizing data on AWS: Athena, Glue, EMR, Redshift, QuickSight, Data Pipeline, and AppFlow.
+* [AWS application integration](engineering/aws/application-integration.md) - APIs, GraphQL, workflows, message brokers, email, and contact centers for connecting application components.
+* [AWS application security](engineering/aws/application-security.md) - Protecting internet-facing AWS applications: web filtering, DDoS protection, TLS certificates, app sign-in, directories, and hardware key storage.
+* [AWS compliance and posture](engineering/aws/compliance-and-posture.md) - Services that record configuration, scan for vulnerabilities, find sensitive data, investigate incidents, and supply AWS compliance reports.
 * [AWS compute](engineering/aws/compute.md) - Choosing AWS compute, and running EC2 instances behind load balancers in Auto Scaling groups.
+* [AWS compute platforms](engineering/aws/compute-platforms.md) - Batch jobs, simple virtual servers, managed web platforms, on-premises AWS hardware, and scaling for non-EC2 resources.
 * [AWS containers and serverless](engineering/aws/containers-and-serverless.md) - Running containers on ECS or EKS with images in ECR, and running functions on Lambda.
+* [AWS developer tools](engineering/aws/developer-tools.md) - The command line, SDKs, infrastructure-as-code frameworks, cloud IDE, and front-end hosting tools for building on AWS.
+* [AWS ecosystem and cloud foundations](engineering/aws/aws-ecosystem.md) - Cloud computing basics, the AWS partner ecosystem, and AWS Solutions offerings for starting on AWS.
 * [AWS encryption and secrets](engineering/aws/encryption-and-secrets.md) - Envelope encryption with AWS KMS keys, and storing and rotating credentials in Secrets Manager.
 * [AWS IAM](engineering/aws/iam.md) - How AWS IAM grants access: identities and roles, how a request's policies are evaluated, and IAM Identity Center for workforce sign-in.
+* [AWS machine learning platforms](engineering/aws/machine-learning.md) - Building and serving your own models with SageMaker, plus the managed Personalize and Forecast services.
+* [AWS management and governance](engineering/aws/management-and-governance.md) - Landing zones, service catalogs, quotas, licenses, resource sharing and grouping, and managed operations across AWS accounts.
 * [AWS networking](engineering/aws/networking.md) - Amazon VPC for private networks in AWS, and Direct Connect for private links from on-premises.
+* [AWS operational insight](engineering/aws/operational-insight.md) - Tracing requests, AWS service health, account best-practice checks, and configuration management with X-Ray, Health, Trusted Advisor, and OpsWorks.
+* [AWS specialized databases](engineering/aws/specialized-databases.md) - Purpose-built AWS databases beyond RDS and DynamoDB: DocumentDB, Neptune, QLDB, and Managed Blockchain.
+* [AWS storage and migration](engineering/aws/storage-and-migration.md) - Backup, file systems, hybrid storage, data transfer, and server and database migration services on AWS.
+* [AWS streaming and search](engineering/aws/streaming-and-search.md) - Real-time data streams with Kinesis and MSK, and full-text search with OpenSearch and CloudSearch.
+* [CI/CD on AWS](engineering/aws/ci-cd.md) - AWS's code services for source hosting, builds, deployments, pipelines, package repositories, and code review.
 * [Claude Managed Agents](engineering/claude-code/claude-managed-agents.md) - An Anthropic-hosted agent harness that runs the agent loop, sandbox, and tools for long-running tasks, driven by events instead of your own runtime.
 * [Cloud sessions](engineering/claude-code/cloud-sessions.md) - Running Claude Code in a cloud container: what a session is, how its environment is configured, and how work moves between terminal and cloud.
 * [ZooKeeper](engineering/zookeeper/zookeeper.md) - What Apache ZooKeeper is, how its ensemble and quorum work, and how to deploy it in production.
@@ -81,8 +96,18 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 
 # Source Summary
 
+* [Amazon API Gateway runbook and reference (summary)](sources/aws-api-gateway.md) - Summary of the legacy AWS runbook and reference note for Amazon API Gateway, verified against AWS documentation on 2026-08-19.
+* [Amazon AppFlow runbook and reference (summary)](sources/aws-appflow.md) - Summary of the legacy AWS runbook and reference note for Amazon AppFlow, verified against AWS documentation on 2026-08-19.
+* [Amazon Athena runbook and reference (summary)](sources/aws-athena.md) - Summary of the legacy AWS runbook and reference note for Amazon Athena, verified against AWS documentation on 2026-08-19.
 * [Amazon CloudFront runbook and reference (summary)](sources/aws-cloudfront.md) - Summary of the legacy AWS runbook and reference note for Amazon CloudFront, verified against AWS documentation on 2026-08-19.
+* [Amazon CloudSearch runbook and reference (summary)](sources/aws-cloudsearch.md) - Summary of the legacy AWS runbook and reference note for Amazon CloudSearch, verified against AWS documentation on 2026-08-19.
 * [Amazon CloudWatch runbook and reference (summary)](sources/aws-cloudwatch.md) - Summary of the legacy AWS runbook and reference note for Amazon CloudWatch, verified against AWS documentation on 2026-08-19.
+* [Amazon CodeGuru runbook and reference (summary)](sources/aws-codeguru.md) - Summary of the legacy AWS runbook and reference note for Amazon CodeGuru, verified against AWS documentation on 2026-08-19.
+* [Amazon Cognito runbook and reference (summary)](sources/aws-cognito.md) - Summary of the legacy AWS runbook and reference note for Amazon Cognito, verified against AWS documentation on 2026-08-19.
+* [Amazon Comprehend runbook and reference (summary)](sources/aws-comprehend.md) - Summary of the legacy AWS runbook and reference note for Amazon Comprehend, verified against AWS documentation on 2026-08-19.
+* [Amazon Connect runbook and reference (summary)](sources/aws-connect.md) - Summary of the legacy AWS runbook and reference note for Amazon Connect, verified against AWS documentation on 2026-08-19.
+* [Amazon Detective runbook and reference (summary)](sources/aws-detective.md) - Summary of the legacy AWS runbook and reference note for Amazon Detective, verified against AWS documentation on 2026-08-19.
+* [Amazon DocumentDB runbook and reference (summary)](sources/aws-documentdb.md) - Summary of the legacy AWS runbook and reference note for Amazon DocumentDB, verified against AWS documentation on 2026-08-19.
 * [Amazon DynamoDB runbook and reference (summary)](sources/aws-dynamodb.md) - Summary of the legacy AWS runbook and reference note for Amazon DynamoDB, verified against AWS documentation on 2026-08-19.
 * [Amazon EC2 Auto Scaling runbook and reference (summary)](sources/aws-auto-scaling-groups.md) - Summary of the legacy AWS runbook and reference note for Amazon EC2 Auto Scaling, verified against AWS documentation on 2026-08-19.
 * [Amazon EC2 runbook and reference (summary)](sources/aws-ec2.md) - Summary of the legacy AWS runbook and reference note for Amazon EC2, verified against AWS documentation on 2026-08-18.
@@ -90,32 +115,106 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 * [Amazon ECS runbook and reference (summary)](sources/aws-ecs.md) - Summary of the legacy AWS runbook and reference note for Amazon ECS, verified against AWS documentation on 2026-08-19.
 * [Amazon EKS runbook and reference (summary)](sources/aws-eks.md) - Summary of the legacy AWS runbook and reference note for Amazon EKS, verified against AWS documentation on 2026-08-19.
 * [Amazon ElastiCache runbook and reference (summary)](sources/aws-elasticache.md) - Summary of the legacy AWS runbook and reference note for Amazon ElastiCache, verified against AWS documentation on 2026-08-19.
+* [Amazon EMR runbook and reference (summary)](sources/aws-emr.md) - Summary of the legacy AWS runbook and reference note for Amazon EMR, verified against AWS documentation on 2026-08-19.
 * [Amazon EventBridge runbook and reference (summary)](sources/aws-eventbridge.md) - Summary of the legacy AWS runbook and reference note for Amazon EventBridge, verified against AWS documentation on 2026-08-19.
+* [Amazon Forecast runbook and reference (summary)](sources/aws-forecast.md) - Summary of the legacy AWS runbook and reference note for Amazon Forecast, verified against AWS documentation on 2026-08-19.
+* [Amazon FSx runbook and reference (summary)](sources/aws-fsx.md) - Summary of the legacy AWS runbook and reference note for Amazon FSx, verified against AWS documentation on 2026-08-19.
 * [Amazon GuardDuty runbook and reference (summary)](sources/aws-guardduty.md) - Summary of the legacy AWS runbook and reference note for Amazon GuardDuty, verified against AWS documentation on 2026-08-19.
+* [Amazon Inspector runbook and reference (summary)](sources/aws-inspector.md) - Summary of the legacy AWS runbook and reference note for Amazon Inspector, verified against AWS documentation on 2026-08-19.
+* [Amazon Kendra runbook and reference (summary)](sources/aws-kendra.md) - Summary of the legacy AWS runbook and reference note for Amazon Kendra, verified against AWS documentation on 2026-08-19.
+* [Amazon Kinesis runbook and reference (summary)](sources/aws-kinesis.md) - Summary of the legacy AWS runbook and reference note for Amazon Kinesis, verified against AWS documentation on 2026-08-19.
+* [Amazon Lex runbook and reference (summary)](sources/aws-lex.md) - Summary of the legacy AWS runbook and reference note for Amazon Lex, verified against AWS documentation on 2026-08-19.
+* [Amazon Lightsail runbook and reference (summary)](sources/aws-lightsail.md) - Summary of the legacy AWS runbook and reference note for Amazon Lightsail, verified against AWS documentation on 2026-08-19.
+* [Amazon Macie runbook and reference (summary)](sources/aws-macie.md) - Summary of the legacy AWS runbook and reference note for Amazon Macie, verified against AWS documentation on 2026-08-19.
+* [Amazon Managed Blockchain (AMB) runbook and reference (summary)](sources/aws-managed-blockchain.md) - Summary of the legacy AWS runbook and reference note for Amazon Managed Blockchain (AMB), verified against AWS documentation on 2026-08-19.
+* [Amazon MQ runbook and reference (summary)](sources/aws-mq.md) - Summary of the legacy AWS runbook and reference note for Amazon MQ, verified against AWS documentation on 2026-08-19.
+* [Amazon MSK runbook and reference (summary)](sources/aws-msk.md) - Summary of the legacy AWS runbook and reference note for Amazon MSK, verified against AWS documentation on 2026-08-19.
+* [Amazon Neptune runbook and reference (summary)](sources/aws-neptune.md) - Summary of the legacy AWS runbook and reference note for Amazon Neptune, verified against AWS documentation on 2026-08-19.
+* [Amazon OpenSearch Service runbook and reference (summary)](sources/aws-opensearch.md) - Summary of the legacy AWS runbook and reference note for Amazon OpenSearch Service, verified against AWS documentation on 2026-08-19.
+* [Amazon Personalize runbook and reference (summary)](sources/aws-personalize.md) - Summary of the legacy AWS runbook and reference note for Amazon Personalize, verified against AWS documentation on 2026-08-19.
+* [Amazon Polly runbook and reference (summary)](sources/aws-polly.md) - Summary of the legacy AWS runbook and reference note for Amazon Polly, verified against AWS documentation on 2026-08-19.
+* [Amazon QLDB runbook and reference (summary)](sources/aws-qldb.md) - Summary of the legacy AWS runbook and reference note for Amazon QLDB, verified against AWS documentation on 2026-08-19.
+* [Amazon QuickSight runbook and reference (summary)](sources/aws-quicksight.md) - Summary of the legacy AWS runbook and reference note for Amazon QuickSight, verified against AWS documentation on 2026-08-19.
 * [Amazon RDS runbook and reference (summary)](sources/aws-rds.md) - Summary of the legacy AWS runbook and reference note for Amazon RDS, verified against AWS documentation on 2026-08-19.
+* [Amazon Redshift runbook and reference (summary)](sources/aws-redshift.md) - Summary of the legacy AWS runbook and reference note for Amazon Redshift, verified against AWS documentation on 2026-08-19.
+* [Amazon Rekognition runbook and reference (summary)](sources/aws-rekognition.md) - Summary of the legacy AWS runbook and reference note for Amazon Rekognition, verified against AWS documentation on 2026-08-19.
 * [Amazon Route 53 runbook and reference (summary)](sources/aws-route53.md) - Summary of the legacy AWS runbook and reference note for Amazon Route 53, verified against AWS documentation on 2026-08-19.
 * [Amazon S3 runbook and reference (summary)](sources/aws-s3.md) - Summary of the legacy AWS runbook and reference note for Amazon S3, verified against AWS documentation on 2026-08-18.
+* [Amazon SageMaker AI runbook and reference (summary)](sources/aws-sagemaker.md) - Summary of the legacy AWS runbook and reference note for Amazon SageMaker AI, verified against AWS documentation on 2026-08-19.
+* [Amazon SES runbook and reference (summary)](sources/aws-ses.md) - Summary of the legacy AWS runbook and reference note for Amazon SES, verified against AWS documentation on 2026-08-19.
 * [Amazon SNS runbook and reference (summary)](sources/aws-sns.md) - Summary of the legacy AWS runbook and reference note for Amazon SNS, verified against AWS documentation on 2026-08-19.
 * [Amazon SQS runbook and reference (summary)](sources/aws-sqs.md) - Summary of the legacy AWS runbook and reference note for Amazon SQS, verified against AWS documentation on 2026-08-19.
+* [Amazon Transcribe runbook and reference (summary)](sources/aws-transcribe.md) - Summary of the legacy AWS runbook and reference note for Amazon Transcribe, verified against AWS documentation on 2026-08-19.
+* [Amazon Translate runbook and reference (summary)](sources/aws-translate.md) - Summary of the legacy AWS runbook and reference note for Amazon Translate, verified against AWS documentation on 2026-08-19.
 * [Amazon VPC runbook and reference (summary)](sources/aws-vpc.md) - Summary of the legacy AWS runbook and reference note for Amazon VPC, verified against AWS documentation on 2026-08-19.
+* [Application Auto Scaling runbook and reference (summary)](sources/aws-application-auto-scaling.md) - Summary of the legacy AWS runbook and reference note for Application Auto Scaling, verified against AWS documentation on 2026-08-19.
+* [AWS Amplify runbook and reference (summary)](sources/aws-amplify.md) - Summary of the legacy AWS runbook and reference note for AWS Amplify, verified against AWS documentation on 2026-08-19.
+* [AWS Application Migration Service (MGN) runbook and reference (summary)](sources/aws-mgn.md) - Summary of the legacy AWS runbook and reference note for AWS Application Migration Service (MGN), verified against AWS documentation on 2026-08-19.
+* [AWS AppSync runbook and reference (summary)](sources/aws-appsync.md) - Summary of the legacy AWS runbook and reference note for AWS AppSync, verified against AWS documentation on 2026-08-19.
+* [AWS Artifact runbook and reference (summary)](sources/aws-artifact.md) - Summary of the legacy AWS runbook and reference note for AWS Artifact, verified against AWS documentation on 2026-08-19.
+* [AWS Backup runbook and reference (summary)](sources/aws-backup.md) - Summary of the legacy AWS runbook and reference note for AWS Backup, verified against AWS documentation on 2026-08-19.
+* [AWS Batch runbook and reference (summary)](sources/aws-batch.md) - Summary of the legacy AWS runbook and reference note for AWS Batch, verified against AWS documentation on 2026-08-19.
 * [AWS Billing and Cost Management runbook and reference (summary)](sources/aws-billing-cost-management.md) - Summary of the legacy AWS runbook and reference note for AWS Billing and Cost Management, verified against AWS documentation on 2026-08-19.
+* [AWS Certificate Manager (ACM) runbook and reference (summary)](sources/aws-acm.md) - Summary of the legacy AWS runbook and reference note for AWS Certificate Manager (ACM), verified against AWS documentation on 2026-08-19.
+* [AWS CLI runbook and reference (summary)](sources/aws-cli.md) - Summary of the legacy AWS runbook and reference note for AWS CLI, verified against AWS documentation on 2026-08-19.
+* [AWS Cloud Development Kit (CDK) runbook and reference (summary)](sources/aws-cdk.md) - Summary of the legacy AWS runbook and reference note for AWS Cloud Development Kit (CDK), verified against AWS documentation on 2026-08-19.
+* [AWS Cloud9 runbook and reference (summary)](sources/aws-cloud9.md) - Summary of the legacy AWS runbook and reference note for AWS Cloud9, verified against AWS documentation on 2026-08-19.
 * [AWS CloudFormation runbook and reference (summary)](sources/aws-cloudformation.md) - Summary of the legacy AWS runbook and reference note for AWS CloudFormation, verified against AWS documentation on 2026-08-19.
+* [AWS CloudHSM runbook and reference (summary)](sources/aws-cloudhsm.md) - Summary of the legacy AWS runbook and reference note for AWS CloudHSM, verified against AWS documentation on 2026-08-19.
 * [AWS CloudTrail runbook and reference (summary)](sources/aws-cloudtrail.md) - Summary of the legacy AWS runbook and reference note for AWS CloudTrail, verified against AWS documentation on 2026-08-19.
+* [AWS CodeArtifact runbook and reference (summary)](sources/aws-codeartifact.md) - Summary of the legacy AWS runbook and reference note for AWS CodeArtifact, verified against AWS documentation on 2026-08-19.
+* [AWS CodeBuild runbook and reference (summary)](sources/aws-codebuild.md) - Summary of the legacy AWS runbook and reference note for AWS CodeBuild, verified against AWS documentation on 2026-08-19.
+* [AWS CodeCommit runbook and reference (summary)](sources/aws-codecommit.md) - Summary of the legacy AWS runbook and reference note for AWS CodeCommit, verified against AWS documentation on 2026-08-19.
+* [AWS CodeDeploy runbook and reference (summary)](sources/aws-codedeploy.md) - Summary of the legacy AWS runbook and reference note for AWS CodeDeploy, verified against AWS documentation on 2026-08-19.
+* [AWS CodePipeline runbook and reference (summary)](sources/aws-codepipeline.md) - Summary of the legacy AWS runbook and reference note for AWS CodePipeline, verified against AWS documentation on 2026-08-19.
+* [AWS CodeStar runbook and reference (summary)](sources/aws-codestar.md) - Summary of the legacy AWS runbook and reference note for AWS CodeStar, verified against AWS documentation on 2026-08-19.
 * [AWS competencies for cloud roles study outline (summary)](sources/aws-cert-competencies.md) - Summary of the legacy AWS competencies for cloud roles study outline, verified against AWS documentation on 2026-08-19.
+* [AWS Config runbook and reference (summary)](sources/aws-config.md) - Summary of the legacy AWS runbook and reference note for AWS Config, verified against AWS documentation on 2026-08-19.
+* [AWS Consulting Offers runbook and reference (summary)](sources/aws-solutions-consulting-offers.md) - Summary of the legacy AWS runbook and reference note for AWS Consulting Offers, verified against AWS documentation on 2026-08-19.
+* [AWS Control Tower runbook and reference (summary)](sources/aws-control-tower.md) - Summary of the legacy AWS runbook and reference note for AWS Control Tower, verified against AWS documentation on 2026-08-19.
+* [AWS Data Pipeline runbook and reference (summary)](sources/aws-data-pipeline.md) - Summary of the legacy AWS runbook and reference note for AWS Data Pipeline, verified against AWS documentation on 2026-08-19.
+* [AWS Database Migration Service (DMS) runbook and reference (summary)](sources/aws-dms.md) - Summary of the legacy AWS runbook and reference note for AWS Database Migration Service (DMS), verified against AWS documentation on 2026-08-19.
+* [AWS DataSync runbook and reference (summary)](sources/aws-datasync.md) - Summary of the legacy AWS runbook and reference note for AWS DataSync, verified against AWS documentation on 2026-08-19.
 * [AWS Direct Connect runbook and reference (summary)](sources/aws-direct-connect.md) - Summary of the legacy AWS runbook and reference note for AWS Direct Connect, verified against AWS documentation on 2026-08-19.
+* [AWS Directory Service runbook and reference (summary)](sources/aws-directory-service.md) - Summary of the legacy AWS runbook and reference note for AWS Directory Service, verified against AWS documentation on 2026-08-19.
+* [AWS Ecosystem runbook and reference (summary)](sources/aws-aws-ecosystem.md) - Summary of the legacy AWS runbook and reference note for AWS Ecosystem, verified against AWS documentation on 2026-08-19.
+* [AWS Elastic Beanstalk runbook and reference (summary)](sources/aws-elastic-beanstalk.md) - Summary of the legacy AWS runbook and reference note for AWS Elastic Beanstalk, verified against AWS documentation on 2026-08-19.
 * [AWS Global Accelerator runbook and reference (summary)](sources/aws-global-accelerator.md) - Summary of the legacy AWS runbook and reference note for AWS Global Accelerator, verified against AWS documentation on 2026-08-19.
+* [AWS Glue runbook and reference (summary)](sources/aws-glue.md) - Summary of the legacy AWS runbook and reference note for AWS Glue, verified against AWS documentation on 2026-08-19.
+* [AWS Health runbook and reference (summary)](sources/aws-health.md) - Summary of the legacy AWS runbook and reference note for AWS Health, verified against AWS documentation on 2026-08-19.
 * [AWS IAM Identity Center runbook and reference (summary)](sources/aws-iam-identity-center.md) - Summary of the legacy AWS runbook and reference note for AWS IAM Identity Center, verified against AWS documentation on 2026-08-19.
 * [AWS IAM runbook and reference (summary)](sources/aws-iam.md) - Summary of the legacy AWS runbook and reference note for AWS IAM, verified against AWS documentation on 2026-08-18.
 * [AWS KMS runbook and reference (summary)](sources/aws-kms.md) - Summary of the legacy AWS runbook and reference note for AWS KMS, verified against AWS documentation on 2026-08-19.
 * [AWS Lambda runbook and reference (summary)](sources/aws-lambda.md) - Summary of the legacy AWS runbook and reference note for AWS Lambda, verified against AWS documentation on 2026-08-18.
+* [AWS License Manager runbook and reference (summary)](sources/aws-license-manager.md) - Summary of the legacy AWS runbook and reference note for AWS License Manager, verified against AWS documentation on 2026-08-19.
+* [AWS Managed Services (AMS) runbook and reference (summary)](sources/aws-managed-services.md) - Summary of the legacy AWS runbook and reference note for AWS Managed Services (AMS), verified against AWS documentation on 2026-08-19.
+* [AWS OpsWorks runbook and reference (summary)](sources/aws-opsworks.md) - Summary of the legacy AWS runbook and reference note for AWS OpsWorks, verified against AWS documentation on 2026-08-19.
 * [AWS Organizations runbook and reference (summary)](sources/aws-organizations.md) - Summary of the legacy AWS runbook and reference note for AWS Organizations, verified against AWS documentation on 2026-08-19.
+* [AWS Outposts runbook and reference (summary)](sources/aws-outposts.md) - Summary of the legacy AWS runbook and reference note for AWS Outposts, verified against AWS documentation on 2026-08-19.
 * [AWS pricing models runbook and reference (summary)](sources/aws-pricing-models.md) - Summary of the legacy AWS runbook and reference note for AWS pricing models, verified against AWS documentation on 2026-08-19.
+* [AWS Resource Access Manager (RAM) runbook and reference (summary)](sources/aws-ram.md) - Summary of the legacy AWS runbook and reference note for AWS Resource Access Manager (RAM), verified against AWS documentation on 2026-08-19.
+* [AWS Resource Groups & Tag Editor runbook and reference (summary)](sources/aws-resource-groups-tag-editor.md) - Summary of the legacy AWS runbook and reference note for AWS Resource Groups & Tag Editor, verified against AWS documentation on 2026-08-19.
+* [AWS SDKs and Tools runbook and reference (summary)](sources/aws-sdk.md) - Summary of the legacy AWS runbook and reference note for AWS SDKs and Tools, verified against AWS documentation on 2026-08-19.
 * [AWS Secrets Manager runbook and reference (summary)](sources/aws-secrets-manager.md) - Summary of the legacy AWS runbook and reference note for AWS Secrets Manager, verified against AWS documentation on 2026-08-19.
 * [AWS Security Hub CSPM runbook and reference (summary)](sources/aws-security-hub.md) - Summary of the legacy AWS runbook and reference note for AWS Security Hub CSPM, verified against AWS documentation on 2026-08-19.
+* [AWS Serverless Application Model (SAM) & Serverless Application Repository runbook and reference (summary)](sources/aws-sam.md) - Summary of the legacy AWS runbook and reference note for AWS Serverless Application Model (SAM) & Serverless Application Repository, verified against AWS documentation on 2026-08-19.
+* [AWS Service Catalog runbook and reference (summary)](sources/aws-service-catalog.md) - Summary of the legacy AWS runbook and reference note for AWS Service Catalog, verified against AWS documentation on 2026-08-19.
+* [AWS Service Quotas runbook and reference (summary)](sources/aws-service-quotas.md) - Summary of the legacy AWS runbook and reference note for AWS Service Quotas, verified against AWS documentation on 2026-08-19.
 * [AWS Shared Responsibility Model runbook and reference (summary)](sources/aws-shared-responsibility-model.md) - Summary of the legacy AWS runbook and reference note for AWS Shared Responsibility Model, verified against AWS documentation on 2026-08-19.
+* [AWS Shield runbook and reference (summary)](sources/aws-shield.md) - Summary of the legacy AWS runbook and reference note for AWS Shield, verified against AWS documentation on 2026-08-19.
+* [AWS Snow Family runbook and reference (summary)](sources/aws-snow-family.md) - Summary of the legacy AWS runbook and reference note for AWS Snow Family, verified against AWS documentation on 2026-08-19.
+* [AWS Solutions Constructs runbook and reference (summary)](sources/aws-solutions-constructs.md) - Summary of the legacy AWS runbook and reference note for AWS Solutions Constructs, verified against AWS documentation on 2026-08-19.
+* [AWS Solutions Library (Solutions Implementations) runbook and reference (summary)](sources/aws-solutions-implementations.md) - Summary of the legacy AWS runbook and reference note for AWS Solutions Library (Solutions Implementations), verified against AWS documentation on 2026-08-19.
+* [AWS Step Functions runbook and reference (summary)](sources/aws-step-functions.md) - Summary of the legacy AWS runbook and reference note for AWS Step Functions, verified against AWS documentation on 2026-08-19.
+* [AWS Storage Gateway runbook and reference (summary)](sources/aws-storage-gateway.md) - Summary of the legacy AWS runbook and reference note for AWS Storage Gateway, verified against AWS documentation on 2026-08-19.
 * [AWS Systems Manager runbook and reference (summary)](sources/aws-systems-manager.md) - Summary of the legacy AWS runbook and reference note for AWS Systems Manager, verified against AWS documentation on 2026-08-19.
+* [AWS Transfer Family runbook and reference (summary)](sources/aws-transfer-family.md) - Summary of the legacy AWS runbook and reference note for AWS Transfer Family, verified against AWS documentation on 2026-08-19.
+* [AWS Trusted Advisor runbook and reference (summary)](sources/aws-trusted-advisor.md) - Summary of the legacy AWS runbook and reference note for AWS Trusted Advisor, verified against AWS documentation on 2026-08-19.
+* [AWS WAF runbook and reference (summary)](sources/aws-waf.md) - Summary of the legacy AWS runbook and reference note for AWS WAF, verified against AWS documentation on 2026-08-19.
 * [AWS Well-Architected Framework runbook and reference (summary)](sources/aws-well-architected.md) - Summary of the legacy AWS runbook and reference note for AWS Well-Architected Framework, verified against AWS documentation on 2026-08-19.
+* [AWS X-Ray runbook and reference (summary)](sources/aws-x-ray.md) - Summary of the legacy AWS runbook and reference note for AWS X-Ray, verified against AWS documentation on 2026-08-19.
 * [Bash SRE quick reference (summary)](sources/bash-quick-reference.md) - Summary of the legacy interview quick reference that answers log questions with short Unix filter pipelines.
+* [boto3 (AWS SDK for Python) runbook and reference (summary)](sources/aws-boto3.md) - Summary of the legacy AWS runbook and reference note for boto3 (AWS SDK for Python), verified against AWS documentation on 2026-08-19.
 * [Building an AI-Native Revenue Organization (summary)](sources/ai-native-revenue-org.md) - Summary of Anthropic's 2026-09-15 guide and eBook on rolling Claude out across a sales organization.
 * [Building and structuring an AI-native company (summary)](sources/ai-native-company-structure-video.md) - Summary of the legacy note on a talk proposing that companies be built as self-improving AI loops.
 * [Claude Code Cloud Sessions (summary of the official docs)](sources/claude-cloud-sessions.md) - Summary of Anthropic's Use Claude Code in the cloud documentation, reviewed on 2026-09-18.
@@ -131,6 +230,7 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 * [Every company should have a brain (summary)](sources/company-brain-video.md) - Summary of the legacy note on Garry Tan's talk about skills as an organization and a curated company memory.
 * [Express BFF incidents runbook (summary)](sources/express-bff-incidents-runbook.md) - Summary of the legacy runbook covering ten common incidents for an Express BFF supervised by PM2 cluster mode.
 * [Express BFF production deployment guide (summary)](sources/express-bff-deployment-guide.md) - Summary of the legacy beginner guide for deploying a Node.js Express backend-for-frontend under PM2 cluster mode on a Linux VM.
+* [Foundations of Cloud Computing runbook and reference (summary)](sources/aws-foundations-cloud-computing.md) - Summary of the legacy AWS runbook and reference note for Foundations of Cloud Computing, verified against AWS documentation on 2026-08-19.
 * [Ghostty workstation (summary)](sources/ghostty-workstation.md) - Summary of the legacy manual setup for the Ghostty terminal and a small set of terminal tools on macOS and Ubuntu 26.04.
 * [Git basics: git add (summary)](sources/git-tutorial-02-add.md) - Summary of the legacy beginner chapter on git add, part of a seven-chapter command-line tutorial.
 * [Git basics: git clone (summary)](sources/git-tutorial-01-clone.md) - Summary of the legacy beginner chapter on git clone, part of a seven-chapter command-line tutorial.
