@@ -1,9 +1,14 @@
 ---
-type: Pattern
+type: Concept
 title: Claude Code session cost
 description: What sets the cost of a Claude Code task on Opus 5.5, and how effort, model choice, caching, and compaction trade tokens against a finished task.
-tags: [claude-code, cost, models, caching]
+tags: [claude-code, cost, models, prompt-caching]
 sources:
+  - id: claude-opus-5-5-context
+    resource: https://github.com/kelvinlee97/engineering/blob/main/raw/2026-09-25-claude-opus-5-5-context.md
+    title: Coding sessions are longer and use more context. Claude Opus 5.5 is built with that in mind.
+    author: Michael Segner
+    last_modified: 2026-09-24T00:00:00Z
   - id: opus-5-5-task-cost
     resource: https://github.com/kelvinlee97/engineering/blob/main/raw/2026-09-25-what-a-task-costs-on-opus-5-5.md
     title: What a task costs on Opus 5.5
@@ -16,6 +21,20 @@ status: draft
 A Claude Code task is a loop: the model reads the conversation, calls a tool, reads the result, and repeats until done. What you pay depends less on the price per token than on how many times the loop runs and how much of each request comes from cache. This page covers what drives that cost, what Opus 5.5 changed, and the settings that move the bill. Most dollar figures here are the source's illustrations at API list prices, not measurements.
 
 The source's framing: every way to spend fewer tokens (lower effort, a smaller model, less context) can also cost you a finished task, and a retry costs more than those savings.[^opus-5-5-task-cost]
+
+## How coding sessions changed
+
+Anthropic reports these shifts in Claude Code usage between March and September 2026:
+
+| Measure | Change |
+| --- | --- |
+| Work per prompt | 3.3x longer, with more than 40% more model calls per prompt |
+| Interruptions | 68% fewer |
+| Context per request | 2.6x larger |
+| Input-to-output token ratio | 189:1 → 324:1 |
+| Use of connected tool servers or skills | twice as likely |
+
+With input now outweighing output by hundreds to one, cached token reads make up the majority of agentic work costs.[^claude-opus-5-5-context]
 
 ## What sets the cost of a task
 
@@ -56,6 +75,23 @@ The cache-read rate falls from a tenth of the input price to a twentieth. On Pro
 The post's illustrative session (2.0M cache reads, 200K fresh input, 60K output) costs $3.50 on Opus 5 and $2.40 on Opus 5.5, about 31% less from price alone. At 10 tasks a day over 22 working days, that is $242 less a month. A cache-heavy session can save up to 60% on input; a short uncached question with a long answer saves up to 20%.
 
 The widely quoted "40% less to run" is Anthropic's estimate for typical workloads at default settings. It assumes Opus 5.5 also uses fewer tokens per task at its medium default, so it is not a 40% cut in token price. Opus 5.5 always thinks before replying and can use more tokens on an answer; the gap should be largest on open-ended tasks where a model can spend many turns on a wrong idea. Long runs also end with a report of what changed and what it needs from you.[^opus-5-5-task-cost]
+
+### Where the lower session cost comes from
+
+The post credits three changes for Claude Opus 5.5 costing about 40% less to run than Opus 5 on typical token-billed workloads, with the largest savings in long, high-context sessions.
+
+```mermaid
+flowchart LR
+    accTitle: Three drivers of lower session cost
+    accDescr: Lower token prices, fewer cache misses, and fewer turns per task each reduce the cost of a Claude Code session on Opus 5.5.
+    P[Lower prices: input and output 20% less, cached reads 60% less] --> C[Session cost about 40% lower than Opus 5]
+    M[Cache misses on input down more than 50%] --> C
+    T[Fewer turns per task] --> C
+```
+
+- **Price.** Input and output tokens cost 20% less and cached reads 60% less. Anthropic says a cached token costs a fifth of what competing models charge.
+- **Cache hits.** Uncached input fell by more than 50%. Accidental login resets no longer clear the cache, changing the effort level no longer resets it, and subagents start from the parent's cache instead of paying again for the same context.
+- **Fewer turns.** Opus 5.5 finishes tasks, especially open-ended ones, in fewer turns than earlier models, and generates output over 30% faster than Opus 5.[^claude-opus-5-5-context]
 
 ## Effort levels
 
@@ -112,6 +148,14 @@ Compacting after a break longer than the cache lifetime rereads everything; at 1
 
 Keep CLAUDE.md under 200 lines, since every session loads it and every turn resends it. MCP tool definitions are deferred until used, but disconnect servers you are not using (`/mcp`). Fast mode runs Opus 5.5 up to 2.5 times faster at twice the price ($8 input, $40 output per million), and the first request after enabling it pays full input price on the whole conversation, so turn it on at the start.[^opus-5-5-task-cost]
 
+### Keeping the cache warm
+
+The post's recommendations, each aimed at keeping reads cached:
+
+1. Run `/usage` in Claude Code to watch cached reads.
+2. Choose the model at the start of a session. (Analysis: the post does not say why; a cache is tied to one model, so switching mid-session likely means rebuilding it.)
+3. On API keys or cloud providers, set a one-hour cache lifetime for long sessions.[^claude-opus-5-5-context]
+
 ## Measuring your own sessions
 
 - Run `/usage` (or `/cost`) at the end of a task. The Session block shows tokens and an estimated list-price cost; on a subscription it is a guide, not a bill.
@@ -122,8 +166,9 @@ When reading `/usage`, check three things: cache share (low on a long session me
 
 ## Related
 
-- [Subagents](subagents.md): the delegation mechanism whose model setting decides what each subagent's spend costs.
+- [Subagents](subagents.md#what-it-costs): delegation cost; the model setting decides what each subagent's spend costs, and on Opus 5.5 subagents start from the parent's cache.
 - [Claude Code extension mechanisms](extension-mechanisms.md): CLAUDE.md and MCP servers, both of which load into every turn.
 - [Cloud sessions](cloud-sessions.md): where long-running Claude Code sessions run.
 
 [^opus-5-5-task-cost]: [What a task costs on Opus 5.5 (summary)](../../sources/opus-5-5-task-cost.md), [original](https://github.com/kelvinlee97/engineering/blob/main/raw/2026-09-25-what-a-task-costs-on-opus-5-5.md)
+[^claude-opus-5-5-context]: [Claude Opus 5.5 and longer coding sessions](../../sources/claude-opus-5-5-context.md), [original](https://github.com/kelvinlee97/engineering/blob/main/raw/2026-09-25-claude-opus-5-5-context.md)

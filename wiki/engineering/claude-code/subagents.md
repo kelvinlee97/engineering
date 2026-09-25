@@ -54,7 +54,12 @@ sources:
   title: 'AWS IAM - Runbook & Reference'
   author: human:kelvinlee97
   last_modified: 2026-09-24T14:48:10Z
-generated: { by: claude-code/wiki-v1, at: 2026-09-25T12:00:00Z }
+- id: claude-opus-5-5-context
+  resource: https://github.com/kelvinlee97/engineering/blob/main/raw/2026-09-25-claude-opus-5-5-context.md
+  title: Coding sessions are longer and use more context. Claude Opus 5.5 is built with that in mind.
+  author: Michael Segner
+  last_modified: 2026-09-24T00:00:00Z
+generated: { by: claude-code/wiki-v1, at: 2026-09-25T12:30:00Z }
 status: draft
 ---
 A subagent is a worker agent that Claude Code hands one bounded task to. It runs in its own context and returns only a short result, so the main conversation stays clean at the cost of not seeing how the result was reached. This page covers what a subagent is, when delegating pays off, how to write the task and choose its tools, and the file that defines one.
@@ -115,6 +120,8 @@ The parent loses visibility into how the conclusion was reached and into anythin
 
 - The result must be specified in advance, including obstacles, or the main thread has to rediscover them. See [Delegation contract](#delegation-contract).
 - Chains of dependent steps lose information at each handoff, so they belong in one context. See [When to delegate](#when-to-delegate).[^claude-subagents-course]
+
+Token cost is smaller than it was: since Claude Opus 5.5, a subagent starts from the parent's prompt cache instead of paying again for the same context. See [Claude Code session cost](session-cost.md#where-the-lower-session-cost-comes-from).[^claude-opus-5-5-context]
 
 ### A side benefit: fresh context
 
@@ -280,3 +287,4 @@ Neither source explains the difference. Check the current Claude Code documentat
 [^claude-github-actions]: [Claude Code GitHub Actions](../../sources/claude-github-actions.md), [original](https://github.com/kelvinlee97/engineering/blob/main/Claude/github-actions/README.md)
 [^ai-native-sdlc-playbook]: [The AI-Native SDLC Playbook](../../sources/ai-native-sdlc-playbook.md), [original](https://github.com/kelvinlee97/engineering/blob/main/Claude/ai-native-sdlc-playbook/README.md)
 [^aws-iam]: [AWS IAM - Runbook & Reference](../../sources/aws-iam.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/iam/README.md)
+[^claude-opus-5-5-context]: [Claude Opus 5.5 and longer coding sessions](../../sources/claude-opus-5-5-context.md), [original](https://github.com/kelvinlee97/engineering/blob/main/raw/2026-09-25-claude-opus-5-5-context.md)

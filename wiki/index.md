@@ -17,6 +17,7 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 * [Auto Mode and prompt injection](engineering/claude-code/auto-mode.md) - A Claude Code permission mode where a classifier reviews higher-risk actions, and the prompt-injection threat it is built to contain.
 * [AWS foundations](engineering/aws/aws-foundations.md) - The shared responsibility model and the Well-Architected Framework, the two ideas the other AWS pages assume.
 * [Claude Code extension mechanisms](engineering/claude-code/extension-mechanisms.md) - How CLAUDE.md, skills, subagents, hooks, and MCP servers differ, and which job each one owns.
+* [Claude Code session cost](engineering/claude-code/session-cost.md) - What sets the cost of a Claude Code task on Opus 5.5, and how effort, model choice, caching, and compaction trade tokens against a finished task.
 * [Git fundamentals](engineering/git/git-fundamentals.md) - Git's four places, the everyday commands that move work between them, the commit workflow, and keeping secrets out.
 * [Subagents](engineering/claude-code/subagents.md) - What a Claude Code subagent is, when to delegate to one, how to write its task and tools, and the file that defines it.
 
@@ -27,7 +28,6 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 * [AWS cost](engineering/aws/cost.md) - How AWS charges (pricing models) and the Billing and Cost Management tools for tracking and controlling spend.
 * [AWS multi-account governance](engineering/aws/multi-account-governance.md) - Running many AWS accounts under AWS Organizations, with guardrails applied from the organization rather than per account.
 * [AWS security monitoring](engineering/aws/security-monitoring.md) - Recording API activity with CloudTrail, detecting threats with GuardDuty, and aggregating findings in Security Hub into one response pipeline.
-* [Claude Code session cost](engineering/claude-code/session-cost.md) - What sets the cost of a Claude Code task on Opus 5.5, and how effort, model choice, caching, and compaction trade tokens against a finished task.
 * [Incident operations](engineering/operations/incident-operations.md) - Practices shared across the runbooks: troubleshoot layer by layer, change production safely, and close an incident only on evidence.
 * [Self-improving skill loop](engineering/ai-engineering/self-improving-skill-loop.md) - A scheduled agent reads human feedback on another agent's output and opens a pull request that edits that agent's skill file.
 
@@ -117,6 +117,7 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 * [Claude Code Cloud Sessions (summary of the official docs)](sources/claude-cloud-sessions.md) - Summary of Anthropic's Use Claude Code in the cloud documentation, reviewed on 2026-09-18.
 * [Claude Code GitHub Actions (summary of the official docs)](sources/claude-github-actions.md) - Summary of Anthropic's Claude Code GitHub Actions documentation for anthropics/claude-code-action@v1, reviewed on 2026-09-15.
 * [Claude Managed Agents (summary of the official overview)](sources/claude-managed-agents.md) - Summary of Anthropic's Claude Managed Agents overview documentation, reviewed on 2026-09-15 while the product was in beta.
+* [Claude Opus 5.5 and longer coding sessions (summary)](sources/claude-opus-5-5-context.md) - Summary of Anthropic's 2026-09-24 post on Claude Code usage trends and why Opus 5.5 costs about 40% less to run than Opus 5.
 * [Claude Projects, Redesigned (announcement summary)](sources/claude-projects.md) - Summary of Anthropic's 2026-09-17 announcement that Claude Projects became one long-running conversation coordinating parallel threads.
 * [Cloud Practitioner (CLF-C02) study outline (summary)](sources/aws-cert-cloud-practitioner.md) - Summary of the legacy Cloud Practitioner (CLF-C02) study outline, verified against AWS documentation on 2026-08-19.
 * [Common Ubuntu APT operations (summary)](sources/ubuntu-apt-guide.md) - Summary of the legacy guide to installing, upgrading, inspecting, and troubleshooting packages on Ubuntu with APT and dpkg.
