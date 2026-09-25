@@ -1,6 +1,7 @@
 # Wiki Update Log
 
 ## 2026-09-25
+* **Ingest**: Batch D part 2, the remaining 85 AWS service notes under `AWS/`: created 15 topic pages in `aws` (application-security, compliance-and-posture, developer-tools, ci-cd, analytics, streaming-and-search, specialized-databases, machine-learning, ai-services, storage-and-migration, application-integration, compute-platforms, management-and-governance, operational-insight, aws-ecosystem), each with a service chooser and one section per service, plus 85 source summaries. Every AWS note is now in the wiki.
 * **Ingest**: Batch D part 1, nineteen Python sources (`Python/README.md`, the thirteen `Python/beginner/` chapters, and the five `Python/advanced/` chapters): created 22 pages in a new `python` domain (3 topic pages: fundamentals, program structure, SRE drills; 19 source summaries).
 * **Ingest**: How to prepare for AI-driven code modernization projects (https://claude.com/blog/how-to-prepare-for-ai-driven-code-modernization-projects): created 2, updated 1 pages.
 * **Ingest**: What a task costs on Opus 5.5 (https://claude.dev/blog/what-a-task-costs-on-opus-5-5/): created 1 page (source summary), updated 2 pages (session-cost, merged with the same-day Opus 5.5 context ingest; subagents).
