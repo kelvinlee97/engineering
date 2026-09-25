@@ -71,6 +71,25 @@
 * [Nginx production deployment guide (summary)](nginx-production-guide.md) - Summary of the legacy beginner guide for deploying Nginx as a static server and reverse proxy with HTTPS on one Ubuntu 24.04 VM.
 * [OpenResty production deployment guide (summary)](openresty-production-guide.md) - Summary of the legacy beginner guide for deploying OpenResty with a Lua health endpoint and reverse proxy on one Ubuntu 24.04 VM.
 * [Publish changes to GitHub (summary)](git-publish-guide.md) - Summary of the legacy beginner guide to the branch, commit, push, pull request, and merge workflow on GitHub.
+* [Python Classes Cheatsheet (summary)](py-classes.md) - Summary of the legacy python classes cheatsheet in this repository.
+* [Python Comprehensions Cheatsheet (summary)](py-comprehensions.md) - Summary of the legacy python comprehensions cheatsheet in this repository.
+* [Python Context Managers Cheatsheet (summary)](py-context-managers.md) - Summary of the legacy python context managers cheatsheet in this repository.
+* [Python Control Flow Cheatsheet (summary)](py-control-flow.md) - Summary of the legacy python control flow cheatsheet in this repository.
+* [Python Decorators Cheatsheet (summary)](py-decorators.md) - Summary of the legacy python decorators cheatsheet in this repository.
+* [Python Dictionaries Cheatsheet (summary)](py-dictionaries.md) - Summary of the legacy python dictionaries cheatsheet in this repository.
+* [Python Exceptions Cheatsheet (summary)](py-exceptions.md) - Summary of the legacy python exceptions cheatsheet in this repository.
+* [Python Files and Paths Cheatsheet (summary)](py-files-and-paths.md) - Summary of the legacy python files and paths cheatsheet in this repository.
+* [Python Functions Cheatsheet (summary)](py-functions.md) - Summary of the legacy python functions cheatsheet in this repository.
+* [Python Iterators and Generators Cheatsheet (summary)](py-iterators-and-generators.md) - Summary of the legacy python iterators and generators cheatsheet in this repository.
+* [Python Lists Cheatsheet (summary)](py-lists.md) - Summary of the legacy python lists cheatsheet in this repository.
+* [Python Loops Cheatsheet (summary)](py-loops.md) - Summary of the legacy python loops cheatsheet in this repository.
+* [Python Modules and Packages Cheatsheet (summary)](py-modules-and-packages.md) - Summary of the legacy python modules and packages cheatsheet in this repository.
+* [Python SRE HackerRank quick reference (summary)](py-sre-drills.md) - Summary of the legacy Python index page and its six log-parsing and algorithm drills.
+* [Python Strings Cheatsheet (summary)](py-strings.md) - Summary of the legacy python strings cheatsheet in this repository.
+* [Python Testing Cheatsheet (summary)](py-testing.md) - Summary of the legacy python testing cheatsheet in this repository.
+* [Python Tuples and Sets Cheatsheet (summary)](py-tuples-and-sets.md) - Summary of the legacy python tuples and sets cheatsheet in this repository.
+* [Python Type Hints Cheatsheet (summary)](py-typing.md) - Summary of the legacy python type hints cheatsheet in this repository.
+* [Python Variables and Types Cheatsheet (summary)](py-variables-and-types.md) - Summary of the legacy python variables and types cheatsheet in this repository.
 * [Solutions Architect Associate (SAA-C03) study outline (summary)](aws-cert-solutions-architect.md) - Summary of the legacy Solutions Architect Associate (SAA-C03) study outline, verified against AWS documentation on 2026-08-19.
 * [The AI-Native SDLC Playbook (summary)](ai-native-sdlc-playbook.md) - Summary of Anthropic's 2026-08-21 playbook that redesigns software delivery as a loop of versioned artifacts with human approval gates.
 * [The awk command (summary)](bash-awk.md) - Summary of the legacy note on awk: fields, conditions, delimiters, and finding a field number in a log.

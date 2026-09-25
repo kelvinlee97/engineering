@@ -1,6 +1,7 @@
 # Wiki Update Log
 
 ## 2026-09-25
+* **Ingest**: Batch D part 1, nineteen Python sources (`Python/README.md`, the thirteen `Python/beginner/` chapters, and the five `Python/advanced/` chapters): created 22 pages in a new `python` domain (3 topic pages: fundamentals, program structure, SRE drills; 19 source summaries).
 * **Ingest**: How to prepare for AI-driven code modernization projects (https://claude.com/blog/how-to-prepare-for-ai-driven-code-modernization-projects): created 2, updated 1 pages.
 * **Ingest**: What a task costs on Opus 5.5 (https://claude.dev/blog/what-a-task-costs-on-opus-5-5/): created 1 page (source summary), updated 2 pages (session-cost, merged with the same-day Opus 5.5 context ingest; subagents).
 * **Ingest**: Coding sessions are longer and use more context. Claude Opus 5.5 is built with that in mind. (https://claude.com/blog/claude-opus-5-5-built-for-coding-sessions-that-use-more-context): created 2, updated 1 pages.

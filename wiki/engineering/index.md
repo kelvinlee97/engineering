@@ -10,4 +10,5 @@
 * [Developer tools](dev-tools/index.md) - Terminal and local container tooling on macOS and Ubuntu.
 * [Git](git/index.md) - Everyday Git, syncing, recovery, and the GitHub pull request workflow.
 * [Startups](startups/index.md) - Starting and growing small businesses, from founder talks and interviews.
+* [Python](python/index.md) - Python language cheatsheets compiled into concept pages, plus SRE interview drills.
 * [AWS](aws/index.md) - Core AWS services as runbooks, plus cross-cutting security and governance patterns.
