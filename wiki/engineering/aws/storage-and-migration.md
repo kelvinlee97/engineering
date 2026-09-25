@@ -44,253 +44,120 @@ sources:
     title: "AWS Database Migration Service (DMS) - Runbook & Reference"
     author: human:kelvinlee97
     last_modified: 2026-09-24T14:48:10Z
-generated: { by: claude-code/wiki-v1, at: 2026-09-25T18:30:00Z }
+generated: { by: claude-code/wiki-v1, at: 2026-09-25T18:36:42Z }
 status: draft
 ---
-These services protect data, provide file storage, and move data and servers into AWS, online or on physical devices.
+This page covers two jobs. The first is protecting and sharing data once it is in AWS: AWS Backup for policy-driven backups and FSx for managed file systems. The second is getting data and servers into AWS: Storage Gateway for ongoing hybrid access, DataSync and the Snow Family for bulk file transfer, Transfer Family for partners who send files over SFTP or FTP, and MGN and DMS for migrating whole servers and databases.
 
-## Choosing a service
+## Choosing a way in
 
-| Service | What it is for |
-| --- | --- |
-| [AWS Backup](#aws-backup) | AWS Backup separates "when and how long" from "where" |
-| [Amazon FSx](#amazon-fsx) | Amazon FSx is a family of fully managed file storage services for workloads that need shared file systems |
-| [AWS Storage Gateway](#aws-storage-gateway) | AWS Storage Gateway connects an on-premises software appliance (or the Storage Gateway hardware appliance) to cloud storage, giving your on-premises environment access to AWS-backed file, volume, and tape storage |
-| [AWS DataSync](#aws-datasync) | AWS DataSync is a secure, reliable, high-speed data transfer service for moving file and object data to, from, and between AWS storage services |
-| [AWS Snow Family](#aws-snow-family) | The AWS Snow Family provides physical devices for offline data transfer and edge computing in environments without reliable connectivity |
-| [AWS Transfer Family](#aws-transfer-family) | AWS Transfer Family is a fully managed service for transferring files into and out of AWS storage (Amazon S3 and Amazon EFS) over SFTP, FTPS, FTP, AS2, and browser-based web transfers |
-| [AWS Application Migration Service (MGN)](#aws-application-migration-service-mgn) | MGN keeps a source server continuously replicating into AWS in the background, so cutover is just a short switch from an already-warm target rather than a from-scratch migration |
-| [AWS Database Migration Service (DMS)](#aws-database-migration-service-dms) | AWS Database Migration Service (AWS DMS) migrates relational databases, data warehouses, NoSQL databases, and other data stores into AWS or between combinations of cloud and on-premises environments |
+The first question is what you are moving, then whether the network can carry it.
 
-Analysis: this table condenses each note's opening line; the sections below carry the details and citations.
+```mermaid
+flowchart TD
+    accTitle: Choosing an AWS service for moving data and workloads
+    accDescr: Whole servers go to Application Migration Service and databases to Database Migration Service. Files that on-premises systems keep using go through Storage Gateway. Partner file exchange over SFTP, FTPS, FTP, or AS2 goes through Transfer Family. Bulk file copies go through DataSync when the network allows, and Snowball Edge devices otherwise, for existing customers.
+    Q{What are you moving?} -- Whole servers --> MGN[Application Migration Service]
+    Q -- A database --> DMS[Database Migration Service]
+    Q -- Files that stay in use on premises --> SG[Storage Gateway]
+    Q -- Files partners send over SFTP, FTPS, FTP, or AS2 --> TF[Transfer Family]
+    Q -- A bulk copy of files or objects --> N{Usable network?}
+    N -- Yes --> DS[DataSync]
+    N -- No --> SN[Snowball Edge, existing customers only]
+```
+
+| Service | Moves | How | Ongoing or one-time |
+| --- | --- | --- | --- |
+| [Storage Gateway](#aws-storage-gateway) | Files, block volumes, tapes | An on-premises appliance with a local cache, backed by S3 or FSx | Ongoing hybrid access |
+| [DataSync](#aws-datasync) | Files and objects (NFS, SMB, S3, EFS, FSx) | An agent and a purpose-built transfer protocol | One-time or scheduled |
+| [Snow Family](#aws-snow-family) | Files and objects into S3 | A shipped device | One-time, offline |
+| [Transfer Family](#aws-transfer-family) | Files into S3 or EFS | Managed SFTP, FTPS, FTP, AS2, and web endpoints | Ongoing |
+| [MGN](#aws-application-migration-service) | Whole servers | Continuous block-level replication, then cutover | One-time, minutes of downtime |
+| [DMS](#aws-database-migration-service) | Databases and warehouses | Full load plus change data capture | One-time or ongoing replication |
+
+Analysis: the Snow Family note itself points new online transfers to DataSync; the flowchart's other branches follow each note's description of what it moves.
 
 ## AWS Backup
 
-AWS Backup separates "when and how long" from "where": a plan's rules decide backup frequency and retention, the vault (and its optional Vault Lock) decides how immutable the result is, and copy rules decide whether it also lands in another Region or account. AWS Backup is a fully managed backup service that centralizes backup policies, monitoring, and compliance across supported AWS services. You define backup plans once and apply them to resources; AWS Backup automates backup scheduling, retention, lifecycle transitions, and cross-Region/cross-account copies.
+AWS Backup applies backup policies across supported AWS services from one place. It separates three decisions: a backup plan's rules set how often to back up and how long to keep each backup; the backup vault it lands in, a per-Region container with its own access policy, sets how protected it is; and copy rules set whether it is also copied to another Region or account. Lifecycle rules move backups from warm to cold storage after a set period; cold restores are slower and cold storage has minimum retention periods.
 
-Key points:
-
-- Backup plan: rules that define when to run backups, how long to keep them, and which vault receives them; a plan can include multiple rules.
-- Backup vault: a container that stores backups and controls access with vault policies; vaults are per-Region resources.
-- Vault Lock: enforces immutable (WORM) backup protection with governance or compliance modes, preventing backup deletion even by administrators.
-- Lifecycle: transition backups from warm storage to cold storage after a specified period, and expire them at the retention end.
-- Cross-Region and cross-account backup: copy backups to another Region or account for disaster recovery and isolation.
-
-Practices:
-
-- Centralize plans by workload class (for example, database, application, file) and apply them with tag-based or resource-based selections.
-- Use Vault Lock in compliance mode for regulated data and test governance mode before enforcing.
-- Configure cross-Region copy for critical data and cross-account copy for isolation from the production account.
-
-| Symptom | Check |
+| Vault Lock mode | Effect |
 | --- | --- |
-| Backup job failed | Check the job status message, resource permissions, and that the resource is in a supported state. |
-| Restore slow | Cold storage retrievals take longer; use warm copies for time-critical restores. |
-| Vault Lock cannot be removed | Compliance mode is permanent by design; create a new vault if you need different protection. |
-| Cross-account copy missing | Verify the destination account vault policy grants backup access and the copy role is configured. |
+| Governance | Write-once (WORM) protection; test in this mode before enforcing compliance mode |
+| Compliance | Permanent: backups cannot be deleted even by administrators, and the lock cannot be removed |
 
-Backup plans, vaults, and jobs per account per Region, plus restore and copy quotas, apply. Cold storage has minimum retention periods. See the AWS Backup endpoints and quotas page and Service Quotas console for current values.[^aws-backup]
-
+- Group plans by workload class, such as database, application, or file, and assign resources by tag.
+- Copy critical backups to another Region, and to another account to isolate them from production.
+- A missing cross-account copy usually means the destination vault policy or the copy role.[^aws-backup]
 
 ## Amazon FSx
 
-Amazon FSx is a family of fully managed file storage services for workloads that need shared file systems. It provides native Windows file servers, a high-performance parallel file system, and POSIX file systems with NetApp and OpenZFS compatibility.
+FSx is a family of managed file systems; choose by protocol and workload. Each file system sets storage capacity, throughput, and (on Windows) SSD IOPS independently, and takes automatic daily incremental backups.
 
-Key points:
+| Type | Protocol | For |
+| --- | --- | --- |
+| FSx for Windows File Server | SMB, with Active Directory authentication | Windows file shares; Multi-AZ fails over across two zones |
+| FSx for Lustre | Parallel file system, exported over NFS | High-performance computing |
+| FSx for NetApp ONTAP, FSx for OpenZFS | NFS | NAS features |
 
-- File system: the primary resource; you choose storage capacity, throughput, and (for Windows) SSD IOPS independently.
-- File shares: SMB shares (Windows) or NFS exports (Lustre/ONTAP/OpenZFS) exposed to compute clients.
-- Single-AZ / Multi-AZ: Windows file systems support high availability within one AZ or across two AZs with automatic failover.
-- Active Directory integration: Windows file systems join a Microsoft AD for user authentication and ACL-based access.
-- Backups: file-system-consistent, incremental backups; automatic daily backups plus manual backups.
-
-Practices:
-
-- Choose the FSx type by protocol and workload, not by habit: Windows/SMB vs. Lustre/HPC vs. ONTAP/OpenZFS for NAS features.
-- Use Multi-AZ Windows file systems for production; use Single-AZ where cost matters and downtime is acceptable.
-- Enable automatic daily backups and keep manual backups before destructive changes.
-
-| Symptom | Check |
-| --- | --- |
-| Clients can't mount | Verify security group rules (SMB 445, NFS 2049) and that the client is in a peered/transit-gateway-connected VPC. |
-| Windows authentication fails | Confirm the file system is joined to AD, DNS resolves the file system name, and the user has an AD account. |
-| Poor performance | Check throughput/storage/IOPS settings and workload type; scale capacity as needed. |
-| Backup failed | Check available storage and file system state; retry a manual backup. |
-
-Per-account quotas for file systems, total storage, and throughput depend on file system type and Region. See the Service Quotas console for current values.[^aws-fsx]
-
+- Use Multi-AZ Windows file systems in production, and Single-AZ where cost matters and downtime is acceptable.
+- Mount failures usually mean security groups (SMB 445, NFS 2049) or a client VPC that is not peered or on a transit gateway; Windows sign-in failures mean the AD join, DNS, or the user's AD account.[^aws-fsx]
 
 ## AWS Storage Gateway
 
-AWS Storage Gateway connects an on-premises software appliance (or the Storage Gateway hardware appliance) to cloud storage, giving your on-premises environment access to AWS-backed file, volume, and tape storage. It is the bridge for hybrid storage architectures.
+Storage Gateway is a VM or hardware appliance in your data center that gives on-premises systems AWS-backed storage. OpsHub deploys and monitors gateways.
 
-Key points:
+| Gateway type | Presents | Where primary data lives |
+| --- | --- | --- |
+| S3 File Gateway | SMB or NFS shares, with a local cache | S3 (or FSx) |
+| Volume Gateway, cached | iSCSI block volumes | S3, with hot data cached locally |
+| Volume Gateway, stored | iSCSI block volumes | On premises, backed up as EBS snapshots |
+| Virtual tape library | Tape drives and libraries over iSCSI | S3, archivable to Glacier |
 
-- Gateway: the VM or hardware appliance deployed in your data center and activated to your AWS account.
-- File share: an SMB/NFS export backed by an S3 bucket or FSx file system, with a local cache for frequently accessed data.
-- Cached vs. stored volumes: cached volumes keep primary data in S3 with hot data on-premises; stored volumes keep primary data locally and back up as EBS snapshots.
-- Virtual tape library (VTL): tape drives and libraries presented over iSCSI; tapes are stored in S3 and can be archived to Glacier.
-- AWS OpsHub: the desktop application for deploying, activating, and monitoring gateways.
-
-Practices:
-
-- Deploy gateways close to the workloads they serve and size the local cache/disk for your working set.
-- Use S3 File Gateway for on-premises file access to S3; use Volume Gateway for block workloads that need iSCSI.
-- Enable bandwidth throttling on the gateway to protect your WAN link.
-
-| Symptom | Check |
-| --- | --- |
-| File share mount fails | Verify the share is available, DNS/SMB settings, and that clients use the correct share path. |
-| Slow uploads | Check bandwidth throttling settings, local cache size, and network connectivity. |
-| Cache fills up | Increase cache disk size or reduce the share's working set. |
-| Tape not showing in VTL | Verify iSCSI initiator settings and that the tape library/drive were configured on the gateway. |
-
-Gateway counts, cache sizes, file share counts, and tape counts have per-account quotas. See the Service Quotas console for current values.[^aws-storage-gateway]
-
+- Size the local cache for the working set; a full cache calls for a bigger disk or a smaller working set.
+- Throttle gateway bandwidth to protect the WAN link.[^aws-storage-gateway]
 
 ## AWS DataSync
 
-AWS DataSync is a secure, reliable, high-speed data transfer service for moving file and object data to, from, and between AWS storage services. It works with on-premises storage (via an agent), AWS storage (S3, EFS, FSx), and other cloud storage, with encryption and data integrity validation built in.
+DataSync copies file and object data to, from, and between AWS storage, on-premises storage (through an agent VM), and other clouds, with encryption and integrity checks. A task copies from a source location to a destination location on demand or on a schedule, with options to overwrite and preserve metadata.
 
-Key points:
-
-- Task: a job that transfers data between a source location and a destination location with defined options (overwrite, preserve metadata, schedule).
-- Location: the source or destination endpoint (NFS, SMB, S3, EFS, FSx).
-- Agent: a software appliance (Amazon EC2 or on-premises VM) that connects DataSync to on-premises storage.
-- Scheduling and monitoring: tasks run on demand or on a schedule; monitor with CloudWatch metrics, events, and the console.
-- Acceleration: a purpose-built network protocol with parallel, multi-threaded architecture for fast transfers.
-
-Practices:
-
-- Run a discovery/validation transfer on a subset before the full migration; use the dry-run option where available.
-- Schedule recurring tasks for replication and set CloudWatch alarms on transfer errors and failures.
-- Place the agent close to the data source and size it appropriately; use multiple tasks/agents for very large datasets.
-
-| Symptom | Check |
-| --- | --- |
-| Agent offline | Verify the agent VM is running, has network access, and is activated in the same Region. |
-| Task fails | Check source/destination connectivity, IAM roles, and the CloudWatch logs/error messages for the task. |
-| Slow transfer | Review agent sizing, network bandwidth, small-file overhead, and task scheduling conflicts. |
-| Permissions preserved incorrectly | Adjust the task's POSIX/SMB metadata options. |
-
-Agents, locations, tasks, and concurrent task executions per account have quotas. See the AWS DataSync endpoints and quotas page and Service Quotas console for current values.[^aws-datasync]
-
+- Test on a subset first, then run the full migration; alarm on transfer errors.
+- Place the agent close to the data, and split very large datasets across several tasks or agents.
+- Slow transfers usually come from agent sizing, bandwidth, or many small files; wrong permissions on copied files mean the task's POSIX or SMB metadata options.[^aws-datasync]
 
 ## AWS Snow Family
 
-The AWS Snow Family provides physical devices for offline data transfer and edge computing in environments without reliable connectivity. Note the current lifecycle: Snowcone (HDD/SSD) was discontinued on November 12, 2024, and AWS Snowball Edge is no longer available to new customers. For new online data transfers, use AWS DataSync; for offline transfer options, review the current Snowball Edge documentation.
+Snow Family devices move data offline, or run compute at the edge, where connectivity is poor. Snowcone was discontinued on November 12, 2024, and Snowball Edge is closed to new customers; new online transfers should use DataSync. For existing customers, Snowball Edge comes Storage Optimized (210 TB, up to 40 vCPUs) or Compute Optimized (up to 104 vCPUs, with GPU options), exposes S3- and EC2-compatible endpoints and NFS, and can cluster 3-16 devices.
 
-Key points:
-
-- Job: an import/export job for moving data between your site and Amazon S3; create and manage jobs in the console or with the Snowball API.
-- Device configuration: Storage Optimized (210 TB, up to 40 vCPUs) vs. Compute Optimized (up to 104 vCPUs with GPU options).
-- Endpoints: Snowball Edge exposes S3- and EC2-compatible endpoints plus NFS, for local workloads.
-- Clusters: group 3-16 devices for local storage and compute with higher durability.
-- OpsHub / Snowball Edge client: tools for unlocking the device, configuring the network, and transferring data.
-
-Practices:
-
-- For ongoing or online migrations, use AWS DataSync instead of physical devices where possible.
-- Estimate data volume and transfer time before ordering; choose the right device size to minimize shipping legs.
-- Set up the S3 bucket, IAM role, and shipping address before creating the job.
-
-| Symptom | Check |
-| --- | --- |
-| Device won't unlock | Verify the job state and use the correct manifest/unlock code from the console. |
-| Slow local transfer | Check the local network between clients and device (10/25/40/100 GbE), and use the S3 adapter or NFS as appropriate. |
-| Data not appearing in S3 | Confirm the job completed and was processed by AWS after the device was returned. |
-| Job cancelled after shipping | Contact AWS Support; shipped jobs generally cannot be cancelled. |
-
-Job counts per account, device counts in flight, and cluster sizes (3-16 devices) are constrained by AWS quotas and regional availability. Check the Service Quotas console and Snowball Edge documentation for current values.[^aws-snow-family]
-
+- Set up the S3 bucket, IAM role, and shipping address before creating the job; a shipped job generally cannot be cancelled.
+- Data appears in S3 only after AWS processes the returned device.[^aws-snow-family]
 
 ## AWS Transfer Family
 
-AWS Transfer Family is a fully managed service for transferring files into and out of AWS storage (Amazon S3 and Amazon EFS) over SFTP, FTPS, FTP, AS2, and browser-based web transfers. You keep your existing clients, authentication, and firewall configurations; AWS manages the servers and scales them automatically. You pay only for what you use.
+Transfer Family runs managed SFTP, FTPS, FTP, and AS2 servers, plus browser-based web apps, in front of S3 or EFS. Partners keep their existing clients and firewall rules; AWS scales the servers, and you pay for use. Users authenticate as service-managed users, through AWS Directory Service, or through a custom identity provider backed by Lambda or API Gateway. Managed workflows process uploaded files: copy, tag, scan, filter, compress, and encrypt.
 
-Key points:
+- Use a VPC endpoint for private transfer, and give each user an IAM role scoped to a home directory.
+- FTP and FTPS data connections need ports 8192-8200 open.[^aws-transfer-family]
 
-- Server: a managed endpoint (public or VPC) that accepts one or more protocols (SFTP v3, FTPS, FTP, AS2); associate your hostname and DNS with the endpoint.
-- Storage: data lives in Amazon S3 (data lakes, third-party uploads, distribution) or Amazon EFS (content management, supply chain, web serving).
-- Identity providers: service-managed users, AWS Directory Service, or custom identity providers (Lambda-backed, API Gateway) for user authentication.
-- Web apps: managed browser-based transfer interface for S3 with centralized access management.
-- Managed workflows (MFTW): serverless, automated processing of uploaded files (copy, tag, scan, filter, compress/decompress, encrypt/decrypt) with end-to-end visibility.
+## AWS Application Migration Service
 
-Practices:
+Application Migration Service (MGN, now documented as AWS Transform MGN) moves physical, virtual, and cloud servers to AWS. An agent on each source server replicates its disks at block level, continuously, to a staging area in your account, so the target stays warm and cutover takes minutes. Templates control replication, launch, and post-launch configuration; applications group servers, and waves group applications for bulk launch and cutover.
 
-- Use VPC endpoints for private transfer and restrict security groups to the ports/protocols in use.
-- Enforce strong authentication: service-managed with strong passwords, MFA where supported, or integrate with Directory Service/custom IdPs.
-- Scope IAM roles for users with a home directory and least-privilege S3/EFS access; use logical directories for isolation.
+- Test-launch a representative sample and check boot, networking, and the application before cutting over.
+- Order waves by dependency, so dependent servers do not cut over before what they depend on.
+- Replication lag points at source bandwidth, disk I/O, or the agent.[^aws-mgn]
 
-| Symptom | Check |
-| --- | --- |
-| Client cannot connect | Check endpoint type (public/VPC), security groups, DNS, and protocol configuration. |
-| Login denied | Verify the identity provider configuration, user name/password, and IAM role for the user. |
-| Uploads fail | Check the user's home directory, S3/EFS permissions, and the server's role. |
-| FTP/FTPS data connection fails | Ensure the 8192-8200 port range is open for data connections. |
+## AWS Database Migration Service
 
-Servers, users, managed workflows, and API request rates per account have quotas; FTP/FTPS data connections use a fixed port range. See the AWS Transfer Family endpoints and quotas page and Service Quotas console for current values.[^aws-transfer-family]
+DMS migrates relational databases, warehouses, NoSQL databases, and other stores into AWS or between cloud and on-premises environments. A replication instance runs tasks between a source and a target endpoint; a task does a full load, ongoing replication by change data capture (CDC), or both. Fleet Advisor inventories on-premises database servers, and DMS Schema Conversion or the AWS Schema Conversion Tool converts schemas to another engine.
 
-
-## AWS Application Migration Service (MGN)
-
-MGN keeps a source server continuously replicating into AWS in the background, so cutover is just a short switch from an already-warm target rather than a from-scratch migration. AWS Application Migration Service (MGN, now documented as AWS Transform MGN) automates the migration of physical, virtual, and cloud servers to AWS with minimal downtime, typically cutover windows of minutes. MGN performs continuous block-level replication of source servers, converts them for launch on AWS, and supports large-scale migrations through templates, applications, and waves.
-
-Key points:
-
-- Source server: the on-premises, virtual, or cloud server being migrated; install the MGN agent to start replication.
-- Replication: continuous block-level replication to a staging area in your AWS account; the target is prepared for launch without stopping the source.
-- Templates: replication, launch, and post-launch templates control how servers are replicated, launched, and configured after migration; settings can be overridden per server.
-- Applications and waves: group servers into applications and applications into waves to run actions (launch, cutover, archive) in bulk.
-- Cutover: the controlled switch that stops replication and launches the migrated instances (usually in minutes); test launches (blue/green) validate before cutover.
-
-Practices:
-
-- Test migrations on a representative sample of servers before mass cutover; use test launches to validate boot, networking, and applications.
-- Plan waves by dependency and business priority; avoid cutting over dependent servers out of order.
-- Use launch templates for consistent instance sizing and post-launch templates for agents/config after boot.
-
-| Symptom | Check |
-| --- | --- |
-| Replication lag | Check source network bandwidth, disk I/O, and the agent status on the source server. |
-| Test launch fails | Review launch template settings, AMI/target subnet, and post-launch scripts. |
-| Agent not installed | Install the MGN agent on the source and confirm connectivity to AWS endpoints. |
-| Cutover fails | Verify the staging area, replication health, and that the source was not archived. |
-
-Source servers per account, concurrent launches, and API request rates have quotas. See the AWS Application Migration Service endpoints and quotas page and Service Quotas console for current values.[^aws-mgn]
-
-
-## AWS Database Migration Service (DMS)
-
-AWS Database Migration Service (AWS DMS) migrates relational databases, data warehouses, NoSQL databases, and other data stores into AWS or between combinations of cloud and on-premises environments. It supports one-time migrations and ongoing replication to keep sources and targets in sync, plus Fleet Advisor (discovery) and Schema Conversion (engine conversion).
-
-Key points:
-
-- Replication instance: the compute resource that runs the migration tasks.
-- Endpoints: source and target connection definitions (engine, host, credentials, VPC).
-- Replication task: a scheduled unit of work (full load, ongoing replication/CDC, or both).
-- Schema conversion: DMS Schema Conversion or the downloadable AWS Schema Conversion Tool (AWS SCT) converts schemas/code to the target engine.
-- Fleet Advisor: discovers and inventories on-premises database servers to plan migrations.
-
-Practices:
-
-- Use Fleet Advisor and Schema Conversion early to size the migration and convert schemas before cutover.
-- Run a full-load test on a representative dataset; validate data with DMS data validation.
-- Keep the replication instance in a private subnet with proper security groups for both endpoints.
-
-| Symptom | Check |
-| --- | --- |
-| Task stuck in failed state | Check task logs and endpoint connectivity; verify credentials and network routes. |
-| CDC lag growing | Check source retention (for example, Oracle archive logs) and replication instance capacity. |
-| Data mismatch | Run data validation, review transformation rules in table mappings. |
-| Cannot connect to source | Verify security group/NACL rules, endpoint settings, and source-side firewall. |
-
-Replication instances, endpoints, tasks, and concurrent connections have per-account quotas. See the Service Quotas console for current values.[^aws-dms]
-
+- Run Fleet Advisor and schema conversion early, then a full-load test with DMS data validation.
+- Growing CDC lag points at source log retention (such as Oracle archive logs) or replication instance capacity.[^aws-dms]
 
 ## Related
 
-- [Data stores](data-stores.md)
+- [Data stores](data-stores.md): S3, RDS, and DynamoDB, the usual destinations.
+- [Specialized databases](specialized-databases.md): DocumentDB and Neptune as DMS targets.
 - [Networking](networking.md): Direct Connect for large ongoing transfers.
 - [Domain index](index.md)
 
