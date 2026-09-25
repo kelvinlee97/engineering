@@ -1,6 +1,8 @@
 # Wiki Update Log
 
 ## 2026-09-25
+* **Ingest**: Batch A part 3, six legacy sources (`Ubuntu/apt`, `Bash/README.md`, `Bash/awk`, `Bash/uniq`, `Ghostty/README.md`, `apple/container`): created 12 pages in new `linux` and `dev-tools` domains, updated 1 page (safe-change-procedure).
+* **Ingest**: Batch A part 2, four ZooKeeper sources (`ZooKeeper/guides/getting-started`, `ZooKeeper/guides/production-deployment`, `ZooKeeper/runbooks/disk-full-transaction-log-recovery`, `ZooKeeper/runbooks/quorum-loss-snapshot-restore`): created 8 pages in a new `zookeeper` domain, updated 3 pages (safe-change-procedure, layered-troubleshooting, incident-closure-criteria).
 * **Ingest**: Batch A part 1, six legacy operations sources (`Kubernetes/runbooks/insufficient-ip-or-eni`, `Nginx/guides/nginx-production-deployment`, `Nginx/guides/openresty-production-deployment`, `Nodejs/guides/express-bff-production-deployment`, `Nodejs/runbooks/common-express-bff-incidents`, `Nodejs/guides/modern-bff-architecture-assessment`): created 16 pages in new `kubernetes`, `web-serving`, and `operations` domains.
 * **Lint**: Obsidian check found five directory links (`engineering/`, `sources/`, `syntheses/`, `ai-engineering/`, `claude-code/`) that Obsidian could not resolve, leaving index pages isolated in the graph. Pointed them at each directory's `index.md`; `wiki_check.py` now rejects directory links in indexes.
 

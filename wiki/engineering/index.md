@@ -5,3 +5,6 @@
 * [Kubernetes](kubernetes/index.md) - Kubernetes operations and incident runbooks.
 * [Operations](operations/index.md) - Practices shared across runbooks: layered troubleshooting, safe changes, incident closure.
 * [Web serving](web-serving/index.md) - Gateways, reverse proxies, and the Node.js backend-for-frontend behind them.
+* [ZooKeeper](zookeeper/index.md) - Running and recovering an Apache ZooKeeper ensemble.
+* [Linux](linux/index.md) - Package management and text-processing commands on Linux hosts.
+* [Developer tools](dev-tools/index.md) - Terminal and local container tooling on macOS and Ubuntu.
