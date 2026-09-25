@@ -130,7 +130,11 @@ def _page_slug(rel: Path) -> str:
 
 
 def check(wiki: Path, public: Path) -> list[str]:
-    """Return problems: wiki pages with no HTML output, and internal links to nothing."""
+    """Return problems: wiki pages with no HTML output, internal links to nothing, and math markup.
+
+    The wiki has no formulas, so any KaTeX output means a pair of `$` in prose (such as
+    prices) was typeset as math.
+    """
     problems: list[str] = []
     for src in sorted(wiki.rglob("*.md")):
         slug = _page_slug(src.relative_to(wiki))
@@ -138,6 +142,8 @@ def check(wiki: Path, public: Path) -> list[str]:
             problems.append(f"{slug}: no page in the build output")
     for html in sorted(public.rglob("*.html")):
         text = html.read_text(encoding="utf-8")
+        if 'class="katex' in text:
+            problems.append(f"{html.relative_to(public)}: text rendered as math")
         for m in HREF_RE.finditer(text):
             url = m.group("url")
             if not url or re.match(r"^(?:[a-z][a-z0-9+.-]*:|//)", url):

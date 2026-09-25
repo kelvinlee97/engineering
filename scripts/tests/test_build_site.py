@@ -80,6 +80,15 @@ class CheckTest(unittest.TestCase):
         self.assertIn("a.html: broken link ./c", problems)
         self.assertNotIn("a.html: broken link ./d", problems)
 
+    def test_reports_prose_rendered_as_math(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "wiki").mkdir()
+            (root / "public").mkdir()
+            (root / "public/p.html").write_text('<span class="katex">4 per million</span>')
+            problems = build_site.check(root / "wiki", root / "public")
+        self.assertEqual(problems, ["p.html: text rendered as math"])
+
 
 if __name__ == "__main__":
     unittest.main()
