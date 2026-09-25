@@ -98,6 +98,7 @@ As described in the note. Virtual interfaces use 802.1Q VLAN tags and BGP peerin
 As tabled in the note.[^aws-direct-connect]
 
 ## Related
+- [Storage and migration](storage-and-migration.md): moving data over the network into AWS.
 - [Domain index](index.md): other pages in this domain.
 
 [^aws-vpc]: [Amazon VPC - Runbook & Reference](../../sources/aws-vpc.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/vpc/README.md)

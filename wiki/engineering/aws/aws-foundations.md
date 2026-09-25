@@ -65,6 +65,8 @@ As listed in the note.[^aws-well-architected]
 
 ## Related
 
+- [AWS ecosystem](aws-ecosystem.md): cloud basics, partners, and AWS Solutions.
+- [Cost](cost.md): pricing models and billing tools.
 - [AWS compute](compute.md)
 
 [^aws-shared-responsibility-model]: [AWS Shared Responsibility Model - Runbook & Reference](../../sources/aws-shared-responsibility-model.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/shared-responsibility-model/README.md)

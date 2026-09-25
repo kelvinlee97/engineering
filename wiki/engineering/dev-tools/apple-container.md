@@ -38,6 +38,7 @@ As compared in the source. It uses standard OCI images and runs `linux/amd64` co
 
 ## Related
 
+- [Ghostty workstation](ghostty-workstation.md): the terminal setup on the same Macs.
 - [Domain index](index.md): other pages in this domain.
 
 [^apple-container]: [Understanding Apple Container](../../sources/apple-container.md), [original](https://github.com/kelvinlee97/engineering/blob/main/apple/container/README.md)

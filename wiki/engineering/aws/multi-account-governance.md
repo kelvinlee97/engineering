@@ -88,6 +88,8 @@ As listed in the note.[^aws-organizations]
 As tabled in the note. Default limits include 10 accounts (adjustable up to 50,000), 2,000 OUs, SCPs up to 10,240 characters, and 10 SCPs per entity.[^aws-organizations]
 
 ## Related
+- [Management and governance](management-and-governance.md): Control Tower, Service Catalog, quotas, and resource sharing.
+- [Compliance and posture](compliance-and-posture.md): Config, Inspector, Macie, Detective, and Audit Manager.
 - [Domain index](index.md): other pages in this domain.
 
 [^aws-organizations]: [AWS Organizations - Runbook & Reference](../../sources/aws-organizations.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/organizations/README.md)

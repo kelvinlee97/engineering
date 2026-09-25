@@ -91,6 +91,8 @@ When `--help` is unsupported, use `man awk`; in restricted environments such as 
 As listed in the note. If you only need sorted, deduplicated output, `sort -u` does both. The macOS/BSD version may not support `--help`; use `man uniq`.[^bash-uniq]
 
 ## Related
+- [APT package management](apt-package-management.md): installing and troubleshooting Ubuntu packages.
+- [Python SRE drills](../python/sre-drills.md): the same log-parsing tasks in Python.
 - [Domain index](index.md): other pages in this domain.
 
 [^bash-quick-reference]: [Bash SRE HackerRank Quick Reference](../../sources/bash-quick-reference.md), [original](https://github.com/kelvinlee97/engineering/blob/main/Bash/README.md)

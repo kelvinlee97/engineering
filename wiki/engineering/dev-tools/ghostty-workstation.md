@@ -33,6 +33,7 @@ Copy with `cp -i`, keep one source of truth, and fold any older `config` file in
 
 ## Related
 
+- [Apple container](apple-container.md): running Linux containers on the same Macs.
 - [Domain index](index.md): other pages in this domain.
 
 [^ghostty-workstation]: [Ghostty Workstation](../../sources/ghostty-workstation.md), [original](https://github.com/kelvinlee97/engineering/blob/main/Ghostty/README.md)

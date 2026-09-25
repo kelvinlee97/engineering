@@ -168,6 +168,9 @@ As listed in the note.[^aws-s3]
 As tabled in the note. Defaults: 100 general purpose buckets per account (adjustable), 100 directory buckets, 10 table buckets per Region with up to 10,000 tables each, and objects up to 5 TB in a single PUT.[^aws-s3]
 
 ## Related
+- [Specialized databases](specialized-databases.md): DocumentDB, Neptune, QLDB, and Managed Blockchain.
+- [Analytics](analytics.md): querying and warehousing data.
+- [Storage and migration](storage-and-migration.md): backup, file systems, and moving data into AWS.
 - [Domain index](index.md): other pages in this domain.
 
 [^aws-rds]: [Amazon RDS - Runbook & Reference](../../sources/aws-rds.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/rds/README.md)

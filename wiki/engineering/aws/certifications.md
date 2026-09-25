@@ -49,6 +49,7 @@ Every outline gives the same steps: read the official exam guide, practice hands
 
 ## Related
 
+- [AWS ecosystem](aws-ecosystem.md): cloud computing basics behind the exams.
 - [Domain index](index.md): other pages in this domain.
 
 [^aws-cert-cloud-practitioner]: [AWS Certified Cloud Practitioner (CLF-C02) - Study Outline](../../sources/aws-cert-cloud-practitioner.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/certifications/cloud-practitioner/README.md)

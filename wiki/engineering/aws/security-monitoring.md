@@ -142,6 +142,8 @@ Security Hub Cloud Security Posture Management (CSPM) gives a consolidated view 
 As tabled in the note. Findings are kept 90 days; archive to S3 through EventBridge for longer.[^aws-security-hub] See [Security findings pipeline](#the-findings-pipeline).
 
 ## Related
+- [Compliance and posture](compliance-and-posture.md): configuration recording and vulnerability scanning.
+- [Application security](application-security.md): WAF, Shield, certificates, and user sign-in.
 - [Domain index](index.md): other pages in this domain.
 
 [^aws-guardduty]: [Amazon GuardDuty - Runbook & Reference](../../sources/aws-guardduty.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/guardduty/README.md)

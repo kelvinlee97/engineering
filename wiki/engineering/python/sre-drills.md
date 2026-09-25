@@ -43,6 +43,7 @@ Confirm input, output, and invalid-input behavior; explain the algorithm on a sm
 
 ## Related
 
+- [Text processing](../linux/text-processing.md): the same log parsing with awk and uniq.
 - [Python language fundamentals](fundamentals.md)
 - [Python program structure](structure.md)
 - [Domain index](index.md)

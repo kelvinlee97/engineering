@@ -100,6 +100,7 @@ Secrets Manager stores versioned secret values behind an API call, so applicatio
 As tabled in the note.[^aws-secrets-manager]
 
 ## Related
+- [Application security](application-security.md): TLS certificates and user sign-in.
 - [Domain index](index.md): other pages in this domain.
 
 [^aws-kms]: [AWS KMS - Runbook & Reference](../../sources/aws-kms.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/kms/README.md)
