@@ -37,3 +37,17 @@ article > h2 {
   padding-top: 0.5rem;
   border-top: 1px solid var(--lightgray);
 }
+
+// Wide diagrams shrink to fit a phone screen until their text is unreadable.
+// Quartz's expand button opens a pan-and-zoom view, but it only appears on
+// hover, which touch screens do not have; keep it visible there.
+@media (hover: none) {
+  pre:has(> .expand-button) {
+    padding-top: 2.75rem;
+  }
+
+  pre > .expand-button {
+    top: 0;
+    opacity: 1;
+  }
+}

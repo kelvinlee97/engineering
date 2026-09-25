@@ -59,7 +59,7 @@ flowchart LR
     accTitle: Edge protection in front of an AWS application
     accDescr: Client traffic reaches CloudFront, a load balancer, or Global Accelerator, where Shield absorbs volumetric attacks, WAF applies rules to HTTP requests, and an ACM certificate terminates TLS. Only then does traffic reach the origin, whose IP addresses should not be exposed.
     C[Clients] --> E
-    subgraph E[CloudFront, load balancer, or Global Accelerator]
+    subgraph E[Edge entry point]
         S[Shield absorbs floods] --> W[WAF rules: allow, block, count] --> T[TLS with ACM certificate]
     end
     E --> O[Origin, not reachable directly]
