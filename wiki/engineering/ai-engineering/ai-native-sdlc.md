@@ -175,6 +175,7 @@ The practical rule that follows: never rely on a model to enforce a boundary tha
 - [Delegation contract](../claude-code/subagents.md#delegation-contract): what the proposal must contain.
 - [Least-privilege tool access](../claude-code/subagents.md#least-privilege-tool-access)
 - [Company brain](ai-native-organization.md#company-brain)
+- [Code modernization with agents](code-modernization.md): certificate and tiered promotion policy for large rewrites.
 
 [^ai-native-sdlc-playbook]: [The AI-Native SDLC Playbook](../../sources/ai-native-sdlc-playbook.md), [original](https://github.com/kelvinlee97/engineering/blob/main/Claude/ai-native-sdlc-playbook/README.md)
 [^gh-600-study-notes]: [GitHub Certified: Agentic AI Developer (study notes)](../../sources/gh-600-study-notes.md), [original](https://github.com/kelvinlee97/engineering/blob/main/Claude/github-agentic-ai-developer/README.md)

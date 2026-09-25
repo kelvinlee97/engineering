@@ -1,6 +1,7 @@
 # Wiki Update Log
 
 ## 2026-09-25
+* **Ingest**: How to prepare for AI-driven code modernization projects (https://claude.com/blog/how-to-prepare-for-ai-driven-code-modernization-projects): created 2, updated 1 pages.
 * **Ingest**: What a task costs on Opus 5.5 (https://claude.dev/blog/what-a-task-costs-on-opus-5-5/): created 1 page (source summary), updated 2 pages (session-cost, merged with the same-day Opus 5.5 context ingest; subagents).
 * **Ingest**: Coding sessions are longer and use more context. Claude Opus 5.5 is built with that in mind. (https://claude.com/blog/claude-opus-5-5-built-for-coding-sessions-that-use-more-context): created 2, updated 1 pages.
 * **Lint**: Readability restructure. Merged 91 single-concept pages into 30 topic pages, so `wiki/engineering/` goes from 101 pages to 40; each topic page opens with a plain-language summary and uses sections instead of separate pages. Old URLs redirect through `aliases`. Citations now appear once per source per section, and every footnote links the source summary and the original, replacing the rows of unexplained back-link buttons. Added five diagrams (Git's four places, safe change loop, propose-accept boundary, gateway request path, ZooKeeper recovery choice). Schema updated: one topic per page, section-level citations.
