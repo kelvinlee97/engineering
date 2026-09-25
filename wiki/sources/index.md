@@ -40,6 +40,7 @@
 * [Claude Code Cloud Sessions (summary of the official docs)](claude-cloud-sessions.md) - Summary of Anthropic's Use Claude Code in the cloud documentation, reviewed on 2026-09-18.
 * [Claude Code GitHub Actions (summary of the official docs)](claude-github-actions.md) - Summary of Anthropic's Claude Code GitHub Actions documentation for anthropics/claude-code-action@v1, reviewed on 2026-09-15.
 * [Claude Managed Agents (summary of the official overview)](claude-managed-agents.md) - Summary of Anthropic's Claude Managed Agents overview documentation, reviewed on 2026-09-15 while the product was in beta.
+* [Claude Opus 5.5 and longer coding sessions (summary)](claude-opus-5-5-context.md) - Summary of Anthropic's 2026-09-24 post on Claude Code usage trends and why Opus 5.5 costs about 40% less to run than Opus 5.
 * [Claude Projects, Redesigned (announcement summary)](claude-projects.md) - Summary of Anthropic's 2026-09-17 announcement that Claude Projects became one long-running conversation coordinating parallel threads.
 * [Cloud Practitioner (CLF-C02) study outline (summary)](aws-cert-cloud-practitioner.md) - Summary of the legacy Cloud Practitioner (CLF-C02) study outline, verified against AWS documentation on 2026-08-19.
 * [Common Ubuntu APT operations (summary)](ubuntu-apt-guide.md) - Summary of the legacy guide to installing, upgrading, inspecting, and troubleshooting packages on Ubuntu with APT and dpkg.
