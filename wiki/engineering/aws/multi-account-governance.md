@@ -89,7 +89,7 @@ As tabled in the note. Default limits include 10 accounts (adjustable up to 50,0
 
 ## Related
 - [Management and governance](management-and-governance.md): Control Tower, Service Catalog, quotas, and resource sharing.
-- [Compliance and posture](compliance-and-posture.md): Config, Inspector, Macie, Detective, and Audit Manager.
+- [Compliance and posture](compliance-and-posture.md): Config, Inspector, Macie, Detective, and Artifact.
 - [Domain index](index.md): other pages in this domain.
 
 [^aws-organizations]: [AWS Organizations - Runbook & Reference](../../sources/aws-organizations.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/organizations/README.md)
