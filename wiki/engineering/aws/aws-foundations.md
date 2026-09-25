@@ -65,7 +65,7 @@ As listed in the note.[^aws-well-architected]
 
 ## Related
 
-- [AWS compute options](compute.md#choosing-compute)
+- [AWS compute](compute.md)
 
 [^aws-shared-responsibility-model]: [AWS Shared Responsibility Model - Runbook & Reference](../../sources/aws-shared-responsibility-model.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/shared-responsibility-model/README.md)
 [^aws-well-architected]: [AWS Well-Architected Framework - Runbook & Reference](../../sources/aws-well-architected.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/well-architected/README.md)

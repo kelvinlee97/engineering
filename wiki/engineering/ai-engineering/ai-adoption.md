@@ -84,6 +84,6 @@ As described in the guide.[^ai-native-revenue-org]
 
 ## Related
 
-- [Agent skill](../claude-code/agent-skills.md#what-a-skill-is): the shared-skill mechanics behind stage 2.
+- [Agent skills](../claude-code/agent-skills.md): the shared-skill mechanics behind stage 2.
 
 [^ai-native-revenue-org]: [Building an AI-Native Revenue Organization](../../sources/ai-native-revenue-org.md), [original](https://github.com/kelvinlee97/engineering/blob/main/Claude/ai-native-revenue-org/README.md)

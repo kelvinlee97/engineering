@@ -109,7 +109,7 @@ As described in the runbook. A PM2 memory restart is mitigation, not leak diagno
 
 ## Related
 
-- [Reverse proxy gateway](reverse-proxy-gateway.md#how-the-gateway-works)
+- [Reverse proxy gateway](reverse-proxy-gateway.md)
 - [Safe change procedure](../operations/incident-operations.md#safe-change-procedure)
 - [Layered troubleshooting](../operations/incident-operations.md#layered-troubleshooting)
 - [Incident closure criteria](../operations/incident-operations.md#incident-closure-criteria)
