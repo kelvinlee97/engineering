@@ -44,253 +44,138 @@ sources:
     title: "AWS Amplify - Runbook & Reference"
     author: human:kelvinlee97
     last_modified: 2026-09-24T14:48:10Z
-generated: { by: claude-code/wiki-v1, at: 2026-09-25T18:30:00Z }
+generated: { by: claude-code/wiki-v1, at: 2026-09-25T18:30:16Z }
 status: draft
 ---
-These are the tools developers use to talk to AWS and define infrastructure: the CLI and SDKs for API calls, CDK and SAM for infrastructure as code on top of [CloudFormation](operations-tooling.md), and hosted environments for writing and shipping apps.
+Developers reach AWS in two ways: by calling service APIs directly, from the shell with the AWS CLI or from code with an SDK such as boto3, and by describing infrastructure in code with CDK, Solutions Constructs, or SAM, all of which end up as [CloudFormation](operations-tooling.md) templates. Amplify and Cloud9 are hosted environments for building and shipping applications.
 
-## Choosing a service
+## Choosing a tool
 
-| Service | What it is for |
-| --- | --- |
-| [AWS CLI](#aws-cli) | The AWS CLI is a thin shell layer over the same APIs the console uses |
-| [AWS SDKs and Tools](#aws-sdks-and-tools) | AWS SDKs are language-specific libraries for calling AWS service APIs from your application code |
-| [boto3 (AWS SDK for Python)](#boto3-aws-sdk-for-python) | boto3 resolves credentials once, through a fixed fallback chain, before any client call |
-| [AWS Cloud Development Kit (CDK)](#aws-cloud-development-kit-cdk) | CDK never talks to AWS directly |
-| [AWS Serverless Application Model (SAM) & Serverless Application Repository](#aws-serverless-application-model-sam--serverless-application-repository) | A SAM template is CloudFormation with serverless shorthand that the SAM transform expands into standard resources |
-| [AWS Solutions Constructs](#aws-solutions-constructs) | AWS Solutions Constructs is an open-source extension of the AWS Cloud Development Kit (AWS CDK) |
-| [AWS Cloud9](#aws-cloud9) | Cloud9 is a browser-based IDE glued to one compute resource per environment |
-| [AWS Amplify](#aws-amplify) | Amplify splits into two mostly independent halves |
+| You want to | Use | Why this one |
+| --- | --- | --- |
+| Run one-off or scripted API calls from a shell | [AWS CLI](#aws-cli) | Same APIs as the console, with `--query` and `--output` for scripting |
+| Call AWS from application code | [An SDK](#aws-sdks), [boto3](#boto3) in Python | Signs requests, retries transient failures, and maps errors for you |
+| Define infrastructure in a general-purpose language | [CDK](#aws-cdk) | Compiles to CloudFormation, with defaults built into L2 constructs |
+| Start from a tested multi-service pattern | [Solutions Constructs](#aws-solutions-constructs) | Prebuilt CDK patterns such as API Gateway + Lambda + DynamoDB |
+| Build a serverless app from a template | [SAM](#aws-sam-and-the-serverless-application-repository) | CloudFormation shorthand plus a CLI for local testing |
+| Host a web or mobile front end with its backend | [Amplify](#aws-amplify) | Git-triggered deploys to the AWS CDN, and a TypeScript-defined backend |
+| Edit code in a browser | [Cloud9](#aws-cloud9) | Only if you already use it; closed to new customers |
 
-Analysis: this table condenses each note's opening line; the sections below carry the details and citations.
+## Calling AWS APIs
 
-## AWS CLI
+The CLI, every SDK, and boto3 find credentials the same way: they walk a fixed chain and use the first source that answers. Most "the command is broken" problems are really a profile or credential problem.
 
-The AWS CLI is a thin shell layer over the same APIs the console uses: it resolves credentials from a fixed chain and a chosen profile before every call, so most CLI problems are really profile/credential problems, not command problems. The AWS Command Line Interface (AWS CLI) is an open source tool for interacting with AWS services from your shell. Version 2 is the current major version and supports all the latest features; it is installed with the official bundled installer. The CLI exposes the same service APIs as the console, plus higher-level customizations for several services.
+```mermaid
+flowchart LR
+    accTitle: Credential resolution chain for the AWS CLI and SDKs
+    accDescr: The CLI and SDKs look for credentials in order, from command-line options, to environment variables, to the shared credentials and config files, to IAM roles for EC2, EKS, and ECS, to SSO and container roles, and use the first one found.
+    O[Command-line options] --> E[Environment variables] --> F[Shared files in ~/.aws] --> R[IAM role on EC2, EKS, or ECS] --> S[SSO and container roles]
+```
 
-Key points:
+Analysis: the diagram follows the order the CLI note lists; the SDK and boto3 notes list the same sources.
 
-- Credentials chain: the CLI resolves credentials from CLI options, environment variables, shared `~/.aws/credentials`, IAM roles (EC2/EKS/ECS), SSO, and container roles, in order.
-- Profiles: named credential/region sets in `~/.aws/config` and `~/.aws/credentials`; select with `--profile` or `AWS_PROFILE`.
-- Regions and output: set default region and output (`json`, `yaml`, `text`, `table`) with `aws configure`.
-- SSO: `aws configure sso` sets up IAM Identity Center sessions; `aws sso login` refreshes them.
-- Query and filtering: `--query` (JMESPath) and `--output` shape command results for scripting.
+### AWS CLI
 
-Practices:
-
-- Never put long-term access keys in scripts or source code; use IAM roles or SSO.
-- Use named profiles per environment/account and separate roles with least privilege.
-- Pin and upgrade the CLI: v1 is in maintenance and lacks v2 features; use the official installer.
+The AWS CLI calls the same service APIs as the console, plus higher-level commands for some services. Version 2 is current and installed with the official bundled installer; version 1 is in maintenance and lacks v2 features. Named profiles in `~/.aws/config` and `~/.aws/credentials` hold credentials and Region per account or environment; select one with `--profile` or `AWS_PROFILE`. `aws configure sso` sets up IAM Identity Center sign-in and `aws sso login` refreshes it. The CLI itself has no quotas; each service's API limits apply.[^aws-cli]
 
 | Symptom | Check |
 | --- | --- |
-| `Unable to locate credentials` | Configure credentials/profile or set environment variables; check the credentials chain order. |
-| `AccessDenied` | Verify the IAM policy and that you're using the intended profile/role. |
-| Expired SSO session | Run `aws sso login --profile <profile>` again. |
-| Wrong region results | Set `--region` explicitly or fix the profile default. |
+| `Unable to locate credentials` | The profile, environment variables, and the chain order |
+| `AccessDenied` | The IAM policy, and that the intended profile or role is in use |
+| Expired SSO session | Run `aws sso login --profile <profile>` |
+| Results from the wrong Region | Pass `--region` or fix the profile default |
 
-The CLI itself has no service quotas; API rate limits and quotas apply per service. See the Service Quotas console for service-specific values.[^aws-cli]
+### AWS SDKs
 
+The SDKs are libraries for Python (boto3), Java, JavaScript v3, Go, .NET, Ruby, PHP, C++, and more. They sign every request with Signature Version 4, accept temporary STS credentials, and retry transient failures by default, with a `standard`, `adaptive`, or `legacy` retry mode. Several share the AWS Common Runtime for HTTP/2, event streams, and checksums.
 
-## AWS SDKs and Tools
+- Use a role for the code's identity: an EC2 instance profile, EKS IRSA, an ECS task role, a Lambda execution role, or SSO. Where a static key cannot be avoided, use short-lived STS credentials.
+- Set timeouts, retry mode, and maximum retries explicitly on latency-sensitive paths.
+- Signature errors often mean clock skew; check that the host's time is synchronized.[^aws-sdk]
 
-AWS SDKs are language-specific libraries for calling AWS service APIs from your application code: Python (boto3), Java, JavaScript (v3), Go, . NET, Ruby, PHP, C++, and more. SDKs handle request signing, retries, and error mapping. The AWS SDKs and Tools Reference Guide documents the shared configuration, credentials, and maintenance policies across all SDKs and tools.
+### boto3
 
-Key points:
+boto3 is the Python SDK. A client (`boto3.client('s3')`) maps almost one-to-one to API operations; a resource (`boto3.resource('s3')`) offers objects and collections for a subset of services; a session holds configuration and credentials.
 
-- Credentials resolution: the same chain as the CLI - env vars, shared config/credentials files, IAM roles, SSO, container credentials.
-- Signature Version 4: SDKs sign every request with your credentials; temporary credentials from STS are supported.
-- Retries and timeouts: SDKs retry transient failures by default; configure retry mode (`standard`, `adaptive`, `legacy`) per SDK.
-- Identity providers: EC2 instance roles, EKS IRSA, ECS task roles, Lambda execution roles, and IAM Identity Center SSO.
-- AWS Common Runtime (CRT): shared libraries that provide HTTP/2, event streams, and retry/checksum implementations to several SDKs.
+- Reuse clients and sessions instead of creating one per call; boto3 pools connections.
+- Use paginators (`client.get_paginator(...)`) for list APIs, and waiters instead of sleep loops.
+- `NoCredentialsError` points at the chain; `ThrottlingException` calls for more retries and backoff, or a quota increase.[^aws-boto3]
 
-Practices:
+## Infrastructure as code
 
-- Prefer IAM roles over static keys: EC2 instance profiles, EKS IRSA, ECS/Lambda execution roles, or SSO.
-- Use short-lived STS credentials where static keys are unavoidable (CI/CD secrets managers).
-- Set timeouts, retry mode, and max retries explicitly for latency-sensitive paths.
+CDK, Solutions Constructs, and SAM never create resources themselves. Each produces a CloudFormation template, and CloudFormation provisions it, so a failed deployment is read in the CloudFormation event log whichever tool wrote the template.
 
-| Symptom | Check |
-| --- | --- |
-| Credentials not found in code | Check env vars, shared files, and role configuration; verify the resolution order. |
-| Intermittent failures | Configure retry mode and exponential backoff; check throttling and quotas. |
-| Clock skew / signature errors | Verify system time is synchronized (NTP). |
-| Regional endpoints wrong | Set region in config/credential chain or per client. |
+```mermaid
+flowchart LR
+    accTitle: How CDK, Solutions Constructs, and SAM reach CloudFormation
+    accDescr: Solutions Constructs are CDK libraries; a CDK app is synthesized into a CloudFormation template. A SAM template is expanded by the SAM transform into standard CloudFormation resources. CloudFormation then provisions the resources.
+    SC[Solutions Constructs] --> CDK[CDK app]
+    CDK -- cdk synth --> T[CloudFormation template]
+    SAM[SAM template] -- SAM transform --> T
+    T --> CF[CloudFormation provisions resources]
+```
 
-SDKs have no service quotas; service APIs and IAM policies define what your code can do. See the Service Quotas console for service-specific values.[^aws-sdk]
+| | CDK | Solutions Constructs | SAM |
+| --- | --- | --- | --- |
+| You write | TypeScript, JavaScript, Python, Java, C#/.NET, or Go | TypeScript, JavaScript, Python, or Java | YAML or JSON template with serverless shorthand |
+| Unit of reuse | Constructs (L1, L2, L3) | Prebuilt CDK patterns | Templates, shared through the Serverless Application Repository |
+| Local testing | Not covered in its note | Through CDK | `sam local invoke` and `sam local start-api` |
 
+### AWS CDK
 
-## boto3 (AWS SDK for Python)
+A CDK app holds one or more stacks, each deployed as one CloudFormation stack. L1 constructs map to raw CloudFormation resources, L2 constructs add sensible defaults, and L3 constructs are patterns. `cdk synth` writes the template; `cdk bootstrap` creates the staging bucket and roles a Region needs before the first deploy. CDK v2 is current; v1 entered maintenance on June 1, 2022 and ended support on June 1, 2023.
 
-boto3 resolves credentials once, through a fixed fallback chain, before any client call: so a working request usually means the chain, not the call, is misconfigured when it fails. boto3 is the AWS SDK for Python. It provides low-level service clients (a nearly 1:1 mapping to service APIs), higher-level resource abstractions for some services, and core features like pagination, waiters, retries, and multi-session credential handling.
-
-Key points:
-
-- Client: low-level interface; `boto3.client('s3')` returns a client whose methods map to API operations.
-- Resource: higher-level object interface; `boto3.resource('s3')` provides collections and attributes (available for a subset of services).
-- Session: manages configuration and credentials; `boto3.session.Session()` or the default module-level session.
-- Credentials chain: env vars, shared credentials/config files, IAM roles, SSO, container credentials.
-- Paginators: handle multi-page API responses with `client.get_paginator(...)`.
-
-Practices:
-
-- Prefer IAM roles and SSO over hard-coded keys; never commit credentials.
-- Reuse clients/sessions instead of creating them per call; boto3 manages connection pooling.
-- Use paginators for list APIs and waiters instead of sleep loops.
+- Start from L2 constructs and drop to L1 only for a property L2 does not expose.
+- Split stacks along dependency boundaries such as state, networking, and application.
+- Keep the CDK CLI and construct libraries on compatible, pinned versions.
 
 | Symptom | Check |
 | --- | --- |
-| `NoCredentialsError` | Check the credential chain: env vars, shared files, roles. |
-| `ClientError: AccessDenied` | Verify the IAM policy and the role/profile in use. |
-| Slow list operations | Use paginators with `PageSize`, filters, and narrow prefixes. |
-| Throttling (`ThrottlingException`) | Increase retry attempts/backoff; request higher quotas if legitimate. |
+| `BootstrapError` | Run `cdk bootstrap` for the target account and Region |
+| Stack update failed | The CloudFormation event log |
+| Asset upload fails | The staging bucket policy and IAM permissions |
 
-boto3 has no service quotas; service API limits apply. See the Service Quotas console for service-specific values.[^aws-boto3]
+CloudFormation quotas apply, such as template size and resources per stack.[^aws-cdk]
 
+### AWS Solutions Constructs
 
-## AWS Cloud Development Kit (CDK)
+Solutions Constructs is an open-source library of well-architected CDK patterns that combine services for common jobs, such as API Gateway + Lambda + DynamoDB or S3 + Lambda. Use one instead of wiring the services by hand, but read its defaults for encryption, logging, and cost before deploying, and override any that do not fit. If synthesis fails, check that the CDK and construct versions are compatible.[^aws-solutions-constructs]
 
-CDK never talks to AWS directly: it compiles your code into a CloudFormation template, and CloudFormation does the actual provisioning; every CDK command is really a step before or around a CloudFormation deployment. The AWS Cloud Development Kit (AWS CDK) is an open source framework for defining cloud infrastructure in code (TypeScript, JavaScript, Python, Java, C#/.NET, or Go) and provisioning it through AWS CloudFormation. CDK v2 is the current major version; v1 entered maintenance on June 1, 2022 and ended support on June 1, 2023.
+### AWS SAM and the Serverless Application Repository
 
-Key points:
-
-- Construct: the basic building block; L1 constructs map to CloudFormation resources, L2 constructs add sensible defaults, L3 constructs are patterns.
-- Stack: a unit of deployment that maps to a CloudFormation stack.
-- App: a container of one or more stacks; the entry point of a CDK project.
-- Synthesis: `cdk synth` converts your app into a CloudFormation template.
-- Bootstrap: `cdk bootstrap` provisions the staging bucket and roles a Region needs for deployment.
-
-Practices:
-
-- Use CDK v2 and pin construct library versions; track the maintenance policy.
-- Start from L2 constructs for secure defaults; drop to L1 only when you need an exact property.
-- Split applications into stacks with clear dependency boundaries (state, networking, app).
+A SAM template is CloudFormation with shorthand types such as `AWS::Serverless::Function`, `AWS::Serverless::Api`, and `AWS::Serverless::SimpleTable`, which the `AWS::Serverless-2016-10-31` transform expands into standard resources. Connectors and policy templates (for example, DynamoDB CRUD) generate scoped IAM permissions. The SAM CLI runs the lifecycle: `sam init`, `sam build`, `sam local`, `sam deploy`, and `sam sync`. The Serverless Application Repository is a catalog for publishing finished templates publicly or privately and deploying them from the Lambda console.[^aws-sam]
 
 | Symptom | Check |
 | --- | --- |
-| `BootstrapError` | Run `cdk bootstrap` for the target account/Region with the right credentials. |
-| Stack update failed | Review the CloudFormation event log; fix resource constraints and redeploy. |
-| Asset upload fails | Verify S3 bucket policy for the staging bucket and IAM permissions. |
-| Construct version mismatch | Keep the CDK CLI and libraries on compatible versions. |
-
-CloudFormation quotas apply (for example, template size and resource counts per stack). See the Service Quotas console for current values.[^aws-cdk]
-
-
-## AWS Serverless Application Model (SAM) & Serverless Application Repository
-
-A SAM template is CloudFormation with serverless shorthand that the SAM transform expands into standard resources; the SAM CLI takes that same template through build, local test, and deploy, and SAR is simply a catalog for sharing the finished template. AWS Serverless Application Model (AWS SAM) is an open-source infrastructure-as-code framework for building serverless applications. It extends CloudFormation with simplified syntax for Lambda functions, API Gateway APIs, DynamoDB tables, and other serverless resources, and provides the SAM CLI for local development, testing, building, and deployment. The AWS Serverless Application Repository (SAR) is a catalog for publishing and deploying serverless applications using SAM templates.
-
-Key points:
-
-- SAM template: a CloudFormation template with SAM shorthand (`AWS::Serverless::Function`, `AWS::Serverless::Api`, `AWS::Serverless::SimpleTable`, etc.); SAM transforms it into standard CloudFormation resources.
-- SAM CLI: commands for the full lifecycle, including `sam init`, `sam build`, `sam local invoke/start-api` (local testing), `sam deploy`, `sam sync` (continuous sync), and Terraform support for local Lambda debugging.
-- SAM connectors: declare resource-to-resource permissions in the template; SAM generates the required IAM permissions.
-- Policies: simplified IAM policy templates (for example, S3 read/write, DynamoDB CRUD) attached to functions.
-- Serverless Application Repository: publish applications publicly or privately (shared within teams/orgs), deploy with a few clicks from the Lambda console, and version apps with metadata (readme, source code).
-
-Practices:
-
-- Keep SAM templates in code with the application and version them; use `sam build` for deterministic packaging.
-- Test locally with `sam local` and add integration tests before deployment.
-- Use connectors and policy templates to scope IAM permissions precisely; avoid broad policies.
-
-| Symptom | Check |
-| --- | --- |
-| `sam build` fails | Check runtime/package dependencies and the build environment (Docker for native modules). |
-| Local invoke errors | Verify the event JSON, environment variables, and IAM role emulation. |
-| Deploy fails | Review CloudFormation events; check template transform (`AWS::Serverless-2016-10-31`) and permissions. |
-| SAR publish rejected | Fix metadata validation (semantic version, readme, source URL) and retry. |
-
-SAM templates are subject to CloudFormation limits; SAR has application/version limits per account and Region. See the AWS SAM and Serverless Application Repository documentation for current values.[^aws-sam]
-
-
-## AWS Solutions Constructs
-
-AWS Solutions Constructs is an open-source extension of the AWS Cloud Development Kit (AWS CDK). It provides pre-built, well-architected patterns that combine AWS services for common use cases, so you can define infrastructure with familiar programming languages and existing development workflows.
-
-Key points:
-
-- Constructs: reusable, well-architected patterns that perform common actions across AWS services (for example, API Gateway + Lambda + DynamoDB, S3 + Lambda).
-- Languages: TypeScript, JavaScript, Python, and Java are supported at this time.
-- Built on CDK: constructs are CDK construct libraries; use logic, object-oriented modeling, and code review workflows.
-- Catalog: browse the full construct catalog to find patterns for your use case.
-- Reuse and sharing: organize solutions into logical modules, share them as libraries within your team/company, and publish them.
-
-Practices:
-
-- Prefer constructs for common, well-tested patterns instead of wiring services manually.
-- Review construct options and defaults for security (encryption, logging) and cost before deploying.
-- Keep construct libraries updated; follow upstream releases for fixes and new patterns.
-
-| Symptom | Check |
-| --- | --- |
-| Construct not found | Verify the package name/language and the construct catalog for availability. |
-| Synthesis fails | Check the CDK version, construct version compatibility, and TypeScript/Python syntax. |
-| Unexpected resources created | Review construct defaults and props; override with your own settings. |
-| Region-specific errors | Confirm the construct's services are available in your target Region. |
-
-Constructs are code libraries; quotas depend on the AWS services used. See the construct documentation for each pattern and the service runbooks in this knowledge base for quotas.[^aws-solutions-constructs]
-
-
-## AWS Cloud9
-
-Cloud9 is a browser-based IDE glued to one compute resource per environment: either an EC2 instance it manages for you, or your own server reached over SSH, and it is now a maintenance-mode service: existing environments keep working, but no new customers can start. AWS Cloud9 is a cloud-based integrated development environment (IDE) accessed from a web browser. It provides code editing, debugging, a built-in terminal, and direct integration with AWS services. Cloud9 is no longer available to new customers; existing customers can continue to use the service as normal.
-
-Practices:
-
-- Note the current lifecycle: new customer onboarding is closed; plan alternatives (for example, IDE toolkits + EC2/CloudShell) for new projects.
-- For existing environments, use EC2 environments with a managed instance and keep the IDE/instance patched.
-- Attach an IAM instance profile with least privilege; never store long-term keys in the environment.
-
-| Symptom | Check |
-| --- | --- |
-| Cannot open IDE | Check environment status and browser/network access to the environment URL. |
-| EC2 environment slow | Right-size the instance type or stop/restart the environment. |
-| Permissions errors | Verify the instance profile/role policies for the services you use. |
-| SSH environment unreachable | Check the server SSH config, keys, and security group rules. |
-
-Environments per account and EC2 environment instance sizes are subject to quotas. See the Service Quotas console for current values.[^aws-cloud9]
-
+| `sam build` fails | Runtime dependencies, and Docker for native modules |
+| Deploy fails | CloudFormation events, the transform line, and permissions |
+| Repository publish rejected | Metadata: semantic version, readme, and source URL |
 
 ## AWS Amplify
 
-Amplify splits into two mostly independent halves: Hosting, a Git-triggered CI/CD pipeline to the AWS CDN, and a backend generation (Gen 1 CLI vs. Gen 2 `ampx`), which turns TypeScript resource definitions into cloud infrastructure. AWS Amplify helps you build and host full-stack web and mobile applications on AWS. Amplify Hosting provides a Git-based workflow with continuous deployment to the AWS global CDN. Amplify Gen 2 is the current code-first backend experience: you define data, auth, and functions in TypeScript and manage them with `ampx`. Gen 1 apps use the legacy Amplify CLI and Studio.
+Amplify has two mostly independent halves. Amplify Hosting connects a GitHub, Bitbucket, GitLab, or CodeCommit repository and deploys the front end to the AWS CDN on every push, with an environment per connected branch, pull request previews, and custom domains. The backend half defines `data`, `auth`, `storage`, and `functions` in TypeScript and deploys them with `ampx`; that is Gen 2, the current version, while Gen 1 apps use the legacy Amplify CLI and Studio.
 
-Key points:
+- Use Gen 2 for new projects, and keep auth rules in the backend schema.
+- If the backend does not update, run `ampx deploy` (or `amplify push` on Gen 1) and redeploy the front end.
 
-- Amplify Hosting: connects a Git repo (GitHub, Bitbucket, GitLab, or CodeCommit) and deploys the frontend with CI/CD.
-- Feature branches: each connected branch becomes an environment (production/staging) with its own backend.
-- PR previews: preview apps for pull requests; atomic deployments and custom domains included.
-- Amplify Gen 2 backend: TypeScript-defined `data`, `auth`, `storage`, and `functions` resources with automatic cloud infrastructure.
-- Amplify Libraries: client SDKs (JS, React, Swift, Android, Flutter) that connect to the backend.
+Build minutes, hosting storage and transfer, and backend usage have account limits.[^aws-amplify]
 
-Practices:
+## AWS Cloud9
 
-- Use Amplify Gen 2 for new projects; Gen 1 is legacy and only for existing apps.
-- Connect branches per environment and protect production branches; use PR previews for review.
-- Define auth rules in the backend schema and test access patterns with the sandbox.
-
-| Symptom | Check |
-| --- | --- |
-| Build fails | Check build logs, dependency versions, and environment variables. |
-| Backend not updated | Run `ampx deploy` (or `amplify push` for Gen 1) and redeploy the frontend. |
-| Auth issues | Verify auth rules, user pool/client config, and client library versions. |
-| Custom domain not resolving | Check DNS records and the certificate status in Amplify Hosting. |
-
-Build minutes, hosting storage/transfer, and backend resource usage have account limits; see AWS Amplify pricing for current tiers and quotas.[^aws-amplify]
-
+Cloud9 is a browser IDE attached to one compute resource per environment: an EC2 instance it manages, or your own server over SSH. It is closed to new customers; existing environments keep working. For new projects the note suggests IDE toolkits with EC2 or CloudShell. On an existing environment, keep the instance patched and give it a least-privilege instance profile rather than stored keys.[^aws-cloud9]
 
 ## Related
 
-- [CI/CD on AWS](ci-cd.md)
-- [Operations tooling](operations-tooling.md)
+- [CI/CD on AWS](ci-cd.md): the pipeline services that build and deploy what these tools define.
+- [Operations tooling](operations-tooling.md): CloudFormation, which all three infrastructure-as-code tools target.
+- [IAM](iam.md): the roles and policies behind the credential chain.
 - [Domain index](index.md)
 
 [^aws-cli]: [AWS CLI - Runbook & Reference](../../sources/aws-cli.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/cli/README.md)
 [^aws-sdk]: [AWS SDKs and Tools - Runbook & Reference](../../sources/aws-sdk.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/sdk/README.md)
 [^aws-boto3]: [boto3 (AWS SDK for Python) - Runbook & Reference](../../sources/aws-boto3.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/boto3/README.md)
 [^aws-cdk]: [AWS Cloud Development Kit (CDK) - Runbook & Reference](../../sources/aws-cdk.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/cdk/README.md)
-[^aws-sam]: [AWS Serverless Application Model (SAM) & Serverless Application Repository - Runbook & Reference](../../sources/aws-sam.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/sam/README.md)
 [^aws-solutions-constructs]: [AWS Solutions Constructs - Runbook & Reference](../../sources/aws-solutions-constructs.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/solutions-constructs/README.md)
-[^aws-cloud9]: [AWS Cloud9 - Runbook & Reference](../../sources/aws-cloud9.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/cloud9/README.md)
+[^aws-sam]: [AWS Serverless Application Model (SAM) & Serverless Application Repository - Runbook & Reference](../../sources/aws-sam.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/sam/README.md)
 [^aws-amplify]: [AWS Amplify - Runbook & Reference](../../sources/aws-amplify.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/amplify/README.md)
+[^aws-cloud9]: [AWS Cloud9 - Runbook & Reference](../../sources/aws-cloud9.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/cloud9/README.md)
