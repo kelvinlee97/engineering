@@ -270,6 +270,7 @@ Neither source explains the difference. Check the current Claude Code documentat
 - [Progressive disclosure](agent-skills.md#progressive-disclosure): saving context by not loading material until needed.
 - [Skill configuration](agent-skills.md#skill-configuration): where `allowed-tools` is set, and the matching file format for skills.
 - [Claude Code extension mechanisms](extension-mechanisms.md): where subagents sit among CLAUDE.md, skills, hooks, and MCP.
+- [Claude Code session cost](session-cost.md#choosing-a-model): putting subagents on smaller models, and what agent teams cost.
 
 [^claude-subagents-course]: [Introduction to Claude Code Subagents (study guide)](../../sources/claude-subagents-course.md), [original](https://github.com/kelvinlee97/engineering/blob/main/Claude/subagents/README.md)
 [^claude-agent-skills-course]: [Introduction to Claude Code Agent Skills (study guide)](../../sources/claude-agent-skills-course.md), [original](https://github.com/kelvinlee97/engineering/blob/main/Claude/agent-skills/README.md)

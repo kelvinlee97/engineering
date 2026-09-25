@@ -27,6 +27,7 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 * [AWS cost](engineering/aws/cost.md) - How AWS charges (pricing models) and the Billing and Cost Management tools for tracking and controlling spend.
 * [AWS multi-account governance](engineering/aws/multi-account-governance.md) - Running many AWS accounts under AWS Organizations, with guardrails applied from the organization rather than per account.
 * [AWS security monitoring](engineering/aws/security-monitoring.md) - Recording API activity with CloudTrail, detecting threats with GuardDuty, and aggregating findings in Security Hub into one response pipeline.
+* [Claude Code session cost](engineering/claude-code/session-cost.md) - What sets the cost of a Claude Code task on Opus 5.5, and how effort, model choice, caching, and compaction trade tokens against a finished task.
 * [Incident operations](engineering/operations/incident-operations.md) - Practices shared across the runbooks: troubleshoot layer by layer, change production safely, and close an incident only on evidence.
 * [Self-improving skill loop](engineering/ai-engineering/self-improving-skill-loop.md) - A scheduled agent reads human feedback on another agent's output and opens a pull request that edits that agent's skill file.
 
@@ -151,6 +152,7 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 * [The uniq command (summary)](sources/bash-uniq.md) - Summary of the legacy note on uniq and why it almost always follows sort.
 * [Three simple database websites (summary)](sources/database-websites-video.md) - Summary of the legacy note on a Starter Story interview about a portfolio of database and directory SaaS products.
 * [Understanding Apple Container (summary)](sources/apple-container.md) - Summary of the legacy overview of apple/container, Apple's native macOS container tool that runs each container in its own lightweight VM.
+* [What a task costs on Opus 5.5 (summary)](sources/opus-5-5-task-cost.md) - Summary of Addy Osmani's 2026-09-25 claude.dev post pricing Claude Code tasks on Opus 5.5 against Opus 5, and the settings that move the bill.
 * [What happens when AI agents run the business (summary)](sources/kavak-agents-video.md) - Summary of the legacy note on an a16z video in which Kavak describes running sales, lending, and operations with agents.
 * [ZooKeeper beginner tutorial (summary)](sources/zookeeper-getting-started.md) - Summary of the legacy beginner tutorial explaining what ZooKeeper is for and trying its CLI against a local server.
 * [ZooKeeper disk-full recovery runbook (summary)](sources/zookeeper-disk-full-runbook.md) - Summary of the legacy runbook for rebuilding one ZooKeeper member whose transaction log was truncated by a full disk.
