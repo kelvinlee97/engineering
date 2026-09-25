@@ -3,6 +3,7 @@
 * [Agent skills](agent-skills.md) - What a Claude Code skill is, how progressive disclosure keeps it cheap, and the SKILL.md file that defines it.
 * [Auto Mode and prompt injection](auto-mode.md) - A Claude Code permission mode where a classifier reviews higher-risk actions, and the prompt-injection threat it is built to contain.
 * [Claude Code extension mechanisms](extension-mechanisms.md) - How CLAUDE.md, skills, subagents, hooks, and MCP servers differ, and which job each one owns.
+* [Claude Code session cost](session-cost.md) - Why long, context-heavy Claude Code sessions are billed mostly as cached reads, and how model pricing, cache hits, and turn count set the cost.
 * [Subagents](subagents.md) - What a Claude Code subagent is, when to delegate to one, how to write its task and tools, and the file that defines it.
 
 # Tool
