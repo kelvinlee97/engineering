@@ -9,7 +9,17 @@ sources:
     title: How Warp Builds Self-Improving Agents on Claude
     author: human:kelvinlee97
     last_modified: 2026-09-24T14:48:10Z
-generated: { by: claude-code/wiki-v1, at: 2026-09-24T16:05:00Z }
+  - id: ai-native-company-structure-video
+    resource: https://github.com/kelvinlee97/engineering/blob/main/YouTube/startup/building-and-structuring-an-ai-native-company--Z3JyAqh4ixg/summary.md
+    title: Building and Structuring an AI-Native Company (video summary)
+    author: human:kelvinlee97
+    last_modified: 2026-09-24T14:48:10Z
+  - id: kavak-agents-video
+    resource: https://github.com/kelvinlee97/engineering/blob/main/YouTube/claude/what-happens-when-ai-agents-run-the-business--n34CIw3gk1k/summary.md
+    title: What Happens When AI Agents Run the Business? (video summary)
+    author: human:kelvinlee97
+    last_modified: 2026-09-24T14:48:10Z
+generated: { by: claude-code/wiki-v1, at: 2026-09-25T05:45:00Z }
 status: draft
 ---
 
@@ -44,13 +54,24 @@ A thumbs-down says the output was wrong but not why. A comment such as "our conv
 
 [^warp-self-improving-agents]
 
+## The same loop elsewhere
+
+- YC's English-to-SQL data agent gained a second, overnight agent that reviews the day's failed queries and opens pull requests for them, so a query that failed one day may work the next.[^ai-native-company-structure-video]
+- Kavak routes an agent's failure to a person through an API instead of a forgotten queue, and aims to turn the human work into data and skills for future agents.[^kavak-agents-video]
+
+In all three, the improvement is proposed from observed failures and applied through a reviewable change.
+
 ## Where it breaks down (analysis from the source)
 
 The note's author lists: skill files that grow into long, partly contradictory lists without periodic pruning; overfitting to the people who write the most feedback; product complaints turned into skill rules; and no measurement after merge, so a bad change shows up only slowly in later feedback.[^warp-self-improving-agents]
 
 ## Related
 
+- Source: [What happens when AI agents run the business](../../sources/kavak-agents-video.md)
+- Source: [Building and structuring an AI-native company](../../sources/ai-native-company-structure-video.md)
 - [Agents propose, people and policy accept](propose-accept-boundary.md): why the improvement is a PR.
 - Source: [How Warp Builds Self-Improving Agents on Claude](../../sources/warp-self-improving-agents.md)
 
 [^warp-self-improving-agents]: How Warp Builds Self-Improving Agents on Claude
+[^ai-native-company-structure-video]: Building and Structuring an AI-Native Company (video summary)
+[^kavak-agents-video]: What Happens When AI Agents Run the Business? (video summary)

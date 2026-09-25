@@ -8,3 +8,5 @@
 * [ZooKeeper](zookeeper/index.md) - Running and recovering an Apache ZooKeeper ensemble.
 * [Linux](linux/index.md) - Package management and text-processing commands on Linux hosts.
 * [Developer tools](dev-tools/index.md) - Terminal and local container tooling on macOS and Ubuntu.
+* [Git](git/index.md) - Everyday Git, syncing, recovery, and the GitHub pull request workflow.
+* [Startups](startups/index.md) - Starting and growing small businesses, from founder talks and interviews.
