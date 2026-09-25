@@ -1,10 +1,21 @@
 # Source Summary
 
+* [Amazon CloudFront runbook and reference (summary)](aws-cloudfront.md) - Summary of the legacy AWS runbook and reference note for Amazon CloudFront, verified against AWS documentation on 2026-08-19.
+* [Amazon EC2 Auto Scaling runbook and reference (summary)](aws-auto-scaling-groups.md) - Summary of the legacy AWS runbook and reference note for Amazon EC2 Auto Scaling, verified against AWS documentation on 2026-08-19.
+* [Amazon EC2 runbook and reference (summary)](aws-ec2.md) - Summary of the legacy AWS runbook and reference note for Amazon EC2, verified against AWS documentation on 2026-08-18.
+* [Amazon ECR runbook and reference (summary)](aws-ecr.md) - Summary of the legacy AWS runbook and reference note for Amazon ECR, verified against AWS documentation on 2026-08-19.
+* [Amazon ECS runbook and reference (summary)](aws-ecs.md) - Summary of the legacy AWS runbook and reference note for Amazon ECS, verified against AWS documentation on 2026-08-19.
+* [Amazon EKS runbook and reference (summary)](aws-eks.md) - Summary of the legacy AWS runbook and reference note for Amazon EKS, verified against AWS documentation on 2026-08-19.
 * [Amazon GuardDuty runbook and reference (summary)](aws-guardduty.md) - Summary of the legacy AWS runbook and reference note for Amazon GuardDuty, verified against AWS documentation on 2026-08-19.
+* [Amazon Route 53 runbook and reference (summary)](aws-route53.md) - Summary of the legacy AWS runbook and reference note for Amazon Route 53, verified against AWS documentation on 2026-08-19.
+* [Amazon VPC runbook and reference (summary)](aws-vpc.md) - Summary of the legacy AWS runbook and reference note for Amazon VPC, verified against AWS documentation on 2026-08-19.
 * [AWS CloudTrail runbook and reference (summary)](aws-cloudtrail.md) - Summary of the legacy AWS runbook and reference note for AWS CloudTrail, verified against AWS documentation on 2026-08-19.
+* [AWS Direct Connect runbook and reference (summary)](aws-direct-connect.md) - Summary of the legacy AWS runbook and reference note for AWS Direct Connect, verified against AWS documentation on 2026-08-19.
+* [AWS Global Accelerator runbook and reference (summary)](aws-global-accelerator.md) - Summary of the legacy AWS runbook and reference note for AWS Global Accelerator, verified against AWS documentation on 2026-08-19.
 * [AWS IAM Identity Center runbook and reference (summary)](aws-iam-identity-center.md) - Summary of the legacy AWS runbook and reference note for AWS IAM Identity Center, verified against AWS documentation on 2026-08-19.
 * [AWS IAM runbook and reference (summary)](aws-iam.md) - Summary of the legacy AWS runbook and reference note for AWS IAM, verified against AWS documentation on 2026-08-18.
 * [AWS KMS runbook and reference (summary)](aws-kms.md) - Summary of the legacy AWS runbook and reference note for AWS KMS, verified against AWS documentation on 2026-08-19.
+* [AWS Lambda runbook and reference (summary)](aws-lambda.md) - Summary of the legacy AWS runbook and reference note for AWS Lambda, verified against AWS documentation on 2026-08-18.
 * [AWS Organizations runbook and reference (summary)](aws-organizations.md) - Summary of the legacy AWS runbook and reference note for AWS Organizations, verified against AWS documentation on 2026-08-19.
 * [AWS Secrets Manager runbook and reference (summary)](aws-secrets-manager.md) - Summary of the legacy AWS runbook and reference note for AWS Secrets Manager, verified against AWS documentation on 2026-08-19.
 * [AWS Security Hub CSPM runbook and reference (summary)](aws-security-hub.md) - Summary of the legacy AWS runbook and reference note for AWS Security Hub CSPM, verified against AWS documentation on 2026-08-19.
@@ -16,6 +27,7 @@
 * [Claude Managed Agents (summary of the official overview)](claude-managed-agents.md) - Summary of Anthropic's Claude Managed Agents overview documentation, reviewed on 2026-09-15 while the product was in beta.
 * [Claude Projects, Redesigned (announcement summary)](claude-projects.md) - Summary of Anthropic's 2026-09-17 announcement that Claude Projects became one long-running conversation coordinating parallel threads.
 * [Common Ubuntu APT operations (summary)](ubuntu-apt-guide.md) - Summary of the legacy guide to installing, upgrading, inspecting, and troubleshooting packages on Ubuntu with APT and dpkg.
+* [Elastic Load Balancing runbook and reference (summary)](aws-elb.md) - Summary of the legacy AWS runbook and reference note for Elastic Load Balancing, verified against AWS documentation on 2026-08-19.
 * [Essential Git commands for operations (summary)](git-operations-reference.md) - Summary of the legacy operations-oriented Git reference: inspect first, sync deliberately, prefer revert on shared branches.
 * [Every company should have a brain (summary)](company-brain-video.md) - Summary of the legacy note on Garry Tan's talk about skills as an organization and a curated company memory.
 * [Express BFF incidents runbook (summary)](express-bff-incidents-runbook.md) - Summary of the legacy runbook covering ten common incidents for an Express BFF supervised by PM2 cluster mode.

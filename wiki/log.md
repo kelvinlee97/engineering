@@ -1,6 +1,7 @@
 # Wiki Update Log
 
 ## 2026-09-25
+* **Ingest**: Batch C part 2, twelve AWS network and compute notes (`AWS/vpc`, `route53`, `elb`, `cloudfront`, `direct-connect`, `global-accelerator`, `ec2`, `auto-scaling-groups`, `lambda`, `ecs`, `eks`, `ecr`): created 26 pages in `aws` (12 services, 2 comparisons, 12 source summaries).
 * **Ingest**: Batch C part 1, eight AWS identity and security notes (`AWS/iam`, `iam-identity-center`, `organizations`, `kms`, `secrets-manager`, `cloudtrail`, `guardduty`, `security-hub`): created 20 pages in a new `aws` domain (8 services, 4 cross-cutting pages, 8 source summaries), updated 1 page (least-privilege-tool-access).
 * **Ingest**: Batch B part 2, six YouTube summaries (`YouTube/claude/what-happens-when-ai-agents-run-the-business`, and five under `YouTube/startup/`): created 11 pages (new `startups` domain; ai-native-company, company-brain, deterministic-vs-model-work in `ai-engineering`), updated 1 page (self-improving-skill-loop). All figures in these sources are the speakers' own and unverified; the pages say so.
 * **Ingest**: Batch B part 1, nine Git sources (`Git/README.md`, `Git/publish-to-github`, and the seven tutorial chapters `Git/00-init` to `Git/06-diff`): created 16 pages in a new `git` domain. The tutorial chapters were compiled into concept, command, and playbook pages rather than one page per chapter.
