@@ -121,7 +121,7 @@ The parent loses visibility into how the conclusion was reached and into anythin
 - The result must be specified in advance, including obstacles, or the main thread has to rediscover them. See [Delegation contract](#delegation-contract).
 - Chains of dependent steps lose information at each handoff, so they belong in one context. See [When to delegate](#when-to-delegate).[^claude-subagents-course]
 
-Token cost is smaller than it was: since Claude Opus 5.5, a subagent starts from the parent's prompt cache instead of paying again for the same context. See [Claude Code session cost](session-cost.md#where-the-savings-come-from).[^claude-opus-5-5-context]
+Token cost is smaller than it was: since Claude Opus 5.5, a subagent starts from the parent's prompt cache instead of paying again for the same context. See [Claude Code session cost](session-cost.md#where-the-lower-session-cost-comes-from).[^claude-opus-5-5-context]
 
 ### A side benefit: fresh context
 
@@ -276,8 +276,8 @@ Neither source explains the difference. Check the current Claude Code documentat
 
 - [Progressive disclosure](agent-skills.md#progressive-disclosure): saving context by not loading material until needed.
 - [Skill configuration](agent-skills.md#skill-configuration): where `allowed-tools` is set, and the matching file format for skills.
-- [Claude Code session cost](session-cost.md): how caching and turn count set what a session costs.
 - [Claude Code extension mechanisms](extension-mechanisms.md): where subagents sit among CLAUDE.md, skills, hooks, and MCP.
+- [Claude Code session cost](session-cost.md#choosing-a-model): putting subagents on smaller models, and what agent teams cost.
 
 [^claude-subagents-course]: [Introduction to Claude Code Subagents (study guide)](../../sources/claude-subagents-course.md), [original](https://github.com/kelvinlee97/engineering/blob/main/Claude/subagents/README.md)
 [^claude-agent-skills-course]: [Introduction to Claude Code Agent Skills (study guide)](../../sources/claude-agent-skills-course.md), [original](https://github.com/kelvinlee97/engineering/blob/main/Claude/agent-skills/README.md)

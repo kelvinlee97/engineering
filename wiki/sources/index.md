@@ -77,6 +77,7 @@
 * [The uniq command (summary)](bash-uniq.md) - Summary of the legacy note on uniq and why it almost always follows sort.
 * [Three simple database websites (summary)](database-websites-video.md) - Summary of the legacy note on a Starter Story interview about a portfolio of database and directory SaaS products.
 * [Understanding Apple Container (summary)](apple-container.md) - Summary of the legacy overview of apple/container, Apple's native macOS container tool that runs each container in its own lightweight VM.
+* [What a task costs on Opus 5.5 (summary)](opus-5-5-task-cost.md) - Summary of Addy Osmani's 2026-09-25 claude.dev post pricing Claude Code tasks on Opus 5.5 against Opus 5, and the settings that move the bill.
 * [What happens when AI agents run the business (summary)](kavak-agents-video.md) - Summary of the legacy note on an a16z video in which Kavak describes running sales, lending, and operations with agents.
 * [ZooKeeper beginner tutorial (summary)](zookeeper-getting-started.md) - Summary of the legacy beginner tutorial explaining what ZooKeeper is for and trying its CLI against a local server.
 * [ZooKeeper disk-full recovery runbook (summary)](zookeeper-disk-full-runbook.md) - Summary of the legacy runbook for rebuilding one ZooKeeper member whose transaction log was truncated by a full disk.

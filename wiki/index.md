@@ -17,7 +17,7 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 * [Auto Mode and prompt injection](engineering/claude-code/auto-mode.md) - A Claude Code permission mode where a classifier reviews higher-risk actions, and the prompt-injection threat it is built to contain.
 * [AWS foundations](engineering/aws/aws-foundations.md) - The shared responsibility model and the Well-Architected Framework, the two ideas the other AWS pages assume.
 * [Claude Code extension mechanisms](engineering/claude-code/extension-mechanisms.md) - How CLAUDE.md, skills, subagents, hooks, and MCP servers differ, and which job each one owns.
-* [Claude Code session cost](engineering/claude-code/session-cost.md) - Why long, context-heavy Claude Code sessions are billed mostly as cached reads, and how model pricing, cache hits, and turn count set the cost.
+* [Claude Code session cost](engineering/claude-code/session-cost.md) - What sets the cost of a Claude Code task on Opus 5.5, and how effort, model choice, caching, and compaction trade tokens against a finished task.
 * [Git fundamentals](engineering/git/git-fundamentals.md) - Git's four places, the everyday commands that move work between them, the commit workflow, and keeping secrets out.
 * [Subagents](engineering/claude-code/subagents.md) - What a Claude Code subagent is, when to delegate to one, how to write its task and tools, and the file that defines it.
 
@@ -155,6 +155,7 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 * [The uniq command (summary)](sources/bash-uniq.md) - Summary of the legacy note on uniq and why it almost always follows sort.
 * [Three simple database websites (summary)](sources/database-websites-video.md) - Summary of the legacy note on a Starter Story interview about a portfolio of database and directory SaaS products.
 * [Understanding Apple Container (summary)](sources/apple-container.md) - Summary of the legacy overview of apple/container, Apple's native macOS container tool that runs each container in its own lightweight VM.
+* [What a task costs on Opus 5.5 (summary)](sources/opus-5-5-task-cost.md) - Summary of Addy Osmani's 2026-09-25 claude.dev post pricing Claude Code tasks on Opus 5.5 against Opus 5, and the settings that move the bill.
 * [What happens when AI agents run the business (summary)](sources/kavak-agents-video.md) - Summary of the legacy note on an a16z video in which Kavak describes running sales, lending, and operations with agents.
 * [ZooKeeper beginner tutorial (summary)](sources/zookeeper-getting-started.md) - Summary of the legacy beginner tutorial explaining what ZooKeeper is for and trying its CLI against a local server.
 * [ZooKeeper disk-full recovery runbook (summary)](sources/zookeeper-disk-full-runbook.md) - Summary of the legacy runbook for rebuilding one ZooKeeper member whose transaction log was truncated by a full disk.
