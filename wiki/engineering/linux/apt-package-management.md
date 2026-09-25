@@ -41,6 +41,7 @@ As listed in the guide. Third-party repositories need a verified owner and signi
 
 ## Related
 
+- [Text processing](text-processing.md): shell pipelines for inspecting logs and output.
 - [Safe change procedure](../operations/incident-operations.md#safe-change-procedure)
 
 [^ubuntu-apt-guide]: [Common Ubuntu APT Operations](../../sources/ubuntu-apt-guide.md), [original](https://github.com/kelvinlee97/engineering/blob/main/Ubuntu/apt/README.md)

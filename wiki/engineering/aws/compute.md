@@ -169,6 +169,8 @@ As listed in the note.[^aws-elb]
 As tabled in the note. The default quota is 20 load balancers per Region, adjustable.[^aws-elb]
 
 ## Related
+- [Compute platforms](compute-platforms.md): Batch, Lightsail, Elastic Beanstalk, Outposts, and scaling beyond EC2.
+- [Containers and serverless](containers-and-serverless.md): ECS, EKS, and Lambda.
 - [Domain index](index.md): other pages in this domain.
 
 [^aws-ec2]: [Amazon EC2 - Runbook & Reference](../../sources/aws-ec2.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/ec2/README.md)

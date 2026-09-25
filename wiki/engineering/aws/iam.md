@@ -120,6 +120,7 @@ Users and groups come from the Identity Center directory or an external IdP (suc
 As tabled in the note.[^aws-iam-identity-center] See also [Multi-account governance](multi-account-governance.md#why-many-accounts).
 
 ## Related
+- [Multi-account governance](multi-account-governance.md): guardrails applied above IAM.
 - [Domain index](index.md): other pages in this domain.
 
 [^aws-iam]: [AWS IAM - Runbook & Reference](../../sources/aws-iam.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/iam/README.md)

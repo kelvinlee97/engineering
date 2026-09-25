@@ -119,6 +119,8 @@ EventBridge ingests, filters, transforms, and delivers events between AWS servic
 As tabled in the note.[^aws-eventbridge] See [AWS messaging choices](#choosing-a-service).
 
 ## Related
+- [Application integration](application-integration.md): APIs, workflows, and message brokers.
+- [Streaming and search](streaming-and-search.md): Kinesis and MSK for ordered, replayable streams.
 - [Domain index](index.md): other pages in this domain.
 
 [^aws-sqs]: [Amazon SQS - Runbook & Reference](../../sources/aws-sqs.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/sqs/README.md)

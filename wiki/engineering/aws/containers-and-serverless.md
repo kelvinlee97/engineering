@@ -159,6 +159,8 @@ As tabled in the note.[^aws-lambda] See [AWS compute options](compute.md#choosin
 
 ## Related
 
+- [Compute platforms](compute-platforms.md): other ways to run workloads.
+- [Application integration](application-integration.md): API Gateway and Step Functions in front of and around functions.
 - [Kubernetes IP or ENI exhaustion](../kubernetes/ip-eni-exhaustion.md): a related address-capacity failure in ENI-based pod networks.
 - [Kubernetes domain](../kubernetes/index.md)
 

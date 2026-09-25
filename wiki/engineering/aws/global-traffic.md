@@ -130,6 +130,7 @@ Global Accelerator gives an application static anycast IP addresses and routes t
 As tabled in the note.[^aws-global-accelerator] See [AWS global traffic routing](#choosing-a-service).
 
 ## Related
+- [Application security](application-security.md): WAF and Shield at the edge.
 - [Domain index](index.md): other pages in this domain.
 
 [^aws-route53]: [Amazon Route 53 - Runbook & Reference](../../sources/aws-route53.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/route53/README.md)

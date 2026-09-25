@@ -119,6 +119,8 @@ As tabled in the note.[^aws-systems-manager]
 
 ## Related
 
+- [Operational insight](operational-insight.md): X-Ray tracing, service health, and Trusted Advisor.
+- [Developer tools](developer-tools.md): CLI, SDKs, CDK, and SAM.
 - [Safe change procedure](../operations/incident-operations.md#safe-change-procedure): the same preview-then-apply discipline in general operations.
 
 [^aws-cloudwatch]: [Amazon CloudWatch - Runbook & Reference](../../sources/aws-cloudwatch.md), [original](https://github.com/kelvinlee97/engineering/blob/main/AWS/cloudwatch/README.md)
