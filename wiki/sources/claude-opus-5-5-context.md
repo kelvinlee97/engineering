@@ -32,7 +32,7 @@ As reported in the post.[^claude-opus-5-5-context]
 ## Takeaways
 
 - Sessions got longer and heavier on context, so cached reads now dominate agentic cost. See [Claude Code session cost](../engineering/claude-code/session-cost.md#how-coding-sessions-changed).
-- Savings come from lower prices, fewer cache misses, and fewer turns. See [Where the savings come from](../engineering/claude-code/session-cost.md#where-the-savings-come-from).
+- Savings come from lower prices, fewer cache misses, and fewer turns. See [Where the savings come from](../engineering/claude-code/session-cost.md#where-the-lower-session-cost-comes-from).
 - Subagents now start from the parent's cache. See [Subagents](../engineering/claude-code/subagents.md#what-it-costs).
 - Watch cached reads with `/usage`, pick the model at session start, and use a one-hour cache for long API sessions.[^claude-opus-5-5-context] See [Keeping the cache warm](../engineering/claude-code/session-cost.md#keeping-the-cache-warm).
 
