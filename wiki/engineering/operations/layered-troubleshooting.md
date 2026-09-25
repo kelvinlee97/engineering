@@ -24,7 +24,12 @@ sources:
     title: OpenResty Production Deployment and Operations for Beginners
     author: human:kelvinlee97
     last_modified: 2026-09-24T14:48:10Z
-generated: { by: claude-code/wiki-v1, at: 2026-09-25T04:45:00Z }
+  - id: zookeeper-disk-full-runbook
+    resource: https://github.com/kelvinlee97/engineering/blob/main/ZooKeeper/runbooks/disk-full-transaction-log-recovery/README.md
+    title: ZooKeeper Disk-Full Recovery Runbook
+    author: human:kelvinlee97
+    last_modified: 2026-09-24T14:48:10Z
+generated: { by: claude-code/wiki-v1, at: 2026-09-25T05:00:00Z }
 status: draft
 ---
 Layered troubleshooting treats a failure as one broken link in a chain the request or workload depends on. You collect read-only evidence, walk the chain in order, and act only on the first broken link. All four operational sources in this wiki follow it.
@@ -39,11 +44,13 @@ Layered troubleshooting treats a failure as one broken link in a chain the reque
 
 - **Evidence before action.** Start with read-only commands and preserve evidence before changing processes, releases, routes, credentials, or downstream targets.[^express-bff-incidents-runbook]
 - **One symptom is not a cause.** A `Pending` Pod does not establish IP exhaustion, and one event string is not enough; correlate several signals.[^k8s-ip-eni-runbook] A downstream `4xx/5xx` is not proof the BFF is broken.[^express-bff-incidents-runbook]
+- **Liveness is not health.** ZooKeeper's `ruok` answering `imok` only proves the process is bound to its port, not that it is in quorum, and freeing disk space does not repair a truncated transaction log.[^zookeeper-disk-full-runbook] Likewise an open port is not an application acceptance test.[^nginx-production-guide]
 - **A restart is not a diagnosis.** A restart can restore service temporarily without proving the root cause.[^express-bff-incidents-runbook]
 - **Do not widen the blast radius.** Raising timeouts before finding the failing layer, `chmod -R 777`, or restarting everything are listed as things not to do.[^nginx-production-guide]
 
 ## Related
 
+- Source: [ZooKeeper disk-full recovery runbook](../../sources/zookeeper-disk-full-runbook.md)
 - [Incident closure criteria](incident-closure-criteria.md)
 - [Safe change procedure](safe-change-procedure.md)
 - Source: [Kubernetes IP or ENI exhaustion runbook](../../sources/k8s-ip-eni-runbook.md)
@@ -55,3 +62,4 @@ Layered troubleshooting treats a failure as one broken link in a chain the reque
 [^express-bff-incidents-runbook]: Node.js / Express BFF: Ten Common Incidents Runbook
 [^nginx-production-guide]: Nginx Production Deployment and Operations for Beginners
 [^openresty-production-guide]: OpenResty Production Deployment and Operations for Beginners
+[^zookeeper-disk-full-runbook]: ZooKeeper Disk-Full Recovery Runbook
