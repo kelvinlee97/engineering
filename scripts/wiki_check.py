@@ -259,8 +259,14 @@ def check_indexes(wiki: Path, concepts: dict[Path, dict[str, Any]], report: Repo
             m = ENTRY_RE.match(line.strip())
             if not m:
                 continue
+            if m.group("target").endswith("/"):
+                report.errors.append(
+                    f"{rel}: entry {m.group('target')} links a directory; "
+                    "link its index.md so Obsidian can resolve it"
+                )
+                continue
             target = _resolve(wiki, index, m.group("target"))
-            if target is None or m.group("target").endswith("/"):
+            if target is None:
                 continue
             if target.name in RESERVED:
                 continue

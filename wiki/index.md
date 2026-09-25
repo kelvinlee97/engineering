@@ -5,9 +5,9 @@ okf_version: "0.2"
 
 A wiki the LLM compiles from the sources in `raw/` and the legacy articles, following the conventions in the repository's `CLAUDE.md`. Every page lists its sources; pages marked `status: draft` have not been reviewed yet.
 
-* [Domains](engineering/) - Concept pages grouped by domain.
-* [Sources](sources/) - One summary page per ingested source.
-* [Syntheses](syntheses/) - Answers filed back from queries.
+* [Domains](engineering/index.md) - Concept pages grouped by domain.
+* [Sources](sources/index.md) - One summary page per ingested source.
+* [Syntheses](syntheses/index.md) - Answers filed back from queries.
 * [Log](log.md) - What changed and when, newest first.
 
 # Concept
