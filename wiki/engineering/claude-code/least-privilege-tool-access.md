@@ -34,7 +34,12 @@ sources:
     title: The AI-Native SDLC Playbook
     author: human:kelvinlee97
     last_modified: 2026-09-24T14:48:10Z
-generated: { by: claude-code/wiki-v1, at: 2026-09-24T16:05:00Z }
+  - id: aws-iam
+    resource: https://github.com/kelvinlee97/engineering/blob/main/AWS/iam/README.md
+    title: "AWS IAM - Runbook & Reference"
+    author: human:kelvinlee97
+    last_modified: 2026-09-24T14:48:10Z
+generated: { by: claude-code/wiki-v1, at: 2026-09-25T06:00:00Z }
 status: draft
 ---
 Least privilege means starting from what an agent must do and granting only the tools that job requires. Both Claude Code courses apply it: subagents through their `tools` list, skills through `allowed-tools`.[^claude-subagents-course][^claude-agent-skills-course] For subagents, the course gives two reasons: fewer unintended side effects, and a clearer responsibility for each subagent.[^claude-subagents-course]
@@ -65,6 +70,10 @@ The AI-native SDLC playbook states the same split as a principle: use determinis
 - Give workflows minimal permissions by default, such as `contents: read` and `pull-requests: write`.[^gh-600-study-notes]
 - Give automated jobs their own identity, narrow permissions, short-lived credentials, and no standing production access.[^ai-native-sdlc-playbook]
 
+## In cloud identity
+
+AWS IAM applies the same idea: temporary credentials through roles and federation instead of long-term keys, starting from AWS managed policies and narrowing, and IAM Access Analyzer to generate least-privilege policies from actual CloudTrail activity.[^aws-iam] See [IAM policy evaluation](../aws/iam-policy-evaluation.md).
+
 ## Layers multiply
 
 In [Claude Code GitHub Actions](claude-code-github-actions.md), effective capability is the intersection of actor checks, the job's GitHub `permissions`, and the tools Claude may invoke; granting a tool in one layer does nothing if another withholds it.[^claude-github-actions]
@@ -75,6 +84,7 @@ While a [skill](agent-skill.md) is active, `allowed-tools` limits which tools ar
 
 ## Related
 
+- Source: [AWS IAM - Runbook & Reference](../../sources/aws-iam.md)
 - Source: [The AI-Native SDLC Playbook](../../sources/ai-native-sdlc-playbook.md)
 - Source: [GitHub Certified: Agentic AI Developer](../../sources/gh-600-study-notes.md)
 - Source: [Claude Code GitHub Actions](../../sources/claude-github-actions.md)
@@ -89,4 +99,5 @@ While a [skill](agent-skill.md) is active, `allowed-tools` limits which tools ar
 [^claude-auto-mode]: How Claude Code Auto Mode Works
 [^ai-native-sdlc-playbook]: The AI-Native SDLC Playbook
 [^gh-600-study-notes]: GitHub Certified: Agentic AI Developer (study notes)
+[^aws-iam]: AWS IAM - Runbook & Reference
 [^claude-github-actions]: Claude Code GitHub Actions
