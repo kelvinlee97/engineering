@@ -19,6 +19,8 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 * [Claude Code extension mechanisms](engineering/claude-code/extension-mechanisms.md) - How CLAUDE.md, skills, subagents, hooks, and MCP servers differ, and which job each one owns.
 * [Claude Code session cost](engineering/claude-code/session-cost.md) - What sets the cost of a Claude Code task on Opus 5.5, and how effort, model choice, caching, and compaction trade tokens against a finished task.
 * [Git fundamentals](engineering/git/git-fundamentals.md) - Git's four places, the everyday commands that move work between them, the commit workflow, and keeping secrets out.
+* [Python language fundamentals](engineering/python/fundamentals.md) - Core Python semantics for everyday scripts: names and objects, the built-in collections, control flow, functions, and comprehensions.
+* [Python program structure](engineering/python/structure.md) - Python beyond a single script: generators, decorators, error handling, resource cleanup, modules, classes, type hints, and tests.
 * [Subagents](engineering/claude-code/subagents.md) - What a Claude Code subagent is, when to delegate to one, how to write its task and tools, and the file that defines it.
 
 # Pattern
@@ -39,6 +41,7 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 * [Express backend for frontend](engineering/web-serving/express-bff.md) - The backend-for-frontend pattern, deploying an Express BFF to production, and handling its common incidents.
 * [Kubernetes IP or ENI exhaustion](engineering/kubernetes/ip-eni-exhaustion.md) - Diagnose and remediate Pods stuck Pending on ENI or IP capacity in an ENI-based Pod network, in dependency order.
 * [Reverse proxy gateway](engineering/web-serving/reverse-proxy-gateway.md) - Terminating HTTPS at an Nginx or OpenResty gateway in front of a private application, and deploying either in production.
+* [SRE Python drills](engineering/python/sre-drills.md) - Six interview-style Python drills on an Nginx access log, each solved with the smallest correct algorithm and its time and space cost.
 * [Starting a small business](engineering/startups/starting-a-small-business.md) - Founder advice on starting and growing a small business, including database and directory websites as a first product.
 * [Undoing and recovering in Git](engineering/git/undo-and-recovery.md) - Choose between restore, reset, revert, and reflog by whether the work is shared, and check a pre-flight list before any destructive Git operation.
 * [ZooKeeper recovery](engineering/zookeeper/zookeeper-recovery.md) - Recovering one failed ZooKeeper member, or a whole ensemble that lost quorum, from snapshots and transaction logs.
@@ -149,6 +152,25 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 * [Nginx production deployment guide (summary)](sources/nginx-production-guide.md) - Summary of the legacy beginner guide for deploying Nginx as a static server and reverse proxy with HTTPS on one Ubuntu 24.04 VM.
 * [OpenResty production deployment guide (summary)](sources/openresty-production-guide.md) - Summary of the legacy beginner guide for deploying OpenResty with a Lua health endpoint and reverse proxy on one Ubuntu 24.04 VM.
 * [Publish changes to GitHub (summary)](sources/git-publish-guide.md) - Summary of the legacy beginner guide to the branch, commit, push, pull request, and merge workflow on GitHub.
+* [Python Classes Cheatsheet (summary)](sources/py-classes.md) - Summary of the legacy python classes cheatsheet in this repository.
+* [Python Comprehensions Cheatsheet (summary)](sources/py-comprehensions.md) - Summary of the legacy python comprehensions cheatsheet in this repository.
+* [Python Context Managers Cheatsheet (summary)](sources/py-context-managers.md) - Summary of the legacy python context managers cheatsheet in this repository.
+* [Python Control Flow Cheatsheet (summary)](sources/py-control-flow.md) - Summary of the legacy python control flow cheatsheet in this repository.
+* [Python Decorators Cheatsheet (summary)](sources/py-decorators.md) - Summary of the legacy python decorators cheatsheet in this repository.
+* [Python Dictionaries Cheatsheet (summary)](sources/py-dictionaries.md) - Summary of the legacy python dictionaries cheatsheet in this repository.
+* [Python Exceptions Cheatsheet (summary)](sources/py-exceptions.md) - Summary of the legacy python exceptions cheatsheet in this repository.
+* [Python Files and Paths Cheatsheet (summary)](sources/py-files-and-paths.md) - Summary of the legacy python files and paths cheatsheet in this repository.
+* [Python Functions Cheatsheet (summary)](sources/py-functions.md) - Summary of the legacy python functions cheatsheet in this repository.
+* [Python Iterators and Generators Cheatsheet (summary)](sources/py-iterators-and-generators.md) - Summary of the legacy python iterators and generators cheatsheet in this repository.
+* [Python Lists Cheatsheet (summary)](sources/py-lists.md) - Summary of the legacy python lists cheatsheet in this repository.
+* [Python Loops Cheatsheet (summary)](sources/py-loops.md) - Summary of the legacy python loops cheatsheet in this repository.
+* [Python Modules and Packages Cheatsheet (summary)](sources/py-modules-and-packages.md) - Summary of the legacy python modules and packages cheatsheet in this repository.
+* [Python SRE HackerRank quick reference (summary)](sources/py-sre-drills.md) - Summary of the legacy Python index page and its six log-parsing and algorithm drills.
+* [Python Strings Cheatsheet (summary)](sources/py-strings.md) - Summary of the legacy python strings cheatsheet in this repository.
+* [Python Testing Cheatsheet (summary)](sources/py-testing.md) - Summary of the legacy python testing cheatsheet in this repository.
+* [Python Tuples and Sets Cheatsheet (summary)](sources/py-tuples-and-sets.md) - Summary of the legacy python tuples and sets cheatsheet in this repository.
+* [Python Type Hints Cheatsheet (summary)](sources/py-typing.md) - Summary of the legacy python type hints cheatsheet in this repository.
+* [Python Variables and Types Cheatsheet (summary)](sources/py-variables-and-types.md) - Summary of the legacy python variables and types cheatsheet in this repository.
 * [Solutions Architect Associate (SAA-C03) study outline (summary)](sources/aws-cert-solutions-architect.md) - Summary of the legacy Solutions Architect Associate (SAA-C03) study outline, verified against AWS documentation on 2026-08-19.
 * [The AI-Native SDLC Playbook (summary)](sources/ai-native-sdlc-playbook.md) - Summary of Anthropic's 2026-08-21 playbook that redesigns software delivery as a loop of versioned artifacts with human approval gates.
 * [The awk command (summary)](sources/bash-awk.md) - Summary of the legacy note on awk: fields, conditions, delimiters, and finding a field number in a log.
