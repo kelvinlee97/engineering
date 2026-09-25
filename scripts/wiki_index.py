@@ -89,7 +89,7 @@ def render(wiki: Path) -> tuple[dict[Path, str], list[str]]:
         index = directory / "index.md"
         listed = index.read_text(encoding="utf-8") if index.exists() else ""
         for sub in sorted(s for s in directory.iterdir() if s.is_dir()):
-            if f"]({sub.name}/)" not in listed:
+            if f"]({sub.name}/)" not in listed and f"]({sub.name}/index.md)" not in listed:
                 problems.append(f"{index.relative_to(wiki)}: add an entry for {sub.name}/")
     return out, problems
 

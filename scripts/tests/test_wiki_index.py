@@ -56,6 +56,13 @@ class WikiIndexTest(unittest.TestCase):
         _, problems = wiki_index.render(self.wiki)
         self.assertEqual(problems, ["engineering/index.md: add an entry for new/"])
 
+    def test_domain_entry_may_link_to_its_index_file(self) -> None:
+        (self.wiki / "engineering/index.md").write_text(
+            "# Domains\n\n* [Ops](ops/index.md) - Ops.\n", encoding="utf-8"
+        )
+        _, problems = wiki_index.render(self.wiki)
+        self.assertEqual(problems, [])
+
     def test_check_mode_reports_stale_without_writing(self) -> None:
         root = self.wiki / "index.md"
         before = root.read_text(encoding="utf-8")
