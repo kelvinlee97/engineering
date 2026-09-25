@@ -54,16 +54,16 @@ This page covers two jobs. The first is protecting and sharing data once it is i
 The first question is what you are moving, then whether the network can carry it.
 
 ```mermaid
-flowchart TD
+flowchart LR
     accTitle: Choosing an AWS service for moving data and workloads
     accDescr: Whole servers go to Application Migration Service and databases to Database Migration Service. Files that on-premises systems keep using go through Storage Gateway. Partner file exchange over SFTP, FTPS, FTP, or AS2 goes through Transfer Family. Bulk file copies go through DataSync when the network allows, and Snowball Edge devices otherwise, for existing customers.
-    Q{What are you moving?} -- Whole servers --> MGN[Application Migration Service]
-    Q -- A database --> DMS[Database Migration Service]
-    Q -- Files that stay in use on premises --> SG[Storage Gateway]
-    Q -- Files partners send over SFTP, FTPS, FTP, or AS2 --> TF[Transfer Family]
-    Q -- A bulk copy of files or objects --> N{Usable network?}
+    Q{Moving what?} -- Servers --> MGN[MGN]
+    Q -- Database --> DMS[DMS]
+    Q -- Files still used on premises --> SG[Storage Gateway]
+    Q -- Partner file drops --> TF[Transfer Family]
+    Q -- Bulk copy --> N{Network OK?}
     N -- Yes --> DS[DataSync]
-    N -- No --> SN[Snowball Edge, existing customers only]
+    N -- No --> SN[Snowball Edge]
 ```
 
 | Service | Moves | How | Ongoing or one-time |
