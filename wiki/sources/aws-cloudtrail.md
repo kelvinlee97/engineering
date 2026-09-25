@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T06:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/cloudtrail/README.md`, summarizing AWS CloudTrail from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-cloudtrail] Compiled into [AWS CloudTrail](../engineering/aws/cloudtrail.md).
+A note in this repository, `AWS/cloudtrail/README.md`, summarizing AWS CloudTrail from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-cloudtrail] Compiled into [AWS CloudTrail](../engineering/aws/security-monitoring.md#aws-cloudtrail).
 
-[^aws-cloudtrail]: AWS CloudTrail - Runbook & Reference
+[^aws-cloudtrail]: AWS CloudTrail - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/cloudtrail/README.md)

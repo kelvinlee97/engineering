@@ -14,4 +14,4 @@ status: draft
 ---
 A study outline in this repository, `AWS/certifications/cloud-practitioner/README.md`, verified against AWS documentation on 2026-08-19.[^aws-cert-cloud-practitioner] Compiled into [AWS certifications](../engineering/aws/certifications.md).
 
-[^aws-cert-cloud-practitioner]: AWS Certified Cloud Practitioner (CLF-C02) - Study Outline
+[^aws-cert-cloud-practitioner]: AWS Certified Cloud Practitioner (CLF-C02) - Study Outline, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/certifications/cloud-practitioner/README.md)

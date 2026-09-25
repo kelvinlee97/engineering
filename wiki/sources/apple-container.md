@@ -14,4 +14,4 @@ status: draft
 ---
 An overview in this repository, `apple/container/README.md`, of apple/container and the underlying apple/containerization Swift package. The project was at a 0.x version under active development when written.[^apple-container] See [Apple Container](../engineering/dev-tools/apple-container.md).
 
-[^apple-container]: Understanding Apple Container
+[^apple-container]: Understanding Apple Container, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/apple/container/README.md)

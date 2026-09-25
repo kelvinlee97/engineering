@@ -29,14 +29,14 @@ A study guide to Anthropic Academy's six-lesson *Introduction to agent skills* c
 
 ## Takeaways
 
-- A skill is task-specific knowledge Claude discovers from its description and loads only when relevant.[^claude-agent-skills-course] See [Agent skill](../engineering/claude-code/agent-skill.md).
-- Only names and descriptions are loaded up front; detail enters context when the task needs it.[^claude-agent-skills-course] See [Progressive disclosure](../engineering/claude-code/progressive-disclosure.md).
-- `CLAUDE.md`, skills, subagents, hooks, and MCP servers each own a different job.[^claude-agent-skills-course] See [Claude Code extension mechanisms](../engineering/claude-code/extension-mechanisms.md).
-- `allowed-tools` applies least privilege to skills.[^claude-agent-skills-course] See [Least-privilege tool access](../engineering/claude-code/least-privilege-tool-access.md).
-- Subagents do not inherit skills; a custom subagent lists them in its frontmatter.[^claude-agent-skills-course] See [Subagent](../engineering/claude-code/subagent.md) and [Subagent configuration file](../engineering/claude-code/subagent-configuration.md).
+- A skill is task-specific knowledge Claude discovers from its description and loads only when relevant. See [Agent skill](../engineering/claude-code/agent-skills.md#what-a-skill-is).
+- Only names and descriptions are loaded up front; detail enters context when the task needs it. See [Progressive disclosure](../engineering/claude-code/agent-skills.md#progressive-disclosure).
+- `CLAUDE.md`, skills, subagents, hooks, and MCP servers each own a different job. See [Claude Code extension mechanisms](../engineering/claude-code/extension-mechanisms.md).
+- `allowed-tools` applies least privilege to skills. See [Least-privilege tool access](../engineering/claude-code/subagents.md#least-privilege-tool-access).
+- Subagents do not inherit skills; a custom subagent lists them in its frontmatter.[^claude-agent-skills-course] See [Subagent](../engineering/claude-code/subagents.md#what-a-subagent-is) and [Subagent configuration file](../engineering/claude-code/subagents.md#subagent-configuration-file).
 
 ## What this source changed in the wiki
 
-It is the second Claude Code course ingested and overlaps the [subagents course](claude-subagents-course.md) on tool limits, subagent configuration, and built-in agents. The two guides name the built-in agents differently; the difference is recorded on [Subagent](../engineering/claude-code/subagent.md#contradictions).
+It is the second Claude Code course ingested and overlaps the [subagents course](claude-subagents-course.md) on tool limits, subagent configuration, and built-in agents. The two guides name the built-in agents differently; the difference is recorded on [Subagent](../engineering/claude-code/subagents.md#contradictions).
 
-[^claude-agent-skills-course]: Introduction to Claude Code Agent Skills (study guide)
+[^claude-agent-skills-course]: Introduction to Claude Code Agent Skills (study guide), [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Claude/agent-skills/README.md)

@@ -16,6 +16,6 @@ A runbook in this repository, `ZooKeeper/runbooks/disk-full-transaction-log-reco
 
 ## Takeaways
 
-- A truncated log on one member is a local storage problem while the others hold quorum; move the damaged data aside and let the member resync.[^zookeeper-disk-full-runbook] See [ZooKeeper single-member recovery](../engineering/zookeeper/single-member-recovery.md).
+- A truncated log on one member is a local storage problem while the others hold quorum; move the damaged data aside and let the member resync.[^zookeeper-disk-full-runbook] See [ZooKeeper single-member recovery](../engineering/zookeeper/zookeeper-recovery.md#recovering-a-single-member).
 
-[^zookeeper-disk-full-runbook]: ZooKeeper Disk-Full Recovery Runbook
+[^zookeeper-disk-full-runbook]: ZooKeeper Disk-Full Recovery Runbook, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/ZooKeeper/runbooks/disk-full-transaction-log-recovery/README.md)

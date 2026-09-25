@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/lambda/README.md`, summarizing AWS Lambda from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-18.[^aws-lambda] Compiled into [AWS Lambda](../engineering/aws/lambda.md).
+A note in this repository, `AWS/lambda/README.md`, summarizing AWS Lambda from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-18.[^aws-lambda] Compiled into [AWS Lambda](../engineering/aws/containers-and-serverless.md#aws-lambda).
 
-[^aws-lambda]: AWS Lambda - Runbook & Reference
+[^aws-lambda]: AWS Lambda - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/lambda/README.md)

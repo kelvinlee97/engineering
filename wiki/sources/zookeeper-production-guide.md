@@ -16,7 +16,7 @@ A guide in this repository, `ZooKeeper/guides/production-deployment/README.md`, 
 
 ## Takeaways
 
-- Three members tolerate one failure; four still tolerate only one.[^zookeeper-production-guide] See [ZooKeeper](../engineering/zookeeper/zookeeper.md).
-- Change one member at a time and stop if the ensemble is not one leader plus two followers.[^zookeeper-production-guide] See [ZooKeeper production deployment](../engineering/zookeeper/production-deployment.md).
+- Three members tolerate one failure; four still tolerate only one. See [ZooKeeper](../engineering/zookeeper/zookeeper.md#what-zookeeper-is).
+- Change one member at a time and stop if the ensemble is not one leader plus two followers.[^zookeeper-production-guide] See [ZooKeeper production deployment](../engineering/zookeeper/zookeeper.md#production-deployment).
 
-[^zookeeper-production-guide]: ZooKeeper Production Deployment Guide for DevOps Beginners
+[^zookeeper-production-guide]: ZooKeeper Production Deployment Guide for DevOps Beginners, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/ZooKeeper/guides/production-deployment/README.md)

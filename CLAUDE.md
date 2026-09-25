@@ -52,31 +52,45 @@ The step-by-step procedures live in `.claude/skills/wiki/SKILL.md`. In short:
   `Service`, `Playbook`, `Source Summary`, `Comparison`, `Synthesis`. Add a new value here
   before using it.
 - Provenance: list every source under `sources` with a stable `id` and a
-  `resource` (GitHub blob URL of the raw file). Attribute each factual claim
-  with a footnote whose label is that `id`, e.g. `[^claude-subagents-course]`.
+  `resource` (GitHub blob URL of the raw file). Attribute claims with a
+  footnote whose label is that `id`, e.g. `[^claude-subagents-course]`, at
+  most once per source in each `##` or `###` section, placed after the
+  section's last claim from that source. The site renders one back-link
+  button per citation, so citing every sentence buries the page in buttons.
+  Each footnote definition links the source's summary page and the original:
+  `[^id]: [Title](../../sources/id.md), [original](<resource>)`.
 - Trust: `generated: { by: claude-code/wiki-v1, at: <ISO 8601 UTC> }` on every
   page the LLM writes or meaningfully changes. Only the user adds
   `verified: { by: human:kelvinlee97, at: ... }`.
 - Lifecycle: new pages start as `status: draft`; the user promotes them to
-  `stable`. Superseded pages become `deprecated`, never deleted.
+  `stable`. Superseded pages become `deprecated`. A page merged into a topic
+  page is removed, and its old slug (for example
+  `engineering/claude-code/subagent`) goes into the topic page's `aliases`
+  list so the site redirects the old URL.
 - Body shape: no H1 (the title lives in frontmatter); every page except a
-  source summary ends with `## Related`, which links to the summary page
-  `sources/<id>.md` of each source it cites. Every listed source is cited at
-  least once. `wiki_check.py` enforces all of this.
-- Links between pages are relative paths (`../claude-code/subagent.md`), so
+  source summary ends with `## Related`, which links to related wiki pages
+  (sources are linked from the footnotes, not here). Every listed source is
+  cited at least once. `wiki_check.py` enforces all of this.
+- Links between pages are relative paths (`../claude-code/subagents.md`), so
   they resolve on GitHub and in Obsidian. OKF allows both forms. Link a
   directory through its index file (`claude-code/index.md`), never as
   `claude-code/`: Obsidian cannot resolve a bare directory link.
-- One concept, one page. Update the existing page rather than creating a
-  near-duplicate. When a new source contradicts an existing claim, keep both
+- One topic, one page. A topic page covers a subject a reader would look up
+  as a whole (Subagents, Git fundamentals, ZooKeeper recovery), with each
+  concept, pattern, or configuration as a `##` section. Aim for roughly 600
+  to 2,500 words; split only when a page would cover two unrelated reader
+  questions. Update the existing topic page rather than creating a new page
+  for each concept, and link to a section with an anchor
+  (`subagents.md#delegation-contract`). When a new source contradicts an existing claim, keep both
   claims with their footnotes under `## Contradictions`; do not pick a winner.
 
 ## Writing style
 
 1. Open every page with one to three plain-language sentences saying what it
    is, before any detail.
-2. Add a diagram only when it answers a reader question more clearly than prose
-   or a small table.
+2. Give every topic page at least one diagram when a flow, sequence,
+   decision, or set of relationships sits at its core; skip it only when the
+   page is a flat list or table. Draw only what the text states.
 3. Prefer a table for real comparisons, a list for sequential or parallel
    items, prose otherwise.
 4. Define necessary jargon in plain words on first use.

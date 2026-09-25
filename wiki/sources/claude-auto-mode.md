@@ -17,8 +17,8 @@ A note in this repository, `Claude/auto-mode/README.md`, summarizing the 5:41 vi
 
 ## Takeaways
 
-- Claude does not approve its own actions in Auto Mode; a separate classifier reviews higher-risk ones.[^claude-auto-mode] See [Auto Mode](../engineering/claude-code/auto-mode.md).
-- Permission rules stay the hard enforcement layer; classifier guidance is not deterministic.[^claude-auto-mode] See [Least-privilege tool access](../engineering/claude-code/least-privilege-tool-access.md).
-- A server-side probe plus the classifier form two layers against prompt injection.[^claude-auto-mode] See [Prompt injection](../engineering/claude-code/prompt-injection.md).
+- Claude does not approve its own actions in Auto Mode; a separate classifier reviews higher-risk ones. See [Auto Mode](../engineering/claude-code/auto-mode.md#how-auto-mode-works).
+- Permission rules stay the hard enforcement layer; classifier guidance is not deterministic. See [Least-privilege tool access](../engineering/claude-code/subagents.md#least-privilege-tool-access).
+- A server-side probe plus the classifier form two layers against prompt injection.[^claude-auto-mode] See [Prompt injection](../engineering/claude-code/auto-mode.md#prompt-injection).
 
-[^claude-auto-mode]: How Claude Code Auto Mode Works
+[^claude-auto-mode]: How Claude Code Auto Mode Works, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Claude/auto-mode/README.md)

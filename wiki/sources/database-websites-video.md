@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T05:45:00Z }
 status: draft
 ---
-A note in this repository, `YouTube/startup/i-make-32k-month-from-3-simple-boring-websites--5-G9WHwQMwQ/summary.md`, on a 14:30 Starter Story interview. All revenue, traffic, and cost figures are self-reported and unverified.[^database-websites-video] See [Database and directory products](../engineering/startups/database-directory-products.md).
+A note in this repository, `YouTube/startup/i-make-32k-month-from-3-simple-boring-websites--5-G9WHwQMwQ/summary.md`, on a 14:30 Starter Story interview. All revenue, traffic, and cost figures are self-reported and unverified.[^database-websites-video] See [Database and directory products](../engineering/startups/starting-a-small-business.md#database-and-directory-products).
 
-[^database-websites-video]: I make $32K/month from 3 simple, boring websites (video summary)
+[^database-websites-video]: I make $32K/month from 3 simple, boring websites (video summary), [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/YouTube/startup/i-make-32k-month-from-3-simple-boring-websites--5-G9WHwQMwQ/summary.md)

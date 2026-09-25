@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/global-accelerator/README.md`, summarizing AWS Global Accelerator from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-global-accelerator] Compiled into [AWS Global Accelerator](../engineering/aws/global-accelerator.md).
+A note in this repository, `AWS/global-accelerator/README.md`, summarizing AWS Global Accelerator from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-global-accelerator] Compiled into [AWS Global Accelerator](../engineering/aws/global-traffic.md#aws-global-accelerator).
 
-[^aws-global-accelerator]: AWS Global Accelerator - Runbook & Reference
+[^aws-global-accelerator]: AWS Global Accelerator - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/global-accelerator/README.md)

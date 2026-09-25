@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/eks/README.md`, summarizing Amazon EKS from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-eks] Compiled into [Amazon EKS](../engineering/aws/eks.md).
+A note in this repository, `AWS/eks/README.md`, summarizing Amazon EKS from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-eks] Compiled into [Amazon EKS](../engineering/aws/containers-and-serverless.md#amazon-eks).
 
-[^aws-eks]: Amazon EKS - Runbook & Reference
+[^aws-eks]: Amazon EKS - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/eks/README.md)

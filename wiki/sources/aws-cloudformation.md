@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/cloudformation/README.md`, summarizing AWS CloudFormation from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-cloudformation] Compiled into [AWS CloudFormation](../engineering/aws/cloudformation.md).
+A note in this repository, `AWS/cloudformation/README.md`, summarizing AWS CloudFormation from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-cloudformation] Compiled into [AWS CloudFormation](../engineering/aws/operations-tooling.md#aws-cloudformation).
 
-[^aws-cloudformation]: AWS CloudFormation - Runbook & Reference
+[^aws-cloudformation]: AWS CloudFormation - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/cloudformation/README.md)

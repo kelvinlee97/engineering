@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/elb/README.md`, summarizing Elastic Load Balancing from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-elb] Compiled into [Elastic Load Balancing](../engineering/aws/elb.md).
+A note in this repository, `AWS/elb/README.md`, summarizing Elastic Load Balancing from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-elb] Compiled into [Elastic Load Balancing](../engineering/aws/compute.md#elastic-load-balancing).
 
-[^aws-elb]: Elastic Load Balancing - Runbook & Reference
+[^aws-elb]: Elastic Load Balancing - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/elb/README.md)

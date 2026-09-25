@@ -17,8 +17,8 @@ A note in this repository, `Claude/managed-agents/README.md`, summarizing Anthro
 
 ## Takeaways
 
-- Managed Agents is a hosted agent harness: Anthropic runs the loop, sandbox, and tool execution, and you send events.[^claude-managed-agents] See [Claude Managed Agents](../engineering/claude-code/claude-managed-agents.md).
-- It trades the Messages API's control over every model call for managed infrastructure.[^claude-managed-agents]
+- Managed Agents is a hosted agent harness: Anthropic runs the loop, sandbox, and tool execution, and you send events. See [Claude Managed Agents](../engineering/claude-code/claude-managed-agents.md).
+- It trades the Messages API's control over every model call for managed infrastructure.
 - Being stateful, it was not eligible for Zero Data Retention or HIPAA BAA coverage at review time.[^claude-managed-agents]
 
-[^claude-managed-agents]: Claude Managed Agents
+[^claude-managed-agents]: Claude Managed Agents, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Claude/managed-agents/README.md)

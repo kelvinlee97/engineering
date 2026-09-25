@@ -1,54 +1,28 @@
 # Concept
 
-* [AWS pricing models](pricing-models.md) - AWS pricing trades flexibility for discount: On-Demand is flexible and dearest, commitments are cheaper, and Spot is cheapest but reclaimable.
-* [AWS shared responsibility model](shared-responsibility-model.md) - AWS secures the cloud itself; the customer secures what they put in it, and the split moves toward AWS as services become more managed.
-* [AWS Well-Architected Framework](well-architected.md) - AWS's six-pillar set of design practices, and the tool for reviewing a workload against them.
-* [Envelope encryption](envelope-encryption.md) - Encrypt data locally with a data key and store only an encrypted copy of that key, so the key service never handles bulk data.
-* [IAM policy evaluation](iam-policy-evaluation.md) - How AWS decides a request: every applicable policy layer is checked, an explicit deny anywhere wins, and nothing is allowed without an explicit allow.
+* [AWS foundations](aws-foundations.md) - The shared responsibility model and the Well-Architected Framework, the two ideas the other AWS pages assume.
 
 # Pattern
 
-* [AWS multi-account governance](multi-account-governance.md) - Run AWS as many accounts under Organizations, with central sign-in, an organization audit trail, and security services run from delegated administrator accounts.
-* [AWS security findings pipeline](security-findings-pipeline.md) - Route GuardDuty and other detector findings through Security Hub CSPM and EventBridge, and export them, because each service keeps only a short fixed history.
+* [AWS cost](cost.md) - How AWS charges (pricing models) and the Billing and Cost Management tools for tracking and controlling spend.
+* [AWS multi-account governance](multi-account-governance.md) - Running many AWS accounts under AWS Organizations, with guardrails applied from the organization rather than per account.
+* [AWS security monitoring](security-monitoring.md) - Recording API activity with CloudTrail, detecting threats with GuardDuty, and aggregating findings in Security Hub into one response pipeline.
+
+# Tool
+
+* [AWS operations tooling](operations-tooling.md) - Monitoring with CloudWatch, defining infrastructure with CloudFormation, and managing instances with Systems Manager.
 
 # Service
 
-* [Amazon CloudFront](cloudfront.md) - AWS's CDN: requests are answered from the nearest edge cache, and only misses reach the origin, so cache settings control both cost and freshness.
-* [Amazon CloudWatch](cloudwatch.md) - AWS's monitoring service: metrics, logs, and traces feed alarms and dashboards, and alarms only ever watch metrics.
-* [Amazon DynamoDB](dynamodb.md) - AWS's serverless key-value and document database, designed around access patterns and partition keys.
-* [Amazon EC2](ec2.md) - AWS's virtual servers: the instance type sets compute, memory, network, and storage, and the lifecycle state decides what you pay and what data survives.
-* [Amazon EC2 Auto Scaling](auto-scaling-groups.md) - Groups of EC2 instances held between a minimum and maximum size, scaled by policies and self-healed by health checks.
-* [Amazon ECR](ecr.md) - AWS's container image registry, with IAM-controlled private repositories, scanning, lifecycle cleanup, and replication.
-* [Amazon ECS](ecs.md) - AWS's own container orchestrator: task definitions run as tasks or long-running services on Fargate, EC2, or on-premises capacity.
-* [Amazon EKS](eks.md) - AWS's managed Kubernetes: AWS runs the control plane, and with Auto Mode also the nodes.
-* [Amazon ElastiCache](elasticache.md) - AWS's managed in-memory cache running Valkey, Redis OSS, or Memcached, serverless or on chosen nodes.
-* [Amazon EventBridge](eventbridge.md) - AWS's serverless event router: buses and rules match JSON events to targets, with Pipes and Scheduler alongside.
-* [Amazon GuardDuty](guardduty.md) - AWS's threat detection service that analyzes CloudTrail, VPC Flow Logs, and DNS logs, plus optional protection plans, to produce findings.
-* [Amazon RDS](rds.md) - AWS's managed relational databases, where Multi-AZ standbys give failover and read replicas give read scaling.
-* [Amazon Route 53](route53.md) - AWS's DNS service: domain registration, hosted zones with routing policies, and health checks that drop unhealthy targets from answers.
-* [Amazon S3](s3.md) - AWS's object storage: private-by-default buckets of objects, storage classes along a cost and latency scale, and lifecycle rules to move data down it.
-* [Amazon SNS](sns.md) - AWS's managed publish/subscribe service that fans one message out to many subscribers.
-* [Amazon SQS](sqs.md) - AWS's managed message queue for decoupling producers from consumers, with standard and FIFO queues.
-* [Amazon VPC](vpc.md) - AWS's logically isolated virtual network: CIDR ranges split into per-AZ subnets, with route tables, gateways, and firewalls deciding where traffic goes.
-* [AWS Billing and Cost Management](billing-cost-management.md) - AWS's billing console: paying, analyzing, tagging, budgeting, and buying commitments, with IAM access off by default.
-* [AWS CloudFormation](cloudformation.md) - AWS's infrastructure as code: templates become stacks, and every update is a computed change set applied as one unit.
-* [AWS CloudTrail](cloudtrail.md) - AWS's audit log of API and console actions, from a free 90-day event history to long-term trails and a queryable data lake.
-* [AWS Direct Connect](direct-connect.md) - A dedicated private network link from on-premises to AWS that bypasses the public internet, carried as virtual interfaces over BGP.
-* [AWS Global Accelerator](global-accelerator.md) - Static anycast IP addresses that carry user traffic over the AWS network to the healthiest, nearest regional endpoint.
-* [AWS IAM](iam.md) - AWS's authentication and authorization service: identities, policies, and temporary credentials that decide who can do what to which resource.
-* [AWS IAM Identity Center](iam-identity-center.md) - AWS's service for workforce sign-in to many accounts: users or an external identity provider, permission sets, and an access portal.
-* [AWS KMS](kms.md) - AWS's managed service for creating and controlling encryption and signing keys, used through envelope encryption.
-* [AWS Lambda](lambda.md) - AWS's serverless compute: functions run per event with no servers to manage, billed per request and GB-second.
-* [AWS Organizations](organizations.md) - AWS's service for managing many accounts as one tree of organizational units with shared billing and policy guardrails.
-* [AWS Secrets Manager](secrets-manager.md) - AWS's service for storing versioned secrets that applications fetch at runtime, with scheduled rotation through Lambda.
-* [AWS Security Hub CSPM](security-hub.md) - AWS's security posture service that gathers findings from other services and runs continuous checks against security standards.
-* [AWS Systems Manager](systems-manager.md) - AWS's toolkit for operating fleets of servers through an agent, without SSH: commands, sessions, patching, parameters, and runbooks.
-* [Elastic Load Balancing](elb.md) - AWS's load balancers (ALB, NLB, GWLB) that spread traffic across healthy targets in several Availability Zones.
+* [AWS compute](compute.md) - Choosing AWS compute, and running EC2 instances behind load balancers in Auto Scaling groups.
+* [AWS containers and serverless](containers-and-serverless.md) - Running containers on ECS or EKS with images in ECR, and running functions on Lambda.
+* [AWS encryption and secrets](encryption-and-secrets.md) - Envelope encryption with AWS KMS keys, and storing and rotating credentials in Secrets Manager.
+* [AWS IAM](iam.md) - How AWS IAM grants access: identities and roles, how a request's policies are evaluated, and IAM Identity Center for workforce sign-in.
+* [AWS networking](networking.md) - Amazon VPC for private networks in AWS, and Direct Connect for private links from on-premises.
 
 # Comparison
 
 * [AWS certifications](certifications.md) - The Cloud Practitioner, Developer Associate, and Solutions Architect Associate exams compared, with the study path the legacy outlines share.
-* [AWS compute options](compute-options.md) - How EC2, Lambda, ECS, and EKS divide the work between you and AWS, and the hard limits that push a workload from one to another.
-* [AWS database choices](database-choices.md) - RDS for relational workloads, DynamoDB for key-value access at scale, and ElastiCache as a disposable in-memory layer in front of either.
-* [AWS global traffic routing](global-traffic-routing.md) - Route 53, CloudFront, and Global Accelerator all steer users toward healthy endpoints, but at different layers and with different failover speed.
-* [AWS messaging choices](messaging-choices.md) - SQS queues work for one consumer, SNS fans out to many, and EventBridge routes events by content; the limits and delivery guarantees differ.
+* [AWS data stores](data-stores.md) - Choosing an AWS data store, and the main options: RDS, DynamoDB, ElastiCache, and S3.
+* [AWS global traffic routing](global-traffic.md) - Getting users to the right AWS endpoint: Route 53 DNS, CloudFront caching, and Global Accelerator, and how to choose between them.
+* [AWS messaging](messaging.md) - Choosing between SQS queues, SNS topics, and EventBridge event buses for decoupling AWS services.

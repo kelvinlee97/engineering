@@ -16,8 +16,8 @@ A guide in this repository, `Nginx/guides/nginx-production-deployment/README.md`
 
 ## Takeaways
 
-- Nginx terminates HTTPS and splits requests between static files and a loopback-only application.[^nginx-production-guide] See [Reverse proxy gateway](../engineering/web-serving/reverse-proxy-gateway.md).
-- Every change is backed up, tested with `nginx -t`, and applied with a graceful reload.[^nginx-production-guide] See [Safe change procedure](../engineering/operations/safe-change-procedure.md).
-- Troubleshooting goes layer by layer from a symptom table.[^nginx-production-guide] See [Nginx production deployment](../engineering/web-serving/nginx-production-deployment.md).
+- Nginx terminates HTTPS and splits requests between static files and a loopback-only application. See [Reverse proxy gateway](../engineering/web-serving/reverse-proxy-gateway.md#how-the-gateway-works).
+- Every change is backed up, tested with `nginx -t`, and applied with a graceful reload. See [Safe change procedure](../engineering/operations/incident-operations.md#safe-change-procedure).
+- Troubleshooting goes layer by layer from a symptom table.[^nginx-production-guide] See [Nginx production deployment](../engineering/web-serving/reverse-proxy-gateway.md#nginx-production-deployment).
 
-[^nginx-production-guide]: Nginx Production Deployment and Operations for Beginners
+[^nginx-production-guide]: Nginx Production Deployment and Operations for Beginners, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Nginx/guides/nginx-production-deployment/README.md)

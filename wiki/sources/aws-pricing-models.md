@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/pricing-models/README.md`, summarizing AWS pricing models from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-pricing-models] Compiled into [AWS pricing models](../engineering/aws/pricing-models.md).
+A note in this repository, `AWS/pricing-models/README.md`, summarizing AWS pricing models from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-pricing-models] Compiled into [AWS pricing models](../engineering/aws/cost.md#aws-pricing-models).
 
-[^aws-pricing-models]: AWS pricing models - Runbook & Reference
+[^aws-pricing-models]: AWS pricing models - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/pricing-models/README.md)

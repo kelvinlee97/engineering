@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T05:45:00Z }
 status: draft
 ---
-A note in this repository, `YouTube/claude/what-happens-when-ai-agents-run-the-business--n34CIw3gk1k/summary.md`, on an a16z video with Kavak's Maza Ayala. The note stresses that the metrics are the speaker's own, from auto-generated captions, and were not independently verified.[^kavak-agents-video] See [AI-native company](../engineering/ai-engineering/ai-native-company.md).
+A note in this repository, `YouTube/claude/what-happens-when-ai-agents-run-the-business--n34CIw3gk1k/summary.md`, on an a16z video with Kavak's Maza Ayala. The note stresses that the metrics are the speaker's own, from auto-generated captions, and were not independently verified.[^kavak-agents-video] See [AI-native company](../engineering/ai-engineering/ai-native-organization.md#ai-native-company).
 
-[^kavak-agents-video]: What Happens When AI Agents Run the Business? (video summary)
+[^kavak-agents-video]: What Happens When AI Agents Run the Business? (video summary), [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/YouTube/claude/what-happens-when-ai-agents-run-the-business--n34CIw3gk1k/summary.md)

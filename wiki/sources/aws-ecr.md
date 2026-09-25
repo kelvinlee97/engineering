@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/ecr/README.md`, summarizing Amazon ECR from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-ecr] Compiled into [Amazon ECR](../engineering/aws/ecr.md).
+A note in this repository, `AWS/ecr/README.md`, summarizing Amazon ECR from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-ecr] Compiled into [Amazon ECR](../engineering/aws/containers-and-serverless.md#amazon-ecr).
 
-[^aws-ecr]: Amazon ECR - Runbook & Reference
+[^aws-ecr]: Amazon ECR - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/ecr/README.md)

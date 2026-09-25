@@ -16,8 +16,8 @@ A reference in this repository, `Git/README.md`, for operations engineers who al
 
 ## Takeaways
 
-- Work moves between working tree, staging area, local repository, and remote.[^git-operations-reference] See [Git's four places](../engineering/git/git-four-places.md).
-- Divergence needs an explicit choice of fast-forward, rebase, or merge.[^git-operations-reference] See [Syncing a Git branch](../engineering/git/branch-sync.md).
+- Work moves between working tree, staging area, local repository, and remote. See [Git's four places](../engineering/git/git-fundamentals.md#gits-four-places).
+- Divergence needs an explicit choice of fast-forward, rebase, or merge. See [Syncing a Git branch](../engineering/git/branches-and-pull-requests.md#syncing-a-git-branch).
 - Revert on shared branches; reset only unshared work; reflog recovers local mistakes.[^git-operations-reference] See [Undoing and recovering in Git](../engineering/git/undo-and-recovery.md).
 
-[^git-operations-reference]: Essential Git Commands for Operations
+[^git-operations-reference]: Essential Git Commands for Operations, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Git/README.md)

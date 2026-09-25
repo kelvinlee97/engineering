@@ -21,8 +21,8 @@ Only module 2, *Designing Agent Architecture and SDLC Integration*, was read uni
 
 ## Exam facts
 
-- GH-600: provided by Microsoft, maintained by GitHub; proctored, 120 minutes, English only, through Pearson VUE; intermediate level.[^gh-600-study-notes]
-- Retake after 24 hours following a first failure; later waits grow.[^gh-600-study-notes]
+- GH-600: provided by Microsoft, maintained by GitHub; proctored, 120 minutes, English only, through Pearson VUE; intermediate level.
+- Retake after 24 hours following a first failure; later waits grow.
 
 | Domain | Weight |
 | --- | --- |
@@ -37,8 +37,8 @@ As listed in the notes.[^gh-600-study-notes]
 
 ## Takeaways
 
-- Agents propose work through branches and pull requests; GitHub controls decide whether it is accepted.[^gh-600-study-notes] See [Agents propose, people and policy accept](../engineering/ai-engineering/propose-accept-boundary.md).
-- Autonomy should be sized to the risk of the paths a change touches.[^gh-600-study-notes] See [Risk-based autonomy](../engineering/ai-engineering/risk-based-autonomy.md).
-- A task needs defined inputs, outputs, and success criteria.[^gh-600-study-notes] See [Delegation contract](../engineering/claude-code/delegation-contract.md).
+- Agents propose work through branches and pull requests; GitHub controls decide whether it is accepted. See [Agents propose, people and policy accept](../engineering/ai-engineering/ai-native-sdlc.md#agents-propose-people-and-policy-accept).
+- Autonomy should be sized to the risk of the paths a change touches. See [Risk-based autonomy](../engineering/ai-engineering/ai-native-sdlc.md#risk-based-autonomy).
+- A task needs defined inputs, outputs, and success criteria.[^gh-600-study-notes] See [Delegation contract](../engineering/claude-code/subagents.md#delegation-contract).
 
-[^gh-600-study-notes]: GitHub Certified: Agentic AI Developer (study notes)
+[^gh-600-study-notes]: GitHub Certified: Agentic AI Developer (study notes), [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Claude/github-agentic-ai-developer/README.md)

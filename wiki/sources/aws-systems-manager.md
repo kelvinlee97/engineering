@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/systems-manager/README.md`, summarizing AWS Systems Manager from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-systems-manager] Compiled into [AWS Systems Manager](../engineering/aws/systems-manager.md).
+A note in this repository, `AWS/systems-manager/README.md`, summarizing AWS Systems Manager from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-systems-manager] Compiled into [AWS Systems Manager](../engineering/aws/operations-tooling.md#aws-systems-manager).
 
-[^aws-systems-manager]: AWS Systems Manager - Runbook & Reference
+[^aws-systems-manager]: AWS Systems Manager - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/systems-manager/README.md)

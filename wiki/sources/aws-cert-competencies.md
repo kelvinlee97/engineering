@@ -14,4 +14,4 @@ status: draft
 ---
 A study outline in this repository, `AWS/certifications/competencies/README.md`, verified against AWS documentation on 2026-08-19.[^aws-cert-competencies] Compiled into [AWS certifications](../engineering/aws/certifications.md).
 
-[^aws-cert-competencies]: AWS Competencies for Cloud Roles - Study Outline
+[^aws-cert-competencies]: AWS Competencies for Cloud Roles - Study Outline, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/certifications/competencies/README.md)

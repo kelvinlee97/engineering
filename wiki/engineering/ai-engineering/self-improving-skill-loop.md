@@ -23,7 +23,7 @@ generated: { by: claude-code/wiki-v1, at: 2026-09-25T05:45:00Z }
 status: draft
 ---
 
-In this pattern an agent's behaviour improves by editing a text file, not the model. A second, scheduled agent reads human feedback on the first agent's work and opens a pull request that changes the [skill](../claude-code/agent-skill.md) file the first agent reads. There is no fine-tuning, embeddings store, or memory service.[^warp-self-improving-agents]
+In this pattern an agent's behaviour improves by editing a text file, not the model. A second, scheduled agent reads human feedback on the first agent's work and opens a pull request that changes the [skill](../claude-code/agent-skills.md#what-a-skill-is) file the first agent reads. There is no fine-tuning, embeddings store, or memory service.[^warp-self-improving-agents]
 
 ## The problem it solves
 
@@ -38,7 +38,7 @@ Warp's code review agent, used across roughly 800,000 monthly developers, kept m
 | Produces | The code review | A small, focused edit to the skill file |
 | Applied by | Immediately, in the session | A pull request a person merges |
 
-As described in the source.[^warp-self-improving-agents] The outer skill never does the task; it compares what the agent suggested with how people responded and proposes an edit.[^warp-self-improving-agents]
+As described in the source. The outer skill never does the task; it compares what the agent suggested with how people responded and proposes an edit.[^warp-self-improving-agents]
 
 ## Feedback quality over volume
 
@@ -52,7 +52,7 @@ A thumbs-down says the output was wrong but not why. A comment such as "our conv
 4. Schedule it; per-task improvement has too little evidence and churns.
 5. Review the PRs, rejecting one reviewer's preference presented as team convention.
 
-[^warp-self-improving-agents]
+*Source for this section.*[^warp-self-improving-agents]
 
 ## The same loop elsewhere
 
@@ -67,11 +67,8 @@ The note's author lists: skill files that grow into long, partly contradictory l
 
 ## Related
 
-- Source: [What happens when AI agents run the business](../../sources/kavak-agents-video.md)
-- Source: [Building and structuring an AI-native company](../../sources/ai-native-company-structure-video.md)
-- [Agents propose, people and policy accept](propose-accept-boundary.md): why the improvement is a PR.
-- Source: [How Warp Builds Self-Improving Agents on Claude](../../sources/warp-self-improving-agents.md)
+- [Agents propose, people and policy accept](ai-native-sdlc.md#agents-propose-people-and-policy-accept): why the improvement is a PR.
 
-[^warp-self-improving-agents]: How Warp Builds Self-Improving Agents on Claude
-[^ai-native-company-structure-video]: Building and Structuring an AI-Native Company (video summary)
-[^kavak-agents-video]: What Happens When AI Agents Run the Business? (video summary)
+[^warp-self-improving-agents]: [How Warp Builds Self-Improving Agents on Claude](../../sources/warp-self-improving-agents.md), [original](https://github.com/kelvinlee97/engineering/blob/main/Claude/self-improving-agents/README.md)
+[^ai-native-company-structure-video]: [Building and Structuring an AI-Native Company (video summary)](../../sources/ai-native-company-structure-video.md), [original](https://github.com/kelvinlee97/engineering/blob/main/YouTube/startup/building-and-structuring-an-ai-native-company--Z3JyAqh4ixg/summary.md)
+[^kavak-agents-video]: [What Happens When AI Agents Run the Business? (video summary)](../../sources/kavak-agents-video.md), [original](https://github.com/kelvinlee97/engineering/blob/main/YouTube/claude/what-happens-when-ai-agents-run-the-business--n34CIw3gk1k/summary.md)

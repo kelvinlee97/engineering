@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/billing-cost-management/README.md`, summarizing AWS Billing and Cost Management from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-billing-cost-management] Compiled into [AWS Billing and Cost Management](../engineering/aws/billing-cost-management.md).
+A note in this repository, `AWS/billing-cost-management/README.md`, summarizing AWS Billing and Cost Management from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-billing-cost-management] Compiled into [AWS Billing and Cost Management](../engineering/aws/cost.md#aws-billing-and-cost-management).
 
-[^aws-billing-cost-management]: AWS Billing and Cost Management - Runbook & Reference
+[^aws-billing-cost-management]: AWS Billing and Cost Management - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/billing-cost-management/README.md)

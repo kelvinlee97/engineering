@@ -12,128 +12,67 @@ A wiki the LLM compiles from the sources in `raw/` and the legacy articles, foll
 
 # Concept
 
-* [Agent skill](engineering/claude-code/agent-skill.md) - A folder of task-specific instructions and optional resources that Claude Code loads only when a request matches its description.
-* [AI adoption maturity](engineering/ai-engineering/ai-adoption-maturity.md) - A four-stage ladder from individual chat use to end-to-end processes, driven by growing user fluency, system access, and governance.
-* [AI-native company](engineering/ai-engineering/ai-native-company.md) - A company designed around AI loops from the start, with work made legible to agents and people at the boundary with reality, as argued in several founder and investor talks.
-* [Auto Mode](engineering/claude-code/auto-mode.md) - A Claude Code permission mode where low-risk actions run directly and a separate classifier reviews higher-risk ones against user intent and a configured trust boundary.
-* [AWS pricing models](engineering/aws/pricing-models.md) - AWS pricing trades flexibility for discount: On-Demand is flexible and dearest, commitments are cheaper, and Spot is cheapest but reclaimable.
-* [AWS shared responsibility model](engineering/aws/shared-responsibility-model.md) - AWS secures the cloud itself; the customer secures what they put in it, and the split moves toward AWS as services become more managed.
-* [AWS Well-Architected Framework](engineering/aws/well-architected.md) - AWS's six-pillar set of design practices, and the tool for reviewing a workload against them.
-* [Backend for frontend](engineering/web-serving/backend-for-frontend.md) - A backend that serves one browser-facing application: it enforces session and authorization rules, adapts requests, and calls downstream services.
+* [Agent skills](engineering/claude-code/agent-skills.md) - What a Claude Code skill is, how progressive disclosure keeps it cheap, and the SKILL.md file that defines it.
+* [AI-native organization](engineering/ai-engineering/ai-native-organization.md) - What an AI-native company is and the company brain that feeds its agents, as argued in founder and investor talks.
+* [Auto Mode and prompt injection](engineering/claude-code/auto-mode.md) - A Claude Code permission mode where a classifier reviews higher-risk actions, and the prompt-injection threat it is built to contain.
+* [AWS foundations](engineering/aws/aws-foundations.md) - The shared responsibility model and the Well-Architected Framework, the two ideas the other AWS pages assume.
 * [Claude Code extension mechanisms](engineering/claude-code/extension-mechanisms.md) - How CLAUDE.md, skills, subagents, hooks, and MCP servers differ, and which job each one owns.
-* [Company brain](engineering/ai-engineering/company-brain.md) - An organization's curated memory plus the retrieval that selects what an agent needs, kept useful by provenance, contradiction checks, and pruning.
-* [Context isolation](engineering/claude-code/context-isolation.md) - Keeping an agent's intermediate work out of the main context window, at the cost of losing whatever the summary leaves out.
-* [Envelope encryption](engineering/aws/envelope-encryption.md) - Encrypt data locally with a data key and store only an encrypted copy of that key, so the key service never handles bulk data.
-* [Git's four places](engineering/git/git-four-places.md) - Git moves work between the working tree, the staging area, the local repository, and a remote; most commands inspect or move content between them.
-* [IAM policy evaluation](engineering/aws/iam-policy-evaluation.md) - How AWS decides a request: every applicable policy layer is checked, an explicit deny anywhere wins, and nothing is allowed without an explicit allow.
-* [Prompt injection](engineering/claude-code/prompt-injection.md) - Instructions hidden in content an agent reads, such as web pages, files, or issue comments, that try to redirect it away from the user's request.
-* [Reverse proxy gateway](engineering/web-serving/reverse-proxy-gateway.md) - A server such as Nginx or OpenResty that terminates HTTPS at the edge and forwards requests to an application listening only on a private address.
-* [Subagent](engineering/claude-code/subagent.md) - A worker agent that Claude Code hands a bounded task to, which runs in its own context and returns only a focused result.
+* [Git fundamentals](engineering/git/git-fundamentals.md) - Git's four places, the everyday commands that move work between them, the commit workflow, and keeping secrets out.
+* [Subagents](engineering/claude-code/subagents.md) - What a Claude Code subagent is, when to delegate to one, how to write its task and tools, and the file that defines it.
 
 # Pattern
 
-* [Agents propose, people and policy accept](engineering/ai-engineering/propose-accept-boundary.md) - Route every agent change through pull requests so that required checks, code owners, and approval gates, not the agent, decide what is accepted.
-* [AI-native SDLC](engineering/ai-engineering/ai-native-sdlc.md) - A software delivery loop where each stage leaves a committed artifact, agents work between human approval gates, and production evidence returns as new intent.
-* [AWS multi-account governance](engineering/aws/multi-account-governance.md) - Run AWS as many accounts under Organizations, with central sign-in, an organization audit trail, and security services run from delegated administrator accounts.
-* [AWS security findings pipeline](engineering/aws/security-findings-pipeline.md) - Route GuardDuty and other detector findings through Security Hub CSPM and EventBridge, and export them, because each service keeps only a short fixed history.
-* [Database and directory products](engineering/startups/database-directory-products.md) - Small SaaS products that sell a curated database, such as investors or journalists, found through a painful problem and grown with SEO.
-* [Delegation contract](engineering/claude-code/delegation-contract.md) - What a subagent must be told up front: when it is used, what its output looks like, and which obstacles it must report.
-* [Deterministic checks and model judgment](engineering/ai-engineering/deterministic-vs-model-work.md) - Put enforcement, exact data, and repeatable computation in deterministic code, and use a model only where judgment or interpretation is needed.
-* [Git commit workflow](engineering/git/commit-workflow.md) - Review what changed, stage explicit paths, review what is staged, commit, and confirm the result before pushing.
-* [Incident closure criteria](engineering/operations/incident-closure-criteria.md) - Close an incident only when written acceptance evidence shows each affected layer is healthy, and the record separates evidence, actions, and hypotheses.
-* [Keeping secrets out of Git](engineering/git/secrets-in-git.md) - Never commit credentials; if one leaks, revoke or rotate it first, because deleting the file or rewriting history cannot prove it was not copied.
-* [Layered troubleshooting](engineering/operations/layered-troubleshooting.md) - Treat a failure as one broken link in a known chain of layers, and find the first broken link with read-only evidence before changing anything.
-* [Least-privilege tool access](engineering/claude-code/least-privilege-tool-access.md) - Grant an agent only the tools its job requires, starting from what it must do.
-* [Measuring an AI rollout](engineering/ai-engineering/ai-rollout-measurement.md) - Judge an AI tooling rollout by comparing concurrent cohorts against pre-set baselines, and lead with expansion rather than hours saved.
-* [Progressive disclosure](engineering/claude-code/progressive-disclosure.md) - Expose only a short summary up front and load detailed material into context only when the task needs it.
-* [Risk-based autonomy](engineering/ai-engineering/risk-based-autonomy.md) - Give agents more autonomy on low-risk, reversible work and keep human approval for high-risk and production changes, widening scope gradually.
-* [Safe change procedure](engineering/operations/safe-change-procedure.md) - Make one small, backed-up change at a time, validate it before applying, apply it gracefully, verify each layer, and keep a known-good rollback.
+* [AI adoption and measurement](engineering/ai-engineering/ai-adoption.md) - The four-stage AI adoption ladder and how to measure whether a rollout is paying off.
+* [AI-native SDLC](engineering/ai-engineering/ai-native-sdlc.md) - Putting agents into software delivery: the propose-accept boundary, risk-based autonomy, and which work stays deterministic.
+* [AWS cost](engineering/aws/cost.md) - How AWS charges (pricing models) and the Billing and Cost Management tools for tracking and controlling spend.
+* [AWS multi-account governance](engineering/aws/multi-account-governance.md) - Running many AWS accounts under AWS Organizations, with guardrails applied from the organization rather than per account.
+* [AWS security monitoring](engineering/aws/security-monitoring.md) - Recording API activity with CloudTrail, detecting threats with GuardDuty, and aggregating findings in Security Hub into one response pipeline.
+* [Incident operations](engineering/operations/incident-operations.md) - Practices shared across the runbooks: troubleshoot layer by layer, change production safely, and close an incident only on evidence.
 * [Self-improving skill loop](engineering/ai-engineering/self-improving-skill-loop.md) - A scheduled agent reads human feedback on another agent's output and opens a pull request that edits that agent's skill file.
-* [Text-processing pipelines](engineering/linux/text-processing-pipelines.md) - Answer log questions by chaining small Unix filters such as awk, cut, sort, uniq, grep, and wc into one pipeline.
-* [When to delegate](engineering/claude-code/when-to-delegate.md) - Delegate when only the result matters to the main thread; keep work in one context when its intermediate steps matter.
 
 # Playbook
 
 * [APT package management](engineering/linux/apt-package-management.md) - Install, upgrade, hold, roll back, and troubleshoot Ubuntu packages safely by refreshing, simulating, and inspecting before applying.
-* [Express BFF deployment](engineering/web-serving/express-bff-deployment.md) - Deploy an Express backend-for-frontend under PM2 cluster mode as an unprivileged user, with immutable releases and symlink rollback.
-* [Express BFF incidents](engineering/web-serving/express-bff-incidents.md) - Ten common failure modes of an Express BFF under PM2 cluster mode, each with first checks, recovery, and verification.
-* [GitHub pull request workflow](engineering/git/pull-request-workflow.md) - Publish a change on GitHub through a focused branch, a reviewed pull request, passing checks, and a merge, then clean up.
+* [Branches and pull requests](engineering/git/branches-and-pull-requests.md) - Keeping a branch in sync with its upstream and taking it through the GitHub pull request workflow.
+* [Express backend for frontend](engineering/web-serving/express-bff.md) - The backend-for-frontend pattern, deploying an Express BFF to production, and handling its common incidents.
 * [Kubernetes IP or ENI exhaustion](engineering/kubernetes/ip-eni-exhaustion.md) - Diagnose and remediate Pods stuck Pending on ENI or IP capacity in an ENI-based Pod network, in dependency order.
-* [Nginx production deployment](engineering/web-serving/nginx-production-deployment.md) - Deploy Nginx on one Ubuntu 24.04 VM to serve static files and reverse-proxy a loopback application, with Certbot HTTPS and layer-by-layer checks.
-* [OpenResty production deployment](engineering/web-serving/openresty-production-deployment.md) - Deploy OpenResty on one Ubuntu 24.04 VM with a Lua health endpoint, a loopback reverse proxy, and Certbot HTTPS.
-* [Starting a small business](engineering/startups/starting-a-small-business.md) - A seven-part outline for starting a small business: choosing the model, break-even, the customer problem, a plan, product-market fit, finances, and marketing.
-* [Syncing a Git branch](engineering/git/branch-sync.md) - Fetch first, compare local and upstream commits, then choose fast-forward, rebase, or merge deliberately, and resolve conflicts on purpose.
+* [Reverse proxy gateway](engineering/web-serving/reverse-proxy-gateway.md) - Terminating HTTPS at an Nginx or OpenResty gateway in front of a private application, and deploying either in production.
+* [Starting a small business](engineering/startups/starting-a-small-business.md) - Founder advice on starting and growing a small business, including database and directory websites as a first product.
 * [Undoing and recovering in Git](engineering/git/undo-and-recovery.md) - Choose between restore, reset, revert, and reflog by whether the work is shared, and check a pre-flight list before any destructive Git operation.
-* [ZooKeeper production deployment](engineering/zookeeper/production-deployment.md) - Build and operate a three-member ZooKeeper 3.9.5 ensemble with mutual TLS, systemd, JMX metrics, and one-member-at-a-time changes.
-* [ZooKeeper quorum-loss restore](engineering/zookeeper/quorum-loss-restore.md) - Restore a three-member ZooKeeper ensemble that lost quorum by loading the same approved snapshot into every member, one at a time, through a temporary loopback-only admin endpoint.
-* [ZooKeeper single-member recovery](engineering/zookeeper/single-member-recovery.md) - Rebuild one ZooKeeper member whose transaction log a full disk truncated, by moving its data aside and letting it resync from a healthy quorum.
+* [ZooKeeper recovery](engineering/zookeeper/zookeeper-recovery.md) - Recovering one failed ZooKeeper member, or a whole ensemble that lost quorum, from snapshots and transaction logs.
 
 # Tool
 
 * [Apple Container](engineering/dev-tools/apple-container.md) - Apple's native container tool for Apple silicon Macs, which runs each container in its own lightweight VM instead of one shared Linux VM.
-* [Claude Code GitHub Actions](engineering/claude-code/claude-code-github-actions.md) - The anthropics/claude-code-action workflow step that runs Claude Code inside a GitHub Actions job, triggered by @claude mentions or a fixed prompt.
+* [AWS operations tooling](engineering/aws/operations-tooling.md) - Monitoring with CloudWatch, defining infrastructure with CloudFormation, and managing instances with Systems Manager.
+* [Claude Code on GitHub](engineering/claude-code/github-integration.md) - The Claude GitHub App, the Claude Code GitHub Actions workflow, and PR auto-fix, and how they fit together.
 * [Claude Projects](engineering/claude-code/claude-projects.md) - In the September 2026 redesign, a Claude project is one long-running conversation whose coordinator splits a goal into parallel threads sharing memory and a library.
-* [Pull request auto-fix](engineering/claude-code/pr-auto-fix.md) - A Claude Code cloud feature that watches a pull request and responds to CI failures and review comments, with known blind spots.
 
 # Service
 
-* [Amazon CloudFront](engineering/aws/cloudfront.md) - AWS's CDN: requests are answered from the nearest edge cache, and only misses reach the origin, so cache settings control both cost and freshness.
-* [Amazon CloudWatch](engineering/aws/cloudwatch.md) - AWS's monitoring service: metrics, logs, and traces feed alarms and dashboards, and alarms only ever watch metrics.
-* [Amazon DynamoDB](engineering/aws/dynamodb.md) - AWS's serverless key-value and document database, designed around access patterns and partition keys.
-* [Amazon EC2](engineering/aws/ec2.md) - AWS's virtual servers: the instance type sets compute, memory, network, and storage, and the lifecycle state decides what you pay and what data survives.
-* [Amazon EC2 Auto Scaling](engineering/aws/auto-scaling-groups.md) - Groups of EC2 instances held between a minimum and maximum size, scaled by policies and self-healed by health checks.
-* [Amazon ECR](engineering/aws/ecr.md) - AWS's container image registry, with IAM-controlled private repositories, scanning, lifecycle cleanup, and replication.
-* [Amazon ECS](engineering/aws/ecs.md) - AWS's own container orchestrator: task definitions run as tasks or long-running services on Fargate, EC2, or on-premises capacity.
-* [Amazon EKS](engineering/aws/eks.md) - AWS's managed Kubernetes: AWS runs the control plane, and with Auto Mode also the nodes.
-* [Amazon ElastiCache](engineering/aws/elasticache.md) - AWS's managed in-memory cache running Valkey, Redis OSS, or Memcached, serverless or on chosen nodes.
-* [Amazon EventBridge](engineering/aws/eventbridge.md) - AWS's serverless event router: buses and rules match JSON events to targets, with Pipes and Scheduler alongside.
-* [Amazon GuardDuty](engineering/aws/guardduty.md) - AWS's threat detection service that analyzes CloudTrail, VPC Flow Logs, and DNS logs, plus optional protection plans, to produce findings.
-* [Amazon RDS](engineering/aws/rds.md) - AWS's managed relational databases, where Multi-AZ standbys give failover and read replicas give read scaling.
-* [Amazon Route 53](engineering/aws/route53.md) - AWS's DNS service: domain registration, hosted zones with routing policies, and health checks that drop unhealthy targets from answers.
-* [Amazon S3](engineering/aws/s3.md) - AWS's object storage: private-by-default buckets of objects, storage classes along a cost and latency scale, and lifecycle rules to move data down it.
-* [Amazon SNS](engineering/aws/sns.md) - AWS's managed publish/subscribe service that fans one message out to many subscribers.
-* [Amazon SQS](engineering/aws/sqs.md) - AWS's managed message queue for decoupling producers from consumers, with standard and FIFO queues.
-* [Amazon VPC](engineering/aws/vpc.md) - AWS's logically isolated virtual network: CIDR ranges split into per-AZ subnets, with route tables, gateways, and firewalls deciding where traffic goes.
-* [AWS Billing and Cost Management](engineering/aws/billing-cost-management.md) - AWS's billing console: paying, analyzing, tagging, budgeting, and buying commitments, with IAM access off by default.
-* [AWS CloudFormation](engineering/aws/cloudformation.md) - AWS's infrastructure as code: templates become stacks, and every update is a computed change set applied as one unit.
-* [AWS CloudTrail](engineering/aws/cloudtrail.md) - AWS's audit log of API and console actions, from a free 90-day event history to long-term trails and a queryable data lake.
-* [AWS Direct Connect](engineering/aws/direct-connect.md) - A dedicated private network link from on-premises to AWS that bypasses the public internet, carried as virtual interfaces over BGP.
-* [AWS Global Accelerator](engineering/aws/global-accelerator.md) - Static anycast IP addresses that carry user traffic over the AWS network to the healthiest, nearest regional endpoint.
-* [AWS IAM](engineering/aws/iam.md) - AWS's authentication and authorization service: identities, policies, and temporary credentials that decide who can do what to which resource.
-* [AWS IAM Identity Center](engineering/aws/iam-identity-center.md) - AWS's service for workforce sign-in to many accounts: users or an external identity provider, permission sets, and an access portal.
-* [AWS KMS](engineering/aws/kms.md) - AWS's managed service for creating and controlling encryption and signing keys, used through envelope encryption.
-* [AWS Lambda](engineering/aws/lambda.md) - AWS's serverless compute: functions run per event with no servers to manage, billed per request and GB-second.
-* [AWS Organizations](engineering/aws/organizations.md) - AWS's service for managing many accounts as one tree of organizational units with shared billing and policy guardrails.
-* [AWS Secrets Manager](engineering/aws/secrets-manager.md) - AWS's service for storing versioned secrets that applications fetch at runtime, with scheduled rotation through Lambda.
-* [AWS Security Hub CSPM](engineering/aws/security-hub.md) - AWS's security posture service that gathers findings from other services and runs continuous checks against security standards.
-* [AWS Systems Manager](engineering/aws/systems-manager.md) - AWS's toolkit for operating fleets of servers through an agent, without SSH: commands, sessions, patching, parameters, and runbooks.
-* [Claude GitHub App](engineering/claude-code/claude-github-app.md) - The GitHub App that gives Claude features repository access, and which features depend on it rather than on other sign-in methods.
+* [AWS compute](engineering/aws/compute.md) - Choosing AWS compute, and running EC2 instances behind load balancers in Auto Scaling groups.
+* [AWS containers and serverless](engineering/aws/containers-and-serverless.md) - Running containers on ECS or EKS with images in ECR, and running functions on Lambda.
+* [AWS encryption and secrets](engineering/aws/encryption-and-secrets.md) - Envelope encryption with AWS KMS keys, and storing and rotating credentials in Secrets Manager.
+* [AWS IAM](engineering/aws/iam.md) - How AWS IAM grants access: identities and roles, how a request's policies are evaluated, and IAM Identity Center for workforce sign-in.
+* [AWS networking](engineering/aws/networking.md) - Amazon VPC for private networks in AWS, and Direct Connect for private links from on-premises.
 * [Claude Managed Agents](engineering/claude-code/claude-managed-agents.md) - An Anthropic-hosted agent harness that runs the agent loop, sandbox, and tools for long-running tasks, driven by events instead of your own runtime.
-* [Cloud session](engineering/claude-code/cloud-session.md) - A Claude Code session that runs on an Anthropic-managed VM instead of your machine, cloning your repository from GitHub and running after you disconnect.
-* [Elastic Load Balancing](engineering/aws/elb.md) - AWS's load balancers (ALB, NLB, GWLB) that spread traffic across healthy targets in several Availability Zones.
-* [ZooKeeper](engineering/zookeeper/zookeeper.md) - A distributed coordination service that keeps a small, consistently replicated tree of data for leader election, membership, and configuration notification.
+* [Cloud sessions](engineering/claude-code/cloud-sessions.md) - Running Claude Code in a cloud container: what a session is, how its environment is configured, and how work moves between terminal and cloud.
+* [ZooKeeper](engineering/zookeeper/zookeeper.md) - What Apache ZooKeeper is, how its ensemble and quorum work, and how to deploy it in production.
 
 # Configuration
 
-* [Cloud environment](engineering/claude-code/cloud-environment.md) - The saved configuration that sets network access, environment variables, and setup scripts for Claude Code cloud sessions.
 * [Ghostty workstation](engineering/dev-tools/ghostty-workstation.md) - A manual setup of the Ghostty terminal plus starship, zoxide, eza, bat, fzf, fd, and ripgrep on macOS or Ubuntu 26.04.
-* [Skill configuration](engineering/claude-code/skill-configuration.md) - The SKILL.md frontmatter fields and directory layout that define a Claude Code agent skill.
-* [Subagent configuration file](engineering/claude-code/subagent-configuration.md) - The Markdown file with YAML frontmatter that defines a custom Claude Code subagent, and how to create it with /agents.
 
 # Command
 
-* [awk](engineering/linux/awk.md) - A small per-line language that splits each line into numbered fields and runs condition-action rules against them.
-* [Git basic commands](engineering/git/basic-commands.md) - The seven everyday Git commands, init, clone, add, status, commit, log, and diff, with their most useful flags and pitfalls.
-* [Moving work between terminal and cloud](engineering/claude-code/terminal-cloud-handoff.md) - The CLI commands that start, message, and pull down Claude Code cloud sessions, and what each one needs.
-* [uniq](engineering/linux/uniq.md) - Collapses or counts adjacent identical lines, which is why it almost always follows sort.
+* [Text processing on the command line](engineering/linux/text-processing.md) - Building shell pipelines for text, with awk for fields and uniq for duplicates.
 
 # Comparison
 
 * [AWS certifications](engineering/aws/certifications.md) - The Cloud Practitioner, Developer Associate, and Solutions Architect Associate exams compared, with the study path the legacy outlines share.
-* [AWS compute options](engineering/aws/compute-options.md) - How EC2, Lambda, ECS, and EKS divide the work between you and AWS, and the hard limits that push a workload from one to another.
-* [AWS database choices](engineering/aws/database-choices.md) - RDS for relational workloads, DynamoDB for key-value access at scale, and ElastiCache as a disposable in-memory layer in front of either.
-* [AWS global traffic routing](engineering/aws/global-traffic-routing.md) - Route 53, CloudFront, and Global Accelerator all steer users toward healthy endpoints, but at different layers and with different failover speed.
-* [AWS messaging choices](engineering/aws/messaging-choices.md) - SQS queues work for one consumer, SNS fans out to many, and EventBridge routes events by content; the limits and delivery guarantees differ.
+* [AWS data stores](engineering/aws/data-stores.md) - Choosing an AWS data store, and the main options: RDS, DynamoDB, ElastiCache, and S3.
+* [AWS global traffic routing](engineering/aws/global-traffic.md) - Getting users to the right AWS endpoint: Route 53 DNS, CloudFront caching, and Global Accelerator, and how to choose between them.
+* [AWS messaging](engineering/aws/messaging.md) - Choosing between SQS queues, SNS topics, and EventBridge event buses for decoupling AWS services.
 
 # Source Summary
 

@@ -17,10 +17,10 @@ A note in this repository, `Claude/cloud-sessions/README.md`, summarizing Anthro
 
 ## Takeaways
 
-- A cloud session is an ordinary Claude Code session running on an Anthropic-managed VM that clones the repository from GitHub.[^claude-cloud-sessions] See [Cloud session](../engineering/claude-code/cloud-session.md).
-- Network access, environment variables, and setup scripts come from a saved cloud environment.[^claude-cloud-sessions] See [Cloud environment](../engineering/claude-code/cloud-environment.md).
-- Work moves terminal → cloud with `--cloud` and cloud → terminal with `--teleport`; the CLI cannot push a running session up.[^claude-cloud-sessions] See [Moving work between terminal and cloud](../engineering/claude-code/terminal-cloud-handoff.md).
-- Auto-fix watches a pull request and responds to CI failures and review comments, but cannot see merge conflicts.[^claude-cloud-sessions] See [Pull request auto-fix](../engineering/claude-code/pr-auto-fix.md).
-- The Claude GitHub App, not the sign-in method, is what enables auto-fix and project threads.[^claude-cloud-sessions] See [Claude GitHub App](../engineering/claude-code/claude-github-app.md).
+- A cloud session is an ordinary Claude Code session running on an Anthropic-managed VM that clones the repository from GitHub. See [Cloud session](../engineering/claude-code/cloud-sessions.md#what-a-cloud-session-is).
+- Network access, environment variables, and setup scripts come from a saved cloud environment. See [Cloud environment](../engineering/claude-code/cloud-sessions.md#cloud-environment).
+- Work moves terminal → cloud with `--cloud` and cloud → terminal with `--teleport`; the CLI cannot push a running session up. See [Moving work between terminal and cloud](../engineering/claude-code/cloud-sessions.md#moving-work-between-terminal-and-cloud).
+- Auto-fix watches a pull request and responds to CI failures and review comments, but cannot see merge conflicts. See [Pull request auto-fix](../engineering/claude-code/github-integration.md#pull-request-auto-fix).
+- The Claude GitHub App, not the sign-in method, is what enables auto-fix and project threads.[^claude-cloud-sessions] See [Claude GitHub App](../engineering/claude-code/github-integration.md#claude-github-app).
 
-[^claude-cloud-sessions]: Claude Code Cloud Sessions
+[^claude-cloud-sessions]: Claude Code Cloud Sessions, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Claude/cloud-sessions/README.md)

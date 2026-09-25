@@ -14,4 +14,4 @@ status: draft
 ---
 A setup note in this repository, `Ghostty/README.md`, with the portable configuration file `Ghostty/config.ghostty`, for macOS (zsh, Homebrew) and Ubuntu 26.04 (bash, apt). It has no installer and manages no state afterwards.[^ghostty-workstation] See [Ghostty workstation](../engineering/dev-tools/ghostty-workstation.md).
 
-[^ghostty-workstation]: Ghostty Workstation
+[^ghostty-workstation]: Ghostty Workstation, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Ghostty/README.md)

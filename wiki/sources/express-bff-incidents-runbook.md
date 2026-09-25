@@ -16,7 +16,7 @@ A runbook in this repository, `Nodejs/runbooks/common-express-bff-incidents/READ
 
 ## Takeaways
 
-- A failing request crosses a fixed chain of hops; find the first broken one before touching any control.[^express-bff-incidents-runbook] See [Layered troubleshooting](../engineering/operations/layered-troubleshooting.md).
-- Each incident has checks, a recovery, and a verification step.[^express-bff-incidents-runbook] See [Express BFF incidents](../engineering/web-serving/express-bff-incidents.md).
+- A failing request crosses a fixed chain of hops; find the first broken one before touching any control. See [Layered troubleshooting](../engineering/operations/incident-operations.md#layered-troubleshooting).
+- Each incident has checks, a recovery, and a verification step.[^express-bff-incidents-runbook] See [Express BFF incidents](../engineering/web-serving/express-bff.md#common-incidents).
 
-[^express-bff-incidents-runbook]: Node.js / Express BFF: Ten Common Incidents Runbook
+[^express-bff-incidents-runbook]: Node.js / Express BFF: Ten Common Incidents Runbook, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Nodejs/runbooks/common-express-bff-incidents/README.md)

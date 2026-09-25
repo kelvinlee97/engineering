@@ -29,10 +29,10 @@ A manual, installer-free terminal setup: install the tools, add a few shell line
 | macOS | `~/Library/Application Support/com.mitchellh.ghostty/config.ghostty` |
 | Ubuntu | `${XDG_CONFIG_HOME:-$HOME/.config}/ghostty/config.ghostty` |
 
-Copy with `cp -i`, keep one source of truth, and fold any older `config` file into `config.ghostty` rather than keeping both; macOS can load both the XDG and native locations. Validate with `ghostty +validate-config`.[^ghostty-workstation] Only portable personal settings belong in the repository: no credentials, SSH keys, cloud profiles, or history.[^ghostty-workstation]
+Copy with `cp -i`, keep one source of truth, and fold any older `config` file into `config.ghostty` rather than keeping both; macOS can load both the XDG and native locations. Validate with `ghostty +validate-config`. Only portable personal settings belong in the repository: no credentials, SSH keys, cloud profiles, or history.[^ghostty-workstation]
 
 ## Related
 
-- Source: [Ghostty workstation](../../sources/ghostty-workstation.md)
+- [Domain index](index.md): other pages in this domain.
 
-[^ghostty-workstation]: Ghostty Workstation
+[^ghostty-workstation]: [Ghostty Workstation](../../sources/ghostty-workstation.md), [original](https://github.com/kelvinlee97/engineering/blob/main/Ghostty/README.md)

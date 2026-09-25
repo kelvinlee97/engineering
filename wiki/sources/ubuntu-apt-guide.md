@@ -18,4 +18,4 @@ A guide in this repository, `Ubuntu/apt/README.md`, for installing, updating, in
 
 - Refresh the index, simulate, inspect the plan, then apply; hidden state such as holds, phased updates, timers, and locks can change what an upgrade would do.[^ubuntu-apt-guide] See [APT package management](../engineering/linux/apt-package-management.md).
 
-[^ubuntu-apt-guide]: Common Ubuntu APT Operations
+[^ubuntu-apt-guide]: Common Ubuntu APT Operations, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Ubuntu/apt/README.md)

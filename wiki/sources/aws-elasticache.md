@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/elasticache/README.md`, summarizing Amazon ElastiCache from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-elasticache] Compiled into [Amazon ElastiCache](../engineering/aws/elasticache.md).
+A note in this repository, `AWS/elasticache/README.md`, summarizing Amazon ElastiCache from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-elasticache] Compiled into [Amazon ElastiCache](../engineering/aws/data-stores.md#amazon-elasticache).
 
-[^aws-elasticache]: Amazon ElastiCache - Runbook & Reference
+[^aws-elasticache]: Amazon ElastiCache - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/elasticache/README.md)

@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T05:45:00Z }
 status: draft
 ---
-A note in this repository, `YouTube/startup/how-to-actually-start-your-own-business--JJyLynh5d6M/summary.md`, on an 11:01 video. It adds nothing beyond the video, and the video's statistics were not independently verified.[^start-a-business-video] See [Starting a small business](../engineering/startups/starting-a-small-business.md).
+A note in this repository, `YouTube/startup/how-to-actually-start-your-own-business--JJyLynh5d6M/summary.md`, on an 11:01 video. It adds nothing beyond the video, and the video's statistics were not independently verified.[^start-a-business-video] See [Starting a small business](../engineering/startups/starting-a-small-business.md#getting-started).
 
-[^start-a-business-video]: How to Actually Start Your Own Business (video summary)
+[^start-a-business-video]: How to Actually Start Your Own Business (video summary), [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/YouTube/startup/how-to-actually-start-your-own-business--JJyLynh5d6M/summary.md)

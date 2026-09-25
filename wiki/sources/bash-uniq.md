@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T05:15:00Z }
 status: draft
 ---
-A note in this repository, `Bash/uniq/README.md`, on the `uniq` command and why it is almost always used after `sort`.[^bash-uniq] See [uniq](../engineering/linux/uniq.md).
+A note in this repository, `Bash/uniq/README.md`, on the `uniq` command and why it is almost always used after `sort`.[^bash-uniq] See [uniq](../engineering/linux/text-processing.md#uniq).
 
-[^bash-uniq]: The uniq command
+[^bash-uniq]: The uniq command, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Bash/uniq/README.md)

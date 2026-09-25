@@ -1,0 +1,39 @@
+@use "./base.scss";
+
+// Footnotes carry source citations. Title the section "Sources" and keep one
+// back-link per source: remark renders one ↩ per citation, which reads as a
+// row of unexplained buttons.
+.footnotes {
+  font-size: 0.9rem;
+
+  & #footnote-label {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 1rem 0 0.5rem;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    font-size: 0;
+
+    &::before {
+      content: "Sources";
+      font-size: 1.1rem;
+    }
+
+    & > a {
+      display: none;
+    }
+  }
+
+  & [data-footnote-backref] ~ [data-footnote-backref] {
+    display: none;
+  }
+}
+
+// Section headings on long topic pages need more separation from the text above.
+article > h2 {
+  margin-top: 2.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--lightgray);
+}

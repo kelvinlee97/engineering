@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T06:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/security-hub/README.md`, summarizing AWS Security Hub CSPM from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-security-hub] Compiled into [AWS Security Hub CSPM](../engineering/aws/security-hub.md).
+A note in this repository, `AWS/security-hub/README.md`, summarizing AWS Security Hub CSPM from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-security-hub] Compiled into [AWS Security Hub CSPM](../engineering/aws/security-monitoring.md#aws-security-hub-cspm).
 
-[^aws-security-hub]: AWS Security Hub CSPM - Runbook & Reference
+[^aws-security-hub]: AWS Security Hub CSPM - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/security-hub/README.md)
