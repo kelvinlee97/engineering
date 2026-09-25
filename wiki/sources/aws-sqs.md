@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/sqs/README.md`, summarizing Amazon SQS from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-sqs] Compiled into [Amazon SQS](../engineering/aws/sqs.md).
+A note in this repository, `AWS/sqs/README.md`, summarizing Amazon SQS from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-sqs] Compiled into [Amazon SQS](../engineering/aws/messaging.md#amazon-sqs).
 
-[^aws-sqs]: Amazon SQS - Runbook & Reference
+[^aws-sqs]: Amazon SQS - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/sqs/README.md)

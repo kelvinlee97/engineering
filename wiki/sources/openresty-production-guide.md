@@ -16,8 +16,8 @@ A guide in this repository, `Nginx/guides/openresty-production-deployment/README
 
 ## Takeaways
 
-- Choose OpenResty only when the gateway needs reviewed Lua behaviour; it replaces Nginx on the host rather than running beside it.[^openresty-production-guide] See [OpenResty production deployment](../engineering/web-serving/openresty-production-deployment.md).
-- Lua runs in the event-driven request path, so blocking work does not belong there.[^openresty-production-guide]
-- The change and verification procedure mirrors the Nginx guide.[^openresty-production-guide] See [Safe change procedure](../engineering/operations/safe-change-procedure.md).
+- Choose OpenResty only when the gateway needs reviewed Lua behaviour; it replaces Nginx on the host rather than running beside it. See [OpenResty production deployment](../engineering/web-serving/reverse-proxy-gateway.md#openresty-production-deployment).
+- Lua runs in the event-driven request path, so blocking work does not belong there.
+- The change and verification procedure mirrors the Nginx guide.[^openresty-production-guide] See [Safe change procedure](../engineering/operations/incident-operations.md#safe-change-procedure).
 
-[^openresty-production-guide]: OpenResty Production Deployment and Operations for Beginners
+[^openresty-production-guide]: OpenResty Production Deployment and Operations for Beginners, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Nginx/guides/openresty-production-deployment/README.md)

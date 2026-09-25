@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/well-architected/README.md`, summarizing AWS Well-Architected Framework from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-well-architected] Compiled into [AWS Well-Architected Framework](../engineering/aws/well-architected.md).
+A note in this repository, `AWS/well-architected/README.md`, summarizing AWS Well-Architected Framework from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-well-architected] Compiled into [AWS Well-Architected Framework](../engineering/aws/aws-foundations.md#aws-well-architected-framework).
 
-[^aws-well-architected]: AWS Well-Architected Framework - Runbook & Reference
+[^aws-well-architected]: AWS Well-Architected Framework - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/well-architected/README.md)

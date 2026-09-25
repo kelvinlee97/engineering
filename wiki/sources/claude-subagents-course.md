@@ -27,10 +27,10 @@ All course material was read on 2026-08-05.[^claude-subagents-course] Upstream s
 
 ## Takeaways
 
-- A subagent trades visibility for a clean main context: its investigation stays isolated and only a summary returns.[^claude-subagents-course] See [Subagent](../engineering/claude-code/subagent.md) and [Context isolation](../engineering/claude-code/context-isolation.md).
-- The course calls a defined output format the most important design improvement, because it gives the subagent a stopping condition.[^claude-subagents-course] See [Delegation contract](../engineering/claude-code/delegation-contract.md).
-- The single deciding question is whether the intermediate work matters to the main thread.[^claude-subagents-course] See [When to delegate](../engineering/claude-code/when-to-delegate.md).
-- Tools should be the minimum the role needs.[^claude-subagents-course] See [Least-privilege tool access](../engineering/claude-code/least-privilege-tool-access.md).
-- Custom subagents are Markdown files with YAML frontmatter, created with `/agents`.[^claude-subagents-course] See [Subagent configuration file](../engineering/claude-code/subagent-configuration.md).
+- A subagent trades visibility for a clean main context: its investigation stays isolated and only a summary returns. See [Subagent](../engineering/claude-code/subagents.md#what-a-subagent-is) and [Context isolation](../engineering/claude-code/subagents.md#context-isolation).
+- The course calls a defined output format the most important design improvement, because it gives the subagent a stopping condition. See [Delegation contract](../engineering/claude-code/subagents.md#delegation-contract).
+- The single deciding question is whether the intermediate work matters to the main thread. See [When to delegate](../engineering/claude-code/subagents.md#when-to-delegate).
+- Tools should be the minimum the role needs. See [Least-privilege tool access](../engineering/claude-code/subagents.md#least-privilege-tool-access).
+- Custom subagents are Markdown files with YAML frontmatter, created with `/agents`.[^claude-subagents-course] See [Subagent configuration file](../engineering/claude-code/subagents.md#subagent-configuration-file).
 
-[^claude-subagents-course]: Introduction to Claude Code Subagents (study guide)
+[^claude-subagents-course]: Introduction to Claude Code Subagents (study guide), [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Claude/subagents/README.md)

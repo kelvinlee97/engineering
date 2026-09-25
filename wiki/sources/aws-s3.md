@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/s3/README.md`, summarizing Amazon S3 from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-18.[^aws-s3] Compiled into [Amazon S3](../engineering/aws/s3.md).
+A note in this repository, `AWS/s3/README.md`, summarizing Amazon S3 from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-18.[^aws-s3] Compiled into [Amazon S3](../engineering/aws/data-stores.md#amazon-s3).
 
-[^aws-s3]: Amazon S3 - Runbook & Reference
+[^aws-s3]: Amazon S3 - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/s3/README.md)

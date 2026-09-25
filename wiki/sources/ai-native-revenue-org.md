@@ -13,7 +13,7 @@ generated: { by: claude-code/wiki-v1, at: 2026-09-24T16:05:00Z }
 status: draft
 ---
 
-A note in this repository, `Claude/ai-native-revenue-org/README.md`, on Anthropic's *Building an AI-native revenue organization* post and 28-page eBook of 2026-09-15, reviewed on 2026-09-18.[^ai-native-revenue-org]
+A note in this repository, `Claude/ai-native-revenue-org/README.md`, on Anthropic's *Building an AI-native revenue organization* post and 28-page eBook of 2026-09-15, reviewed on 2026-09-18.
 
 **Caveat carried from the note:** this is vendor marketing; its numbers are Anthropic-reported customer figures, not independent benchmarks. Several chapters carry their models as images, which the note reconstructed from the surrounding prose.[^ai-native-revenue-org]
 
@@ -30,7 +30,7 @@ As reported in the guide.[^ai-native-revenue-org]
 
 ## Takeaways
 
-- Returns depend on the access, trust, and shared skills an organization builds, described as a four-stage ladder.[^ai-native-revenue-org] See [AI adoption maturity](../engineering/ai-engineering/ai-adoption-maturity.md).
-- Measure with concurrent cohorts and a pre-set baseline, and do not lead with hours saved.[^ai-native-revenue-org] See [Measuring an AI rollout](../engineering/ai-engineering/ai-rollout-measurement.md).
+- Returns depend on the access, trust, and shared skills an organization builds, described as a four-stage ladder. See [AI adoption maturity](../engineering/ai-engineering/ai-adoption.md#ai-adoption-maturity).
+- Measure with concurrent cohorts and a pre-set baseline, and do not lead with hours saved.[^ai-native-revenue-org] See [Measuring an AI rollout](../engineering/ai-engineering/ai-adoption.md#measuring-an-ai-rollout).
 
-[^ai-native-revenue-org]: Building an AI-Native Revenue Organization
+[^ai-native-revenue-org]: Building an AI-Native Revenue Organization, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Claude/ai-native-revenue-org/README.md)

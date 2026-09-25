@@ -14,4 +14,4 @@ status: draft
 ---
 A study outline in this repository, `AWS/certifications/solutions-architect/README.md`, verified against AWS documentation on 2026-08-19.[^aws-cert-solutions-architect] Compiled into [AWS certifications](../engineering/aws/certifications.md).
 
-[^aws-cert-solutions-architect]: AWS Certified Solutions Architect - Associate (SAA-C03) - Study Outline
+[^aws-cert-solutions-architect]: AWS Certified Solutions Architect - Associate (SAA-C03) - Study Outline, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/certifications/solutions-architect/README.md)

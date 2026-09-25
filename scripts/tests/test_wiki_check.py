@@ -24,9 +24,9 @@ A subagent runs in isolation.[^src] See [other](other.md).
 
 ## Related
 
-- Source: [Source](../sources/src.md)
+- [Source summary](../sources/src.md)
 
-[^src]: Source
+[^src]: [Source](../sources/src.md), [original](https://example.com/src)
 """
 
 SUMMARY = """\
@@ -135,7 +135,8 @@ class WikiCheckTest(unittest.TestCase):
         self.assertTrue(any("generated.at" in e for e in self.run_check().errors))
 
     def test_uncited_source_fails(self) -> None:
-        self.write("eng/subagent.md", PAGE.replace(".[^src]", ".").replace("[^src]: Source\n", ""))
+        page = re.sub(r"(?m)^\[\^src\]:.*\n", "", PAGE.replace(".[^src]", "."))
+        self.write("eng/subagent.md", page)
         self.assertTrue(any("never cited" in e for e in self.run_check().errors))
 
     def test_h1_in_body_fails(self) -> None:
@@ -143,11 +144,20 @@ class WikiCheckTest(unittest.TestCase):
         self.assertTrue(any("H1" in e for e in self.run_check().errors))
 
     def test_missing_related_and_summary_link_fail(self) -> None:
-        related = "## Related\n\n- Source: [Source](../sources/src.md)\n"
-        self.write("eng/subagent.md", PAGE.replace(related, ""))
+        page = PAGE.replace("## Related\n\n- [Source summary](../sources/src.md)\n", "")
+        page = page.replace("[Source](../sources/src.md), ", "Source, ")
+        self.write("eng/subagent.md", page)
         errors = self.run_check().errors
         self.assertTrue(any("## Related" in e for e in errors))
-        self.assertTrue(any("sources/src.md" in e for e in errors))
+        self.assertTrue(any("must link its summary page sources/src.md" in e for e in errors))
+
+    def test_repeated_citation_in_one_section_fails(self) -> None:
+        page = PAGE.replace("See [other]", "Again.[^src] See [other]")
+        self.write("eng/subagent.md", page)
+        self.assertTrue(any("cited more than once" in e for e in self.run_check().errors))
+        split = PAGE.replace("See [other]", "\n\n### Detail\n\nAgain.[^src] See [other]")
+        self.write("eng/subagent.md", split)
+        self.assertEqual(self.run_check().errors, [])
 
     def test_mermaid_without_accessibility_metadata_fails(self) -> None:
         diagram = "```mermaid\nflowchart LR\n    accTitle: T\n    A --> B\n```\n\n"

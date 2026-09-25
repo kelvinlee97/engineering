@@ -16,7 +16,7 @@ A guide in this repository, `Nodejs/guides/express-bff-production-deployment/REA
 
 ## Takeaways
 
-- Cluster mode requires stateless workers.[^express-bff-deployment-guide] See [Backend for frontend](../engineering/web-serving/backend-for-frontend.md).
-- Releases go into immutable directories, switch with a symlink, and roll back by repointing it.[^express-bff-deployment-guide] See [Express BFF deployment](../engineering/web-serving/express-bff-deployment.md).
+- Cluster mode requires stateless workers. See [Backend for frontend](../engineering/web-serving/express-bff.md#backend-for-frontend).
+- Releases go into immutable directories, switch with a symlink, and roll back by repointing it.[^express-bff-deployment-guide] See [Express BFF deployment](../engineering/web-serving/express-bff.md#deploying-an-express-bff).
 
-[^express-bff-deployment-guide]: Node.js / Express BFF Production Deployment for Beginners
+[^express-bff-deployment-guide]: Node.js / Express BFF Production Deployment for Beginners, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Nodejs/guides/express-bff-production-deployment/README.md)

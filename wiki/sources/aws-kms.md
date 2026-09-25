@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T06:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/kms/README.md`, summarizing AWS KMS from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-kms] Compiled into [AWS KMS](../engineering/aws/kms.md).
+A note in this repository, `AWS/kms/README.md`, summarizing AWS KMS from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-kms] Compiled into [AWS KMS](../engineering/aws/encryption-and-secrets.md#aws-kms).
 
-[^aws-kms]: AWS KMS - Runbook & Reference
+[^aws-kms]: AWS KMS - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/kms/README.md)

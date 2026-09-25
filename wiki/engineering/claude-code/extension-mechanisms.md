@@ -22,19 +22,19 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-24T16:05:00Z }
 status: draft
 ---
-Claude Code has five ways to add behaviour, and each is defined by when it applies. Picking by that behaviour avoids forcing one mechanism to carry every responsibility.[^claude-agent-skills-course]
+Claude Code has five ways to add behaviour, and each is defined by when it applies. Picking by that behaviour avoids forcing one mechanism to carry every responsibility.
 
 | Mechanism | What distinguishes it | Use it for |
 | --- | --- | --- |
 | `CLAUDE.md` | Always loaded | Project-wide rules and constraints |
-| [Skill](agent-skill.md) | Matched to the request, loaded on demand | Task-specific knowledge and procedures |
-| [Subagent](subagent.md) | Separate execution context | Isolated delegated work or different tool access |
+| [Skill](agent-skills.md#what-a-skill-is) | Matched to the request, loaded on demand | Task-specific knowledge and procedures |
+| [Subagent](subagents.md#what-a-subagent-is) | Separate execution context | Isolated delegated work or different tool access |
 | Hook | Triggered by an event | Repeatable checks or side effects around tool actions |
 | MCP server | Supplies external capabilities | Integrations, data sources, tools |
 
-As described in the course.[^claude-agent-skills-course]
+As described in the course.
 
-Skills extend the current conversation; subagents leave it, work independently, and return a result. Hooks react to events rather than to what a request means. MCP is a capability boundary, not an instruction format.[^claude-agent-skills-course] Slash commands differ from skills in needing explicit invocation, where skills activate from the intent of an ordinary request.[^claude-agent-skills-course]
+Skills extend the current conversation; subagents leave it, work independently, and return a result. Hooks react to events rather than to what a request means. MCP is a capability boundary, not an instruction format. Slash commands differ from skills in needing explicit invocation, where skills activate from the intent of an ordinary request.
 
 The mechanisms combine: permanent rules in `CLAUDE.md`, review knowledge in a skill, automatic validation in a hook, an isolated review in a subagent, and external services through MCP.[^claude-agent-skills-course]
 
@@ -46,11 +46,8 @@ The GH-600 course describes hooks as policy enforcement that does not depend on 
 
 ## Related
 
-- Source: [GitHub Certified: Agentic AI Developer](../../sources/gh-600-study-notes.md)
-- Source: [The AI-Native SDLC Playbook](../../sources/ai-native-sdlc-playbook.md)
-- [When to delegate](when-to-delegate.md): deciding whether work belongs in a subagent.
-- Source: [Introduction to Claude Code Agent Skills](../../sources/claude-agent-skills-course.md)
+- [When to delegate](subagents.md#when-to-delegate): deciding whether work belongs in a subagent.
 
-[^claude-agent-skills-course]: Introduction to Claude Code Agent Skills (study guide)
-[^ai-native-sdlc-playbook]: The AI-Native SDLC Playbook
-[^gh-600-study-notes]: GitHub Certified: Agentic AI Developer (study notes)
+[^claude-agent-skills-course]: [Introduction to Claude Code Agent Skills (study guide)](../../sources/claude-agent-skills-course.md), [original](https://github.com/kelvinlee97/engineering/blob/main/Claude/agent-skills/README.md)
+[^ai-native-sdlc-playbook]: [The AI-Native SDLC Playbook](../../sources/ai-native-sdlc-playbook.md), [original](https://github.com/kelvinlee97/engineering/blob/main/Claude/ai-native-sdlc-playbook/README.md)
+[^gh-600-study-notes]: [GitHub Certified: Agentic AI Developer (study notes)](../../sources/gh-600-study-notes.md), [original](https://github.com/kelvinlee97/engineering/blob/main/Claude/github-agentic-ai-developer/README.md)

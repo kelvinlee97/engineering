@@ -16,8 +16,8 @@ A runbook in this repository, `Kubernetes/runbooks/insufficient-ip-or-eni/README
 
 ## Takeaways
 
-- A `Pending` Pod is a broken link in a chain (node health, Pod-subnet IPs, node ENI/IP allocatable, IPAM and admission components); find the link before changing anything.[^k8s-ip-eni-runbook] See [IP or ENI exhaustion runbook](../engineering/kubernetes/ip-eni-exhaustion.md).
-- Remediate in dependency order and restart workloads only when needed.[^k8s-ip-eni-runbook] See [Safe change procedure](../engineering/operations/safe-change-procedure.md).
-- Close the incident only against explicit acceptance criteria.[^k8s-ip-eni-runbook] See [Incident closure criteria](../engineering/operations/incident-closure-criteria.md).
+- A `Pending` Pod is a broken link in a chain (node health, Pod-subnet IPs, node ENI/IP allocatable, IPAM and admission components); find the link before changing anything. See [IP or ENI exhaustion runbook](../engineering/kubernetes/ip-eni-exhaustion.md).
+- Remediate in dependency order and restart workloads only when needed. See [Safe change procedure](../engineering/operations/incident-operations.md#safe-change-procedure).
+- Close the incident only against explicit acceptance criteria.[^k8s-ip-eni-runbook] See [Incident closure criteria](../engineering/operations/incident-operations.md#incident-closure-criteria).
 
-[^k8s-ip-eni-runbook]: Kubernetes IP or ENI Exhaustion Scheduling Failure Runbook
+[^k8s-ip-eni-runbook]: Kubernetes IP or ENI Exhaustion Scheduling Failure Runbook, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Kubernetes/runbooks/insufficient-ip-or-eni/README.md)

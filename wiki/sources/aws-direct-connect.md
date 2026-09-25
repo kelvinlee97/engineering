@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/direct-connect/README.md`, summarizing AWS Direct Connect from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-direct-connect] Compiled into [AWS Direct Connect](../engineering/aws/direct-connect.md).
+A note in this repository, `AWS/direct-connect/README.md`, summarizing AWS Direct Connect from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-direct-connect] Compiled into [AWS Direct Connect](../engineering/aws/networking.md#aws-direct-connect).
 
-[^aws-direct-connect]: AWS Direct Connect - Runbook & Reference
+[^aws-direct-connect]: AWS Direct Connect - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/direct-connect/README.md)

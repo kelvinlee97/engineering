@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T06:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/organizations/README.md`, summarizing AWS Organizations from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-organizations] Compiled into [AWS Organizations](../engineering/aws/organizations.md).
+A note in this repository, `AWS/organizations/README.md`, summarizing AWS Organizations from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-organizations] Compiled into [AWS Organizations](../engineering/aws/multi-account-governance.md#aws-organizations).
 
-[^aws-organizations]: AWS Organizations - Runbook & Reference
+[^aws-organizations]: AWS Organizations - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/organizations/README.md)

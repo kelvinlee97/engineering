@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/dynamodb/README.md`, summarizing Amazon DynamoDB from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-dynamodb] Compiled into [Amazon DynamoDB](../engineering/aws/dynamodb.md).
+A note in this repository, `AWS/dynamodb/README.md`, summarizing Amazon DynamoDB from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-dynamodb] Compiled into [Amazon DynamoDB](../engineering/aws/data-stores.md#amazon-dynamodb).
 
-[^aws-dynamodb]: Amazon DynamoDB - Runbook & Reference
+[^aws-dynamodb]: Amazon DynamoDB - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/dynamodb/README.md)

@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/ecs/README.md`, summarizing Amazon ECS from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-ecs] Compiled into [Amazon ECS](../engineering/aws/ecs.md).
+A note in this repository, `AWS/ecs/README.md`, summarizing Amazon ECS from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-ecs] Compiled into [Amazon ECS](../engineering/aws/containers-and-serverless.md#amazon-ecs).
 
-[^aws-ecs]: Amazon ECS - Runbook & Reference
+[^aws-ecs]: Amazon ECS - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/ecs/README.md)

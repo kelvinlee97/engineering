@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T06:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/guardduty/README.md`, summarizing Amazon GuardDuty from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-guardduty] Compiled into [Amazon GuardDuty](../engineering/aws/guardduty.md).
+A note in this repository, `AWS/guardduty/README.md`, summarizing Amazon GuardDuty from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-guardduty] Compiled into [Amazon GuardDuty](../engineering/aws/security-monitoring.md#amazon-guardduty).
 
-[^aws-guardduty]: Amazon GuardDuty - Runbook & Reference
+[^aws-guardduty]: Amazon GuardDuty - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/guardduty/README.md)

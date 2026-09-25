@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/ec2/README.md`, summarizing Amazon EC2 from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-18.[^aws-ec2] Compiled into [Amazon EC2](../engineering/aws/ec2.md).
+A note in this repository, `AWS/ec2/README.md`, summarizing Amazon EC2 from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-18.[^aws-ec2] Compiled into [Amazon EC2](../engineering/aws/compute.md#amazon-ec2).
 
-[^aws-ec2]: Amazon EC2 - Runbook & Reference
+[^aws-ec2]: Amazon EC2 - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/ec2/README.md)

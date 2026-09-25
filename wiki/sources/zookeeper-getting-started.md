@@ -16,6 +16,6 @@ A tutorial in this repository, `ZooKeeper/guides/getting-started/README.md`: wha
 
 ## Takeaways
 
-- ZooKeeper holds a small amount of shared coordination state; it is not a database, queue, object store, or secret store.[^zookeeper-getting-started] See [ZooKeeper](../engineering/zookeeper/zookeeper.md).
+- ZooKeeper holds a small amount of shared coordination state; it is not a database, queue, object store, or secret store.[^zookeeper-getting-started] See [ZooKeeper](../engineering/zookeeper/zookeeper.md#what-zookeeper-is).
 
-[^zookeeper-getting-started]: ZooKeeper Beginner Tutorial
+[^zookeeper-getting-started]: ZooKeeper Beginner Tutorial, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/ZooKeeper/guides/getting-started/README.md)

@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T05:30:00Z }
 status: draft
 ---
-Chapter `03-status` of a seven-chapter beginner tutorial in this repository (`Git/03-status/README.md`), covering `git status`.[^git-tutorial-03-status] Its commands and flags are collected on [Git basic commands](../engineering/git/basic-commands.md).
+Chapter `03-status` of a seven-chapter beginner tutorial in this repository (`Git/03-status/README.md`), covering `git status`.[^git-tutorial-03-status] Its commands and flags are collected on [Git basic commands](../engineering/git/git-fundamentals.md#basic-commands).
 
-[^git-tutorial-03-status]: Git command-line basics: git status
+[^git-tutorial-03-status]: Git command-line basics: git status, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Git/03-status/README.md)

@@ -31,7 +31,8 @@ Input: a URL, or a legacy article path such as `Claude/subagents/README.md`.
    need no snapshot: the article is the raw source.
 4. **Read and plan.** Read the source in full. List the concepts, patterns,
    tools, and configurations it teaches. For each, check `wiki/index.md`:
-   existing page → update it; missing → create it. Tell the user the plan in
+   existing topic page → add or update a section there; no fitting topic
+   page → create one. Prefer growing a topic page over a new page per concept. Tell the user the plan in
    one short list (pages to create, pages to update) and continue.
 5. **Write the source summary** at `wiki/sources/<slug>.md`, `type: Source
    Summary`: what the source is, its scope and coverage gaps, the takeaways,
@@ -39,7 +40,8 @@ Input: a URL, or a legacy article path such as `Claude/subagents/README.md`.
 6. **Write or update concept pages** under `wiki/engineering/<domain>/`.
    - Add the source to `sources` (id, resource, title, `last_modified` from
      `git log -1 --format=%cI -- <path>` for repo files).
-   - Attribute every claim with `[^<source-id>]`.
+   - Attribute claims with `[^<source-id>]`, once per source per `##` or
+     `###` section, after the section's last claim from that source.
    - Merge into existing prose instead of appending a per-source section.
    - Contradiction with an existing claim → both claims under
      `## Contradictions`, each with its footnote.

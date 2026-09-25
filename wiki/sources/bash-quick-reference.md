@@ -16,6 +16,6 @@ A quick reference in this repository, `Bash/README.md`, answering SRE interview 
 
 ## Takeaways
 
-- A few filters recombine to answer most "top N", "count per X", and "filter by Y" questions.[^bash-quick-reference] See [Text-processing pipelines](../engineering/linux/text-processing-pipelines.md).
+- A few filters recombine to answer most "top N", "count per X", and "filter by Y" questions.[^bash-quick-reference] See [Text-processing pipelines](../engineering/linux/text-processing.md#text-processing-pipelines).
 
-[^bash-quick-reference]: Bash SRE HackerRank Quick Reference
+[^bash-quick-reference]: Bash SRE HackerRank Quick Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Bash/README.md)

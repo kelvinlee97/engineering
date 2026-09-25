@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T05:45:00Z }
 status: draft
 ---
-A note in this repository, `YouTube/startup/every-company-should-have-a-brain--eBUyTS7SzV4/summary.md`, on Garry Tan's 21:08 AI Engineer talk. The note calls it an advocacy talk, not a controlled study.[^company-brain-video] See [Company brain](../engineering/ai-engineering/company-brain.md).
+A note in this repository, `YouTube/startup/every-company-should-have-a-brain--eBUyTS7SzV4/summary.md`, on Garry Tan's 21:08 AI Engineer talk. The note calls it an advocacy talk, not a controlled study.[^company-brain-video] See [Company brain](../engineering/ai-engineering/ai-native-organization.md#company-brain).
 
-[^company-brain-video]: Every Company Should Have a Brain (video summary)
+[^company-brain-video]: Every Company Should Have a Brain (video summary), [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/YouTube/startup/every-company-should-have-a-brain--eBUyTS7SzV4/summary.md)

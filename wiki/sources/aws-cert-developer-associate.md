@@ -14,4 +14,4 @@ status: draft
 ---
 A study outline in this repository, `AWS/certifications/developer-associate/README.md`, verified against AWS documentation on 2026-08-19.[^aws-cert-developer-associate] Compiled into [AWS certifications](../engineering/aws/certifications.md).
 
-[^aws-cert-developer-associate]: AWS Certified Developer - Associate (DVA-C02) - Study Outline
+[^aws-cert-developer-associate]: AWS Certified Developer - Associate (DVA-C02) - Study Outline, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/certifications/developer-associate/README.md)

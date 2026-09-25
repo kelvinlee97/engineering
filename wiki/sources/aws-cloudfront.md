@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/cloudfront/README.md`, summarizing Amazon CloudFront from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-cloudfront] Compiled into [Amazon CloudFront](../engineering/aws/cloudfront.md).
+A note in this repository, `AWS/cloudfront/README.md`, summarizing Amazon CloudFront from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-cloudfront] Compiled into [Amazon CloudFront](../engineering/aws/global-traffic.md#amazon-cloudfront).
 
-[^aws-cloudfront]: Amazon CloudFront - Runbook & Reference
+[^aws-cloudfront]: Amazon CloudFront - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/cloudfront/README.md)

@@ -17,8 +17,8 @@ A note in this repository, `Claude/github-actions/README.md`, summarizing Anthro
 
 ## Takeaways
 
-- The Action is a constrained agent inside a GitHub Actions job: an event starts it, actor checks gate it, and permissions limit it.[^claude-github-actions] See [Claude Code GitHub Actions](../engineering/claude-code/claude-code-github-actions.md).
-- Effective capability is the intersection of actor checks, job permissions, and allowed tools.[^claude-github-actions] See [Least-privilege tool access](../engineering/claude-code/least-privilege-tool-access.md).
-- The official [Claude GitHub App](../engineering/claude-code/claude-github-app.md) has broader permissions than the Action alone needs.[^claude-github-actions]
+- The Action is a constrained agent inside a GitHub Actions job: an event starts it, actor checks gate it, and permissions limit it. See [Claude Code GitHub Actions](../engineering/claude-code/github-integration.md#claude-code-github-actions).
+- Effective capability is the intersection of actor checks, job permissions, and allowed tools. See [Least-privilege tool access](../engineering/claude-code/subagents.md#least-privilege-tool-access).
+- The official [Claude GitHub App](../engineering/claude-code/github-integration.md#claude-github-app) has broader permissions than the Action alone needs.[^claude-github-actions]
 
-[^claude-github-actions]: Claude Code GitHub Actions
+[^claude-github-actions]: Claude Code GitHub Actions, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Claude/github-actions/README.md)

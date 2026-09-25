@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T05:30:00Z }
 status: draft
 ---
-Chapter `00-init` of a seven-chapter beginner tutorial in this repository (`Git/00-init/README.md`), covering `git init`.[^git-tutorial-00-init] Its commands and flags are collected on [Git basic commands](../engineering/git/basic-commands.md).
+Chapter `00-init` of a seven-chapter beginner tutorial in this repository (`Git/00-init/README.md`), covering `git init`.[^git-tutorial-00-init] Its commands and flags are collected on [Git basic commands](../engineering/git/git-fundamentals.md#basic-commands).
 
-[^git-tutorial-00-init]: Git command-line basics: git init
+[^git-tutorial-00-init]: Git command-line basics: git init, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Git/00-init/README.md)

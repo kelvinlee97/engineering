@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/sns/README.md`, summarizing Amazon SNS from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-sns] Compiled into [Amazon SNS](../engineering/aws/sns.md).
+A note in this repository, `AWS/sns/README.md`, summarizing Amazon SNS from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-sns] Compiled into [Amazon SNS](../engineering/aws/messaging.md#amazon-sns).
 
-[^aws-sns]: Amazon SNS - Runbook & Reference
+[^aws-sns]: Amazon SNS - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/sns/README.md)

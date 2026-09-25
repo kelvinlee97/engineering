@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/auto-scaling-groups/README.md`, summarizing Amazon EC2 Auto Scaling from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-auto-scaling-groups] Compiled into [Amazon EC2 Auto Scaling](../engineering/aws/auto-scaling-groups.md).
+A note in this repository, `AWS/auto-scaling-groups/README.md`, summarizing Amazon EC2 Auto Scaling from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-auto-scaling-groups] Compiled into [Amazon EC2 Auto Scaling](../engineering/aws/compute.md#amazon-ec2-auto-scaling).
 
-[^aws-auto-scaling-groups]: Amazon EC2 Auto Scaling - Runbook & Reference
+[^aws-auto-scaling-groups]: Amazon EC2 Auto Scaling - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/auto-scaling-groups/README.md)

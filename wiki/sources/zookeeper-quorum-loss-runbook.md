@@ -16,6 +16,6 @@ An incident-only runbook in this repository, `ZooKeeper/runbooks/quorum-loss-sna
 
 ## Takeaways
 
-- With no surviving authoritative copy, recovery is a rebuild: every member is restored from the same approved snapshot, one at a time.[^zookeeper-quorum-loss-runbook] See [ZooKeeper quorum-loss restore](../engineering/zookeeper/quorum-loss-restore.md).
+- With no surviving authoritative copy, recovery is a rebuild: every member is restored from the same approved snapshot, one at a time.[^zookeeper-quorum-loss-runbook] See [ZooKeeper quorum-loss restore](../engineering/zookeeper/zookeeper-recovery.md#restoring-after-quorum-loss).
 
-[^zookeeper-quorum-loss-runbook]: ZooKeeper Quorum-Loss Snapshot Restore Runbook
+[^zookeeper-quorum-loss-runbook]: ZooKeeper Quorum-Loss Snapshot Restore Runbook, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/ZooKeeper/runbooks/quorum-loss-snapshot-restore/README.md)

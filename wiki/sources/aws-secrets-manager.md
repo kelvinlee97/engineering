@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T06:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/secrets-manager/README.md`, summarizing AWS Secrets Manager from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-secrets-manager] Compiled into [AWS Secrets Manager](../engineering/aws/secrets-manager.md).
+A note in this repository, `AWS/secrets-manager/README.md`, summarizing AWS Secrets Manager from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-secrets-manager] Compiled into [AWS Secrets Manager](../engineering/aws/encryption-and-secrets.md#aws-secrets-manager).
 
-[^aws-secrets-manager]: AWS Secrets Manager - Runbook & Reference
+[^aws-secrets-manager]: AWS Secrets Manager - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/secrets-manager/README.md)

@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T05:15:00Z }
 status: draft
 ---
-A note in this repository, `Bash/awk/README.md`, on the `awk` command, using the same sample access log.[^bash-awk] See [awk](../engineering/linux/awk.md).
+A note in this repository, `Bash/awk/README.md`, on the `awk` command, using the same sample access log.[^bash-awk] See [awk](../engineering/linux/text-processing.md#awk).
 
-[^bash-awk]: The awk command
+[^bash-awk]: The awk command, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Bash/awk/README.md)

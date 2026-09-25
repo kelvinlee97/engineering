@@ -16,7 +16,7 @@ apple/container is Apple's native container tool for macOS, written in Swift for
 
 ## Architecture
 
-The `container` CLI talks to `container-apiserver`, a launchd service, which uses XPC helpers for images (`container-core-images`) and networking (`container-network-vmnet`) and runs one `container-runtime-linux` per container. It builds on Virtualization.framework, vmnet.framework, XPC, launchd, Keychain for registry credentials, and Unified Logging.[^apple-container] The apple/containerization Swift package underneath handles OCI images, registries, ext4 filesystems, lightweight VMs, and `vminitd`, an init process exposing gRPC over vsock.[^apple-container]
+The `container` CLI talks to `container-apiserver`, a launchd service, which uses XPC helpers for images (`container-core-images`) and networking (`container-network-vmnet`) and runs one `container-runtime-linux` per container. It builds on Virtualization.framework, vmnet.framework, XPC, launchd, Keychain for registry credentials, and Unified Logging. The apple/containerization Swift package underneath handles OCI images, registries, ext4 filesystems, lightweight VMs, and `vminitd`, an init process exposing gRPC over vsock.[^apple-container]
 
 ## Compared with Docker Desktop
 
@@ -28,16 +28,16 @@ The `container` CLI talks to `container-apiserver`, a launchd service, which use
 | File sharing | Selected host directories shared with the VM | Only what each container needs |
 | Ecosystem | Mature, Compose and Kubernetes | Early stage |
 
-As compared in the source.[^apple-container] It uses standard OCI images and runs `linux/amd64` containers through Rosetta 2.[^apple-container]
+As compared in the source. It uses standard OCI images and runs `linux/amd64` containers through Rosetta 2.[^apple-container]
 
 ## Limits at the time of writing
 
-- Needs an Apple silicon Mac; macOS 26 is supported, and macOS 15 works with limitations (containers cannot talk to each other, no multiple networks, possible IP conflicts).[^apple-container]
-- Memory freed inside a container is not returned to macOS, so containers may need occasional restarts.[^apple-container]
+- Needs an Apple silicon Mac; macOS 26 is supported, and macOS 15 works with limitations (containers cannot talk to each other, no multiple networks, possible IP conflicts).
+- Memory freed inside a container is not returned to macOS, so containers may need occasional restarts.
 - Version 0.x: compatibility is guaranteed only within patch releases until 1.0.0.[^apple-container]
 
 ## Related
 
-- Source: [Understanding Apple Container](../../sources/apple-container.md)
+- [Domain index](index.md): other pages in this domain.
 
-[^apple-container]: Understanding Apple Container
+[^apple-container]: [Understanding Apple Container](../../sources/apple-container.md), [original](https://github.com/kelvinlee97/engineering/blob/main/apple/container/README.md)

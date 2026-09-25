@@ -16,7 +16,7 @@ A guide in this repository, `Nodejs/guides/modern-bff-architecture-assessment/RE
 
 ## Takeaways
 
-- The BFF pattern is not obsolete; what ages is the operating model around it.[^modern-bff-assessment] See [Backend for frontend](../engineering/web-serving/backend-for-frontend.md).
+- The BFF pattern is not obsolete; what ages is the operating model around it. See [Backend for frontend](../engineering/web-serving/express-bff.md#backend-for-frontend).
 - Choose the smallest platform the evidence supports, and meet a minimum operating contract before any move.[^modern-bff-assessment]
 
-[^modern-bff-assessment]: Modern BFF Architecture Assessment for Beginners
+[^modern-bff-assessment]: Modern BFF Architecture Assessment for Beginners, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Nodejs/guides/modern-bff-architecture-assessment/README.md)

@@ -114,6 +114,7 @@ def build(repo: Path, work: Path, output: Path) -> None:
         subprocess.run(["npm", "ci", "--no-audit", "--no-fund"], cwd=quartz, check=True)
     for name in ("quartz.config.ts", "quartz.layout.ts"):
         shutil.copy2(repo / "site" / name, quartz / name)
+    shutil.copy2(repo / "site" / "custom.scss", quartz / "quartz" / "styles" / "custom.scss")
     subprocess.run(
         ["npx", "quartz", "build", "-d", str(content.resolve()), "-o", str(output.resolve())],
         cwd=quartz,

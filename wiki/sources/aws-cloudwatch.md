@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T07:00:00Z }
 status: draft
 ---
-A note in this repository, `AWS/cloudwatch/README.md`, summarizing Amazon CloudWatch from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-cloudwatch] Compiled into [Amazon CloudWatch](../engineering/aws/cloudwatch.md).
+A note in this repository, `AWS/cloudwatch/README.md`, summarizing Amazon CloudWatch from the official AWS documentation. It records that its facts were verified against that documentation on 2026-08-19.[^aws-cloudwatch] Compiled into [Amazon CloudWatch](../engineering/aws/operations-tooling.md#amazon-cloudwatch).
 
-[^aws-cloudwatch]: Amazon CloudWatch - Runbook & Reference
+[^aws-cloudwatch]: Amazon CloudWatch - Runbook & Reference, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/AWS/cloudwatch/README.md)

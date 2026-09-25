@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T05:45:00Z }
 status: draft
 ---
-A note in this repository, `YouTube/startup/building-and-structuring-an-ai-native-company--Z3JyAqh4ixg/summary.md`, on a 21:19 talk that its speaker calls theoretical: nobody has fully figured out how to build an AI-native company.[^ai-native-company-structure-video] See [AI-native company](../engineering/ai-engineering/ai-native-company.md).
+A note in this repository, `YouTube/startup/building-and-structuring-an-ai-native-company--Z3JyAqh4ixg/summary.md`, on a 21:19 talk that its speaker calls theoretical: nobody has fully figured out how to build an AI-native company.[^ai-native-company-structure-video] See [AI-native company](../engineering/ai-engineering/ai-native-organization.md#ai-native-company).
 
-[^ai-native-company-structure-video]: Building and Structuring an AI-Native Company (video summary)
+[^ai-native-company-structure-video]: Building and Structuring an AI-Native Company (video summary), [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/YouTube/startup/building-and-structuring-an-ai-native-company--Z3JyAqh4ixg/summary.md)

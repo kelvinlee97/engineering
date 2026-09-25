@@ -14,8 +14,9 @@ Errors (exit code 1):
   - a page that breaks the house format set in CLAUDE.md: `type` outside the
     vocabulary; missing `title`, one-line `description`, `tags`, `sources`,
     `generated`, or a valid `status`; duplicate or uncited source ids; an H1 in
-    the body; no `## Related` section; a source with no link to its summary page;
-    or a Mermaid block without `accTitle` and `accDescr`
+    the body; no `## Related` section; a footnote definition that does not link
+    the source's summary page; a source cited more than once in one `##` or
+    `###` section; or a Mermaid block without `accTitle` and `accDescr`
   - a number in a page that does not appear in any of the page's sources, when
     those sources are files in this repository (a guard against invented or
     mistyped figures)
@@ -58,6 +59,8 @@ ENTRY_RE = re.compile(r"^[*-] \[(?P<title>[^\]]+)\]\((?P<target>[^)\s]+)\) - (?P
 LINK_RE = re.compile(r"(?<!!)\[[^\]]*\]\((?P<target>[^)\s]+)\)")
 FOOTNOTE_REF_RE = re.compile(r"\[\^(?P<label>[^\]]+)\](?!:)")
 FOOTNOTE_DEF_RE = re.compile(r"(?m)^\[\^(?P<label>[^\]]+)\]:")
+FOOTNOTE_DEF_LINE_RE = re.compile(r"(?m)^\[\^(?P<label>[^\]]+)\]:.*$")
+SECTION_SPLIT_RE = re.compile(r"(?m)^(?=#{2,3} )")
 MERMAID_RE = re.compile(r"(?ms)^```mermaid[^\n]*\n(?P<body>.*?)^```\s*$")
 DATE_HEADING_RE = re.compile(r"^## (?P<date>.+?)\s*$")
 ISO_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -194,11 +197,14 @@ def check_style(wiki: Path, page: Path, data: dict[str, Any], body: str, report:
         return
     if "## Related" not in text:
         err(f"{rel}: missing a `## Related` section")
-    links = {t for t in LINK_RE.findall(text)}
+    definitions = {
+        m.group("label"): m.group(0) for m in FOOTNOTE_DEF_LINE_RE.finditer(text)
+    }
     for sid in ids:
         target = (wiki / "sources" / f"{sid}.md").resolve()
+        links = LINK_RE.findall(definitions.get(sid, ""))
         if not any(_resolve(wiki, page, t) == target for t in links):
-            err(f"{rel}: no link to the summary page sources/{sid}.md")
+            err(f"{rel}: footnote [^{sid}] must link its summary page sources/{sid}.md")
 
 
 def check_footnotes(rel: Path, data: dict[str, Any], body: str, report: Report) -> None:
@@ -221,6 +227,14 @@ def check_footnotes(rel: Path, data: dict[str, Any], body: str, report: Report) 
             report.errors.append(f"{rel}: footnote [^{label}] does not match any sources[].id")
     for label in sorted(used - defined):
         report.errors.append(f"{rel}: footnote [^{label}] is used but never defined")
+    for section in SECTION_SPLIT_RE.split(text):
+        heading = section.splitlines()[0] if section.startswith("#") else "the opening"
+        refs = FOOTNOTE_REF_RE.findall(section)
+        for label in sorted({x for x in refs if refs.count(x) > 1}):
+            report.errors.append(
+                f"{rel}: [^{label}] is cited more than once in {heading!r}; "
+                "cite each source once per section"
+            )
 
 
 def _resolve(wiki: Path, page: Path, target: str) -> Path | None:

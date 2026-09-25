@@ -12,6 +12,6 @@ sources:
 generated: { by: claude-code/wiki-v1, at: 2026-09-25T05:30:00Z }
 status: draft
 ---
-Chapter `06-diff` of a seven-chapter beginner tutorial in this repository (`Git/06-diff/README.md`), covering `git diff`.[^git-tutorial-06-diff] Its commands and flags are collected on [Git basic commands](../engineering/git/basic-commands.md).
+Chapter `06-diff` of a seven-chapter beginner tutorial in this repository (`Git/06-diff/README.md`), covering `git diff`.[^git-tutorial-06-diff] Its commands and flags are collected on [Git basic commands](../engineering/git/git-fundamentals.md#basic-commands).
 
-[^git-tutorial-06-diff]: Git command-line basics: git diff
+[^git-tutorial-06-diff]: Git command-line basics: git diff, [original on GitHub](https://github.com/kelvinlee97/engineering/blob/main/Git/06-diff/README.md)

@@ -31,11 +31,11 @@ Which undo is safe depends on one question: has anyone else seen this history? O
 | `git reset --mixed HEAD~1` | Moves back | Clears | Keeps | Restage selected content (the default) |
 | `git reset --hard HEAD~1` | Moves back | Overwrites | Overwrites | High risk: only confirmed-unneeded, unshared work |
 
-As tabled in the reference.[^git-operations-reference] Never reset and force-push a shared `main` or release branch.[^git-operations-reference]
+As tabled in the reference. Never reset and force-push a shared `main` or release branch.[^git-operations-reference]
 
 ## Recovery and investigation
 
-- `git reflog` shows where `HEAD` pointed before; inspect a candidate commit and protect it with a new recovery branch. Reflog is local and expires.[^git-operations-reference]
+- `git reflog` shows where `HEAD` pointed before; inspect a candidate commit and protect it with a new recovery branch. Reflog is local and expires.
 - `git blame` finds the last commit that changed a line (not who is responsible); `git bisect` binary-searches a regression; always finish with `git bisect reset`.[^git-operations-reference]
 
 ## High-risk operations
@@ -47,14 +47,12 @@ As tabled in the reference.[^git-operations-reference] Never reset and force-pus
 | Deleting a remote branch | Check PRs, deployments, protection rules; get authorisation |
 | `git clean -fd` | Preview with `git clean -nd` |
 
-As tabled in the reference.[^git-operations-reference] Its pre-flight checklist asks: right repository and branch, anything unsaved, fresh remote state, shared or personal branch, a safer mechanism available, a recovery point, and whether production, releases, or credentials are involved.[^git-operations-reference]
+As tabled in the reference. Its pre-flight checklist asks: right repository and branch, anything unsaved, fresh remote state, shared or personal branch, a safer mechanism available, a recovery point, and whether production, releases, or credentials are involved.[^git-operations-reference]
 
 ## Related
 
-- [Syncing a Git branch](branch-sync.md)
-- [Safe change procedure](../operations/safe-change-procedure.md)
-- Source: [Essential Git commands for operations](../../sources/git-operations-reference.md)
-- Source: [Git basics: git commit](../../sources/git-tutorial-04-commit.md)
+- [Syncing a Git branch](branches-and-pull-requests.md#syncing-a-git-branch)
+- [Safe change procedure](../operations/incident-operations.md#safe-change-procedure)
 
-[^git-operations-reference]: Essential Git Commands for Operations
-[^git-tutorial-04-commit]: Git command-line basics: git commit
+[^git-operations-reference]: [Essential Git Commands for Operations](../../sources/git-operations-reference.md), [original](https://github.com/kelvinlee97/engineering/blob/main/Git/README.md)
+[^git-tutorial-04-commit]: [Git command-line basics: git commit](../../sources/git-tutorial-04-commit.md), [original](https://github.com/kelvinlee97/engineering/blob/main/Git/04-commit/README.md)
