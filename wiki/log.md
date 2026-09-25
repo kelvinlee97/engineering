@@ -1,6 +1,7 @@
 # Wiki Update Log
 
 ## 2026-09-25
+* **Ingest**: Batch A part 1, six legacy operations sources (`Kubernetes/runbooks/insufficient-ip-or-eni`, `Nginx/guides/nginx-production-deployment`, `Nginx/guides/openresty-production-deployment`, `Nodejs/guides/express-bff-production-deployment`, `Nodejs/runbooks/common-express-bff-incidents`, `Nodejs/guides/modern-bff-architecture-assessment`): created 16 pages in new `kubernetes`, `web-serving`, and `operations` domains.
 * **Lint**: Obsidian check found five directory links (`engineering/`, `sources/`, `syntheses/`, `ai-engineering/`, `claude-code/`) that Obsidian could not resolve, leaving index pages isolated in the graph. Pointed them at each directory's `index.md`; `wiki_check.py` now rejects directory links in indexes.
 
 ## 2026-09-24
